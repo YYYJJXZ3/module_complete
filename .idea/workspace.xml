@@ -21,41 +21,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="mainPage.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/8-23-弹性布局/mainPage.html">
+      <file leaf-file-name="切换-融合下钻.html" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/8-24-区域切换/切换-融合下钻.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="10" column="41" lean-forward="false" selection-start-line="10" selection-start-column="41" selection-end-line="10" selection-end-column="41" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="切换.html" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/8-24-区域切换/切换.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="10" column="21" lean-forward="true" selection-start-line="10" selection-start-column="21" selection-end-line="10" selection-end-column="21" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="echartMap.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/echartsMap/echartMap.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="216">
-              <caret line="9" column="31" lean-forward="false" selection-start-line="9" selection-start-column="31" selection-end-line="9" selection-end-column="31" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="mainPage.css" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/8-23-弹性布局/css/mainPage.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="696">
-              <caret line="29" column="14" lean-forward="false" selection-start-line="29" selection-start-column="14" selection-end-line="29" selection-end-column="14" />
+            <state relative-caret-position="169">
+              <caret line="20" column="13" lean-forward="false" selection-start-line="20" selection-start-column="13" selection-end-line="20" selection-end-column="13" />
               <folding />
             </state>
           </provider>
@@ -81,9 +51,11 @@
       <find>setOption</find>
       <find>tab</find>
       <find>hidden_enent</find>
+      <find>click_event</find>
     </findStrings>
     <replaceStrings>
       <replace>div</replace>
+      <replace>btn</replace>
     </replaceStrings>
   </component>
   <component name="IdeDocumentHistory">
@@ -116,6 +88,7 @@
         <option value="$PROJECT_DIR$/8-23-弹性布局/mainPage.html" />
         <option value="$PROJECT_DIR$/8-23-弹性布局/css/mainPage.css" />
         <option value="$PROJECT_DIR$/8-24-区域切换/切换.html" />
+        <option value="$PROJECT_DIR$/8-24-区域切换/切换-融合下钻.html" />
       </list>
     </option>
   </component>
@@ -281,12 +254,12 @@
       <workItem from="1503452248739" duration="115000" />
       <workItem from="1503456788347" duration="5383000" />
       <workItem from="1503536198202" duration="398000" />
-      <workItem from="1503540814492" duration="1384000" />
+      <workItem from="1503540814492" duration="1572000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="57623000" />
+    <option name="totallyTimeSpent" value="57811000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="97" y="24" width="1258" height="872" extended-state="0" />
@@ -321,7 +294,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/8-18-tst/内联块.html" />
     <entry file="file://$PROJECT_DIR$/8-18-tst/tst-div布局.html" />
     <entry file="file://$PROJECT_DIR$/8-18-tst/下拉菜单.html" />
     <entry file="file://$PROJECT_DIR$/8-18-tst/表单属性.html" />
@@ -513,18 +485,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/echartsMap/echartMap.html">
+    <entry file="file://$PROJECT_DIR$/8-24-区域切换/切换.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="9" column="31" lean-forward="false" selection-start-line="9" selection-start-column="31" selection-end-line="9" selection-end-column="31" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/8-23-弹性布局/css/mainPage.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="696">
-          <caret line="29" column="14" lean-forward="false" selection-start-line="29" selection-start-column="14" selection-end-line="29" selection-end-column="14" />
+        <state relative-caret-position="168">
+          <caret line="7" column="24" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -537,10 +501,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/8-24-区域切换/切换.html">
+    <entry file="file://$PROJECT_DIR$/echartsMap/echartMap.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="10" column="21" lean-forward="true" selection-start-line="10" selection-start-column="21" selection-end-line="10" selection-end-column="21" />
+        <state relative-caret-position="216">
+          <caret line="9" column="31" lean-forward="false" selection-start-line="9" selection-start-column="31" selection-end-line="9" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/8-23-弹性布局/css/mainPage.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="671">
+          <caret line="29" column="14" lean-forward="false" selection-start-line="29" selection-start-column="14" selection-end-line="29" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/8-24-区域切换/切换-融合下钻.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="169">
+          <caret line="20" column="13" lean-forward="false" selection-start-line="20" selection-start-column="13" selection-end-line="20" selection-end-column="13" />
           <folding />
         </state>
       </provider>
