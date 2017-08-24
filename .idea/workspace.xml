@@ -21,12 +21,35 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="切换-融合下钻.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="切换-融合下钻.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/8-24-区域切换/切换-融合下钻.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="169">
-              <caret line="20" column="13" lean-forward="false" selection-start-line="20" selection-start-column="13" selection-end-line="20" selection-end-column="13" />
+            <state relative-caret-position="287">
+              <caret line="31" column="10" lean-forward="true" selection-start-line="31" selection-start-column="10" selection-end-line="31" selection-end-column="10" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="tab.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js/tab.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1352">
+              <caret line="120" column="0" lean-forward="false" selection-start-line="120" selection-start-column="0" selection-end-line="120" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="同层-两个div-显示-隐藏.html" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/8-24-区域切换/同层-两个div-显示-隐藏.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="119">
+              <caret line="43" column="4" lean-forward="false" selection-start-line="43" selection-start-column="4" selection-end-line="43" selection-end-column="4" />
+              <folding>
+                <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -52,10 +75,12 @@
       <find>tab</find>
       <find>hidden_enent</find>
       <find>click_event</find>
+      <find>sh</find>
     </findStrings>
     <replaceStrings>
       <replace>div</replace>
       <replace>btn</replace>
+      <replace>d1</replace>
     </replaceStrings>
   </component>
   <component name="IdeDocumentHistory">
@@ -89,6 +114,8 @@
         <option value="$PROJECT_DIR$/8-23-弹性布局/css/mainPage.css" />
         <option value="$PROJECT_DIR$/8-24-区域切换/切换.html" />
         <option value="$PROJECT_DIR$/8-24-区域切换/切换-融合下钻.html" />
+        <option value="$PROJECT_DIR$/8-24-区域切换/tst.html" />
+        <option value="$PROJECT_DIR$/8-24-区域切换/同层-两个div-显示-隐藏.html" />
       </list>
     </option>
   </component>
@@ -128,6 +155,34 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="module_complete" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="module_complete" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="module_complete" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="js" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="module_complete" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="module_complete" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="echartsMap" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -254,12 +309,12 @@
       <workItem from="1503452248739" duration="115000" />
       <workItem from="1503456788347" duration="5383000" />
       <workItem from="1503536198202" duration="398000" />
-      <workItem from="1503540814492" duration="1572000" />
+      <workItem from="1503540814492" duration="2976000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="57811000" />
+    <option name="totallyTimeSpent" value="59215000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="97" y="24" width="1258" height="872" extended-state="0" />
@@ -294,7 +349,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/8-18-tst/tst-div布局.html" />
     <entry file="file://$PROJECT_DIR$/8-18-tst/下拉菜单.html" />
     <entry file="file://$PROJECT_DIR$/8-18-tst/表单属性.html" />
     <entry file="file://$PROJECT_DIR$/js/jquery-3.2.1.js">
@@ -306,13 +360,6 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/css/tab.css" />
     <entry file="file://$PROJECT_DIR$/final_tst.html" />
-    <entry file="file://$PROJECT_DIR$/js/tab.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2880">
-          <caret line="120" column="0" lean-forward="false" selection-start-line="120" selection-start-column="0" selection-end-line="120" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/8-21PM测试下钻.html" />
     <entry file="file://$PROJECT_DIR$/821-融合地图.html" />
     <entry file="file://$PROJECT_DIR$/tst-tab.html" />
@@ -519,9 +566,28 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/8-24-区域切换/切换-融合下钻.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="169">
-          <caret line="20" column="13" lean-forward="false" selection-start-line="20" selection-start-column="13" selection-end-line="20" selection-end-column="13" />
+        <state relative-caret-position="287">
+          <caret line="31" column="10" lean-forward="true" selection-start-line="31" selection-start-column="10" selection-end-line="31" selection-end-column="10" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/tab.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1352">
+          <caret line="120" column="0" lean-forward="false" selection-start-line="120" selection-start-column="0" selection-end-line="120" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/8-24-区域切换/同层-两个div-显示-隐藏.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="43" column="4" lean-forward="false" selection-start-line="43" selection-start-column="4" selection-end-line="43" selection-end-column="4" />
+          <folding>
+            <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
