@@ -6,19 +6,19 @@ section section{
     margin-left: 9px;
     margin-top: 9px;
     text-align: center;
-    width: 950px;
+    width: 900px;
     }
 
 .mainFlex{
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
-    height: 620px;
-    width: 1400px;
+    height: 900px;
+    width: 1300px;
 }
 
 .jsonList{
-    height: 580px;
+    height: 900px;
     width: 370px;
 }
 
@@ -27,7 +27,7 @@ section section{
 }
 
 .map{
-    height: 550px;
+    height: 700px;
 }
 
 .checkBox{

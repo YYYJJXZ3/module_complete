@@ -1,18 +1,15 @@
 html,body{
-	width: 100%;
-	height: 100%;
-	background: #eee;
+	/*background: #eee;*/
 	margin: 0;
 	padding: 0;
-	box-sizing: border-box;
+	/*box-sizing: border-box;*/
 }
 .echart-map{
 	width: 80%;
-	height: 80%;
+	height: 100%;
 	background: #fff;
-	position: relative;
 }
 .map{
-	width: 100%;
-	height: 100%;
+	width: 900px;
+	height: 838px;
 }

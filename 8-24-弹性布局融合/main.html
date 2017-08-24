@@ -4,11 +4,17 @@
     <meta charset="UTF-8">
     <title>弹性布局</title>
     <link rel="stylesheet" href="css/mainPage.css">
+    <link rel="stylesheet" href="css/map.css">
 </head>
 <body>
 
 <script src="js/jquery-3.2.1.js"></script>
 <script src="js/radio.js"></script>
+<script src="js/echarts.js"></script>
+<script src="js/china.js"></script>
+<script src="js/all-province.js"></script>
+<script src="js/change-map.js"></script>
+
 
 <section class="mainFlex">
     <section class="jsonList">A</section>
@@ -34,7 +40,11 @@
         </div>
     </section>
 
-    <section class="map">C</section>
+    <section class="map">
+        <div class="echart-map">
+            <div class="map" id="map"></div>
+        </div>
+    </section>
 </section>
 </body>
 </html>
