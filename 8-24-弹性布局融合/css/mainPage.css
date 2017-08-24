@@ -13,13 +13,13 @@ section section{
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
-    height: 900px;
-    width: 1300px;
+    height: 800px;
+    width: 1359px;
 }
 
 .jsonList{
-    height: 900px;
-    width: 370px;
+    height: 800px;
+    width: 409px;
 }
 
 .choseTab{

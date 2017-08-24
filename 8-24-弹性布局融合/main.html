@@ -5,8 +5,9 @@
     <title>弹性布局</title>
     <link rel="stylesheet" href="css/mainPage.css">
     <link rel="stylesheet" href="css/map.css">
+    <link rel="stylesheet" href="css/jsonTable.css">
 </head>
-<body>
+<body onload="append()">
 
 <script src="js/jquery-3.2.1.js"></script>
 <script src="js/radio.js"></script>
@@ -15,9 +16,25 @@
 <script src="js/all-province.js"></script>
 <script src="js/change-map.js"></script>
 
+<script src="js/onload.js"></script>
 
 <section class="mainFlex">
-    <section class="jsonList">A</section>
+    <section class="jsonList">
+        <div id="divframe">
+            <table width="100%" class="table">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>区域</th>
+                    <th>上行RPB平均占用率</th>
+                </tr>
+                </thead>
+
+                <tbody id="jsonTip"></tbody>
+
+            </table>
+        </div>
+    </section>
 
     <section class="choseTab">
         <div class="checkBox">
