@@ -24,18 +24,8 @@
       <file leaf-file-name="main.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/8-24-弹性布局融合/main.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="384">
-              <caret line="16" column="0" lean-forward="true" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="map.css" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/8-24-弹性布局融合/css/map.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="312">
-              <caret line="13" column="15" lean-forward="false" selection-start-line="13" selection-start-column="15" selection-end-line="13" selection-end-column="15" />
+            <state relative-caret-position="120">
+              <caret line="22" column="24" lean-forward="false" selection-start-line="22" selection-start-column="24" selection-end-line="22" selection-end-column="24" />
               <folding />
             </state>
           </provider>
@@ -64,6 +54,8 @@
       <find>hidden_enent</find>
       <find>click_event</find>
       <find>sh</find>
+      <find>font-size</find>
+      <find>radio</find>
     </findStrings>
     <replaceStrings>
       <replace>div</replace>
@@ -108,8 +100,8 @@
         <option value="$PROJECT_DIR$/8-24-弹性布局融合/js/change-map.js" />
         <option value="$PROJECT_DIR$/8-24-弹性布局融合/css/tab.css" />
         <option value="$PROJECT_DIR$/8-24-弹性布局融合/js/radio.js" />
-        <option value="$PROJECT_DIR$/8-24-弹性布局融合/main.html" />
         <option value="$PROJECT_DIR$/8-24-弹性布局融合/css/map.css" />
+        <option value="$PROJECT_DIR$/8-24-弹性布局融合/main.html" />
         <option value="$PROJECT_DIR$/8-24-弹性布局融合/css/mainPage.css" />
       </list>
     </option>
@@ -121,8 +113,8 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="101" />
-    <option name="y" value="28" />
+    <option name="x" value="151" />
+    <option name="y" value="265" />
     <option name="width" value="1258" />
     <option name="height" value="872" />
   </component>
@@ -326,15 +318,15 @@
       <workItem from="1503452248739" duration="115000" />
       <workItem from="1503456788347" duration="5383000" />
       <workItem from="1503536198202" duration="398000" />
-      <workItem from="1503540814492" duration="8473000" />
+      <workItem from="1503540814492" duration="9695000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="64712000" />
+    <option name="totallyTimeSpent" value="65934000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="101" y="28" width="1258" height="872" extended-state="0" />
+    <frame x="151" y="265" width="1258" height="872" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17704123" sideWeight="0.49330783" order="0" side_tool="false" content_ui="combo" />
@@ -648,16 +640,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/8-24-弹性布局融合/css/mainPage.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="18" column="0" lean-forward="true" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
+        <state relative-caret-position="236">
+          <caret line="43" column="17" lean-forward="false" selection-start-line="43" selection-start-column="17" selection-end-line="43" selection-end-column="17" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/8-24-弹性布局融合/main.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="384">
-          <caret line="16" column="0" lean-forward="true" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
+        <state relative-caret-position="120">
+          <caret line="22" column="24" lean-forward="false" selection-start-line="22" selection-start-column="24" selection-end-line="22" selection-end-column="24" />
           <folding />
         </state>
       </provider>
