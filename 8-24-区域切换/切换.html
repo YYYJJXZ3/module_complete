@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset=" utf-8">
+        <title>显示与隐藏</title>
+    <style type="text/css">
+        #div{
+            width:500px;
+            height:500px;
+            background:#faa;
+                    }
+    </style>
+    <script type="text/javascript" src="js/jquery-3.2.1.js"></script>
+    <script type="text/javascript">
+        $(function(){
+            $('#btn').click(function(){
+                if($('#div').is(':hidden')){
+                    $('#div').show();
+                    $('#btn').val('隐藏');
+                }
+                else{
+                    $('#div').hide();
+                    $('#btn').val('显示');
+                }
+            })
+        })
+    </script>
+</head>
+<body>
+<input type="button" id="btn" value="显示／隐藏"/>
+<div id="div"></div>
+</body>
+</html>
