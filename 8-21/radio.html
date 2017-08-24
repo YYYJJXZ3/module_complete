@@ -1,0 +1,71 @@
+﻿<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<script type="text/javascript" src="js/jquery-3.2.1.js"></script>
+
+		
+		<style>
+			.checkBox{
+				position: absolute;
+				width: 800px;
+				left: 15%;
+				top:10px;
+			}
+			/*单选*/
+			.radio_label{
+				background: url(img/radio_bk.png) no-repeat;
+				background-size:1rem 2rem;
+				display: inline-block;
+				line-height: 1rem;
+				height: 1rem;
+				text-indent:2rem;
+				margin-right:2rem;
+				
+
+			}
+			
+			.checked {
+				background-position: 0  -1rem;
+				border: 2px dotted red;
+			}
+			
+			input[type='radio'] {
+				display:none;
+			}
+		</style>
+	</head>
+	<body>
+
+	<div class="checkBox">
+		<label for="c1" class="radio_label checked">
+			<input type="radio" value="1" checked="checked" id="c1" name="data" />
+			中文字符串1
+		</label>
+		<label for="c2" class="radio_label">
+			<input type="radio" value="2" id="c2" name="data" />
+			中文字符串2
+		</label>
+		<label for="c3" class="radio_label">
+			<input type="radio" value="3" id="c3" name="data" />
+			中文字符串3
+		</label>
+		<label for="c4" class="radio_label">
+			<input type="radio" value="4" id="c4" name="data" />
+			中文字符串4
+		</label>
+	</div>
+
+
+
+		<script type="text/javascript">
+            $(function(){
+                $("input[type='radio']").click(function(){
+                    $("input[type='radio'][name='"+$(this).attr('name')+"']").parent().removeClass("checked");
+                    $(this).parent().addClass("checked");
+                });
+            });
+		</script>
+
+	</body>
+</html> 

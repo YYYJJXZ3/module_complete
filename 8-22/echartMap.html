@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" type="text/css" href="css/map.css"/>
+		<link rel="stylesheet" href="css/tab.css">
+		<script src="js/jquery.min.js"></script>
+		<script src="js/echarts.js"></script>
+		<script src="js/china.js"></script>
+		<script src="js/all-province.js"></script>
+		<script src="js/change-map.js"></script>
+		<script src="js/tab.js"></script>
+		<title></title>
+	</head>
+	<body>
+
+		<div class="echart-map">
+
+			<div class="map" id="map"></div>
+
+
+			<div class="tab" js-tab="1">
+				<div class="tab-title">
+					<a href="javascript:;" class="item item-cur">图表1</a>
+					<a href="javascript:;" class="item">图表2</a>
+					<a href="javascript:;" class="item">图表3</a>
+
+				</div>
+				<div class="tab-cont">
+					<ul class="tab-cont__wrap">
+						<li class="item"><img src="img/1.png" alt="" style="width: 238px;height: 350px"></li>
+						<li class="item"><img src="img/1.png" alt="" style="width: 238px;height: 350px"></li>
+						<li class="item"><img src="img/1.png" alt="" style="width: 238px;height: 350px"></li>
+
+
+					</ul>
+				</div>
+			</div>
+
+			<div class="checkBox">
+				<label for="c1" class="radio_label checked">
+					<input type="radio" value="1" checked="checked" id="c1" name="data" />
+					中文字符串1
+				</label>
+				<label for="c2" class="radio_label">
+					<input type="radio" value="2" id="c2" name="data" />
+					中文字符串2
+				</label>
+				<label for="c3" class="radio_label">
+					<input type="radio" value="3" id="c3" name="data" />
+					中文字符串3
+				</label>
+				<label for="c4" class="radio_label">
+					<input type="radio" value="4" id="c4" name="data" />
+					中文字符串4
+				</label>
+			</div>
+
+
+		</div>
+		
+	</body>
+</html>

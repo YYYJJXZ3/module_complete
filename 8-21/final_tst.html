@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="css/tab.css">
+</head>
+<body>
+<script src="js/jquery-3.2.1.js"></script>
+<script src="js/tab.js"></script>
+
+<div class="myTab">
+    <div class="tab" js-tab="1">
+        <div class="tab-title">
+            <a href="javascript:;" class="item item-cur">Tab1</a>
+            <a href="javascript:;" class="item">Tab2</a>
+            <a href="javascript:;" class="item">Tab3</a>
+
+        </div>
+        <div class="tab-cont">
+            <ul class="tab-cont__wrap">
+                <li class="item"><img src="img/1.png" alt=""></li>
+                <li class="item"><img src="img/2.png" alt=""></li>
+                <li class="item"><img src="img/3.png" alt=""></li>
+
+            </ul>
+        </div>
+    </div>
+
+    <div class="map">
+        <div class="showMap"><img src="img/map.png" alt=""></div>
+    </div>
+</div>
+
+
+<div class="checkBox">
+    <label for="c1" class="radio_label checked">
+        <input type="radio" value="1" checked="checked" id="c1" name="data" />
+        中文字符串1
+    </label>
+    <label for="c2" class="radio_label">
+        <input type="radio" value="2" id="c2" name="data" />
+        中文字符串2
+    </label>
+    <label for="c3" class="radio_label">
+        <input type="radio" value="3" id="c3" name="data" />
+        中文字符串3
+    </label>
+    <label for="c4" class="radio_label">
+        <input type="radio" value="4" id="c4" name="data" />
+        中文字符串4
+    </label>
+</div>
+
+
+<script>
+    $(function(){
+        $("input[type='radio']").click(function(){
+            $("input[type='radio'][name='"+$(this).attr('name')+"']").parent().removeClass("checked");
+            $(this).parent().addClass("checked");
+        });
+    });
+
+
+    $(function () {
+        $('[js-tab=1]').tab({
+            curDisplay: 1,
+            changeMethod: 'horizontal'
+        });
+
+    });
+
+</script>
+</body>
+</html>
