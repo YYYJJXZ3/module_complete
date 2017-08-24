@@ -45,7 +45,20 @@
         <entry file="file://$PROJECT_DIR$/8-24-区域切换/同层-两个div-显示-隐藏.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="119">
-              <caret line="43" column="4" lean-forward="false" selection-start-line="43" selection-start-column="4" selection-end-line="43" selection-end-column="4" />
+              <caret line="46" column="27" lean-forward="false" selection-start-line="46" selection-start-column="27" selection-end-line="46" selection-end-column="27" />
+              <folding>
+                <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="同层-两个div-显示-隐藏-jQ.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/8-24-区域切换/同层-两个div-显示-隐藏-jQ.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="168">
+              <caret line="41" column="0" lean-forward="true" selection-start-line="41" selection-start-column="0" selection-end-line="41" selection-end-column="0" />
               <folding>
                 <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -115,6 +128,7 @@
         <option value="$PROJECT_DIR$/8-24-区域切换/切换.html" />
         <option value="$PROJECT_DIR$/8-24-区域切换/切换-融合下钻.html" />
         <option value="$PROJECT_DIR$/8-24-区域切换/tst.html" />
+        <option value="$PROJECT_DIR$/8-24-区域切换/同层-两个div-显示-隐藏-jQ.html" />
         <option value="$PROJECT_DIR$/8-24-区域切换/同层-两个div-显示-隐藏.html" />
       </list>
     </option>
@@ -309,12 +323,12 @@
       <workItem from="1503452248739" duration="115000" />
       <workItem from="1503456788347" duration="5383000" />
       <workItem from="1503536198202" duration="398000" />
-      <workItem from="1503540814492" duration="2976000" />
+      <workItem from="1503540814492" duration="3112000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="59215000" />
+    <option name="totallyTimeSpent" value="59351000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="97" y="24" width="1258" height="872" extended-state="0" />
@@ -349,7 +363,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/8-18-tst/下拉菜单.html" />
     <entry file="file://$PROJECT_DIR$/8-18-tst/表单属性.html" />
     <entry file="file://$PROJECT_DIR$/js/jquery-3.2.1.js">
       <provider selected="true" editor-type-id="text-editor">
@@ -580,10 +593,21 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/8-24-区域切换/同层-两个div-显示-隐藏-jQ.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="41" column="0" lean-forward="true" selection-start-line="41" selection-start-column="0" selection-end-line="41" selection-end-column="0" />
+          <folding>
+            <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/8-24-区域切换/同层-两个div-显示-隐藏.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="119">
-          <caret line="43" column="4" lean-forward="false" selection-start-line="43" selection-start-column="4" selection-end-line="43" selection-end-column="4" />
+          <caret line="46" column="27" lean-forward="false" selection-start-line="46" selection-start-column="27" selection-end-line="46" selection-end-column="27" />
           <folding>
             <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
