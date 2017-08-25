@@ -26,7 +26,7 @@
             border:0;
             padding: 0;
             background:url("img/u32.png") no-repeat left top;
-                 display: none;
+            display: none;
         }
         .pPage{
             background-color: #f9f9f9;
@@ -52,11 +52,12 @@
     $(document).ready(function(){
         $("#hide").click(function(){
             $("p").fadeOut("normal");
-            $("#show").fadeIn("normal");
+            $("#show").css("top","0").fadeIn("normal");
         });
         $("#show").click(function(){
             $("p").fadeIn("fast");
             $("#show").fadeOut("slow");
+
         });
     });
 </script>
