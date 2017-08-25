@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style>
+        .showHide{
+            position: relative;
+            width: 240px;
+
+        }
+
+        #hide{
+            height:14px;
+            width:14px;
+            padding: 0;
+            margin: 0;
+            border: 0;
+            background:url("img/u29.png") no-repeat left top;
+        }
+
+        #show{
+            position: absolute;
+            left: 100px;
+            height:12px;
+            width:12px;
+            border:0;
+            padding: 0;
+            background:url("img/u32.png") no-repeat left top;
+                 display: none;
+        }
+        .pPage{
+            background-color: #f9f9f9;
+            color: #878787;
+            font-size: 13px;
+        }
+        .pPage b{
+            padding-left: 6px;
+            font-size: 23px;
+        }
+    </style>
+   </head>
+<body>
+<div class="showHide">
+    <p class="pPage"><input type="button" id="hide"> &nbsp;全国面积覆盖率 <b>98%</b></p>
+
+    <input id="show" type="button">
+</div>
+
+
+<script src="js/jquery-3.2.1.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#hide").click(function(){
+            $("p").hide();
+            $("#show").show();
+        });
+        $("#show").click(function(){
+            $("p").show();
+            $("#show").hide();
+        });
+    });
+</script>
+</body>
+</html>
