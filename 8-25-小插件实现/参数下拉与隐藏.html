@@ -51,12 +51,12 @@
 <script type="text/javascript">
     $(document).ready(function(){
         $("#hide").click(function(){
-            $("p").hide();
-            $("#show").show();
+            $("p").fadeOut("normal");
+            $("#show").fadeIn("normal");
         });
         $("#show").click(function(){
-            $("p").show();
-            $("#show").hide();
+            $("p").fadeIn("fast");
+            $("#show").fadeOut("slow");
         });
     });
 </script>
