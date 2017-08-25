@@ -3,6 +3,10 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <style>
+        *{
+            padding: 0;
+            margin: 0;
+        }
         .showHide{
             position: relative;
             width: 240px;
@@ -25,6 +29,7 @@
             width:12px;
             border:0;
             padding: 0;
+            top: -12px;
             background:url("img/u32.png") no-repeat left top;
             display: none;
         }
@@ -52,13 +57,13 @@
     $(document).ready(function(){
         $("#hide").click(function(){
             $("p").fadeOut("normal");
-            $("#show").css("top","0").fadeIn("normal");
+            $("#show").fadeIn("normal").animate({top:"2px"});
         });
-        $("#show").click(function(){
-            $("p").fadeIn("fast");
-            $("#show").fadeOut("slow");
 
-        });
+        $("#show").click(function(){
+            $("#show").animate({top:"-12px"},888).fadeOut("normal");
+            $("p").fadeIn("normal");
+         });
     });
 </script>
 </body>
