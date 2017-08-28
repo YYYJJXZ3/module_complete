@@ -1,0 +1,15 @@
+html,body{
+	/*background: #eee;*/
+	margin: 0;
+	padding: 0;
+	/*box-sizing: border-box;*/
+}
+.echart-map{
+	width: 80%;
+	height: 80%;
+	background: #fff;
+}
+.map{
+	width: 900px;
+	height: 738px;
+}

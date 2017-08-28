@@ -1,0 +1,45 @@
+* {
+    padding: 0;
+    margin: 0;
+
+}
+
+.showHide {
+    position: relative;
+    margin:0 auto;
+    width: 240px;
+    z-index: 9999;
+
+}
+
+#hide {
+    height: 14px;
+    width: 14px;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    background: url("../img/u29.png") no-repeat left top;
+}
+
+#show {
+    position: absolute;
+    left: 100px;
+    height: 12px;
+    width: 12px;
+    border: 0;
+    padding: 0;
+    top: -12px;
+    background: url("../img/u32.png") no-repeat left top;
+    display: none;
+}
+
+.pPage {
+    background-color: #f9f9f9;
+    color: #878787;
+    font-size: 13px;
+}
+
+.pPage b {
+    padding-left: 6px;
+    font-size: 23px;
+}
