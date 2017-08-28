@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>全国无线性能</title>
+    <link rel="stylesheet" href="css/mainPage.css">
+    <link rel="stylesheet" href="css/map.css">
+    <link rel="stylesheet" href="css/jsonTable.css">
+    <link rel="stylesheet" href="css/dropShowHide.css">
+</head>
+<body onload="append()">
+
+<script src="js/jquery-3.2.1.js"></script>
+<script src="js/radio.js"></script>
+<script src="js/echarts.js"></script>
+<script src="js/china.js"></script>
+<script src="js/all-province.js"></script>
+<script src="js/change-map.js"></script>
+
+<script src="js/onload.js"></script>
+<script src="js/dropShowHide.js"></script>
+
+<section class="mainFlex">
+
+    <section class="jsonList">
+
+        <div class="dataChange">参数选择区域</div>
+
+        <div id="divframe">
+            <table width="100%" class="table">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>区域</th>
+                    <th>上行RPB平均占用率</th>
+                </tr>
+                </thead>
+
+                <tbody id="jsonTip"></tbody>
+
+            </table>
+        </div>
+    </section>
+
+    <section class="choseTab">
+        <div class="checkBox">
+            <label for="c1" class="radio_label checked">
+                <input type="radio" value="1" checked="checked" id="c1" name="data"/>
+                上行RPB平均占用率
+            </label>
+            <label for="c2" class="radio_label">
+                <input type="radio" value="2" id="c2" name="data"/>
+                下行RPB平均占用率
+            </label>
+            <label for="c3" class="radio_label">
+                <input type="radio" value="3" id="c3" name="data"/>
+                平均RPC连接用户数
+            </label>
+            <label for="c4" class="radio_label">
+                <input type="radio" value="4" id="c4" name="data"/>
+                平均激活用户数
+            </label>
+        </div>
+    </section>
+
+    <section class="map">
+        <!--<div class="showHide">-->
+            <!--<p class="pPage"><input type="button" id="hide"> &nbsp;全国面积覆盖率 <b>98%</b></p>-->
+
+            <!--<input id="show" type="button">-->
+        <!--</div>-->
+
+        <div class="echart-map">
+            <div class="map" id="map"></div>
+        </div>
+
+    </section>
+</section>
+</body>
+</html>

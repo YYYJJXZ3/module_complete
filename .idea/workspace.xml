@@ -16,18 +16,16 @@
     <option name="PATCH_PATH" value="" />
   </component>
   <component name="DockManager">
-    <window id="3">
+    <window id="5">
       <content type="file-editors">
         <state>
           <leaf>
-            <file leaf-file-name="onload.js" pinned="false" current-in-tab="true">
-              <entry file="file://$PROJECT_DIR$/8-28-测试部分选择/js/onload.js">
+            <file leaf-file-name="jsonCss.html" pinned="false" current-in-tab="true">
+              <entry file="file://$PROJECT_DIR$/8-28-测试部分选择/jsonCss.html">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="317">
-                    <caret line="20" column="2" lean-forward="true" selection-start-line="20" selection-start-column="2" selection-end-line="26" selection-end-column="7" />
-                    <folding>
-                      <marker date="1503901377000" expanded="true" signature="267:434" ph="..." />
-                    </folding>
+                  <state relative-caret-position="144">
+                    <caret line="6" column="42" lean-forward="true" selection-start-line="6" selection-start-column="42" selection-end-line="6" selection-end-column="42" />
+                    <folding />
                   </state>
                 </provider>
               </entry>
@@ -43,32 +41,44 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="userinfo.json" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/8-28-测试部分选择/js/userinfo.json">
+      <file leaf-file-name="main.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/8-28-全国无线性能/main.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="288">
-              <caret line="12" column="14" lean-forward="true" selection-start-line="12" selection-start-column="14" selection-end-line="12" selection-end-column="14" />
+            <state relative-caret-position="168">
+              <caret line="22" column="21" lean-forward="false" selection-start-line="22" selection-start-column="21" selection-end-line="22" selection-end-column="21" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="jsonCss.html" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/8-28-测试部分选择/jsonCss.html">
+      <file leaf-file-name="mainPage.css" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/8-28-全国无线性能/css/mainPage.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="479">
-              <caret line="20" column="13" lean-forward="true" selection-start-line="20" selection-start-column="13" selection-end-line="20" selection-end-column="13" />
+            <state relative-caret-position="226">
+              <caret line="10" column="13" lean-forward="false" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="jsonTable.css" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/8-28-测试部分选择/css/jsonTable.css">
+      <file leaf-file-name="userinfo.json" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/8-28-全国无线性能/js/userinfo.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="408">
-              <caret line="17" column="16" lean-forward="false" selection-start-line="17" selection-start-column="9" selection-end-line="17" selection-end-column="16" />
+            <state relative-caret-position="551">
+              <caret line="100" column="3" lean-forward="false" selection-start-line="100" selection-start-column="3" selection-end-line="100" selection-end-column="3" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="onload.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/8-28-全国无线性能/js/onload.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="56">
+              <caret line="3" column="30" lean-forward="false" selection-start-line="3" selection-start-column="30" selection-end-line="3" selection-end-column="30" />
+              <folding>
+                <marker date="1503905563000" expanded="true" signature="267:434" ph="..." />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -108,11 +118,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/单选框布局.html" />
-        <option value="$PROJECT_DIR$/tst-div布局.html" />
-        <option value="$PROJECT_DIR$/transform-垂直居中.html" />
-        <option value="$PROJECT_DIR$/8-18-tst/内联块.html" />
-        <option value="$PROJECT_DIR$/8-18-tst/表单属性.html" />
         <option value="$PROJECT_DIR$/tst-tab.html" />
         <option value="$PROJECT_DIR$/radio.html" />
         <option value="$PROJECT_DIR$/css/tab_css.css" />
@@ -159,6 +164,11 @@
         <option value="$PROJECT_DIR$/8-28-测试部分选择/jsonCss.html" />
         <option value="$PROJECT_DIR$/8-28-测试部分选择/css/jsonTable.css" />
         <option value="$PROJECT_DIR$/8-28-测试部分选择/js/onload.js" />
+        <option value="$PROJECT_DIR$/8-28-全国无线性能/js/onload.js" />
+        <option value="$PROJECT_DIR$/8-28-全国无线性能/main.html" />
+        <option value="$PROJECT_DIR$/8-28-全国无线性能/js/userinfo.json" />
+        <option value="$PROJECT_DIR$/8-28-全国无线性能/css/jsonTable.css" />
+        <option value="$PROJECT_DIR$/8-28-全国无线性能/css/mainPage.css" />
       </list>
     </option>
   </component>
@@ -175,8 +185,8 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="32" />
-    <option name="y" value="85" />
+    <option name="x" value="139" />
+    <option name="y" value="37" />
     <option name="width" value="1258" />
     <option name="height" value="872" />
   </component>
@@ -231,7 +241,21 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="8-28-测试部分选择" />
+              <option name="myItemId" value="8-28-全国无线性能" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="module_complete" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="module_complete" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="8-28-全国无线性能" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
@@ -249,7 +273,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="8-28-测试部分选择" />
+              <option name="myItemId" value="8-28-全国无线性能" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
@@ -278,6 +302,7 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/8-28-测试部分选择" />
       <recent name="$PROJECT_DIR$/8-25-单选按钮切换不同区域/img" />
       <recent name="$PROJECT_DIR$/8-18-tst" />
     </key>
@@ -370,15 +395,15 @@
       <workItem from="1503452248739" duration="115000" />
       <workItem from="1503456788347" duration="5383000" />
       <workItem from="1503536198202" duration="398000" />
-      <workItem from="1503540814492" duration="37362000" />
+      <workItem from="1503540814492" duration="41844000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="93601000" />
+    <option name="totallyTimeSpent" value="98083000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="32" y="85" width="1258" height="872" extended-state="0" />
+    <frame x="139" y="37" width="1258" height="872" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16168149" sideWeight="0.49330783" order="0" side_tool="false" content_ui="combo" />
@@ -407,74 +432,11 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="1" />
+      <option name="time" value="2" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/8-22/css/tab.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1656">
-          <caret line="13" column="0" lean-forward="false" selection-start-line="13" selection-start-column="0" selection-end-line="29" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/echartsMap/js/change-map.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="317">
-          <caret line="64" column="24" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="80" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/8-21/js/tab.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="264">
-          <caret line="11" column="18" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="162" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/8-22/js/tab.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3888">
-          <caret line="162" column="36" lean-forward="false" selection-start-line="162" selection-start-column="36" selection-end-line="162" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/8-22/js/all-province.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1344">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/8-21/821-融合地图.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="96">
-          <caret line="13" column="14" lean-forward="true" selection-start-line="13" selection-start-column="14" selection-end-line="13" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/8-21/tst-tab.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="624">
-          <caret line="128" column="12" lean-forward="true" selection-start-line="128" selection-start-column="12" selection-end-line="128" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/8-22/echartMap.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="140">
-          <caret line="32" column="109" lean-forward="false" selection-start-line="32" selection-start-column="109" selection-end-line="32" selection-end-column="109" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/8-21/radio.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="416">
-          <caret line="62" column="14" lean-forward="true" selection-start-line="62" selection-start-column="14" selection-end-line="65" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/8-22/js/change-map.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="384">
@@ -780,47 +742,121 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/8-28-测试部分选择/js/userinfo.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="336">
+          <caret line="14" column="16" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="61" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/8-28-flex融合下拉动画/main.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="383">
-          <caret line="60" column="14" lean-forward="false" selection-start-line="60" selection-start-column="14" selection-end-line="60" selection-end-column="14" />
+        <state relative-caret-position="263">
+          <caret line="55" column="32" lean-forward="false" selection-start-line="55" selection-start-column="32" selection-end-line="55" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/8-28-全国无线性能/css/dropShowHide.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/8-28-全国无线性能/css/map.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/8-28-全国无线性能/js/jquery-3.2.1.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#1977#1983#0" expanded="false" />
+            <element signature="n#!!doc" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/8-28-测试部分选择/js/userinfo.json">
+    <entry file="file://$PROJECT_DIR$/8-28-全国无线性能/js/radio.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="12" column="14" lean-forward="true" selection-start-line="12" selection-start-column="14" selection-end-line="12" selection-end-column="14" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/8-28-测试部分选择/css/jsonTable.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="17" column="16" lean-forward="false" selection-start-line="17" selection-start-column="9" selection-end-line="17" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/8-28-测试部分选择/jsonCss.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="479">
-          <caret line="20" column="13" lean-forward="true" selection-start-line="20" selection-start-column="13" selection-end-line="20" selection-end-column="13" />
+        <state relative-caret-position="72">
+          <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="8" selection-end-column="3" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/8-28-测试部分选择/js/onload.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="317">
-          <caret line="20" column="2" lean-forward="true" selection-start-line="20" selection-start-column="2" selection-end-line="26" selection-end-column="7" />
+        <state relative-caret-position="696">
+          <caret line="29" column="2" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="41" selection-end-column="0" />
           <folding>
-            <marker date="1503901377000" expanded="true" signature="267:434" ph="..." />
+            <marker date="1503903225000" expanded="true" signature="267:434" ph="..." />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/8-28-测试部分选择/css/jsonTable.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="432">
+          <caret line="18" column="20" lean-forward="true" selection-start-line="18" selection-start-column="20" selection-end-line="18" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/8-28-测试部分选择/jsonCss.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="144">
+          <caret line="6" column="42" lean-forward="true" selection-start-line="6" selection-start-column="42" selection-end-line="6" selection-end-column="42" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/8-28-全国无线性能/js/onload.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="56">
+          <caret line="3" column="30" lean-forward="false" selection-start-line="3" selection-start-column="30" selection-end-line="3" selection-end-column="30" />
+          <folding>
+            <marker date="1503905563000" expanded="true" signature="267:434" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/8-28-全国无线性能/css/jsonTable.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="192">
+          <caret line="8" column="1" lean-forward="true" selection-start-line="8" selection-start-column="1" selection-end-line="8" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/8-28-全国无线性能/main.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="22" column="21" lean-forward="false" selection-start-line="22" selection-start-column="21" selection-end-line="22" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/8-28-全国无线性能/css/mainPage.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="226">
+          <caret line="10" column="13" lean-forward="false" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/8-28-全国无线性能/js/userinfo.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="551">
+          <caret line="100" column="3" lean-forward="false" selection-start-line="100" selection-start-column="3" selection-end-line="100" selection-end-column="3" />
+          <folding />
         </state>
       </provider>
     </entry>
