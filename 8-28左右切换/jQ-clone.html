@@ -1,0 +1,55 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>左右切换</title>
+    <meta charset="utf-8"/>
+    <style>
+        select {
+            width: 120px;
+            height: 160px
+        }
+    </style>
+</head>
+<body>
+<select id="unsel" size="10">
+    <option value="Arg">A1</option>
+    <option value="Bra">B2</option>
+    <option value="Can">C3</option>
+    <option value="Chi">D4</option>
+    <option value="Cub">E5</option>
+    <option value="Den">F6</option>
+    <option value="Egy">G7</option>
+    <option value="Fra">H8</option>
+    <option value="Gre">I9</option>
+    <option value="Spa">J10</option>
+</select>
+<select id="sel" size="10">
+</select>
+<script src="js/jquery-1.11.3.js"></script>
+<script>
+    //为id为unsel下的所option绑定双击事件dblclick
+    $("#unsel>option").bind("dblclick", function () {
+
+        //如果当前元素的父元素的id是unsel
+        if ($(this).parent().attr("id") == "unsel") {
+            //如果id为sel下没有value和当前元素value相同的子元素
+            if ($(`#sel>[value=${$(this).val()}]`)
+                    .size() == 0) {
+                //克隆当前元素，并将返回的新对象添加到id为sel的元素下
+                $("#sel").append($(this).clone(true));
+            }
+        } else {
+//            实现反向切换
+            if ($(this).parent().attr("id") == "sel") {
+                if ($(`#unsel>[value=${$(this).val()}]`)
+                        .size() == 0) {
+                    $("#unsel").append($(this).clone(true));
+                }
+            }
+        }
+        $(this).remove();
+    });
+    //$("#unsel>option").unbind();
+</script>
+</body>
+</html>
