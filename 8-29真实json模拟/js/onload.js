@@ -1,5 +1,5 @@
 function append() {
-    $.getJSON("js/userinfo.json", function (data) {
+    $.getJSON("js/data.json", function (data) {
         var $jsontip = $("#jsonTip");
 
         // 排序测试
@@ -10,12 +10,22 @@ function append() {
                 return ((x > y) ? -1 : ((x < y) ? 1 : 0));
             });
         }
-        // console.log(data);
-        // console.dir(data);
-        var newdata=data;
 
-        newdata = sortByKey(newdata, 'data');
+        console.dir(data);
+        var newdata=$.extend({}, data.data);
+        newdata.rows=[];
+        $.each(data.data.rows,function (i,r) {
+            var item={};
+            $.each(r.cells,function (j,c) {
+item["col"+j]=c;
+            })
+            newdata.rows.push(item);
+        })
 
+
+
+        newdata = sortByKey(newdata.rows, 'col1');
+        // console.log(cells[1]);
 
 
         // 绘制
@@ -24,9 +34,9 @@ function append() {
         $.each(newdata, function (infoIndex, info) {
             strHtml += `
             <tr>
-              <td><b class="roleNum">${info["num"]}</b></td>
-              <td>${info["size"]}</td>
-              <td>${info["data"]}</td>
+              <td><b class="roleNum">${infoIndex+1}</b></td>
+              <td>${info["col0"]}</td>
+              <td>${info["col1"]}</td>
                       </tr>
           `;
         })
