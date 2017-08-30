@@ -1,15 +1,16 @@
+// 排序
+function sortByKey(array, key) {
+    return array.sort(function (a, b) {
+        var x = a[key];
+        var y = b[key];
+        return ((x > y) ? -1 : ((x < y) ? 1 : 0));
+    });
+}
+
+
 function appendD1() {
     $.getJSON("js/data.json", function (data) {
         var $jsontip = $("#jsonTip1");
-
-        // 排序测试
-        function sortByKey(array, key) {
-            return array.sort(function (a, b) {
-                var x = a[key];
-                var y = b[key];
-                return ((x > y) ? -1 : ((x < y) ? 1 : 0));
-            });
-        }
 
         var newdata = $.extend({}, data.data);
         newdata.rows = [];
@@ -56,17 +57,7 @@ function appendD2() {
     $.getJSON("js/data.json", function (data) {
         var $jsontip = $("#jsonTip2");
 
-        // 排序测试
-        function sortByKey(array, key) {
-            return array.sort(function (a, b) {
-                var x = a[key];
-                var y = b[key];
-                return ((x > y) ? -1 : ((x < y) ? 1 : 0));
-            });
-        }
-
-
-        var newdata = $.extend({}, data.data);
+         var newdata = $.extend({}, data.data);
         newdata.rows = [];
 
         $.each(data.data.rows, function (i, r) {
@@ -108,16 +99,6 @@ function appendD2() {
 function appendD3() {
     $.getJSON("js/data.json", function (data) {
         var $jsontip = $("#jsonTip3");
-
-        // 排序测试
-        function sortByKey(array, key) {
-            return array.sort(function (a, b) {
-                var x = a[key];
-                var y = b[key];
-                return ((x > y) ? -1 : ((x < y) ? 1 : 0));
-            });
-        }
-
 
         var newdata = $.extend({}, data.data);
         newdata.rows = [];
@@ -161,16 +142,6 @@ function appendD3() {
 function appendD4() {
     $.getJSON("js/data.json", function (data) {
         var $jsontip = $("#jsonTip4");
-
-        // 排序测试
-        function sortByKey(array, key) {
-            return array.sort(function (a, b) {
-                var x = a[key];
-                var y = b[key];
-                return ((x > y) ? -1 : ((x < y) ? 1 : 0));
-            });
-        }
-
 
         var newdata = $.extend({}, data.data);
         newdata.rows = [];
