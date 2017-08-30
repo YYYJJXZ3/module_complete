@@ -24,12 +24,9 @@
               <entry file="file://$PROJECT_DIR$/js/onload.js">
                 <provider selected="true" editor-type-id="text-editor">
                   <state relative-caret-position="170">
-                    <caret line="197" column="12" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="213" selection-end-column="0" />
+                    <caret line="197" column="3" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="214" selection-end-column="0" />
                     <folding>
-                      <marker date="1504057461000" expanded="true" signature="890:1059" ph="..." />
-                      <marker date="1504057461000" expanded="true" signature="2362:2531" ph="..." />
-                      <marker date="1504057461000" expanded="true" signature="3798:3967" ph="..." />
-                      <marker date="1504057461000" expanded="true" signature="5234:5403" ph="..." />
+                      <marker date="1504061466000" expanded="true" signature="890:1059" ph="..." />
                     </folding>
                   </state>
                 </provider>
@@ -262,12 +259,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1504053455983</updated>
-      <workItem from="1504053457446" duration="5695000" />
+      <workItem from="1504053457446" duration="5697000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="5695000" />
+    <option name="totallyTimeSpent" value="5697000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-1367" y="23" width="1258" height="872" extended-state="0" />
@@ -365,12 +362,9 @@
     <entry file="file://$PROJECT_DIR$/js/onload.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="170">
-          <caret line="197" column="12" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="213" selection-end-column="0" />
+          <caret line="197" column="3" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="214" selection-end-column="0" />
           <folding>
-            <marker date="1504057461000" expanded="true" signature="890:1059" ph="..." />
-            <marker date="1504057461000" expanded="true" signature="2362:2531" ph="..." />
-            <marker date="1504057461000" expanded="true" signature="3798:3967" ph="..." />
-            <marker date="1504057461000" expanded="true" signature="5234:5403" ph="..." />
+            <marker date="1504061466000" expanded="true" signature="890:1059" ph="..." />
           </folding>
         </state>
       </provider>

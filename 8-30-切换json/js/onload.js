@@ -41,17 +41,18 @@ function appendD1() {
 
 
         // 前十个tr中，第一个td中的b，设置背景样式。
-        $.each($('tr').slice(1, 11), function (i, item) {
+        $.each($('#div1 tr').slice(1, 11), function (i, item) {
             $(item).children('td').eq(0).children('b').css("background-color", "#3590de");
         });
 
-        $.each($('tr').slice(1, 7), function (i, item) {
+        $.each($('#div1 tr').slice(1, 7), function (i, item) {
             $(item).children('td').eq(1).css("color", "#0002c0");
         });
     })
 }
 
 function appendD2() {
+
     $.getJSON("js/data.json", function (data) {
         var $jsontip = $("#jsonTip2");
 
@@ -94,11 +95,11 @@ function appendD2() {
         $jsontip.html(strHtml);//显示处理后的数据
 
 
-        $.each($('tr').slice(1, 5), function (i, item) {
+        $.each($('#div2 tr').slice(1, 5), function (i, item) {
             $(item).children('td').eq(0).children('b').css("background-color", "#3590de");
         });
 
-        $.each($('tr').slice(1, 3), function (i, item) {
+        $.each($('#div2 tr').slice(1, 3), function (i, item) {
             $(item).children('td').eq(1).css("color", "#0002c0");
         });
     })
@@ -147,11 +148,11 @@ function appendD3() {
         $jsontip.html(strHtml);//显示处理后的数据
 
 
-        $.each($('tr').slice(1, 8), function (i, item) {
+        $.each($('#div3 tr').slice(1, 8), function (i, item) {
             $(item).children('td').eq(0).children('b').css("background-color", "#3590de");
         });
 
-        $.each($('tr').slice(1, 5), function (i, item) {
+        $.each($('#div3 tr').slice(1, 5), function (i, item) {
             $(item).children('td').eq(1).css("color", "#0002c0");
         });
     })
@@ -200,11 +201,11 @@ function appendD4() {
         $jsontip.html(strHtml);//显示处理后的数据
 
 
-        $.each($('tr').slice(1, 9), function (i, item) {
+        $.each($('#div4 tr').slice(1, 9), function (i, item) {
             $(item).children('td').eq(0).children('b').css("background-color", "#3590de");
         });
 
-        $.each($('tr').slice(1, 6), function (i, item) {
+        $.each($('#div4 tr').slice(1, 6), function (i, item) {
             $(item).children('td').eq(1).css("color", "#0002c0");
         });
     })
