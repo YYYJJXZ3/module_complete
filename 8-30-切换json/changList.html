@@ -1,0 +1,108 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset=utf-8"/>
+    <script src="js/jquery-3.2.1.js"></script>
+    <script src="js/onload.js"></script>
+    <script src="js/radioClick.js"></script>
+    <link rel="stylesheet" href="css/radio.css">
+    <link rel="stylesheet" href="css/jsonTable.css">
+</head>
+<body>
+
+<div class="checkBox">
+    <label for="c1" class="radio_label checked">
+        <input type="radio" value="1" checked="checked" id="c1" name="data" onclick="appendD1()"/>
+        上行RPB平均占用率
+    </label>
+    <label for="c2" class="radio_label">
+        <input type="radio" value="2" id="c2" name="data" onclick="appendD2()"/>
+        下行RPB平均占用率
+    </label>
+    <label for="c3" class="radio_label">
+        <input type="radio" value="3" id="c3" name="data" onclick="appendD3()"/>
+        平均PRC连接用户数
+    </label>
+    <label for="c4" class="radio_label">
+        <input type="radio" value="4" id="c4" name="data" onclick="appendD4()"/>
+        平均PRC连接用户数
+    </label>
+
+
+    <div id="div1">
+        <div class="divframe">
+            <table width="100%" class="table">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>区域</th>
+                    <th>上行RPB平均占用率</th>
+                </tr>
+                </thead>
+
+                <tbody id="jsonTip1"></tbody>
+
+            </table>
+        </div>
+    </div>
+
+
+    <div id="div2">
+
+            <div class="divframe">
+                <table width="100%" class="table">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th>区域</th>
+                        <th>下行RPB平均占用率</th>
+                    </tr>
+                    </thead>
+
+                    <tbody id="jsonTip2"></tbody>
+
+                </table>
+            </div>
+        </div>
+
+
+    <div id="div3">
+        <div class="divframe">
+            <table width="100%" class="table">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>区域</th>
+                    <th>平均PRC连接用户数</th>
+                </tr>
+                </thead>
+
+                <tbody id="jsonTip3"></tbody>
+
+            </table>
+        </div>
+    </div>
+
+
+    <div id="div4">
+        <div class="divframe">
+            <table width="100%" class="table">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>区域</th>
+                    <th>平均激活用户数</th>
+                </tr>
+                </thead>
+
+                <tbody id="jsonTip4"></tbody>
+
+            </table>
+        </div>
+    </div>
+
+
+</div>
+
+</body>
+</html> 

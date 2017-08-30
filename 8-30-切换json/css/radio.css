@@ -1,0 +1,50 @@
+.checkBox{
+    margin-left: 3px;
+}
+
+
+/*单选*/
+.radio_label {
+    background: url(../img/radio_bk.png) no-repeat;
+    background-size: 1rem 2rem;
+    display: inline-block;
+    line-height: 1rem;
+    height: 1rem;
+    text-indent: 1rem;
+    margin-right: 30px;
+
+}
+
+.checked {
+    background-position: 0 -1rem;
+    border: 2px dotted red;
+}
+
+input[type='radio'] {
+    display: none;
+}
+
+        #div1, #div2, #div3, #div4 {
+            width: auto;
+            height: auto;
+            border: 1px dotted #333;
+        }
+
+        #div1 {
+            /*background-color: #faa;*/
+        }
+
+        #div2 {
+            /*background-color: #aaf;*/
+            display: none;
+        }
+
+        #div3 {
+            /*background-color: #afa;*/
+            display: none;
+        }
+
+        #div4 {
+            /*background-color: #ff3;*/
+            display: none;
+        }

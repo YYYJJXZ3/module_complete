@@ -1,0 +1,27 @@
+.divframe {
+    width: 400px;
+    /*margin: 0 auto;*/
+}
+
+.table {
+    text-align: center;
+    border-collapse: collapse;
+}
+
+.table th {
+    color: #599ed5;
+    border-bottom: 1px solid #599ed5;
+}
+
+.table td {
+    border-bottom: 1px solid #666;
+    height: 50px;
+    width: 60px;
+}
+
+.roleNum {
+    padding: 6px 3px;
+    border-radius: 5px;
+    background-color: #aeaeae;
+    color: #fff;
+}

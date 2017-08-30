@@ -23,6 +23,7 @@ function append() {
         })
 
 
+        console.dir(newdata.rows);
         newdata = sortByKey(newdata.rows, 'col1');
         // console.log(cells[1]);
 
