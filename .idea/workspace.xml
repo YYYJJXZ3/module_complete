@@ -148,7 +148,7 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-1423" />
+    <option name="x" value="17" />
     <option name="y" value="23" />
     <option name="width" value="1258" />
     <option name="height" value="872" />
@@ -335,7 +335,7 @@
     <option name="totallyTimeSpent" value="132333000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-1423" y="23" width="1258" height="872" extended-state="1" />
+    <frame x="17" y="23" width="1258" height="872" extended-state="1" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15898252" sideWeight="0.49330783" order="0" side_tool="false" content_ui="combo" />
