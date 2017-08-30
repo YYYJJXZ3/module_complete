@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>兼容性布局-全国无线性能</title>
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/map.css">
+    <link rel="stylesheet" href="css/jsonTable.css">
+    <link rel="stylesheet" href="css/dropShowHide.css">
+</head>
+<body>
+<script src="js/jquery-3.2.1.js"></script>
+<script src="js/radio.js"></script>
+<script src="js/echarts.js"></script>
+<script src="js/china.js"></script>
+<script src="js/all-province.js"></script>
+<script src="js/change-map.js"></script>
+
+<script src="js/onload.js"></script>
+
+<script src="js/dropShowHide.js"></script>
+
+<div class="dataChoice"></div>
+
+<div class="mainZone">
+
+    <div class="rListZone">
+        <div id="div1">
+            <div class="divframe">
+                <table width="100%" class="table">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th>区域</th>
+                        <th>上行RPB平均占用率</th>
+                    </tr>
+                    </thead>
+
+                    <tbody id="jsonTip1"></tbody>
+
+                </table>
+            </div>
+        </div>
+
+
+        <div id="div2">
+
+            <div class="divframe">
+                <table width="100%" class="table">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th>区域</th>
+                        <th>下行RPB平均占用率</th>
+                    </tr>
+                    </thead>
+
+                    <tbody id="jsonTip2"></tbody>
+
+                </table>
+            </div>
+        </div>
+
+
+        <div id="div3">
+            <div class="divframe">
+                <table width="100%" class="table">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th>区域</th>
+                        <th>平均PRC连接用户数</th>
+                    </tr>
+                    </thead>
+
+                    <tbody id="jsonTip3"></tbody>
+
+                </table>
+            </div>
+        </div>
+
+
+        <div id="div4">
+            <div class="divframe">
+                <table width="100%" class="table">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th>区域</th>
+                        <th>平均激活用户数</th>
+                    </tr>
+                    </thead>
+
+                    <tbody id="jsonTip4"></tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="lComplexZone">
+        <div class="cdataZone">
+            <div class="checkBox">
+                <label for="c1" class="radio_label checked">
+                    <input type="radio" value="1" checked="checked" id="c1" name="data" onclick="appendD1()"/>
+                    上行RPB平均占用率
+                </label>
+                <label for="c2" class="radio_label">
+                    <input type="radio" value="2" id="c2" name="data" onclick="appendD2()"/>
+                    下行RPB平均占用率
+                </label>
+                <label for="c3" class="radio_label">
+                    <input type="radio" value="3" id="c3" name="data" onclick="appendD3()"/>
+                    平均PRC连接用户数
+                </label>
+                <label for="c4" class="radio_label">
+                    <input type="radio" value="4" id="c4" name="data" onclick="appendD4()"/>
+                    平均激活用户数
+                </label>
+            </div>
+        </div>
+
+        <div class="cmapZone">
+
+            <!--<div class="showHide">-->
+            <!--<p class="pPage"><input type="button" id="hide"> &nbsp;全国面积覆盖率 <b>98%</b></p>-->
+
+            <!--<input id="show" type="button">-->
+            <!--</div>-->
+
+            <div class="echart-map">
+                <div class="map" id="map"></div>
+            </div>
+
+        </div>
+    </div>
+</div>
+</body>
+</html>
