@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>全国覆盖感知分析</title>
+    <title>省覆盖感知分析</title>
     <link rel="stylesheet" href="css/layout.css">
     <link rel="stylesheet" href="css/map.css">
     <link rel="stylesheet" href="css/jsonTable.css">
@@ -31,6 +31,7 @@
             };
 
 
+
             // 排序
             function sortByKey(array, key) {
                 return array.sort(function (a, b) {
@@ -42,7 +43,7 @@
 
 
             function appendD1() {
-                $.getJSON("js/chinaData.json", function (data) {
+                $.getJSON("js/provinceData2.json", function (data) {
                     var $jsontip = $("#jsonTip1");
 
                     var newdata = $.extend({}, data.data);
