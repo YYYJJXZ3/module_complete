@@ -30,13 +30,23 @@
 //            alert($("#txtDate").timepicker("getDateStr"));
             window.onload = function () {
                 appendD1();
-                var xValue;
-                xValue = "江苏";
+//                var xValue;
+//                xValue = "江苏";
                 $("button").click(function(){
-                    $(".destination").html(xValue);
+                    //显示路径
+//                    alert(decodeURI(window.location));
+                    $(".destination").html(GetQueryString(decodeURI('province')));
                 });
             };
 
+
+
+            function GetQueryString(name)
+            {
+                var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+                var r = window.location.search.substr(1).match(reg);
+                if(r!=null)return  unescape(r[2]); return null;
+            }
 
 
             // 排序

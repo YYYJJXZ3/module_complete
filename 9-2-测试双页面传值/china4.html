@@ -84,9 +84,14 @@
 
         });
 
+        function change() {
+            var value = encodeURI("湖南");
+
+            window.location.href='province4.html?province='+value;
+        }
         $("button").click(function(){
 //            跳转页面
-            window.location.href='province4.html';
+            window.location.href='/Users/Blad3/WebstormProjects/module_complete/9-2-测试双页面传值/province4.html';
 //            $(".destination").html("W3School");
         });
 
@@ -141,7 +146,7 @@
 
                 <div class="echart-map">
                     <div class="map" id="map">
-                        <button>切换</button>
+                        <button onclick="change()">切换</button>
                     </div>
                 </div>
             </div>
