@@ -1,0 +1,53 @@
+<!DOCTYPE>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+    <title>动态创建表格</title>
+    <script src="js/jquery-3.2.1.js"></script>
+    <script type="text/javascript">
+
+
+        function CreateTable() {
+            var str = '{ ' +
+                '"total": 149, "columns": [{ "field": "EMPLOYEEID", "title": "地区" }, { "field": "EMPLOYEENAME", "title": "数值" }],"rows":[{"EMPLOYEEID":"001","EMPLOYEENAME":"89%"},{"EMPLOYEEID":"002","EMPLOYEENAME":"99%"},{"EMPLOYEEID":"003","EMPLOYEENAME":"99%"},{"EMPLOYEEID":"004","EMPLOYEENAME":"99%"},{"EMPLOYEEID":"005","EMPLOYEENAME":"99%"}]}';
+//            JSON.parse() 方法用于将一个 JSON 字符串转换为对象。
+            var data = JSON.parse(str);
+            var rowCount = data.rows.length;
+            var cellCount = data.columns.length;
+
+            var table = $("<table border=\"1\">");
+            table.appendTo($("#createtable"));
+
+            var trHeader = $("<tr></tr>");
+            trHeader.appendTo(table);
+            for (var j = 0; j < cellCount; j++) {
+                var td = $("<td>" + data.columns[j].title + "</td>");
+                td.appendTo(trHeader);
+            }
+
+            for (var i = 0; i < rowCount; i++) {
+                var tr = $("<tr></tr>");
+                tr.appendTo(table);
+                for (var j = 0; j < cellCount; j++) {
+                    var field = data.columns[j].field;
+                    var val="";
+                    if (data.rows[i][field] != null)
+                    {
+                        val = data.rows[i][field];
+                    }
+
+                    var td = $("<td>" + val + "</td>");
+                    td.appendTo(tr);
+                }
+            }
+            $("#createtable").append("</table>");
+        }
+    </script>
+</head>
+
+<body onload="CreateTable(5,6)">
+<!--<input type="button" value="添加表格" onclick="CreateTable(5,6)">-->
+<div id="createtable"></div>
+
+</body>
+</html>

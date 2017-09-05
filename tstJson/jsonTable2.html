@@ -1,0 +1,137 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <title>测试</title>
+    <style>
+
+
+    </style>
+
+
+
+</head>
+
+
+
+<body onload="appendTable()">
+
+
+
+</body>
+<script type="text/javascript">
+    var testArray=[
+        {
+            "RRYID": "039",
+            "公共部分": "22.0440",
+            "设备管理": "0",
+            "班组管理": "0",
+            "运行管理": "-0.20",
+            "安全管理": "-0.10"
+        },
+        {
+            "RRYID": "586",
+            "公共部分": "33.2670",
+            "设备管理": "0",
+            "班组管理": "0",
+            "运行管理": "-1.50",
+            "安全管理": "-0.20"
+        },
+        {
+            "RRYID": "429",
+            "公共部分": "10.7290",
+            "设备管理": "0",
+            "班组管理": "0",
+            "运行管理": "-0.20",
+            "安全管理": "0"
+        },
+        {
+            "RRYID": "372",
+            "公共部分": "54.4370",
+            "设备管理": "0",
+            "班组管理": "0",
+            "运行管理": "0",
+            "安全管理": "0"
+        },
+        {
+            "RRYID": "061",
+            "公共部分": "29.7760",
+            "设备管理": "0",
+            "班组管理": "0",
+            "运行管理": "-0.20",
+            "安全管理": "-0.20"
+        },
+        {
+            "RRYID": "008",
+            "公共部分": "19.1960",
+            "设备管理": "0",
+            "班组管理": "0",
+            "运行管理": "0",
+            "安全管理": "-0.50"
+        },
+        {
+            "RRYID": "0363",
+            "公共部分": "27.6040",
+            "设备管理": "0",
+            "班组管理": "0",
+            "运行管理": "-1",
+            "安全管理": "0"
+        },
+        {
+            "RRYID": "0521",
+            "公共部分": "38.0160",
+            "设备管理": "0",
+            "班组管理": "0",
+            "运行管理": "0",
+            "安全管理": "0"
+        },
+        {
+            "RRYID": "0163",
+            "公共部分": "27.7390",
+            "设备管理": "0",
+            "班组管理": "0",
+            "运行管理": "0",
+            "安全管理": "-0.60"
+        }
+    ];
+
+    var headArray=[];
+
+    function parseHead(oneRow)
+    {
+        for(var i in oneRow)
+        {
+            headArray[headArray.length] = i;
+        }
+    }
+
+    function appendTable()
+    {
+        parseHead(testArray[0]);
+        var table= document.createElement("table");
+        var thead = document.createElement("tr");
+        for(var count =0;count<headArray.length;count++)
+        {
+            var td = document.createElement("td");
+            td.innerHTML= headArray[count];
+            thead.appendChild(td);
+        }
+        table.appendChild(thead);
+        for(var tableRowNo =0; tableRowNo<testArray.length;tableRowNo++)
+        {
+            var tr = document.createElement("tr");
+            for(var headCount = 0; headCount<headArray.length; headCount++)
+            {
+                var cell = document.createElement("td");
+                cell.innerHTML = testArray[tableRowNo][headArray[headCount]];
+                tr.appendChild(cell);
+            }
+            table.appendChild(tr);
+        }
+        document.body.appendChild(table);
+    }
+
+</script>
+</html>

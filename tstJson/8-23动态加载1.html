@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>getJSON获取数据</title>
+    <script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
+    <style type="text/css">
+        #divframe {
+            width: 400px;
+            margin: 0 auto;
+        }
+
+        .table {
+            text-align: center;
+            border-collapse: collapse;
+        }
+
+        .table th {
+            color: #599ed5;
+            border-bottom: 1px solid #599ed5;
+        }
+
+        .table td {
+            border-bottom: 1px solid #666;
+            height: 50px;
+            width: 60px;
+        }
+
+        .roleNum {
+            padding: 6px 3px;
+            border-radius: 5px;
+            background-color: #2080d8;
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body onload="append()">
+<div id="divframe">
+    <h2>数据列表</h2>
+    <table width="100%" class="table">
+        <thead>
+        <tr>
+            <th></th>
+            <th>区域</th>
+            <th>上行RPB平均占用率</th>
+        </tr>
+        </thead>
+
+        <tbody id="jsonTip"></tbody>
+
+    </table>
+</div>
+<script type="text/javascript">
+    function append() {
+        $.getJSON("js/userinfo.json", function (data) {
+            var $jsontip = $("#jsonTip");
+            var strHtml = "";//存储数据的变量
+            $jsontip.empty();//清空内容
+            $.each(data, function (infoIndex, info) {
+                strHtml += `
+            <tr>
+              <td><b class="roleNum">${info["num"]}</b></td>
+              <td>${info["size"]}</td>
+              <td>${info["data"]}</td>
+                      </tr>
+          `;
+            })
+            $jsontip.html(strHtml);//显示处理后的数据
+        })
+    }
+</script>
+
+</body>
+</html>
