@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<table id="tableParam" cellspacing="0" style="width: 100%">
+    <tbody>
+    <tr>
+        <td colspan="2">
+            <label>ChartType：</label>
+            <select id="chartType" onchange="typechange()">
+                <option value="Column">Column（柱图）</option>
+                <option value="ColumnRainbow">ColumnRainbow（彩虹柱图）</option>
+                <option value="ColumnWaterfall">ColumnWaterfall（瀑布图）</option>
+                <option value="Line">Line（折线图）</option>
+            </select>
+
+            <div id="divIsAlign" style="display: none;">
+                <label>
+                    每层是否对齐：</label><select id="SelectIsAlign">
+                <option value="false">否</option>
+                <option value="true">是</option>
+            </select>
+            </div>
+        </td>
+
+        <!--默认被隐藏-->
+        <td colspan="4">
+            <div id="subChartType" style="display: none;">
+                SubChartType:1列：
+                <select id="Select9">
+                    <option value=""></option>
+                    <option value="Column">Column</option>
+                    <option value="Line">Line</option>
+                    <option value="Area">Area</option>
+                </select>2列：
+                <select id="Select10">
+                    <option value=""></option>
+                    <option value="Column">Column</option>
+                    <option value="Line">Line</option>
+                    <option value="Area">Area</option>
+                </select>3列：
+                <select id="Select13">
+                    <option value=""></option>
+                    <option value="Column">Column</option>
+                    <option value="Line">Line</option>
+                    <option value="Area">Area</option>
+                </select>
+                (需指定各列样式,不指定则Y默认为柱,Y2默认为线)
+            </div>
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <label>
+                Width：</label><input id="width" value="70%">
+        </td>
+        <td>
+            <label>
+                Height：</label><input id="height" value="350">
+        </td>
+        <td>
+            <label>
+                Is2D：</label><select id="Select1">
+            <option value="false">false</option>
+            <option value="true" selected="selected">true</option>
+        </select>
+        </td>
+        <td>
+            <label>
+                IsFlash：</label><select id="Select11">
+            <option value="true">true</option>
+            <option value="false">false</option>
+        </select>
+        </td>
+        <td>
+            <label>
+                IsShowLegend：</label><select id="Select2">
+            <option value="true">true</option>
+            <option value="false">false</option>
+        </select>
+        </td>
+        <td>
+            <label>
+                LegendPosition：</label><select id="Select3">
+            <option value=""></option>
+            <option value="RIGHT">RIGHT</option>
+            <option value="BOTTOM">BOTTOM</option>
+            <option value="LEFT">LEFT</option>
+            <option value="TOP">TOP</option>
+            <option value="LEFTTOP">LEFTTOP</option>
+            <option value="LEFTBOTTOM">LEFTBOTTOM</option>
+            <option value="RIGHTTOP">RIGHTTOP</option>
+            <option value="RIGHTBOTTOM">RIGHTBOTTOM</option>
+        </select>
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <label>
+                X轴坐标样式：</label><select id="Select12">
+            <option value="Wrap">换行</option>
+            <option value="Stagger">交错</option>
+            <option value="Rotate">旋转</option>
+        </select>
+        </td>
+        <td>
+            <label>
+                Title：</label><input id="Text1" value="">
+        </td>
+        <td>
+            <label>
+                SubTitle：</label><input id="Text2" value="">
+        </td>
+        <td>
+            <label>
+                XTitle：</label><input id="Text3" value="">
+        </td>
+        <td>背景色：<input id="Text13" value="">
+        </td>
+        <td>
+            <label>
+                ToolTip自定义:</label>
+            <input id="Text12" value="参考&quot;流量&quot;&quot;5月,7月&quot;" readonly="readonly" style="width: 100px">
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <label>
+                X轴显示间隔：</label><input id="Text9" value="1">
+        </td>
+        <td>
+            <label>
+                XDataColIndex：</label><input id="Text6" value="">
+        </td>
+        <td>
+            <label>
+                IsShowValue：</label><select id="Select4">
+            <option value="false">false</option>
+            <option value="true">true</option>
+        </select>
+            <br>
+            <label>
+                IsShowPercentValue：</label><select id="Select14">
+            <option value="true">true</option>
+            <option value="false">false</option>
+        </select>
+        </td>
+        <td>
+            <label>
+                显示极值：</label><select id="Select8">
+            <option value="false">false</option>
+            <option value="true">true</option>
+        </select>
+        </td>
+        <td>
+            <label>
+                自动计算Y极值：</label><select id="Select7">
+            <option value="false">false</option>
+            <option value="true">true</option>
+        </select>
+        </td>
+        <td>
+            <label>
+                数据小数位:</label><input id="Text19" value="">
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <label>
+                Y Title：</label><input id="Text4" value="">
+        </td>
+        <td>
+            <label>
+                Y DataColIndex：
+            </label>
+            <input id="Text7" value="">
+            <br>
+            (多个用逗号分隔)
+        </td>
+        <td>
+            <label>
+                Y FormatType：</label><select id="Select5">
+            <option value=""></option>
+            <option value="1000">1000</option>
+            <option value="1024">1024</option>
+            <option value="%">%</option>
+        </select>
+        </td>
+        <td>
+            <label>
+                Y 轴最大值：</label><input id="Text10" value="">
+        </td>
+        <td>
+            <label>
+                Y 轴最小值：</label><input id="Text11" value="">
+        </td>
+        <td>
+            <label>
+                Y轴小数位:</label><input id="Text17" value="">
+        </td>
+    </tr>
+
+    <tr id="trY2" style="display: none;">
+        <td>
+            <label>
+                Y2Title：</label><input id="Text5" value="">
+        </td>
+        <td>
+            <label>
+                Y2DataColIndex：</label><input id="Text8" value=""><br>
+            (多个用逗号分隔)
+        </td>
+        <td>
+            <label>
+                Y2FormatType：</label><select id="Select6">
+            <option value=""></option>
+            <option value="1000">1000</option>
+            <option value="1024">1024</option>
+            <option value="%">%</option>
+        </select>
+        </td>
+        <td>
+            <label>
+                Y2轴最大值：</label><input id="Text14" value="">
+        </td>
+        <td>
+            <label>
+                Y2轴最小值：</label><input id="Text15" value="">
+        </td>
+        <td>
+            <label>
+                Y2轴小数位:</label><input id="Text18" value="">
+        </td>
+    </tr>
+
+    </tbody>
+</table>
+</body>
+</html>

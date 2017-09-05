@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/jquery-1.9.1.min.js"></script>
+    <style>
+        #d1{
+            display: block;
+           width: 100%;
+            height: 33px;
+            background-color: #faa;
+        }
+        #btn{
+            float: right;
+        }
+        #d2{
+            display: block;
+            width: 100%;
+            height: 66px;
+            background-color: #afa;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<img src="img/need.png" alt="">
+
+<div id="d1"><input type="button" value="显示" id="btn" onclick="showContent()"></div>
+
+<div id="d2"></div>
+
+<script>
+    function showContent(){
+        if($('#d2').is(':hidden')){
+            $('#d2').show();
+            $('#btn').val('隐藏');
+        }
+        else{
+            $('#d2').hide();
+            $('#btn').val('显示');
+        }
+    }
+</script>
+</body>
+</html>

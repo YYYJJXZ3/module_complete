@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>选相框布局</title>
+    <style>
+        table{
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+<img src="img/need.png" alt="">
+
+<table>
+    <!--第一行-->
+<tr>
+    <td colspan="2">
+        <label>CharType:</label>
+        <select name="" id="CharType">
+            <option value="Column">Column柱图</option>
+            <option value="VolumnRainbow">ColumnRainbow彩虹柱图</option>
+        </select>
+    </td>
+</tr>
+    <!--第二行-->
+    <tr>
+        <td>
+            <label>Width:</label>
+            <input id="width" value="70%">
+        </td>
+
+        <td>
+            <label>IsFlash:</label>
+            <select name="" id="Select1">
+                <option value="true">true</option>
+                <option value="false">false</option>
+            </select>
+        </td>
+
+        <td>
+            <label>IsShowLegend:</label>
+            <select name="" id="select2">
+                <option value="true">true</option>
+                <option value="false">false</option>
+            </select>
+        </td>
+    </tr>
+
+    <!--第三行-->
+    <tr>
+        <td>
+            <input type="button" value="更多">
+        </td>
+    </tr>
+</table>
+</body>
+</html>
