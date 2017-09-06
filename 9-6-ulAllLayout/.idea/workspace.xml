@@ -21,8 +21,8 @@
       <file leaf-file-name="mainPage.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/mainPage.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="816">
-              <caret line="70" column="4" lean-forward="true" selection-start-line="70" selection-start-column="4" selection-end-line="70" selection-end-column="4" />
+            <state relative-caret-position="312">
+              <caret line="13" column="29" lean-forward="true" selection-start-line="13" selection-start-column="29" selection-end-line="13" selection-end-column="29" />
               <folding />
             </state>
           </provider>
@@ -51,8 +51,8 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="229" />
-    <option name="y" value="97" />
+    <option name="x" value="34" />
+    <option name="y" value="284" />
     <option name="width" value="1324" />
     <option name="height" value="835" />
   </component>
@@ -164,18 +164,18 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1504668241775</updated>
-      <workItem from="1504668243075" duration="541000" />
+      <workItem from="1504668243075" duration="903000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="541000" />
+    <option name="totallyTimeSpent" value="903000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="229" y="97" width="1324" height="835" extended-state="0" />
-    <editor active="false" />
+    <frame x="34" y="284" width="1324" height="835" extended-state="0" />
+    <editor active="true" />
     <layout>
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.11706948" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.11706948" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
@@ -206,8 +206,8 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/mainPage.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="816">
-          <caret line="70" column="4" lean-forward="true" selection-start-line="70" selection-start-column="4" selection-end-line="70" selection-end-column="4" />
+        <state relative-caret-position="312">
+          <caret line="13" column="29" lean-forward="true" selection-start-line="13" selection-start-column="29" selection-end-line="13" selection-end-column="29" />
           <folding />
         </state>
       </provider>
