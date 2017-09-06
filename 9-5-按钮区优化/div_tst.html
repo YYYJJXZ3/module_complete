@@ -16,9 +16,17 @@
         }
         #d2{
             width: 100%;
-            height: 66px;
+            height: 111px;
             background-color: #afa;
             display: none;
+        }
+        ul{
+            list-style: none;
+
+        }
+        ul li{
+            padding-left: 22px;
+            float: left;
         }
     </style>
 </head>
@@ -26,51 +34,53 @@
 <img src="img/need.png" alt="">
 
 <div id="d1">
-    <table>
-        <!--第一行-->
-        <tr>
-            <td colspan="2">
-                <label>CharType:</label>
-                <select name="" id="CharType">
-                    <option value="Column">Column柱图</option>
-                    <option value="VolumnRainbow">ColumnRainbow彩虹柱图</option>
-                </select>
-            </td>
-        </tr>
-    </table>
+    <ul>
+        <li>
+            <label>CharType:</label>
+            <select name="" id="CharType">
+                <option value="Column">Column柱图</option>
+                <option value="VolumnRainbow">ColumnRainbow彩虹柱图</option>
+            </select>
+        </li>
+    </ul>
 
     <input type="button" value="显示" id="btn" onclick="showContent()">
 </div>
 
 
 <div id="d2">
-    <table>
+    <ul>
+        <li>
+            <label>Width:</label>
+            <input id="width" value="70%">
+        </li>
 
-        <!--第二行-->
-        <tr>
-            <td>
-                <label>Width:</label>
-                <input id="width" value="70%">
-            </td>
+        <li>
+            <label>IsFlash:</label>
+            <select name="" id="Select1">
+                <option value="true">true</option>
+                <option value="false">false</option>
+            </select>
+        </li>
 
-            <td>
-                <label>IsFlash:</label>
-                <select name="" id="Select1">
-                    <option value="true">true</option>
-                    <option value="false">false</option>
-                </select>
-            </td>
+        <li>
+            <label>IsShowLegend:</label>
+            <select name="" id="select2">
+                <option value="true">true</option>
+                <option value="false">false</option>
+            </select>
+        </li>
 
-            <td>
-                <label>IsShowLegend:</label>
-                <select name="" id="select2">
-                    <option value="true">true</option>
-                    <option value="false">false</option>
-                </select>
-            </td>
-        </tr>
+        <li>
+            <label>LegendPosition:</label>
+            <select name="" id="select3">
+                <option value=""></option>
+                <option value="RIGHT">RIGHT</option>
+                <option value="LEFT">LEFT</option>
+            </select>
+        </li>
+    </ul>
 
-    </table>
 </div>
 
 <script>
