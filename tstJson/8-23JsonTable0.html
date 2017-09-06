@@ -47,7 +47,10 @@
                       </tr>
           `;
 
-
+            // 兼容性设置
+            // $.each(newdata,function(infoIndex,info){
+            //     strHtml = '<tr><td><b class="roleNum">'+(infoIndex+1)+'</b></td><td>'+ info.col0 + '</td><td>' + info.col1 + '</td></tr>';
+            // })
 
                 })
                 $jsontip.html(strHtml);//显示处理后的数据
