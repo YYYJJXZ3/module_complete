@@ -2,25 +2,71 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>ul边框布局5*n</title>
+    <title>优化参数区</title>
+    <script src="js/jquery-1.9.1.min.js"></script>
     <style>
         *{
             margin: 0;
             padding: 0;
         }
-        ul{
-            list-style: none;
-        }
+
         ul li{
+            list-style: none;
             float: left;
             width: 25%;
             height: 33px;
             /*border: 2px dashed #afa;*/
             margin: 13px 0 0 33px;
         }
+
+        #d1{
+            display: block;
+            width: 100%;
+
+        }
+        #btn{
+            float: right;
+        }
+        #d2{
+            width: 100%;
+            height: auto;
+            /*background-color: #afa;*/
+            display: none;
+        }
     </style>
 </head>
 <body>
+<div id="d1">
+<ul>
+    <li>
+        <label>CharType:</label>
+        <select name="" id="CharType">
+            <option value="Column">Column柱图</option>
+            <option value="VolumnRainbow">ColumnRainbow彩虹柱图</option>
+        </select>
+    </li>
+
+    <li>
+        <label>日期:</label>
+        <select name="" id="DateType">
+            <option value="Column">年</option>
+            <option value="VolumnRainbow">月</option>
+        </select>
+    </li>
+
+    <li>
+        <label>测试:</label>
+        <select name="" id="date">
+            <option value="Column">年</option>
+            <option value="VolumnRainbow">月</option>
+        </select>
+    </li>
+</ul>
+
+<input type="button" value="显示" id="btn" onclick="showContent()">
+</div>
+
+<div id="d2">
 <ul>
     <li>
         <label>CharType:</label>
@@ -66,7 +112,22 @@
 
     <li> <label>XTitle:</label>
         <input id="Text13"></li>
-
 </ul>
+
+</div>
+
+<script>
+    function showContent(){
+        if($('#d2').is(':hidden')){
+            $('#d2').show();
+            $('#btn').val('隐藏');
+        }
+        else{
+            $('#d2').hide();
+            $('#btn').val('显示');
+        }
+    }
+</script>
+
 </body>
 </html>
