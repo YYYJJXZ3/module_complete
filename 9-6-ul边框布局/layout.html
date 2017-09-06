@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ul边框布局5*n</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        ul{
+            list-style: none;
+        }
+        ul li{
+            float: left;
+            width: 25%;
+            height: 33px;
+            /*border: 2px dashed #afa;*/
+            margin: 33px 0 0 33px;
+        }
+    </style>
+</head>
+<body>
+<ul>
+    <li>
+        <label>CharType:</label>
+        <select name="" id="CharType">
+            <option value="Column">Column柱图</option>
+            <option value="VolumnRainbow">ColumnRainbow彩虹柱图</option>
+        </select>
+    </li>
+    <li><label>日期:</label>
+        <select name="" id="DateType">
+            <option value="Column">年</option>
+            <option value="VolumnRainbow">月</option>
+        </select></li>
+    <li><label>Width:</label>
+        <input id="width" value="70%"></li>
+    <li><label>IsFlash:</label>
+        <select name="" id="Select1">
+            <option value="true">true</option>
+            <option value="false">false</option>
+        </select></li>
+    <li><label>IsShowLegend:</label>
+        <select name="" id="select2">
+            <option value="true">true</option>
+            <option value="false">false</option>
+        </select></li>
+
+    <li><label>LegendPosition:</label>
+        <select name="" id="select3">
+            <option value=""></option>
+            <option value="RIGHT">RIGHT</option>
+            <option value="LEFT">LEFT</option>
+        </select></li>
+    <li> <label>X轴坐标样式:</label>
+        <select name="" id="Select12">
+            <option value="Wrap">换行</option>
+            <option value="Stagger">交错</option>
+            <option value="Rotate">旋转</option>
+        </select></li>
+    <li><label>Title:</label>
+        <input id="Text11"></li>
+    <li> <label>SubTitle:</label>
+        <input id="Text12"></li>
+    <li>5</li>
+
+    <li> <label>XTitle:</label>
+        <input id="Text13"></li>
+
+</ul>
+</body>
+</html>
