@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="css/style.css"/>
     <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
-    <script type="text/javascript" src="js/main.js"></script>
 </head>
 <body>
 
@@ -52,6 +51,15 @@
 
 </ul>
 
+<script>
+    $(function(){
+        $(".ce > li > a").click(function(){
+            $(this).parents().siblings().find(".er").hide(300);
+            $(this).siblings(".er").toggle(300);
+            $(this).parents().siblings().find(".er > li > .thr").hide().parents().siblings().find(".thr_nr").hide();
 
+        })
+    })
+</script>
 </body>
 </html>

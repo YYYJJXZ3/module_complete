@@ -20,11 +20,12 @@ img {
 a {
     text-decoration: none;
     outline: none;
+    font-size: 15px;
 }
 
 .ce {
     display: block;
-    width: 250px;
+    width: 120px;
     background: #172f58;
     position: fixed;
     z-index: 5;
@@ -39,11 +40,11 @@ a {
 }
 
 .more {
-    margin-left: 36px;
+    margin-left: 6px;
 }
 
 .ce li a {
-    padding: 10px 10px 10px 40px;
+    padding: 10px 0 10px 3px;
     color: white;
     display: block;
     cursor: pointer;
@@ -57,7 +58,7 @@ a {
 
 .er {
     display: none;
-    width: 250px;
+    width: 120px;
     background: #555;
 
 }
@@ -74,29 +75,5 @@ a {
     padding: 10px -10px 10px 20px;
     color: white;
     background: none;
-    font-size: 15px;
+    font-size: 12px;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
