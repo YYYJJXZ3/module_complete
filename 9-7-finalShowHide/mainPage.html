@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>隐藏菜单</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/jquery-1.9.1.min.js"></script>
+</head>
+<body>
+
+<div class="header" align="center">
+    <div class="content">
+        <ul class="ce">
+            <li>
+                <a href="#">覆盖广度分析 <img class="more" src="images/more.png"/></a>
+                <ul class="er">
+                    <li><a href="#">全国覆盖广度分析</a></li>
+                    <li><a href="#">省覆盖广度分析</a></li>
+                    <li><a href="#">地市覆盖广度分析</a></li>
+
+                </ul>
+            </li>
+
+            <li>
+                <a href="#">覆盖深度分析 <img class="more" src="images/more.png"/></a>
+                <ul class="er">
+                    <li><a href="#">全国覆盖深度分析</a></li>
+                    <li><a href="#">省覆盖深度分析</a></li>
+                    <li><a href="#">地市覆盖深度分析</a></li>
+
+                </ul>
+            </li>
+
+            <li>
+                <a href="#">覆盖感知分析 <img class="more" src="images/more.png"/></a>
+                <ul class="er">
+                    <li><a href="#">全国覆盖感知</a></li>
+                    <li><a href="#">省覆盖感知</a></li>
+                    <li><a href="#">地市覆盖感知</a></li>
+
+                </ul>
+            </li>
+
+            <li>
+                <a href="#">无线性能分析 <img class="more" src="images/more.png"/></a>
+                <ul class="er">
+                    <li><a href="#">全国无线性能</a></li>
+                    <li><a href="#">省无线性能</a></li>
+                    <li><a href="#">地市无线性能</a></li>
+
+                </ul>
+            </li>
+
+        </ul>
+    </div>
+</div>
+
+<script>
+    $(function(){
+        $(".ce > li > a").click(function(){
+            $(this).parents().siblings().find(".er").hide(300);
+            $(this).siblings(".er").toggle(300);
+            $(this).parents().siblings().find(".er > li > .thr").hide();
+
+        })
+
+        //鼠标的移入移出
+        $(".header").mouseover(function (){
+            $(".content").show();
+        }).mouseout(function (){
+            $(".content").hide();
+        });
+    })
+
+</script>
+</body>
+</html>
