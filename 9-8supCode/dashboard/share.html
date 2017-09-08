@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>报表定制</title>
+    <link href="../../themes/lightblue/ca/db/dashboard.css" rel="stylesheet" />
+    <link href="../../themes/lightblue/jqueryui/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" />
+    <link href="../../themes/lightblue/jqgrid/ui.jqgrid.css" rel="stylesheet" />
+    <link href="../../themes/lightblue/ca/menu.css" rel="stylesheet" />
+    <link href="../../themes/lightblue/page/page.css" rel="stylesheet" />
+    <link href="../../javascript/JSControl/Condition/zTreeStyle/zTreeStyle.css" rel="stylesheet" />
+    <script src="../../javascript/core/jquery-1.9.1.min.js" type="text/javascript"></script>
+    <script src="../../javascript/core/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="../../javascript/common/tools.js" type="text/javascript"></script>
+    <script src="../../javascript/common/pagetools.js" type="text/javascript"></script>
+    <script src="../../javascript/ztree/js/jquery.ztree.all-3.5.js"></script>
+    <script src="../../javascript/JSControl/SmartGrid/JqGrid/grid.locale-cn.js"></script>
+    <script src="../../javascript/JSControl/SmartGrid/JqGrid/jquery.jqGrid.min.js"></script>
+    <script src="../../javascript/JSControl/SmartGrid/JqGrid/SmartGrid.js"></script>
+    <script type="text/javascript">
+        $(function () {
+        	dss.pageheader("m");
+        	method.initCatelogTreeDate();
+
+        	$("#btnQuery").click(function(){
+        		method.bindGrid();
+        	});
+            $("#txtCatelog").click(function(){
+            	$("#divCatelogTree").css({left:$("#txtCatelog").css("left"),top:$("#txtCatelog").css("top")}).show();
+            	event.stopPropagation ? event.stopPropagation() : event.cancelBubble = true;
+            });
+            $(document).bind('click',function(){ 
+                if($(event.target).parents("#divCatelogTree").length > 0 || $(event.srcElement).parents("#divCatelogTree").length > 0){
+                    return;
+                }else{
+                    $('#divCatelogTree').css('display','none'); 
+                }
+            }); 
+        	
+        });
+        var method={
+                bindGrid : function () {
+                	var catelogId=$("#hiddenCatelogId").val();
+                	var dashBoardName=$.trim($("#txtDashboardName").val());
+    	        	$("#divGrid").smartgrid({
+                        analyzerpath:dss.rootPath+"plugin/dashboard/share/list",
+                        analyzer:{
+                        	catelogId:catelogId,
+                        	name:dashBoardName
+                        },
+                        paging: {
+                            rowNum: 15,
+                            rowList: [15, 30, 60]
+                        },
+                        sort : {
+                        	colindex : 7,
+                        	order : "desc"
+                        },
+                        col: {
+                            sort: true,
+                            property:[
+                                      {colindex:0,hidden:true},
+                                      {colindex:1,hidden:true},
+                                      {colindex:2,width:150},
+                                      {colindex:3,hidden:true},
+                                      {colindex:5,align:"center",width:100},
+                                      {colindex:6,align:"center",width:150},
+                                      {colindex:7,align:"center",width:100},
+                                      {colindex:8,hidden:true},
+                                      {colindex:9,hidden:true},
+                                      ]
+                        },
+                        callback: {
+                            gridComplete: function (grid, opts) {
+        						$(grid).find(">tr").each(function(){
+        							var $dashboardName=$(this).find("td:eq(4)");
+        							var dashboardId=$(this).find("td:eq(3)").text();
+        							var shareId=$(this).find("td:eq(0)").text();
+        							var url=dss.rootPath+"/plugin/dashboard/view.html?dashboardId="+dashboardId;
+        							$dashboardName.css({
+        								"color":"blue",
+        								"cursor":"pointer"
+        							}).click(function(){
+        								 method.updateClickNum(shareId);
+        				                 dss.openPageInTab($dashboardName.text(), url);
+        							});
+        						});
+                            }
+                        }
+                    });
+                },
+                initCatelogTreeDate:function(){
+                    dss.ajax({
+                        url: dss.rootPath+"plugin/dashboard/share/catelogtree",
+                        success: function (data) {
+                        	if(data.status=="0"){
+                        		var nodes=data.data;
+                        		catelogNodes=nodes;//设置为全局变量
+                        		method.bindCatelogTree();
+                            	$("#hiddenCatelogId").val("");
+                            	$("#txtCatelog").val("全部分类");
+                            	method.bindGrid();
+                        	}
+                        }
+                    });
+                },
+                bindCatelogTree:function(){
+                    var setting = {
+                            view: { showLine: true, selectedMulti: false },
+                            data: {
+                                simpleData: {
+                                    enable: true
+                                }
+                            },
+                            callback: {
+                                onClick: method.leftClick,
+                            }
+                        };
+                        var basicZTree = $("#catelogTree");
+                        DBzTree = $.fn.zTree.init(basicZTree, setting, catelogNodes);
+                },
+                leftClick:function(event, treeId, treeNode){
+               		$("#divCatelogTree").hide();
+               		if(treeNode.other1=="management"){
+               			$("#hiddenCatelogId").val("");
+               		}else{
+                   		$("#hiddenCatelogId").val(treeNode.id);
+               		}
+               		$("#txtCatelog").val(treeNode.name);
+                },
+                updateClickNum:function(shareId,clickNum){
+                	dss.ajax({
+                        url: dss.rootPath+"plugin/dashboard/share/updateclicknum",
+                        data:{
+                        	shareId:shareId,
+                        	clickNum:clickNum
+                        },
+                        type:"post",
+                        success:function(data){
+                        	if(data.status=="0"){
+                        	}
+                        }
+                	});
+                	
+                }
+                
+        }
+    </script>
+    <style type="text/css">
+    	.navigation{
+    		
+    	}
+    </style>
+</head>
+<body>
+    <div id="m"></div>
+    <div style="margin-left: 10px; margin-right: 10px;">
+	    <div>
+          <table>
+                <tr>
+                    <td>分类：</td>
+                    <td>
+                    	<input type="text" id="hiddenCatelogId" style="display: none">
+		                <input type="text" id="txtCatelog" readonly="readonly"/>
+		                <div id="divCatelogTree" style="width: 160px; max-height:360px; overflow:auto;
+		    		                  border:1px solid #DDDDDD;display:none;position:absolute;background-color:#fff;" >
+		                      <ul class="ztree ztreeReport" id="catelogTree"></ul> 
+		                </div>
+                     </td>
+                    <td style="padding-left: 10px;">报表名：</td>
+                    <td>               
+                    	<input style="width: 200px;" type="text" id="txtDashboardName"/>
+					</td>
+                    <td style="padding-left: 10px;"><input id="btnQuery"
+                        type="button" class="button" value="查询" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div id="divGrid"  ></div>
+   	</div>
+</body>
+</html>
