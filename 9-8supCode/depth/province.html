@@ -132,7 +132,8 @@ var dataSource = {};
 			
 			var url = encodeURI(dss.rootPath + "depth/region?tid=-914487094&dayStr="
 					+ $("#txtDate").timepicker("getDateStr")
-					+ "&provinceName=province");
+					+ "&provinceName="
+                + province);
 			
 			$.getJSON(url, function(data) {
 				var $jsontip = $("#jsonTip1");

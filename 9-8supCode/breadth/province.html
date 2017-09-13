@@ -115,7 +115,11 @@ var dataSource = {};
 		}
 
 		function mapClick(xValue, yValue, value) {
-			var url = "plugin/breadth/city?city=" + encodeURI(xValue);
+//			var url = encodeURI(dss.rootPath + "breadth/city?city=" + encodeURI(xValue)+$("#txtDate").timepicker("getDateStr"));
+
+//			var url = encodeURI(dss.rootPath + "breadth/city?city="+ encodeURI(xValue)+"&time="+encodeURI($("#txtDate").timepicker("getDateStr")));
+            var url = "plugin/preception/province?province=" + encodeURI(xValue) + "&time=" + encodeURI($("#txtDate").timepicker("getDateStr"));
+//
 			openPageInTab("地市覆盖广度分析", url);
 		}
 
@@ -137,7 +141,8 @@ var dataSource = {};
 			
 			var url = encodeURI(dss.rootPath + "breadth/region?tid=-485143636&dayStr="
 					+ $("#txtDate").timepicker("getDateStr")
-					+ "&provinceName=province");
+					+ "&provinceName="
+                + province);
 			$.getJSON(url, function(data) {
 				var $jsontip = $("#jsonTip1");
 				
