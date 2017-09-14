@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>全国无线性能</title>
+<link rel="stylesheet" href="../LTE/css/layout.css">
+<link rel="stylesheet" href="../LTE/css/map.css">
+<link rel="stylesheet" href="../LTE/css/jsonTable.css">
+<link rel="stylesheet" href="../LTE/css/dropShowHide.css">
+<link rel="stylesheet"
+	href="../../themes/lightblue/jqueryui/jquery-ui-1.10.3.custom.min.css">
+<link rel="stylesheet" href="../../themes/lightblue/page/page.css">
+<script src="../../javascript/core/jquery-1.9.1.min.js"></script>
+<script src="../../javascript/common/tools.js"></script>
+<script src="../LTE/js/radio.js"></script>
+<script src="../LTE/js/dropShowHide.js"></script>
+<script src="../../javascript/core/jquery-ui-1.10.3.custom.min.js"></script>
+<script src="../../javascript/common/pagetools.js"></script>
+<script src="../../javascript/common/openTabPage.js"></script>
+<script src="../../javascript/JSControl/Condition/timepicker.js"></script>
+<script
+	src="../../javascript/JSControl/SampleChart/Scripts/SampleChart.js"></script>
+<script type="text/javascript">
+    var colIndex = 1, dataSource = {},targetArray =[];
+    var max = "",min=""; 
+
+    $(function () {
+        dss.pageheader("m");
+        $("#txtDate").timepicker({
+            showTypeDay: true,
+            showTypeMonth: true,
+            showTypeWeek: true
+        });
+
+        $("#btnQuery").click(function () {
+            appendD1();
+        });
+        appendD1();
+        $("#c1").click(function () {
+            // colIndex进行变量分类
+            // 非常实用的一招儿：当有多个变量，初始化的时候通过变量赋值进行标记
+            colIndex = 1;
+            initGrid();
+        });
+        $("#c2").click(function () {
+            colIndex = 2;
+            initGrid();
+        });
+        $("#c3").click(function () {
+            colIndex = 3;
+            initGrid();
+        });
+        $("#c4").click(function () {
+            colIndex = 4;
+            initGrid();
+        });
+
+
+// getchart调用地图样式1
+        function getChart() {
+            bindChart("map", {
+                DataSource: dataSource,
+                YDataColIndex: colIndex.toString(),
+                IsShowPercentValue: true,
+                LegendPosition: "LEFTBOTTOM",
+                MapType: ['china'],
+                MapRangeOrLegend: "legend",
+                MapLegend: [{
+                    name: '<=0.7%',
+                    min: null,
+                    max: 0.7,
+                    color: '#82ca3e'
+                }, {
+                    name: '0.7%-1%',
+                    min: 0.7,
+                    max: 1,
+                    color: '#FFFF00'
+                }, {
+                    name: '>1%',
+                    min: 1,
+                    max: null,
+                    color: '#fb0005'
+                }]
+            });
+        }
+
+// getChart1调用地图样式2
+        function getChart1() {
+            bindChart("map", {
+                DataSource: dataSource,
+                YDataColIndex: colIndex.toString(),
+                IsShowPercentValue: true,
+                LegendPosition: "LEFTBOTTOM",
+                MapType: ['china'],
+                MapRangeOrLegend: "range",
+                YMinValue: 0,
+                YMaxValue: max,
+                Map: {
+                    rangeColor: ['#026FDD', '#DEFEFF']
+                }
+                
+
+            });
+        }
+
+
+// 两个地图都调用相同的bindChart（），进行点击下钻及共有方法
+        function bindChart(div, option) {
+            var opts = $.extend(true, {
+                YFormatType: "1000",
+                BgColor: '#e2eefc',
+                BorderColor: '#7D7DFF',
+                ClickEvent: [{
+                    click: mapClick
+                }],
+                ChartType: "map",
+                callback: {
+                    complete: function (myChart) {
+                        //window.onresize = myChart.resize;
+                    }
+                }
+            }, option);
+
+            // 调用外部封装的js
+            $("#" + div).SampleChart(opts);
+        }
+
+        // 跳转传
+        // url写法，get到！
+        // province代表获取省名；time代表自定义插件获得时间参数
+        // listid没有实际用处，只是防止报undefined
+        function mapClick(xValue, yValue, value) {
+            var url = "plugin/wireless/province?province=" + encodeURI(xValue) + "&time=" + encodeURI($("#txtDate").timepicker("getDateStr")) + "&listid=" + 712312332;
+            openPageInTab("省无线性能分析", url);
+
+        }
+
+
+        // 调用jq，通过json，发起get请求，像数据库请求JSON字符串
+        function appendD1() {
+            // dss.rootPath本地封装的加载方式
+            // 调用数据库路径，基于相关参数完成调用符合要求的json
+            var url = encodeURI(dss.rootPath
+					+ "wireless/province?tid=456559162&dayStr="
+					+ $("#txtDate").timepicker("getDateStr"));
+            // 发起json
+            $.getJSON(url, function (data) {
+                dataSource = data.data;
+                // 封装共有的操作
+                initGrid();
+
+            })
+        }
+
+        function initGrid() {
+            // 通过colIndex的数值，区分加载两种不同类型的地图
+            if (colIndex <= 2) {
+                getChart();
+                // id+序号绑定不同的div，封装！
+                // 这招儿必须掌握，很nice
+                var $jsontip = $("#jsonTip" + colIndex);
+                
+                // 简易排序，要学习
+                dataSource.rows.sort(function (a, b) {
+                    return parseFloat(b.cells[colIndex])
+                            - parseFloat(a.cells[colIndex])
+
+                });
+                // 绘制
+                // 每次执行前，清空一下是非常nice的操作
+                var strHtml = "";//存储数据的变量
+                $jsontip.empty();//清空内容
+
+                // 遍历赋值
+                $.each(dataSource.rows, function (infoIndex, info) {
+                    // 因为数据库中有null得“脏”数据，清空下
+                    if (info.cells[0] == null) {
+                        return true;
+                    }
+
+                    // 最原始的拼接字符串方法，get到！
+                    strHtml += '<tr><td><b class="roleNum">' + (infoIndex + 1)
+                            + '</b></td><td>' + info.cells[0] + '</td><td>'
+                            + info.cells[colIndex] + '</td></tr>';
+                })
+
+                //显示处理后的数据
+                $jsontip.html(strHtml);
+
+                // 前十个tr中，第一个td中的b，设置背景样式。
+                // 上色处理，可通通过随机数进行优化
+                $.each($('#div' + colIndex + ' tr').slice(1, 11), function (i, item) {
+                    $(item).children('td').eq(0).children('b').css(
+                            "background-color", "#3590de");
+                });
+
+                $.each($('#div' + colIndex + ' tr').slice(1, 7), function (i, item) {
+                    $(item).children('td').eq(1).css("color", "#0002c0");
+                });
+            }
+
+            else {
+                getChart1();
+                var $jsontip = $("#jsonTip" + colIndex);
+                //newdata = sortByKey(newdata.rows, 'col1');
+                dataSource.rows.sort(function (a, b) {
+                    return parseFloat(b.cells[colIndex])
+                            - parseFloat(a.cells[colIndex])
+
+                });
+
+
+                // 绘制
+                var strHtml = "";//存储数据的变量
+                $jsontip.empty();//清空内容
+                $.each(dataSource.rows, function (infoIndex, info) {
+                    if (info.cells[0] == null) {
+                        return true;
+                    }
+
+                    targetArray.push(info.cells[colIndex]);
+
+                    strHtml += '<tr><td><b class="roleNum">' + (infoIndex + 1)
+                            + '</b></td><td>' + info.cells[0] + '</td><td>'
+                            + info.cells[colIndex] + '</td></tr>';
+                })
+                $jsontip.html(strHtml);//显示处理后的数据
+
+                // 前十个tr中，第一个td中的b，设置背景样式。
+                $.each($('#div' + colIndex + ' tr').slice(1, 11), function (i, item) {
+                    $(item).children('td').eq(0).children('b').css(
+                            "background-color", "#3590de");
+                });
+
+                $.each($('#div' + colIndex + ' tr').slice(1, 7), function (i, item) {
+                    $(item).children('td').eq(1).css("color", "#0002c0");
+                });
+
+                max = targetArray[0];
+                max = "";
+             
+            }
+     
+        }
+
+
+    });
+</script>
+</head>
+<body>
+
+	<div id="m"></div>
+	<div class="toolbar">
+		<ul>
+			<li class="item"><span class="back">日期</span> <input type="text"
+				style="width: 100px" id="txtDate" /></li>
+			<li class="item"><input type="button" class="button"
+				id="btnQuery" value="查询" /></li>
+		</ul>
+	</div>
+
+	<div class="mainZone">
+
+		<div class="rListZone">
+			<div id="div1">
+				<div class="divframe">
+					<table width="100%" class="table">
+						<thead>
+							<tr>
+								<th></th>
+								<th>区域</th>
+								<th>上行RPB平均占用率</th>
+							</tr>
+						</thead>
+
+						<tbody id="jsonTip1"></tbody>
+
+					</table>
+				</div>
+			</div>
+
+
+			<div id="div2">
+
+				<div class="divframe">
+					<table width="100%" class="table">
+						<thead>
+							<tr>
+								<th></th>
+								<th>区域</th>
+								<th>下行RPB平均占用率</th>
+							</tr>
+						</thead>
+
+						<tbody id="jsonTip2"></tbody>
+
+					</table>
+				</div>
+			</div>
+
+
+			<div id="div3">
+				<div class="divframe">
+					<table width="100%" class="table">
+						<thead>
+							<tr>
+								<th></th>
+								<th>区域</th>
+								<th>平均PRC连接用户数</th>
+							</tr>
+						</thead>
+
+						<tbody id="jsonTip3"></tbody>
+
+					</table>
+				</div>
+			</div>
+
+
+			<div id="div4">
+				<div class="divframe">
+					<table width="100%" class="table">
+						<thead>
+							<tr>
+								<th></th>
+								<th>区域</th>
+								<th>平均激活用户数</th>
+							</tr>
+						</thead>
+
+						<tbody id="jsonTip4"></tbody>
+
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="lComplexZone">
+			<div class="cdataZone">
+				<div class="checkBox">
+					<label for="c1" class="radio_label checked"> <input
+						type="radio" value="1" checked="checked" id="c1" name="data" />
+						上行RPB平均占用率
+					</label> <label for="c2" class="radio_label"> <input type="radio"
+						value="2" id="c2" name="data" /> 下行RPB平均占用率
+					</label> <label for="c3" class="radio_label"> <input type="radio"
+						value="3" id="c3" name="data" /> 平均PRC连接用户数
+					</label> <label for="c4" class="radio_label"> <input type="radio"
+						value="4" id="c4" name="data" /> 平均激活用户数
+					</label>
+				</div>
+			</div>
+
+			<div class="cmapZone">
+
+				<div class="echart-map">
+					<div class="map" id="map"></div>
+				</div>
+
+
+
+			</div>
+		</div>
+	</div>
+</body>
+</html>
