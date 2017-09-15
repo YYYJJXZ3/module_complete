@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/jquery-1.9.1.min.js"></script>
+</head>
+<body>
+<p class="tst">目标元素</p>
+
+<input type="button" class="btn" value="++">
+<input type="button" class="btn1" value="--">
+
+<script>
+    var i = 0;
+    $(document).ready(function () {
+        $(".btn").click(function () {
+            $(".tst").text(i++);
+        });
+
+        $(".btn1").click(function () {
+//            $(".tst").text($(".tst").html()-1);
+            $(".tst").text(i--);
+        })
+    })
+
+</script>
+</body>
+</html>
