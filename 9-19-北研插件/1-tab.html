@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/jquery-1.9.1.min.js"></script>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+
+    </style>
+</head>
+<body>
+<div class="checkbox1">
+    <input type="checkbox" name="key1" value="v1" id="t1"/>3A5D规划
+</div>
+
+<div class="checkbox2">
+    <input type="checkbox" name="key2" value="v2" id="t2"/>APP感知覆盖
+</div>
+
+
+
+<script>
+
+    $(function () {
+        $("#t1").click(function () {
+            if ($(this).prop("checked")) {
+                alert("选中");
+            }
+            else {
+                alert("没有选中");
+            }
+        });
+
+        $("#t2").click(function () {
+            if ($(this).prop("checked")) {
+                alert("选中");
+            }
+            else {
+                alert("没有选中");
+            }
+    });
+        })
+
+
+
+</script>
+</body>
+</html>

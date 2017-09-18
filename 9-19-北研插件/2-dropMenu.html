@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>下拉组件</title>
+    <style type="text/css">
+        * {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+
+        .all {
+            width: 150px;
+            height: 25px;
+            padding-left: 3px;
+            text-align: center
+        }
+
+        .all ul {
+            position: absolute;
+            left: 0;
+            top: 25px;
+            display: none;
+        }
+
+        .all li {
+            width: 100%;
+            height: 25px;
+            background: url(img/libg.jpg);
+            line-height: 25px;
+            float: left;
+            margin-right: 10px;
+            position: relative;
+            cursor: pointer;
+        }
+
+    </style>
+
+    <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+
+            $('.all>li').hover(function () {
+                $(this).children().stop().slideToggle(300);
+            })
+
+            $("#t1").click(function () {
+                if ($(this).prop("checked")) {
+                    alert("选中");
+                }
+                else {
+                    alert("没有选中");
+                }
+            });
+
+            $("#t2").click(function () {
+                if ($(this).prop("checked")) {
+                    alert("选中");
+                }
+                else {
+                    alert("没有选中");
+                }
+            });
+
+        })
+    </script>
+</head>
+
+<body>
+<ul class="all">
+    <li>呈现内容
+        <ul>
+            <li><input type="checkbox"  id="t1"/>3A5D规划</li>
+            <li><input type="checkbox"  id="t2"/>APP感知覆盖</li>
+        </ul>
+    </li>
+</ul>
+
+</body>
+</html>
