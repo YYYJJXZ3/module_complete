@@ -43,6 +43,7 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/1-柱状图.html" />
+        <option value="$PROJECT_DIR$/tst.html" />
       </list>
     </option>
   </component>
@@ -166,15 +167,15 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1505437702898</updated>
-      <workItem from="1505437706218" duration="4637000" />
+      <workItem from="1505437706218" duration="6391000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="4637000" />
+    <option name="totallyTimeSpent" value="6391000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="77" y="47" width="1056" height="835" extended-state="1" />
+    <frame x="77" y="47" width="1056" height="835" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.31344697" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -208,6 +209,16 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/tst.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="585">
+          <caret line="25" column="7" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="32" selection-end-column="7" />
+          <folding>
+            <marker date="1505605952000" expanded="true" signature="274:338" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/1-柱状图.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="480">
