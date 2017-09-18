@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>地市</title>
+<link rel="stylesheet"
+	href="../../themes/lightblue/jqueryui/jquery-ui-1.10.3.custom.min.css">
+<link rel="stylesheet" href="../../themes/lightblue/page/page.css">
+<link href="../../themes/lightblue/css/ol.css" rel="stylesheet" />
+<link href="../../themes/lightblue/jqgrid/ui.jqgrid.css"
+	rel="stylesheet" />
+<script src="../../javascript/core/jquery-1.9.1.min.js"></script>
+<script src="../../javascript/common/tools.js"></script>
+<script src="../../javascript/core/jquery-ui-1.10.3.custom.min.js"></script>
+<script src="../../javascript/common/pagetools.js"></script>
+<script src="../../javascript/JSControl/Condition/timepicker.js"></script>
+<script src="../../javascript/JSControl/Condition/comselect.js"></script>
+<script src="../../javascript/JSControl/gis/ol.js"></script>
+<script src="../../javascript/JSControl/SmartGrid/JqGrid/SmartGrid.js"></script>
+<script type="text/javascript">
+    var selectData = 3, ajaxData = null;
+
+    if (decodeURI(dss.request("time"))) {
+        date = decodeURI(dss.request("time"));
+    }
+    else {
+        date = null;
+    }
+
+    if (decodeURI(dss.request("province"))) {
+        prov = decodeURI(dss.request("province"));
+    }
+    else {
+        prov = "江苏";
+    }
+
+	$(function() {
+		dss.pageheader("m");
+		method.initTime();
+		method.initAct();
+		method.initTelecom();
+		method.initData();
+
+		$("#btnQuery").click(function() {
+			method.initData();
+		});
+		
+		$("#btnQuery").click(function() {
+			appendD1();
+		});
+
+	});
+	var method = {
+		initTime : function() {
+
+		    $("#txtDate").timepicker({
+
+		        showTypeDay : true,
+		        showTypeMonth: true,
+		        showTypeWeek: true,
+		        defaultDateStr: date
+			});
+		},
+		initAct : function() {
+			var province = {
+				dimid : "-281835306",
+				levelname : '省',
+				filterValue : [ '未知省' ],
+				initValues : [ {
+					name : '江苏'
+				} ],
+				initClass : "commdata",
+				selectmode : "single"
+			}
+			$("#txtProvince").commonSelect(province);
+
+			var region = {
+				dimid : "-281835306",
+				levelname : '地区',
+				filterValue : [ '未知省' ],
+				initClass : "commdata",
+				selectmode : "single"
+			}
+			$("#txtRegion").commonSelect(region);
+		},
+		openlayer : {
+			view : new ol.View({
+				center : ol.proj.transform([ 119.31568, 26.11803 ],
+						'EPSG:4326', 'EPSG:3857'),
+				zoom : 1,
+				minZoom : 1
+			}),
+			gisUrl : 'http://42.99.16.96:53088/BaseMap/rest/services/China_Community_BaseMap/MapServer',
+
+			dxMap : null,
+			dxLayer : null,
+			arrCell : [],
+
+		},
+		initTelecom : function() {
+			var layers = [ new ol.layer.Tile({
+				source : new ol.source.TileArcGISRest({
+					ratio : 1,
+					params : {},
+					url : method.openlayer.gisUrl
+				})
+			}) ];
+			method.openlayer.dxMap = new ol.Map({
+				layers : layers,
+				target : 'map',
+				logo : false,
+				view : method.openlayer.view
+			});
+
+			method.openlayer.dxMap.on('click', function(event) {
+				method.openlayer.dxMap.forEachFeatureAtPixel(event.pixel,
+						function(feature) {
+							// 为移动到的feature发送自定义的mousemove消息
+							feature.dispatchEvent({
+								type : 'click',
+								event : event
+							});
+						});
+			});
+		},
+		initData : function() {
+			var province = $("#txtProvince").commonSelect("getSelResults")[0].name;
+			if (province.length <= 0) {
+				province = "江苏";
+			}
+
+			var rc = $("#txtRegion").commonSelect("getSelResults"), region = rc.length > 0 ? rc[0].name
+					: "无锡";
+			if (region.length <= 0) {
+				region = "无锡";
+			}
+
+			$.ajax({
+				url : dss.rootPath + 'breadth/region',
+				data : {
+					tid : 745424977,
+					dayStr : $("#txtDate").timepicker("getDateStr"),
+					provinceName : province,
+					regionName : region
+				},
+				dataType : 'json',
+				success : function(data) {
+					ajaxData = data.data;
+					method.initGrid();
+				}
+			})
+		},
+		setCell : function(source) {
+			if (method.openlayer.dxLayer != null) {
+				method.openlayer.dxLayer.getSource().clear(true);
+			}
+
+			method.openlayer.arrCell = [];
+			var minX = null, maxX = null, minY = null, maxY = null;
+			if (source.rows.length > 0) {
+				$
+						.each(
+								source.rows,
+								function(i, item) {
+									var x = parseFloat(item.cells[1]), y = parseFloat(item.cells[2]), rate = 0;
+									if (minX == null || minX > y) {
+										minX = y;
+									}
+									if (maxX == null || maxX < y) {
+										maxX = y;
+									}
+									if (minY == null || minY > x) {
+										minY = x;
+									}
+									if (maxY == null || maxY < x) {
+										maxY = x;
+									}
+
+									var pos = ol.proj.transform([ x, y ],
+											'EPSG:4326', 'EPSG:3857');
+
+									var circle = new ol.Feature({
+										geometry : new ol.geom.Point(pos),
+										item : item
+									});
+									var color = (rate > 85 ? "#66b732"
+											: (rate >= 70 ? "#e0c423"
+													: "#bc471f"));
+									circle
+											.setStyle(new ol.style.Style(
+													{
+														image : new ol.style.Icon(
+																{
+																	src : dss.rootPath
+																			+ 'javascript/JSControl/gis/images/cell.png',
+																	color : "#66b732",
+																	anchor : [
+																			0,
+																			0.5 ],
+																	rotateWithView : true,
+																	rotation : (0 - 90)
+																			* Math.PI
+																			/ 180
+																})
+													}));
+
+									method.openlayer.arrCell.push(circle);
+								});
+			}
+
+			method.openlayer.dxLayer = new ol.layer.Vector({
+				source : new ol.source.Vector({
+					features : method.openlayer.arrCell
+				})
+			});
+			method.openlayer.dxMap.addLayer(method.openlayer.dxLayer);
+
+			if (minX != null) {
+				method.openlayer.dxMap.getView().fit(
+						ol.proj.transformExtent([ minY, minX, maxY, maxX ],
+								'EPSG:4326', 'EPSG:3857'),
+						method.openlayer.dxMap.getSize());
+			}
+		},
+		initGrid : function() {
+			method.setCell(ajaxData);
+			ajaxData.rows = ajaxData.rows.sort(function(a, b) {
+				return parseFloat(b.cells[selectData])
+						- parseFloat(a.cells[selectData])
+			});
+			opts = {
+				captionName : "",
+				showrownum : false,
+				islocaldata : true,
+				localdata : ajaxData,
+				//单元格属性
+				col : {
+					property : [ {
+						colindex : 1,
+						hidden : true
+					}, {
+						colindex : 2,
+						hidden : true
+					}, {
+						colindex : 3,
+						hidden : (selectData != 3),
+						sorttype : "float"
+					}, {
+						colindex : 4,
+						hidden : (selectData != 4)
+					}, {
+						colindex : 5,
+						hidden : (selectData != 5)
+					}, {
+						colindex : 6,
+						hidden : (selectData != 6)
+					} ]
+				},
+				paging : {
+					rowNum : 15,
+					rowList : [ 15 ]
+				}
+
+			};
+
+			// 初始化表格
+			$("#list").smartgrid(opts);
+		}
+	};
+</script>
+</head>
+<body>
+	<div id="m"></div>
+	<div class="toolbar">
+		<ul>
+			<li class="item"><span class="back">日期</span> <input type="text"
+				style="width: 100px" id="txtDate" /></li>
+			<li class="item"><span class="back">省份</span> <input type="text"
+				style="width: 100px" id="txtProvince" /></li>
+			<li class="item"><span class="back">地区</span> <input type="text"
+				style="width: 100px" id="txtRegion" /></li>
+			<li class="item"><input type="button" class="button"
+				id="btnQuery" value="查询" /></li>
+		</ul>
+	</div>
+	<div style="clear: both"></div>
+	<div style="margin: 10px auto; width: 98%">
+		<div style="width: 30%; float: left;">
+			<div id="list" style="width: 100%;"></div>
+		</div>
+		<div style="width: 68%; float: left; margin-left: 1.5%">
+			<div id="map"
+				style="width: 100%; height: 400px; border: 1px solid #ddd;"></div>
+		</div>
+	</div>
+</body>
+</html>

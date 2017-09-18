@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>订阅</title>
+		<link href="../../themes/lightblue/page/page.css" rel="stylesheet" />
+		<link href="../../themes/lightblue/jqueryui/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" />
+		<link href="../../themes/lightblue/jqgrid/ui.jqgrid.css"  rel="stylesheet" />
+		<link href="../../themes/lightblue/css/dss-ui-dialog.css" rel="stylesheet" />
+		<script src="../../javascript/core/jquery-1.9.1.min.js"></script>
+		<script src="../../javascript/core/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
+		<script src="../../javascript/JSControl/SmartGrid/JqGrid/SmartGrid.js"></script>
+		<script src="../../javascript/JSControl/Condition/mulselect.js"></script>
+		<script src="../../javascript/JSControl/SampleChart/Scripts/SampleChart.js"></script>
+		<script src="../../javascript/common/tools.js"></script>
+		<script src="../../javascript/common/pagetools.js"></script>
+		<script src="../../javascript/common/openTabPage.js" type="text/javascript"></script>
+		<style type="text/css">
+			#subscribeTab{
+				text-align: left;
+			}
+			.sel{
+				width: 100px
+			}
+			.divTop{
+				color:#333;
+				font-size: 15px;
+				background-color: rgba(22,160,211,0.24);
+				margin-bottom: 5px;
+				margin-top:5px;
+				width:100%
+			}
+		</style>
+	    
+	    <script type="text/javascript">
+	    var subscribeList=[];
+        var currentTemplateId=dss.request("reportId");
+        var currentTemplateName=decodeURI(dss.request("reportName"));
+        $(function () {
+            method.getAllSubscribe();//根据当前用户ID获取到所有的订阅信息
+            method.getCycleSelect();
+            $("#divAdd").click(function(){
+            	var subscirbe=$("#divAdd").data("subscribe");
+            	$("#divAdd").hide();
+            	method.showSubscribeDialog(subscirbe);
+            });
+            $("#btnSure").click(function(){
+            	method.save();
+            	$("#editDiv").hide();
+            });
+            $("#selType").change(function(){
+            	if($(this).val()=="不发送"){
+            		$("#txtEmail").prop("disabled",true);
+            	}else{
+            		$("#txtEmail").prop("disabled",false);
+            	}
+            });
+        });
+        var method={
+        		getCycleSelect:function(){
+        			var sendCycle={
+        					rows:[{cells:["立即","立即"]},
+        					      {cells:["日","日"]},
+        					      {cells:["月","月"]},
+        					      {cells:["周","周"]}]
+        			};
+        			$("#selSendCycle").mulselect({ datastr: sendCycle, multiple: false,selectChange:function(){
+        				method.getDateSelect();
+        			}}); 
+        			method.getDateSelect();
+        		},
+        		getDateSelect:function(){
+        			var $nowOption=$("<option value='1'>立即</option>");
+        	        var $dayOption=$("<option value='1'>每日</option>");
+        	        var $monthOption=$("<option value='1' selected='selected'>1日</option>"+
+        			            		"<option value='2'>2日</option>"+
+        			            		"<option value='3'>3日</option>"+
+        			            		"<option value='4'>4日</option>"+
+        			            		"<option value='5'>5日</option>"+
+        			            		"<option value='6'>6日</option>"+
+        			            		"<option value='7'>7日</option>"+
+        			            		"<option value='8'>8日</option>"+
+        			            		"<option value='9'>9日</option>"+
+        			            		"<option value='10'>10日</option>"+
+        			            		"<option value='11'>11日</option>"+
+        			            		"<option value='12'>12日</option>"+
+        			            		"<option value='13'>13日</option>"+
+        			            		"<option value='14'>14日</option>"+
+        			            		"<option value='15'>15日</option>"+
+        			            		"<option value='16'>16日</option>"+
+        			            		"<option value='17'>17日</option>"+
+        			            		"<option value='18'>18日</option>"+
+        			            		"<option value='19'>19日</option>"+
+        			            		"<option value='20'>20日</option>"+
+        			            		"<option value='21'>21日</option>"+
+        			            		"<option value='22'>22日</option>"+
+        			            		"<option value='23'>23日</option>"+
+        			            		"<option value='24'>24日</option>"+
+        			            		"<option value='25'>25日</option>"+
+        			            		"<option value='26'>26日</option>"+
+        			            		"<option value='27'>27日</option>"+
+        			            		"<option value='28'>28日</option>");
+        	        var $weekOption=$("<option value='1' selected='selected'>星期一</option>"+
+        			            		"<option value='2'>星期二</option>"+
+        			            		"<option value='3'>星期三</option>"+
+        			            		"<option value='4'>星期四</option>"+
+        			            		"<option value='5'>星期五</option>"+
+        			            		"<option value='6'>星期六</option>"+
+        			            		"<option value='7'>星期日</option>"); 
+        	        var $selSendCycle=$("#selSendCycle");
+        			var $selDate=$("#selDate").empty();
+        			if($selSendCycle.val()=="立即"){
+        				 $selDate.append($nowOption);
+        			}else if($selSendCycle.val()=="日"){
+        				 $selDate.append($dayOption);
+        			}else if($selSendCycle.val()=="月"){
+        				 $selDate.append($monthOption);
+                 	}else{
+                 		 $selDate.append($weekOption);
+                 	}
+        		},
+        		haveAddButton:function(reportId,reportName){
+        			if(reportId==0){
+        				$("#divAdd").hide();
+        			}else{
+        				var flag=false;
+        				$(subscribeList).each(function(i,item){
+        					if(reportId==item.subscribeRelationPK.reportId){
+        						flag=true;
+        						return false;
+        					}
+        				});
+						if(flag){
+							$("#divAdd").hide();
+						}else{
+							var subscribe={
+									subscribeRelationPK:{
+										reportId:reportId,
+										userId:0
+									},
+									reportName:reportName,
+									sendCycle:"立即",
+									sendType:"不发送",
+									sendDate:"立即",
+									emailStr:"",
+									sendTimeStr:"9"
+							};
+							$("#divAdd").data("subscribe",subscribe);
+							$("#divAdd").show();
+						}
+        			}
+        		},
+        		bindGrid:function(){
+    	        	$("#divGrid").smartgrid({
+                        analyzerpath:dss.rootPath+"plugin/customanalysis/subscribe/list",
+                        analyzer:{
+                        },
+                        paging: {
+                            rowNum: 5,
+                            rowList: [5, 10, 20]
+                        },
+                        sort : {
+                        	colindex : 0,
+                        	order : "desc"
+                        },
+                        col: {
+                            sort: true,
+                            property:[
+                                      {colindex:0,hidden:true},
+                                      {colindex:1,align:"center"},
+                                      {colindex:2,hidden:true},
+                                      {colindex:3,align:"center"},
+                                      {colindex:4,align:"center"},
+                                      {colindex:5,align:"center"},
+                                      {colindex:6,align:"center"}
+                                      ]
+                        },
+                        callback: {
+                            gridComplete: function (grid, opts) {
+                            	$(grid).find(">tr").each(function(){
+                            		var $edit=$("<a style='padding:3px;color:blue;'>编辑</a>");
+                            		$edit.click(function(){
+                            			var tds=$(this).parent().parent().find("td");
+                            			var reportId=tds.eq(0).text();
+                            			var userId=tds.eq(2).text();
+                            			var relationPK={
+                            					reportId:reportId,
+                            					userId:userId
+                            			}
+                            			method.getSubscribe(relationPK);
+                            		});
+                            		var $del = $("<a style='padding:3px;color:blue;'>删除</a>");
+                            		$del.click(function(){
+                            			var tds=$(this).parent().parent().find("td");
+                            			var reportId=tds.eq(0).text();
+                            			var reportName=tds.eq(1).text();
+                            			var userId=tds.eq(2).text();
+                            			var relationPK={
+                            					reportId:reportId,
+                            					userId:userId
+                            			}
+                            			dss.confirm("确认删除报表名为"+"\""+reportName+"\"的记录吗?",function(){
+                            				method.del(relationPK);
+                            			});
+                            		});
+                            		var $download = $("<a style='padding:3px;color:blue;'>下载</a>");
+                            		$download.click(function(){
+                            			var tds=$(this).parent().parent().find("td");
+                            			var reportId=tds.eq(0).text();
+                            			var reportName=tds.eq(1).text();
+                            			document.location.href="download?reportId="+reportId+"&reportName="+encodeURI(reportName);
+                            		});
+                            		$(this).find("td:last").empty().append($edit).append($del).append($download);
+                            	});
+                            }
+                        }
+                       
+                        
+                    });
+        		},
+        		getSubscribe:function(relationPK){
+        			dss.ajax({
+        				url:dss.rootPath+"plugin/customanalysis/subscribe/findbyid",
+        				data:{
+        					relationPK:dss.jsonToString(relationPK)
+        				},
+        				type:"post",
+        				success:function(data){
+        					if(data.status=="0"){
+        						var subscribe = data.data;
+        						method.showSubscribeDialog(subscribe);
+        					}
+        				}
+        			});
+        		},
+        		showSubscribeDialog:function(subscribe){
+        			$("#spanReportName").text(subscribe.reportName).css({
+        				"font-size": "15px"
+        			});
+        			$("#spanReportId").text(subscribe.subscribeRelationPK.reportId);
+        			$("#spanUserId").text(subscribe.subscribeRelationPK.userId);
+        			$("#selSendCycle").val(subscribe.sendCycle);
+       				if($("#selDate")!="立即"){
+       					method.getDateSelect();
+       					$("#selDate").val(subscribe.sendDate);
+       				}
+       				$("#selTime").val(subscribe.sendTimeStr);
+       				$("#selType").val(subscribe.sendType);
+       				$("#txtEmail").val(subscribe.emailStr);
+        			$("#editDiv").show();
+                	if($("#selType").val()=="不发送"){
+                		$("#txtEmail").prop("disabled",true);
+                	}else{
+                		$("#txtEmail").prop("disabled",false);
+                	}
+        		},
+        		save:function(){
+        			var reportId=$("#spanReportId").text();
+        			var reportName=$("#spanReportName").text();
+        			var userId=$("#spanUserId").text();
+        			var sendCycle=$("#selSendCycle").val();
+        			var sendDate=$("#selDate").val();
+        			var sendTimeStr=$("#selTime").val();
+        			var sendType=$("#selType").val();
+        			var emailStr=$.trim($("#txtEmail").val());
+    	        	if(emailStr.length>0){
+    	        		var reg=/^[A-Za-zd]+([-_.][A-Za-zd]+)*@([A-Za-zd]+[-.])+[A-Za-zd]{2,5}$/;
+            			var arr=emailStr.split(";");
+            			var flag=false;
+            			var n=0;
+            			for(var i=0;i<arr.length;i++){
+            				if(""==arr[i]){
+            					n++;
+            					continue;
+            				}
+            				if(!reg.test(arr[i])){
+            					flag=true;
+            					break;
+            				}
+            			}
+            			if(flag||n==arr.length+1){
+            				dss.alert("您输入的电子邮件格式有误，请重新输入。");
+        		        	return false;
+            			}
+    	        	}
+					var subscribe={
+							subscribeRelationPK:{
+								reportId:reportId,
+								userId:userId
+							},
+							reportName:reportName,
+							sendCycle:sendCycle,
+							sendType:sendType,
+							sendDate:sendDate,
+							emailStr:emailStr,
+							sendTimeStr:sendTimeStr
+					}
+        			dss.ajax({
+        				url:dss.rootPath+"plugin/customanalysis/subscribe/save",
+        				data:{
+        					subscribe:dss.jsonToString(subscribe)
+        				},
+        				type:"post",
+        				success:function(data){
+        					if(data.status=="0"){
+        						method.getAllSubscribe();
+        					}
+        				}
+        			});
+						
+        		},
+        		del:function(relationPK){
+        			dss.ajax({
+        				url:dss.rootPath+"plugin/customanalysis/subscribe/delbyid",
+        				data:{
+        					relationPK:dss.jsonToString(relationPK)
+        				},
+        				type:"post",
+        				success:function(data){
+        					if(data.status=="0"){
+        						dss.alert("删除成功",function(){
+        							method.getAllSubscribe();
+        						})
+        					}
+        				}
+        			});
+        		},
+        		getAllSubscribe:function(){//根据当前用户ID获取到所有的订阅信息
+        			dss.ajax({
+        				url:dss.rootPath+"plugin/customanalysis/subscribe/findbyuserid",
+        				success:function(data){
+        					if(data.status=="0"){
+        						subscribeList=data.data;
+        						method.bindGrid();
+        						method.haveAddButton(currentTemplateId,currentTemplateName);
+        					}
+        				}
+        			})
+        		}
+        		
+        }
+    </script>
+	</head>
+	<body style="overflow-y:scroll;height: 200px;">
+		<div>
+			<div>
+				<div class="divTop">&nbsp;&nbsp;已订阅模板</div>
+		        <div id="divGrid"></div>
+			</div>
+	        <div id="editDiv" style="display: none;" >
+	        	<div  class="divTop">&nbsp;&nbsp;订阅编辑：
+	        		<span id="spanReportName"></span>
+	        		<span id="spanReportId" style="display: none;"></span>
+	        		<span id="spanUserId" style="display: none;"></span>
+	        	</div>
+		        <div>
+		        	<table id="subscribeTab" border="1" bordercolor="#ccc" cellspacing="0" style="width: 100%;border-color: #ccc" >
+			        	<tr>
+			        		<td style="text-align: right;">周期：</td>
+			        		<td>
+			        			<select id="selSendCycle" class="sel">
+			        				<option value="立即">立即</option>
+			        				<option value="日">日</option>
+			        				<option value="月">月</option>
+			        				<option value="周">周</option>
+			        			</select>
+			        		</td>
+			        		<td style="text-align: right;">日期：</td>
+			        		<td>
+			        			<select id="selDate" class="sel">
+			        			</select>
+			        		</td>
+			        	</tr>
+			        	<tr>
+			        		<td style="text-align: right;">时间：</td>
+			        		<td>
+			        			<select id="selTime" class="sel">
+			        				<option value="0">0时</option>
+			        				<option value="1">1时</option>
+			        				<option value="2">2时</option>
+			        				<option value="3">3时</option>
+			        				<option value="4">4时</option>
+			        				<option value="5">5时</option>
+			        				<option value="6">6时</option>
+			        				<option value="7">7时</option>
+			        				<option value="8">8时</option>
+			        				<option value="9" selected="selected">9时</option>
+			        				<option value="10">10时</option>
+			        				<option value="11">11时</option>
+			        				<option value="12">12时</option>
+			        				<option value="13">13时</option>
+			        				<option value="14">14时</option>
+			        				<option value="15">15时</option>
+			        				<option value="16">16时</option>
+			        				<option value="17">17时</option>
+			        				<option value="18">18时</option>
+			        				<option value="19">19时</option>
+			        				<option value="20">20时</option>
+			        				<option value="21">21时</option>
+			        				<option value="22">22时</option>
+			        				<option value="23">23时</option>
+			        			</select>
+			        		</td>
+			        		<td style="text-align: right;">类型：</td>
+			        		<td>
+			        			<select id="selType" class="sel">
+			        				<option value="发送">发送</option>
+			        				<option value="不发送"  selected="selected">不发送</option>
+			        			</select>
+			        		</td>
+			        	</tr>
+			        	<tr>
+			        		<td rowspan="2" style="text-align: right;">抄送：</td>
+			        		<td colspan="3"><input type="text" style="width: 97%" id="txtEmail" disabled="disabled"></td>
+			        	</tr>
+			        	<tr>
+			        		<td colspan="3">抄送多人以“;”分隔</td>
+			        	</tr>
+		        	</table>
+		        </div>
+		        <div style="margin-top: 5px">
+		        	<input type="button" value="确定" class="button" id="btnSure" style="margin-left: 565px;">
+		        </div>
+	        </div>
+	       	<div style="display: none;margin-top: 5px" id="divAdd">
+	        	<input type="button" id="btnAdd" class="button" value="添加当前模板" style="margin-left: 520px"/>
+	        </div>
+		</div>
+	</body>
+</html>

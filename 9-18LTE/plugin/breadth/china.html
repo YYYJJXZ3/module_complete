@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>覆盖广度分析</title>
+<link rel="stylesheet" href="../LTE/css/layout.css">
+<link rel="stylesheet" href="../LTE/css/map.css">
+<link rel="stylesheet" href="../LTE/css/jsonTable.css">
+<link rel="stylesheet" href="../LTE/css/dropShowHide.css">
+<link rel="stylesheet"
+	href="../../themes/lightblue/jqueryui/jquery-ui-1.10.3.custom.min.css">
+<link rel="stylesheet" href="../../themes/lightblue/page/page.css">
+<script src="../../javascript/core/jquery-1.9.1.min.js"></script>
+<script src="../../javascript/common/tools.js"></script>
+<script src="../LTE/js/radio.js"></script>
+<script src="../LTE/js/dropShowHide.js"></script>
+<script src="../../javascript/core/jquery-ui-1.10.3.custom.min.js"></script>
+<script src="../../javascript/common/pagetools.js"></script>
+<script src="../../javascript/common/openTabPage.js"></script>
+<script src="../../javascript/JSControl/Condition/timepicker.js"></script>
+<script
+	src="../../javascript/JSControl/SampleChart/Scripts/SampleChart.js"></script>
+<script type="text/javascript">
+
+var dataSource = {};
+
+
+	$(function() {
+		dss.pageheader("m");
+		$("#txtDate").timepicker({
+			showTypeDay : true,
+			showTypeMonth: true,
+			showTypeWeek: true
+		});
+
+		$("#btnQuery").click(function() {
+			appendD1();
+
+		});
+
+			appendD1();
+		function getChart(data) {
+			data =data.data ;
+			bindChart("map", {
+				DataSource : data,
+				YDataColIndex : "1",
+				IsShowPercentValue : true,
+				LegendPosition : "LEFTBOTTOM",
+				MapType : [ 'china' ],
+				MapRangeOrLegend : "legend",
+				/*MapLegend: [
+				 { name: '<=20%', min: null, max: 20, color: '#FF7F50' },
+				 { name: '20%-40%', min: 20, max: 40, color: '#87CEFA' },
+				 { name: '40%-60%', min: 40, max: 60, color: '#DA70D6' },
+				 { name: '60%-80%', min: 60, max: 80, color: '#32CD32' },
+				 { name: '>80%', min: 80, max: null, color: '#6495ED' }
+				 ]*/
+				MapLegend : [ {
+					name : '<=70%',
+					min : null,
+					max : 70,
+					color : '#CC0033'
+				}, {
+					name : '70%-90%',
+					min : 70,
+					max : 90,
+					color : '#FFFF00'
+				}, {
+					name : '>90%',
+					min : 90,
+					max : null,
+					color : '#00CC33'
+				} ]
+			});
+		}
+
+		function bindChart(div, option) {
+			var opts = $.extend(true, {
+				YFormatType : "1000",
+				BgColor : '#e2eefc',
+				BorderColor : '#7D7DFF',
+				ClickEvent : [ {
+					click : mapClick
+				} ],
+				ChartType : "map",
+				callback : {
+					complete : function(myChart) {
+						//window.onresize = myChart.resize;
+					}
+				}
+			}, option);
+
+			$("#" + div).SampleChart(opts);
+		}
+
+		function mapClick(xValue, yValue, value) {
+		    //var url = encodeURI(dss.rootPath + "breadth/province?province=" + encodeURI(xValue) + "&time=" + encodeURI($("#txtDate").timepicker("getDateStr")));
+		    var url = "plugin/breadth/province?province=" + encodeURI(xValue) + "&time=" + encodeURI($("#txtDate").timepicker("getDateStr")) + "&listid=" + 308561878;
+			openPageInTab("省覆盖广度分析", url);
+		}
+
+		// 排序
+		function sortByKey(array, key) {
+			return array.sort(function(a, b) {
+				var x = a[key];
+				var y = b[key];
+				return ((x > y) ? -1 : ((x < y) ? 1 : 0));
+			});
+		}
+
+		function appendD1() {
+			var url = encodeURI(dss.rootPath
+					+ "breadth/province?tid=1021762353&dayStr="
+					+ $("#txtDate").timepicker("getDateStr"));
+			$.getJSON(url, function(data) {
+				var $jsontip = $("#jsonTip1");
+
+				var newdata = $.extend({}, data.data);
+				newdata.rows = [];
+
+				$.each(data.data.rows, function(i, r) {
+					var item = {};
+					$.each(r.cells, function(j, c) {
+						item["col" + j] = c;
+					})
+					newdata.rows.push(item);
+				})
+				getChart(data);
+				newdata = sortByKey(newdata.rows, 'col1');
+
+				// 绘制
+				var strHtml = "";//存储数据的变量
+				$jsontip.empty();//清空内容
+				$.each(newdata, function(infoIndex, info) {
+					strHtml += '<tr><td><b class="roleNum">' + (infoIndex + 1)
+							+ '</b></td><td>' + info.col0 + '</td><td>'
+							+ info.col1 + '</td></tr>';
+				})
+				$jsontip.html(strHtml);//显示处理后的数据
+
+				// 前十个tr中，第一个td中的b，设置背景样式。
+				$.each($('#div1 tr').slice(1, 11), function(i, item) {
+					$(item).children('td').eq(0).children('b').css(
+							"background-color", "#3590de");
+				});
+
+				$.each($('#div1 tr').slice(1, 7), function(i, item) {
+					$(item).children('td').eq(1).css("color", "#0002c0");
+				});
+			})
+		}
+
+	});
+</script>
+</head>
+<body>
+
+	<div id="m"></div>
+	<div class="toolbar">
+		<ul>
+			<li class="item"><span class="back">日期</span> <input type="text"
+				style="width: 100px" id="txtDate" /></li>
+			<li class="item"><input type="button" class="button"
+				id="btnQuery" value="查询" /></li>
+		</ul>
+	</div>
+
+	<div class="mainZone">
+
+		<div class="rListZone">
+
+			<div id="div1">
+				<div class="divframe">
+					<table width="100%" class="table">
+						<thead>
+							<tr>
+								<th></th>
+								<th>区域</th>
+								<th>面积覆盖率</th>
+							</tr>
+						</thead>
+
+						<tbody id="jsonTip1"></tbody>
+
+					</table>
+				</div>
+			</div>
+
+		</div>
+
+		<div class="lComplexZone">
+
+			<div class="cmapZone">
+				<!--<div class="showHide">
+					<p class="pPage">
+						<input type="button" id="hide" value="&nbsp;全国感知优良率 "><b>-</b>
+					</p>
+
+
+					<input id="show" type="button">
+				</div>-->
+
+
+				<div class="echart-map">
+					<div class="map" id="map"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
+
