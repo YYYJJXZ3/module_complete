@@ -35,6 +35,27 @@
             cursor: pointer;
         }
 
+
+        div{
+            width: 300px;
+            height: 300px;
+        }
+        #d1{
+            position: fixed;
+            background-color: #faa;
+            top: 200px;
+            display: none;
+
+        }
+
+        #d2{
+            position: fixed;
+            background-color: #afa;
+            display: none;
+            top: 200px;
+            left: 300px;
+        }
+
     </style>
 
     <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
@@ -47,19 +68,20 @@
 
             $("#t1").click(function () {
                 if ($(this).prop("checked")) {
-                    alert("选中");
+
+                    $("#d1").show();
                 }
                 else {
-                    alert("没有选中");
+                    $("#d1").hide();
                 }
             });
 
             $("#t2").click(function () {
                 if ($(this).prop("checked")) {
-                    alert("选中");
+                    $("#d2").show();
                 }
                 else {
-                    alert("没有选中");
+                    $("#d2").hide();
                 }
             });
 
@@ -76,6 +98,9 @@
         </ul>
     </li>
 </ul>
+
+<div id="d1"></div>
+<div id="d2"></div>
 
 </body>
 </html>
