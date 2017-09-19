@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/jquery-1.9.1.min.js"></script>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            text-decoration: none;
+            font-size: 12px;
+
+
+        }
+
+        .box {
+            float: left;
+            margin-top: 10px;
+            margin-left: 3px;
+            color: red;
+
+        }
+
+        .div {
+
+            width: 100%;
+            height: 18px;
+            line-height: 20px;
+            color: #FFF;
+            /*text-align: center;*/
+            margin:0;
+        }
+
+        .div_a {
+            width: 100px;
+            overflow: hidden;
+            display: none;
+            /*border:1px solid #eee;*/
+        }
+
+        .div_a ul {
+            margin: 0;
+            padding: 0;
+        }
+
+        .div_a li {
+            width: 100%;
+            float: left;
+            line-height: 18px;
+            list-style: none;
+            text-align: center;
+        }
+
+        .div_a li a {
+            width: 100%;
+            text-align: left;
+            float: left;
+        }
+
+        .div_a li dl {
+            margin: 0;
+            padding: 0;
+        }
+
+        .div_a li dd {
+            float: left;
+            margin: 0;
+            text-align: left;
+            width: 100%;
+            text-indent: 5px;
+        }
+
+        .show {
+            display: block;
+        }
+
+        .hide {
+            display: none;
+        }
+
+        .wlgq {
+            height: 18px;
+            overflow: hidden;
+        }
+
+        .nm {
+            height:auto;
+        }
+
+
+        #d1{
+            position: fixed;
+            background-color: #faa;
+            top: 400px;
+            display: none;
+            width: 300px;
+            height: 300px;
+
+        }
+
+        #d2{
+            position: fixed;
+            background-color: #afa;
+            display: none;
+            top: 400px;
+            left: 300px;
+            width: 300px;
+            height: 300px;
+        }
+    </style>
+</head>
+<body>
+<div class="box" id="exa">
+
+    <div class="div"><a id="hidea" href="#">呈现内容<img class="more" src="img/more.png"/></a></div>
+    <div class="div_a" id="hide">
+        <ul>
+            <li>
+
+                <a class="wlgq" href="#"><input type="checkbox"  id="t2"/>APP感知覆盖
+                </a>
+
+
+                 <a class="wlgq" href="#" ><input type="checkbox"  id="t1" />3A5D规划<img class="more" src="img/more.png"/>
+                    <dl id="dl">
+                        <dd><input type="checkbox" checked="checked"/>全部 </dd>
+                        <dd><input type="checkbox">TOP100 </dd>
+                        <dd><input type="checkbox">TOP200 </dd>
+                        <dd><input type="checkbox">TOP500 </dd>
+                    </dl>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+</div>
+
+<div id="d1"></div>
+<div id="d2"></div>
+
+<script>
+    $(function () {
+        $("#hidea").click(function () {
+            $("#hide").slideToggle("slow");
+        })
+
+        $(".wlgq").mouseenter(function () {
+            $(this).hasClass("nm") ? $(this).removeClass("nm").siblings().removeClass("nm") : $(this).addClass("nm").siblings().removeClass("nm");
+        })
+
+
+        $("#t1").click(function () {
+            showHide(1);
+        });
+
+        $("#t2").click(function () {
+            showHide(2);
+        });
+
+
+    })
+    function showHide(index) {
+        if($("#t"+index).prop("checked")){
+            $("#d"+index).show();
+//                    methods.openlayer.dxGrid.setVisible(true);
+//                    methods.openlayer.dxLayer.setVisible(true);
+        }
+        else
+        {
+            $("#d"+index).hide();
+//                    methods.openlayer.dxGrid.setVisible(false);
+//                    methods.openlayer.dxLayer.setVisible(false);
+        }
+    }
+
+</script>
+</body>
+</html>
