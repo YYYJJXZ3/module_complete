@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title></title>
+        <style type="text/css">
+            .cross{
+                margin: 200px;
+                width: 40px;
+                height: 40px;
+                background-color: #F3F9FF;
+                border-radius: 20px;
+                border: 1px solid #DBE6EF;
+                display: inline-block;
+                position: relative;
+            }
+            .cross:after{
+                content: "\25BC";//特殊字符或形状
+            color: #a2b6c5;
+                font-size: 40px;
+                position: absolute;
+                cursor: pointer;
+                top: -9px;
+                left: 4px;
+            }
+            .cross:hover::after{
+                content: "\25B2";//特殊字符或形状
+            color: #a2b6c5;
+                font-size: 40px;
+                position: absolute;
+                cursor: pointer;
+                top: -7px;
+                left: 1px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="" class="cross"></div>
+
+    </body>
+</html>
