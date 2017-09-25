@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <link href="../../../themes/lightblue/css/ol.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/page/page.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/jqgrid/ui.jqgrid.css" rel="stylesheet" />
+    <script type="text/javascript" src="../../../javascript/core/jquery-1.9.1.min.js"></script>
+    <script src="../../../javascript/common/tools.js"></script>
+    <script src="../../../javascript/common/pagetools.js"></script>
+    <script src="../../../Javascript/JSControl/Condition/comselect.js" type="text/javascript"></script>
+
+    <script src="../../../javascript/JSControl/Condition/controlmanagernew.js" type="text/javascript"></script>
+
+    <script src="../../../javascript/JSControl/Common/pageheader.js"></script>
+    <script src="../../../javascript/JSControl/SmartGrid/JqGrid/SmartGrid.js"></script>
+    <script src="../../../javascript/JSControl/gis/ol.js"></script>
+    <script src="../../../javascript/JSControl/Condition/timepicker.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            dss.pageheader("pagehead");
+            methods.initPage();
+
+
+            $("#s1").click(function () {
+                $(".dropZone").children().stop().slideToggle(300);
+
+                $("#s2").show();
+                $("#s1").hide();
+
+            })
+
+
+            $("#s2").click(function () {
+                $(".dropZone").children().stop().slideToggle(300);
+
+                $("#s1").show();
+                $("#s2").hide();
+
+            })
+
+            $("#t1").click(function () {
+                showHide(1);
+            });
+
+            $("#t2").click(function () {
+                showHide(2);
+            });
+        });
+        function showHide(index) {
+            if ($("#t" + index).prop("checked")) {
+                if (index == 1) {
+                    methods.openlayer.dxLayer.setVisible(true);
+                }
+                else {
+                    methods.openlayer.dxGrid.setVisible(true);
+                }
+            }
+
+            else {
+                if (index == 1) {
+                    methods.openlayer.dxLayer.setVisible(false);
+                }
+                else {
+                    methods.openlayer.dxGrid.setVisible(false);
+                }
+
+            }
+        }
+
+        var methods = {
+            initPage: function () {
+                $("#btnQuery").click(function () {
+                    methods.init();
+                    //methods.getPageData();
+                });
+                $("#btnRule").click(function () {
+                    var item = [
+                        {
+                            name: 'MR权重',
+                            unit: '%',
+                            value: 20
+                        },
+                        {
+                            name: '最大RRC连接权重',
+                            unit: '%',
+                            value: 10
+                        },
+                        {
+                            name: '总流量权重',
+                            unit: '%',
+                            value: 15
+                        },
+                        {
+                            name: '重定向3G权重',
+                            unit: '%',
+                            value: 10
+                        },
+                        {
+                            name: 'KQI得分权重',
+                            unit: '%',
+                            value: 25
+                        },
+                        {
+                            name: '异网覆盖权重',
+                            unit: '%',
+                            value: 20
+                        }
+                    ];
+                    var table = $("<table></table>");
+                    $.each(item, function (i, n) {
+                        var tr = $("<tr></tr>").appendTo(table);
+                        $("<td style='width:120px;text-align:right'></td>").text(n.name + ":").appendTo(tr);
+                        $("<td><input type='text' style='width:40px' value='" + n.value + "'/></td>").appendTo(tr);
+                        $("<td  style='width:100px;'></td>").text(n.unit).appendTo(tr);
+                    });
+                    dss.dialog({
+                        title: '权重阈值设置',
+                        content: table,
+                        button: [
+                            {
+                                value: '确认'
+                            },
+                            {
+                                value: '取消'
+                            }
+                        ]
+                    });
+                });
+                methods.initTelecom();
+                methods.iniTime();
+                methods.initSelect();
+            },
+            iniTime: function () {
+                var timeOpt = {
+                    showTypeDay: false,
+                    showTypeWeek: true,
+                    showTypeMonth: false,
+                    defaultDateStr: undefined,
+                    isTile: false,
+                    range: false
+                };
+
+                $("#txtDate").timepicker(timeOpt);
+            },
+            initSelect: function () {
+                var opts = {
+                    conditions: [
+                        {
+                            width: 80,
+                            defaultShow: '省',
+                            type: 'dropdown',
+                            items: [
+                                {
+                                    dimid: "-1078736458",
+                                    levelname: '省',
+                                    filterValue: ['未知省'],
+                                    initClass: "commdata",
+                                    // hascheckall: true,
+                                    child: [1]
+                                }
+                            ]
+                        },
+                        {
+                            width: 80,
+                            defaultShow: '地区',
+                            type: 'dropdown',
+                            items: [
+                                {
+                                    dimid: "-1078736458",
+                                    levelname: '地区',
+                                    filterValue: ['未知省'],
+                                    // hascheckall: true,
+                                    initClass: "commdata"
+                                }
+                            ]
+                        },
+                    ]
+                };
+
+
+                $("#divSlt").controlmanager(opts);
+
+            },
+            init: function () {
+                var act = methods.getAct();
+
+                methods.initData(act);
+            },
+            getAct: function () {
+                var con = $("#divSlt").controlmanager("getSelResults");
+                return {
+                    day: $("#txtDate").timepicker("getDateStr"),
+                    province: con[0].value[0],
+                    region: con[1].value[0],
+                    city: ''
+
+                };
+            },
+            openlayer: {
+                view: new ol.View({
+                    //[119.296494,26.074508] [119.974062,31.811226]
+                    //[119.31568, 26.11803]
+                    center: ol.proj.transform([119.974062, 31.811226], 'EPSG:4326', 'EPSG:3857'),
+                    zoom: 4,
+                    minZoom: 4
+                }),
+                gisUrl: 'http://42.99.16.96:53088/BaseMap/rest/services/China_Community_BaseMap/MapServer',
+                dxMap: null,
+                dxLayer: null,
+                dxGrid: null,
+                timeOutShow: null,
+                arrSelect: [],
+                arrShow: [],
+                linkage: null,
+                overlaySelected: null
+            },
+            initTelecom: function () {
+                var layers = [
+                    new ol.layer.Tile({
+                        source: new ol.source.TileArcGISRest({
+                            ratio: 1,
+                            params: {
+                            },
+                            url: methods.openlayer.gisUrl
+                        })
+                    })
+                ];
+                methods.openlayer.dxMap = new ol.Map({
+                    layers: layers,
+                    target: 'dx',
+                    logo: false,
+                    view: methods.openlayer.view
+                });
+
+
+                methods.openlayer.dxMap.on('click', function (event) {
+                    methods.setToolTip(false);
+                    methods.openlayer.dxMap.forEachFeatureAtPixel(event.pixel, function (feature) {
+                        // 为移动到的feature发送自定义的mousemove消息
+                        feature.dispatchEvent({ type: 'click', event: event });
+                    });
+                });
+            },
+            initData: function (act) {
+                $.ajax({
+                    url: '../handler/WirelessPlanning_1.ashx?action=point',
+                    data: act,
+                    type: 'post',
+                    dataType: 'json',
+                    success: function (data) {
+                        // alert(data.data);
+                        if (data.status == 0) {
+
+                            methods.setCell(data.data);
+                        }
+                    }
+                });
+                $.ajax({
+                    url: '../handler/WirelessPlanning_1.ashx?action=grid',
+                    data: act,
+                    type: 'post',
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.status == 0) {
+                            methods.setGrid(data.data);
+                        }
+                    }
+                });
+            },
+            setCell: function (source) {
+                if (methods.openlayer.dxLayer != null) {
+                    methods.openlayer.dxLayer.getSource().clear(true);
+                }
+
+                methods.openlayer.arrShow = [];
+                var minX = null, maxX = null, minY = null, maxY = null;
+
+
+                if (source.point.length > 0) {
+                    $.each(source.point, function (i, item) {
+                        var x = parseFloat(item[3]), y = parseFloat(item[2]);
+                        if (minX == null || minX > x) {
+                            minX = x;
+                        }
+                        if (maxX == null || maxX < x) {
+                            maxX = x;
+                        }
+                        if (minY == null || minY > y) {
+                            minY = y;
+                        }
+                        if (maxY == null || maxY < y) {
+                            maxY = y;
+                        }
+
+                        var pos = ol.proj.transform([x, y], 'EPSG:4326', 'EPSG:3857');
+
+                        var circle = new ol.Feature({
+                            geometry: new ol.geom.Point(pos),
+                            item: item
+                        });
+
+                        circle.setStyle(new ol.style.Style({
+                            image: new ol.style.Icon({
+                                src: dss.rootPath + 'javascript/JSControl/gis/images/cell.png',
+                                color: "green",
+                                anchor: [0, 0.5],
+                                rotateWithView: true,
+                                rotation: (parseFloat(item[15]) - 90) * Math.PI / 180
+                            })
+                        }));
+
+
+
+                        methods.openlayer.arrShow.push(circle);
+
+                        circle.on("click", function () {
+                            methods.setClick(circle, item, 2);
+                        });
+                    });
+                }
+
+                methods.openlayer.dxLayer = new ol.layer.Vector({
+                    source: new ol.source.Vector({
+                        features: methods.openlayer.arrShow
+                    })
+                });
+                methods.openlayer.dxMap.addLayer(methods.openlayer.dxLayer);
+
+                if (minX != null) {
+                    methods.openlayer.dxMap.getView().fit(ol.proj.transformExtent([minX, minY, maxX, maxY], 'EPSG:4326', 'EPSG:3857'), methods.openlayer.dxMap.getSize());
+                }
+            },
+            setGrid: function (source) {
+                var arrpoint = [];
+                if (source.grid.length > 0) {
+                    $.each(source.grid, function (i, item) {
+
+                        var x = parseFloat(item[3]), y = parseFloat(item[2]);
+                        var x1 = parseFloat(item[5]), y1 = parseFloat(item[4]);
+
+                        var pos = ol.proj.transform([x, y], 'EPSG:4326', 'EPSG:3857');
+                        var pos1 = ol.proj.transform([x1, y1], 'EPSG:4326', 'EPSG:3857');
+
+                        var paY = pos[0], paX = pos1[1], pbY = pos[0], pbX = pos[1],
+                            pcY = pos1[0], pcX = pos1[1], pdY = pos1[0], pdX = pos[1];
+
+                        var circle = new ol.Feature({
+                            geometry: new ol.geom.Polygon([[pos, [pos[0], pos1[1]], pos1, [pos1[0], pos[1]]]]),
+                            item: item
+                        });
+                        var color = methods.getColor(item[3], item[4], item[5]);
+                        circle.setStyle(new ol.style.Style({
+                            stroke: new ol.style.Stroke({
+                                width: 2,
+                                color: color
+
+                            }),
+                            fill: new ol.style.Fill({
+                                color: color
+                            })
+                        }));
+
+
+                        arrpoint.push(circle);
+
+
+                    });
+                }
+                methods.openlayer.dxGrid = new ol.layer.Vector({
+                    source: new ol.source.Vector({
+                        features: arrpoint
+                    })
+                });
+                methods.openlayer.dxMap.addLayer(methods.openlayer.dxGrid);
+            },
+            getColor: function (m, n, l) {
+                if (l == "1") {
+                    return "rgba(255, 0, 0, 0.4)";
+                }
+                else {
+                    if (n == "1") {
+                        return "rgba(255, 242, 0, 0.4)";
+                    }
+                    else {
+                        return "rgba(0, 255, 0, 0.4)";
+                    }
+                }
+            },
+            setToolTip: function (flag, item) {
+                $(document.body).find("div[class='tooltip']").remove();
+                if (!flag) {
+                    return;
+                }
+                setTimeout(function () {
+                    var div = $("<div></div>").addClass("tooltip");
+                    var names;
+                    if (item[0] == "1") {
+                        names = ["", "纬度", "经度", "业务优良率(%)", "总得分", "mr", "最大RRC连接", "上下行总流量", "重定向到3G占比", "Qoe得分",
+                            "关联小区id1", "关联小区id1总得分", "关联小区id2", "关联小区id2总得分", "关联小区id3", "关联小区id3总得分"
+                        ];
+                    }
+                    else {
+                        names = [
+                            "小区ECI",
+                            "基站ID",
+                            "纬度",
+                            "经度",
+                            "MR",
+                            "最大RRC连接数",
+                            "上下行总流量",
+                            "重定向到3G占比",
+                            "QOE得分",
+                            "总得分",
+                            "地市ID",
+                            "区县ID",
+                            "省份ID",
+                            "地市描述",
+                            "省份描述",
+                            "方位角"
+                        ];
+                    }
+                    $.each(item, function (key, value) {
+                        if (key >= 0) {
+                            if (key % 2 == 1) {
+                                if (item[0] == "2" && key == 1) {
+                                    div.append("<dl>" + value + "</dl>");
+                                }
+                                else {
+                                    div.append("<dl><dt>" + names[key] + "</dt><dd>" + value + "</dd></dl>");
+                                }
+                            }
+                            else {
+                                div.append("<dl class=\"selected\"><dt>" + names[key] + "</dt><dd>" + value + "</dd></dl>");
+                            }
+                        }
+                    });
+                    $("#dx").after(div);
+                }, 100);
+            },
+            setClick: function (circle, items, itemtype) {
+                methods.setToolTip(true, items);
+                if (methods.openlayer.overlaySelected != null) {
+                    var itemData = methods.openlayer.overlaySelected.get("item");
+                    if (itemData[0] == "1") {
+                        methods.openlayer.overlaySelected.setStyle(new ol.style.Style({
+                            image: new ol.style.Circle({
+                                radius: 7,
+                                fill: new ol.style.Fill({
+                                    color: "#0084cf"
+                                })
+                            })
+                        }));
+                    }
+                    else {
+                        var _img = methods.openlayer.overlaySelected.getStyle().getImage(),
+                            rate = parseFloat(itemData[4]);
+                        methods.openlayer.overlaySelected.setStyle(new ol.style.Style({
+                            image: new ol.style.Icon({
+                                src: _img.getSrc(),
+                                color: (rate > 85 ? "#66b732" : (rate >= 70 ? "#e0c423" : "#bc471f")),
+                                anchor: [0, 0.5],
+                                rotateWithView: true,
+                                rotation: _img.getRotation()
+                            })
+                        }));
+                    }
+                }
+
+                if (items[0] == "1") {
+                    circle.setStyle(new ol.style.Style({
+                        image: new ol.style.Circle({
+                            radius: 7,
+                            fill: new ol.style.Fill({
+                                color: "blue"
+                            })
+                        })
+                    }));
+                }
+                else {
+                    var _st = circle.getStyle().getImage(),
+                        _rate = parseFloat(items[4]);
+
+                    circle.setStyle(new ol.style.Style({
+                        image: new ol.style.Icon({
+                            src: _st.getSrc(),
+                            color: (_rate > 85 ? "green" : (_rate >= 70 ? "yellow" : "red")),
+                            anchor: [0, 0.5],
+                            rotateWithView: true,
+                            rotation: _st.getRotation()
+                        })
+                    }));
+                }
+                methods.openlayer.overlaySelected = circle;
+
+
+                if (methods.openlayer.linkage != null) {
+                    clearInterval(methods.openlayer.linkage);
+                    var len = methods.openlayer.arrSelect.length;
+                    for (var i = 0; i < len; i++) {
+                        var img = methods.openlayer.arrSelect[i].getStyle()
+                        img.getImage().setOpacity(1);
+                        methods.openlayer.arrSelect[i].setStyle(img);
+                    }
+                }
+                methods.openlayer.arrSelect = [];
+
+
+                for (var i = 0; i < methods.openlayer.arrShow.length; i++) {
+                    var itemData = methods.openlayer.arrShow[i].get("item");
+                    if (items[0] == "1") {
+                        if (itemData[0] == "2" && (itemData[2] == items[10] || itemData[2] == items[12] || itemData[2] == items[14])) {
+                            methods.openlayer.arrSelect.push(methods.openlayer.arrShow[i]);
+                        }
+                    }
+                    else {
+                        if (itemData[0] == "1" && itemData[10] == items[2]) {
+                            methods.openlayer.arrSelect.push(methods.openlayer.arrShow[i]);
+                        }
+                        else if (itemData[0] == "2" && (itemData[2] == items[14] || itemData[2] == items[15])) {
+                            methods.openlayer.arrSelect.push(methods.openlayer.arrShow[i]);
+                        }
+                    }
+                }
+
+                if (methods.openlayer.arrSelect.length > 0) {
+                    methods.openlayer.linkage = setInterval(function () {
+                        for (var i = 0; i < methods.openlayer.arrSelect.length; i++) {
+                            var img = methods.openlayer.arrSelect[i].getStyle()
+                            var opa = img.getImage().getOpacity();
+                            var _t = opa == 1 ? 0.1 : 1;
+                            img.getImage().setOpacity(_t);
+                            methods.openlayer.arrSelect[i].setStyle(img);
+                        }
+
+                    }, 1000);
+                }
+            }
+        }
+    </script>
+    <style type="text/css">
+        .tooltip {
+            width: 300px;
+            font-size: 12px;
+            border: 1px solid rgba(139, 157, 172, 1);
+            position: absolute;
+            background-color: #fff;
+            display: block;
+            top: 0px;
+            right: 0px;
+        }
+
+        .tooltip dl {
+            line-height: 18px;
+            height: 18px;
+            margin: 0px;
+            padding: 0px;
+            text-align: center;
+        }
+
+        .tooltip dl:hover {
+            background-color: rgba(220, 238, 244, 1);
+        }
+
+        .tooltip dl dt {
+            float: left;
+            width: 120px;
+            border-right: 1px solid rgba(139, 157, 172, 1);
+            text-align: center;
+        }
+
+        .tooltip dl dd {
+            margin-left: 120px;
+            text-align: right;
+            padding-right: 5px;
+        }
+
+        .selected {
+            background-color: rgba(241, 244, 248, 1);
+        }
+
+
+        .box {
+            position: fixed;
+            top: 54%;
+            width: 100%;
+        }
+
+        .mainZone{
+            position: absolute;
+            width: 120px;
+            height: auto;
+            background-color: #5f89b2;
+            opacity:0.8;
+            z-index: 999;
+            color: #fff;
+        }
+        .all{
+
+            opacity: 1;
+            list-style: none;
+        }
+
+        .all li{
+            padding-left: 5px;
+        }
+
+        .secondList{
+            padding-left: 10px;
+        }
+
+        #s2 {
+            display: none;
+        }
+    </style>
+
+</head>
+<body>
+<div id="pagehead"></div>
+<div id="marker" title="Marker"></div>
+<div class="toolbar">
+    <ul>
+        <li class="item"><span class="back">日期</span><input type="text" id="txtDate" style="width: 100px;" /></li>
+        <li class="item">
+            <div id="divSlt"></div>
+        </li>
+        <li class="item">
+            <input id="btnRule" type="button" class="button" value="算法阈值调整" /></li>
+        <li class="item">
+            <input id="btnQuery" type="button" class="button" value="开始规划" /></li>
+    </ul>
+</div>
+<div style="clear: both;"></div>
+<div style="width: 99%; margin: 0px auto;">
+    <div style="width: 100%; position: relative;">
+        <div style="width: 100%; height: 480px; border: 1px solid #ccc;" id="dx"></div>
+
+
+        <div class="box" id="exa">
+
+            <div class="mainZone">
+                <ul class="all">
+                    <span id="s1">&#9650;</span><span id="s2">&#9660;</span>呈现内容
+                    <div class="dropZone">
+                        <li>
+                            <input type="checkbox" id="t2" />APP覆盖感知</li>
+                        <li>
+                            <input type="checkbox" id="t1" />3A5D规划
+                            <ul class="secondList">
+                                <li>
+                                    <input type="checkbox" checked="checked" />全部</li>
+                                <li>
+                                    <input type="checkbox">TOP100</li>
+                                <li>
+                                    <input type="checkbox">TOP200</li>
+                                <li>
+                                    <input type="checkbox">TOP500</li>
+                            </ul>
+                        </li>
+                    </div>
+                </ul>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+    <div id="css_animation"></div>
+</body>
+</html>

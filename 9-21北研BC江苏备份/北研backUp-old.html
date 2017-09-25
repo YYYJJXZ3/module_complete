@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title></title>
-    <link href="../../../themes/lightblue/css/ol.css" rel="stylesheet" />
-    <link href="../../../themes/lightblue/page/page.css" rel="stylesheet" />
-    <link href="../../../themes/lightblue/jqgrid/ui.jqgrid.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/css/ol.css" rel="stylesheet"/>
+    <link href="../../../themes/lightblue/page/page.css" rel="stylesheet"/>
+    <link href="../../../themes/lightblue/jqgrid/ui.jqgrid.css" rel="stylesheet"/>
     <script type="text/javascript" src="../../../javascript/core/jquery-1.9.1.min.js"></script>
     <script src="../../../javascript/common/tools.js"></script>
     <script src="../../../javascript/common/pagetools.js"></script>
@@ -17,31 +17,6 @@
     <script src="../../../javascript/JSControl/SmartGrid/JqGrid/SmartGrid.js"></script>
     <script src="../../../javascript/JSControl/gis/ol.js"></script>
     <script src="../../../javascript/JSControl/Condition/timepicker.js"></script>
-
-
-    <style>
-        .box {
-            position: fixed;
-            top: 54%;
-            width:100%;
-        }
-
-        ul {
-            margin: 0;
-            list-style: none;
-            padding-left: 10px;
-
-        }
-
-        .dropZone {
-            position: absolute;
-            border: dotted;
-        }
-
-        #s2 {
-            display: none;
-        }
-    </style>
 
     <script type="text/javascript">
         $(document).ready(function () {
@@ -76,15 +51,21 @@
         });
         function showHide(index) {
             if ($("#t" + index).prop("checked")) {
-                if (index == 1) methods.openlayer.dxGrid.setVisible(true);
-                else methods.openlayer.dxLayer.setVisible(true);
-
-
-
+                if (index == 1) {
+                    methods.openlayer.dxLayer.setVisible(true);
+                }
+                else {
+                    methods.openlayer.dxGrid.setVisible(true);
+                }
             }
+
             else {
-                if (index == 1) methods.openlayer.dxGrid.setVisible(false);
-                else methods.openlayer.dxLayer.setVisible(false);
+                if (index == 1) {
+                    methods.openlayer.dxLayer.setVisible(false);
+                }
+                else {
+                    methods.openlayer.dxGrid.setVisible(false);
+                }
 
             }
         }
@@ -196,70 +177,7 @@
                                 }
                             ]
                         },
-                        {
-                            defaultShow: '呈现内容',
-                            type: 'dropdown',
-                            items: [
-                                {
-                                    dimid: "-",
-                                    levelname: '呈现内容',
-                                    datasource: [{
-                                        id: '0', name: '全部'
-                                    },
-                                        {
-                                            id: '1', name: '3A5D规划'
-                                        }, { id: '2', name: 'APP感知覆盖' }
-                                    ],
-                                    initClass: "commdata",
-                                    callback: {
-                                        changed: function (opts) {
-                                            if (opts.selnames.length > 0) {
-                                                var name = opts.selnames[0].id;
-                                                if (name == "0") {
-                                                    methods.openlayer.dxGrid.setVisible(true);
-                                                    methods.openlayer.dxLayer.setVisible(true);
-                                                }
-                                                else if (name == "2") {
-                                                    methods.openlayer.dxGrid.setVisible(true);
-                                                    methods.openlayer.dxLayer.setVisible(false);
-                                                }
-                                                else {
-                                                    methods.openlayer.dxGrid.setVisible(false);
-                                                    methods.openlayer.dxLayer.setVisible(true);
-
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
-                        },
-                        {
-                            defaultShow: '渲染方式',
-                            type: 'dropdown',
-                            items: [
-                                {
-                                    dimid: "-",
-                                    levelname: '渲染方式',
-                                    datasource: [{
-                                        id: '0', name: '全部'
-                                    },
-                                        {
-                                            id: '100', name: 'TOP100'
-                                        }
-                                        , { id: '200', name: 'TOP200' },
-                                        { id: '500', name: 'TOP500' }
-                                    ],
-                                    initClass: "commdata"
-                                }
-                            ]
-                        }
-                    ],
-                    callback: {
-                        completed: function (result) {
-
-                        }
-                    }
+                    ]
                 };
 
 
@@ -277,13 +195,15 @@
                     day: $("#txtDate").timepicker("getDateStr"),
                     province: con[0].value[0],
                     region: con[1].value[0],
-                    city: '',
-                    topN: con[3].valueIds[0]
+                    city: ''
+
                 };
             },
             openlayer: {
                 view: new ol.View({
-                    center: ol.proj.transform([119.31568, 26.11803], 'EPSG:4326', 'EPSG:3857'),
+                    //[119.296494,26.074508] [119.974062,31.811226]
+                    //[119.31568, 26.11803]
+                    center: ol.proj.transform([119.974062, 31.811226], 'EPSG:4326', 'EPSG:3857'),
                     zoom: 4,
                     minZoom: 4
                 }),
@@ -302,8 +222,7 @@
                     new ol.layer.Tile({
                         source: new ol.source.TileArcGISRest({
                             ratio: 1,
-                            params: {
-                            },
+                            params: {},
                             url: methods.openlayer.gisUrl
                         })
                     })
@@ -320,24 +239,26 @@
                     methods.setToolTip(false);
                     methods.openlayer.dxMap.forEachFeatureAtPixel(event.pixel, function (feature) {
                         // 为移动到的feature发送自定义的mousemove消息
-                        feature.dispatchEvent({ type: 'click', event: event });
+                        feature.dispatchEvent({type: 'click', event: event});
                     });
                 });
             },
             initData: function (act) {
                 $.ajax({
-                    url: '../handler/WirelessPlanning.ashx?action=point',
+                    url: '../handler/WirelessPlanning_1.ashx?action=point',
                     data: act,
                     type: 'post',
                     dataType: 'json',
                     success: function (data) {
+                        // alert(data.data);
                         if (data.status == 0) {
+
                             methods.setCell(data.data);
                         }
                     }
                 });
                 $.ajax({
-                    url: '../handler/WirelessPlanning.ashx?action=grid',
+                    url: '../handler/WirelessPlanning_1.ashx?action=grid',
                     data: act,
                     type: 'post',
                     dataType: 'json',
@@ -355,66 +276,41 @@
 
                 methods.openlayer.arrShow = [];
                 var minX = null, maxX = null, minY = null, maxY = null;
-                if (source.cell.length > 0) {
-                    $.each(source.cell, function (i, item) {
-                        var x = parseFloat(item[6]), y = parseFloat(item[5]), rate = parseFloat(item[4]);
-                        if (minX == null || minX > y) {
-                            minX = y;
-                        }
-                        if (maxX == null || maxX < y) {
-                            maxX = y;
-                        }
-                        if (minY == null || minY > x) {
-                            minY = x;
-                        }
-                        if (maxY == null || maxY < x) {
-                            maxY = x;
-                        }
 
-                        var pos = ol.proj.transform([x, y], 'EPSG:4326', 'EPSG:3857');
-
-
-                        var circle = new ol.Feature({
-                            geometry: new ol.geom.Point(pos),
-                            item: item,
-                            isV: 1,
-                            key: item[2]
-                        });
-                        var color = (rate > 85 ? "#66b732" : (rate >= 70 ? "#e0c423" : "#bc471f"));
-                        circle.setStyle(new ol.style.Style({
-                            image: new ol.style.Icon({
-                                src: dss.rootPath + 'javascript/JSControl/gis/images/cell.png',
-                                color: color,
-                                anchor: [0, 0.5],
-                                rotateWithView: true,
-                                rotation: (parseFloat(item[7]) - 90) * Math.PI / 180
-                            })
-                        }));
-
-                        methods.openlayer.arrShow.push(circle);
-
-                        circle.on("click", function () {
-                            methods.setClick(circle, item, 1);
-                        });
-                    });
-                }
 
                 if (source.point.length > 0) {
                     $.each(source.point, function (i, item) {
-                        var x = parseFloat(item[2]), y = parseFloat(item[1]);
+                        var x = parseFloat(item[3]), y = parseFloat(item[2]);
+                        if (minX == null || minX > x) {
+                            minX = x;
+                        }
+                        if (maxX == null || maxX < x) {
+                            maxX = x;
+                        }
+                        if (minY == null || minY > y) {
+                            minY = y;
+                        }
+                        if (maxY == null || maxY < y) {
+                            maxY = y;
+                        }
+
                         var pos = ol.proj.transform([x, y], 'EPSG:4326', 'EPSG:3857');
+
                         var circle = new ol.Feature({
                             geometry: new ol.geom.Point(pos),
                             item: item
                         });
+
                         circle.setStyle(new ol.style.Style({
-                            image: new ol.style.Circle({
-                                radius: 7,
-                                fill: new ol.style.Fill({
-                                    color: "#0084cf"
-                                })
+                            image: new ol.style.Icon({
+                                src: dss.rootPath + 'javascript/JSControl/gis/images/cell.png',
+                                color: "green",
+                                anchor: [0, 0.5],
+                                rotateWithView: true,
+                                rotation: (0 - 90) * Math.PI / 180
                             })
                         }));
+
 
                         methods.openlayer.arrShow.push(circle);
 
@@ -432,23 +328,25 @@
                 methods.openlayer.dxMap.addLayer(methods.openlayer.dxLayer);
 
                 if (minX != null) {
-                    methods.openlayer.dxMap.getView().fit(ol.proj.transformExtent([minY, minX, maxY, maxX], 'EPSG:4326', 'EPSG:3857'), methods.openlayer.dxMap.getSize());
+                    methods.openlayer.dxMap.getView().fit(ol.proj.transformExtent([minX, minY, maxX, maxY], 'EPSG:4326', 'EPSG:3857'), methods.openlayer.dxMap.getSize());
                 }
             },
             setGrid: function (source) {
                 var arrpoint = [];
-                if (source.length > 0) {
-                    $.each(source, function (i, item) {
-                        var x = parseFloat(item[1]), y = parseFloat(item[2]);
+                if (source.grid.length > 0) {
+                    $.each(source.grid, function (i, item) {
 
+                        var x = parseFloat(item[3]), y = parseFloat(item[2]);
+                        var x1 = parseFloat(item[5]), y1 = parseFloat(item[4]);
 
-                        var pos = ol.proj.transform([y, x], 'EPSG:4326', 'EPSG:3857');
+                        var pos = ol.proj.transform([x, y], 'EPSG:4326', 'EPSG:3857');
+                        var pos1 = ol.proj.transform([x1, y1], 'EPSG:4326', 'EPSG:3857');
 
-                        var len = 50, mi_y = pos[0] - len, mi_x = pos[1] - len,
-                            ma_y = pos[0] + len, ma_x = pos[1] + len;
+                        var paY = pos[0], paX = pos1[1], pbY = pos[0], pbX = pos[1],
+                            pcY = pos1[0], pcX = pos1[1], pdY = pos1[0], pdX = pos[1];
 
                         var circle = new ol.Feature({
-                            geometry: new ol.geom.Polygon([[[mi_y, mi_x], [mi_y, ma_x], [ma_y, ma_x], [ma_y, mi_x]]]),
+                            geometry: new ol.geom.Polygon([[pos, [pos[0], pos1[1]], pos1, [pos1[0], pos[1]]]]),
                             item: item
                         });
                         var color = methods.getColor(item[3], item[4], item[5]);
@@ -503,11 +401,27 @@
                         ];
                     }
                     else {
-                        names = ["", "", "小区id", "基站id", "业务优良率(%)", "纬度", "经度", "方位角", "mr", "最大RRC连接", "上下行总流量", "重定向到3G占比", "Qoe得分",
-                            "总得分", "关联小区id1", "关联小区id2"];
+                        names = [
+                            "小区ECI",
+                            "基站ID",
+                            "纬度",
+                            "经度",
+                            "MR",
+                            "最大RRC连接数",
+                            "上下行总流量",
+                            "重定向到3G占比",
+                            "QOE得分",
+                            "总得分",
+                            "地市ID",
+                            "区县ID",
+                            "省份ID",
+                            "地市描述",
+                            "省份描述",
+                            ""
+                        ];
                     }
                     $.each(item, function (key, value) {
-                        if (key > 0) {
+                        if (key >= 0) {
                             if (key % 2 == 1) {
                                 if (item[0] == "2" && key == 1) {
                                     div.append("<dl>" + value + "</dl>");
@@ -664,6 +578,27 @@
         .selected {
             background-color: rgba(241, 244, 248, 1);
         }
+
+        .box {
+            position: fixed;
+            top: 54%;
+            width: 100%;
+        }
+
+        ul {
+            margin: 0;
+            list-style: none;
+            padding-left: 10px;
+        }
+
+        .dropZone {
+            position: absolute;
+            border: 3px dotted #17adff;
+        }
+
+        #s2 {
+            display: none;
+        }
     </style>
 
 </head>
@@ -672,17 +607,16 @@
 <div id="marker" title="Marker"></div>
 <div class="toolbar">
     <ul>
-        <li class="item"><span class="back">日期</span><input type="text" id="txtDate" style="width: 100px;" /></li>
+        <li class="item"><span class="back">日期</span><input type="text" id="txtDate" style="width: 100px;"/></li>
         <li class="item">
             <div id="divSlt"></div>
         </li>
         <li class="item">
-            <input id="btnRule" type="button" class="button" value="算法阈值调整" /></li>
+            <input id="btnRule" type="button" class="button" value="算法阈值调整"/></li>
         <li class="item">
-            <input id="btnQuery" type="button" class="button" value="开始规划" /></li>
+            <input id="btnQuery" type="button" class="button" value="开始规划"/></li>
     </ul>
 </div>
-
 <div style="clear: both;"></div>
 <div style="width: 99%; margin: 0px auto;">
     <div style="width: 100%; position: relative;">
@@ -694,22 +628,29 @@
                 <span id="s1">&#9650;</span><span id="s2">&#9660;</span>呈现内容
                 <div class="dropZone">
                     <li>
-                        <input type="checkbox" id="t2" />APP覆盖感知</li>
+                        <input type="checkbox" id="t2"/>APP覆盖感知
+                    </li>
                     <li>
-                        <input type="checkbox" id="t1" />3A5D规划
+                        <input type="checkbox" id="t1"/>3A5D规划
                         <ul>
                             <li>
-                                <input type="checkbox" checked="checked" />全部</li>
+                                <input type="checkbox" checked="checked"/>全部
+                            </li>
                             <li>
-                                <input type="checkbox">TOP100</li>
+                                <input type="checkbox">TOP100
+                            </li>
                             <li>
-                                <input type="checkbox">TOP200</li>
+                                <input type="checkbox">TOP200
+                            </li>
                             <li>
-                                <input type="checkbox">TOP500</li>
+                                <input type="checkbox">TOP500
+                            </li>
                         </ul>
                     </li>
                 </div>
             </ul>
+
+
         </div>
 
     </div>

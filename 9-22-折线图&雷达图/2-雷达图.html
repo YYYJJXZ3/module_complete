@@ -1,0 +1,107 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>echarts雷达图</title>
+    <style>
+        .main {
+            height: 400px;
+            overflow: hidden;
+            padding : 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+<div id="main" class="main"></div>
+
+<script src="js/echarts.js"></script>
+<script src="js/jquery-1.9.1.min.js"></script>
+<script>
+    var myChart;
+    var domMain = document.getElementById('main');
+
+    var option = {
+        title : {
+            text: '评估得分',
+            subtext: '评估得分mini',
+            show: false
+        },
+        tooltip : {
+            trigger: 'axis'
+        },
+        legend: {
+            x : 'center',
+            data:['评估得分'],
+            show: false
+        },
+        toolbox: {
+            show : false,
+            feature : {
+                mark : {show: false},
+                dataView : {show: false, readOnly: false},
+                restore : {show: false},
+                saveAsImage : {show: false}
+            }
+        },
+        calculable : false,
+        polar : [
+            {
+                indicator : [
+                    {text : '平均激活用户数', max  : 15},
+                    {text : '寻呼信道占用率', max  : 35},
+                    {text : 'PRACH信道占用率', max  : 30},
+                    {text : '小区PDCCH信道CCE占用率', max  : 15},
+                    {text : '4G上行PRB平均占用率', max  : 25},
+                    {text : '4G下行PRB平均占用率', max  : 30},
+                    {text : '4G忙时载扇理想用户负荷比', max  : 15},
+                    {text : '4G忙时载扇流量负荷比', max  : 15},
+                    {text : 'RPC连接用户数', max  : 20},
+                    {text : '上行激活用户数', max  : 33},
+                    {text : '下行激活用户数', max  : 15}
+
+                ],
+                radius : 130
+            }
+        ],
+        series : [
+            {
+                name: '评估得分',
+                type: 'radar',
+                itemStyle: {
+                    normal: {
+                        areaStyle: {
+                            type: 'default'
+                        }
+                    }
+                },
+                data : [
+                    {
+                        value : [10,12,23,4,21,15,12,14,17,15,11],
+                        name : '评估得分',
+                        itemStyle: {
+                            normal: {
+                                color: '#2c87e5',
+                                label: {
+                                    show: true,
+                                    formatter:function(params) {
+                                        return params.value;
+                                    }
+                                },
+                                areaStyle: {
+                                    color: 'rgba(44,135,229,0.3)'
+                                }
+                            }
+                        }
+                    }
+                ]
+            }
+        ]
+    };
+
+
+    myChart = echarts.init(domMain);
+    myChart.setOption(option, true)
+</script>
+</body>
+</html>
