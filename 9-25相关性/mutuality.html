@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>相关性</title>
+    <link rel="stylesheet" href="css/jquery-ui-1.10.3.custom.min.css">
+    <link rel="stylesheet" href="css/page.css">
+    <link rel="stylesheet" href="css/selfPage.css">
+    <script src="js/jquery-1.9.1.min.js"></script>
+    <script src="js/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="js/pagetools.js"></script>
+    <script src="js/timepicker.js"></script>
+    <script src="js/tools.js"></script>
+    <script src="js/echarts.js"></script>
+
+</head>
+<body>
+<div class="mainPage">
+    <div class="mutualityToolbar">
+        <div id="u1" class="ax_default _下拉列表框">
+            <span>按月：</span>
+            <select id="s1" class="text_sketch">
+                <option selected value="2017年1月">2017年1月</option>
+                <option value="2017年2月">2017年2月</option>
+                <option value="2017年3月">2017年3月</option>
+                <option value="其他月份">其他月份</option>
+            </select>
+
+            <span>---</span>
+
+            <select id="s2" class="text_sketch">
+                <option selected value="2017年1月">2017年1月</option>
+                <option value="2017年2月">2017年2月</option>
+                <option value="2017年3月">2017年3月</option>
+                <option value="其他月份">其他月份</option>
+            </select>
+        </div>
+
+
+        <div id="u3" class="ax_default _下拉列表框">
+            <span>省份：</span>
+            <select id="s3" class="text_sketch">
+                <option selected value="北京">北京</option>
+                <option value="天津">天津</option>
+                <option value="河北">河北</option>
+            </select>
+        </div>
+
+
+        <div id="u4" class="ax_default _下拉列表框">
+            <span>地市：</span>
+            <select id="s4" class="text_sketch">
+                <option value=""></option>
+                <option value="">对应省份下地市</option>
+            </select>
+        </div>
+
+        <div id="u5" class="ax_default _下拉列表框">
+            <span>小区：</span>
+            <select id="s5" class="text_sketch">
+                <option value=""></option>
+                <option value="">对应地市小区</option>
+            </select>
+        </div>
+
+        <div id="u6" class="ax_default _下拉列表框">
+            <span>指标：</span>
+            <select id="s6">
+                <option value="">平均激活用户数</option>
+                <option value="">上行激活用户数</option>
+                <option value="">下行激活用户数</option>
+                <option value="">RRC连接用户数</option>
+                <option value="">4G忙时载扇流量负荷比</option>
+                <option value="">4G忙时载扇理想用户负荷比</option>
+                <option value="">4G下行PRB平均占用率</option>
+                <option value="">4G上行PRB平均占用率</option>
+                <option value="">小区PDCCH信道CCE占用率</option>
+                <option value="">PRACH信道占用率</option>
+                <option value="">寻呼信道占用率</option>
+            </select>
+        </div>
+
+        <div id="u7" class="ax_default _下拉列表框">
+            <span>分析方法：</span>
+            <select id="s7">
+                <option value="">八分位</option>
+                <option value="">差分</option>
+            </select>
+        </div>
+
+        <div id="u8" class="ax_default _下拉列表框">
+            <span>分析时间：</span>
+            <select id="s8">
+                <option value="">星期一</option>
+                <option value="">星期二</option>
+                <option value="">星期三</option>
+                <option value="">星期四</option>
+                <option value="">星期五</option>
+                <option value="">星期六</option>
+                <option value="">星期日</option>
+                <option value="">非工作日</option>
+            </select>
+        </div>
+
+
+        <input type="button" value="查询" class="ax_default" id="btn1">
+        <input type="button" value="导出" class="ax_default" id="btn2">
+    </div>
+
+
+    <div class="dataZone">
+        <div class="echartLine"></div>
+        <div class="tableZone">
+            <div class="doubleTLayout">
+                <h2 style="color: #5e8bc9">平均激活用户数异常呈现</h2>
+                <table width="100%" class="table" style="border-collapse: collapse" border="1">
+                    <thead>
+                    <tr>
+                        <th>BUSY_DATE</th>
+                        <th>week</th>
+                        <th>weekday</th>
+                        <th>平均激活用户数</th>
+                    </tr>
+                    </thead>
+
+                    <tbody id="jsonTip">
+                    <tr>
+                        <td>2017/1/8</td>
+                        <td>2</td>
+                        <td>1</td>
+                        <td></td>
+                    </tr>
+
+                    <tr>
+                        <td>2017/3/6</td>
+                        <td>12</td>
+                        <td>1</td>
+                        <td></td>
+                    </tr>
+
+                    <tr>
+                        <td>2017/3/6</td>
+                        <td>12</td>
+                        <td>1</td>
+                        <td></td>
+                    </tr>
+
+                    <tr>
+                        <td>2017/3/6</td>
+                        <td>12</td>
+                        <td>1</td>
+                        <td></td>
+                    </tr>
+
+                    <tr>
+                        <td>2017/3/6</td>
+                        <td>12</td>
+                        <td>1</td>
+                        <td></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="doubleTLayout">
+                <h2 style="color: #5e8bc9">用户体验速率异常呈现</h2>
+                <table width="100%" class="table" style="border-collapse: collapse" border="1">
+                    <thead>
+                    <tr>
+                        <th>BUSY_DATE</th>
+                        <th>week</th>
+                        <th>weekday</th>
+                        <th>平均激活用户数</th>
+                    </tr>
+                    </thead>
+
+                    <tbody id="jsonTip1">
+                    <tr>
+                        <td>2017/1/8</td>
+                        <td>2</td>
+                        <td>1</td>
+                        <td></td>
+                    </tr>
+
+                    <tr>
+                        <td>2017/3/6</td>
+                        <td>12</td>
+                        <td>1</td>
+                        <td></td>
+                    </tr>
+
+                    <tr>
+                        <td>2017/3/6</td>
+                        <td>12</td>
+                        <td>1</td>
+                        <td></td>
+                    </tr>
+
+                    <tr>
+                        <td>2017/3/6</td>
+                        <td>12</td>
+                        <td>1</td>
+                        <td></td>
+                    </tr>
+
+                    <tr>
+                        <td>2017/3/6</td>
+                        <td>12</td>
+                        <td>1</td>
+                        <td></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+</body>
+</html>
