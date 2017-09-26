@@ -60,8 +60,12 @@ input{
     color: #fff;
 }
 
+.btn{
+    float: right;
+}
+
 #btn3{
     background-color: #2a83fe;
     color: #fff;
-    float: right;
+
 }

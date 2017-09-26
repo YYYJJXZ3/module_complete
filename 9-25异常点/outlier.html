@@ -20,7 +20,7 @@
     <div class="outlierToolbar">
 
         <div id="u1" class="ax_default _下拉列表框">
-        <span>按月：</span>
+            <span>按月：</span>
             <select id="s1" class="text_sketch">
                 <option selected value="2017年1月">2017年1月</option>
                 <option value="2017年2月">2017年2月</option>
@@ -28,7 +28,7 @@
                 <option value="其他月份">其他月份</option>
             </select>
 
-        <span>---</span>
+            <span>---</span>
 
             <select id="s2" class="text_sketch">
                 <option selected value="2017年1月">2017年1月</option>
@@ -110,13 +110,13 @@
 
     </div>
 
-    <div class="echartLine"></div>
+    <div class="echartLine" id="main1"></div>
 
     <div class="eight">
-        <div class="echartEight">
+        <div class="btn"><input type="button" value="相关分析" id="btn3"></div>
+        <div style="clear:both;"></div>
 
-            <input type="button" value="相关分析" id="btn3">
-        </div>
+        <div class="echartEight" id="main"></div>
 
         <div class="tableEight">
             <h2 style="color: #5e8bc9">日八分位异常点详情</h2>
@@ -152,5 +152,107 @@
     </div>
 
 </div>
+
+<script>
+
+    var myChart = echarts.init(document.getElementById('main'));
+
+    option = {
+        title:{
+            text:'日八分位异常点呈现'
+        },
+        tooltip: {
+            trigger: 'axis'
+        },
+        legend: {
+            data: ['日八分位异常点呈现']
+        },
+        toolbox: {
+            show: true,
+            feature: {}
+        },
+        calculable: true,
+        xAxis: [
+            {
+                calculable: true,
+                type: 'category',
+                boundaryGap: false,
+                data: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
+            }
+        ],
+        yAxis: [
+            {
+                type: 'value'
+            }
+        ],
+        series: [
+            {
+                name: '日八分位异常点呈现',
+                type: 'line',
+                stack: '总量',
+                data: [120, 132, 101, 134, 90, 230, 210, 113, 233, 150],
+                markPoint: {
+                    data: [
+                        {type: 'max', name: '最大值'},
+                        {type: 'min', name: '最小值'}
+                    ]
+                },
+                markLine: {
+                    data: [
+                        {type: 'min', name: 'min'},
+                        {type: 'max', name: 'max'}
+                    ]
+                }
+            }
+
+        ]
+    };
+
+    myChart.setOption(option, true);
+
+
+    var myChart1 = echarts.init(document.getElementById('main1'));
+
+    option1 = {
+        title:{
+          text:'平均激活用户数'
+        },
+        tooltip: {
+            trigger: 'axis'
+        },
+        legend: {
+            data: ['平均激活用户数']
+        },
+        toolbox: {
+            show: true,
+            feature: {}
+        },
+        calculable: true,
+        xAxis: [
+            {
+                calculable: true,
+                type: 'category',
+                boundaryGap: false,
+                data: ['1月1日', '1月8日', '1月15日', '1月22日', '1月29日', '2月5日', '2月12日', '2月19日', '2月26日', '3月5日']
+            }
+        ],
+        yAxis: [
+            {
+                type: 'value'
+            }
+        ],
+        series: [
+            {
+                name: '平均激活用户数',
+                type: 'line',
+                stack: '总量',
+                data: [120, 110, 101, 134, 90, 130, 80, 113, 122, 70]
+            }
+
+        ]
+    };
+
+    myChart1.setOption(option1, true);
+</script>
 </body>
 </html>

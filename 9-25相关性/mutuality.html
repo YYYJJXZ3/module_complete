@@ -109,7 +109,7 @@
 
 
     <div class="dataZone">
-        <div class="echartLine"></div>
+        <div class="echartLine" id="main"></div>
         <div class="tableZone">
             <div class="doubleTLayout">
                 <h2 style="color: #5e8bc9">平均激活用户数异常呈现</h2>
@@ -217,5 +217,58 @@
 
 
 </div>
+
+<script>
+
+    var myChart = echarts.init(document.getElementById('main'));
+
+    option = {
+        title:{
+            text:'平均激活用户数和用户体验速率对比呈现'
+        },
+        tooltip : {
+            trigger: 'axis'
+        },
+        legend: {
+            data:['平均激活用户数','用户体验速率']
+        },
+        toolbox: {
+            show : true,
+            feature : {
+            }
+        },
+        calculable : true,
+        xAxis : [
+            {
+                type : 'category',
+                boundaryGap : false,
+                data : ['1','2','3','4','5','6','7','8','9','10']
+            }
+        ],
+        yAxis : [
+            {
+                type : 'value'
+            }
+        ],
+        series : [
+            {
+                name:'平均激活用户数',
+                type:'line',
+                stack: '总量',
+                data:[120, 132, 101, 134, 90, 230, 210,113,233,150]
+            },
+            {
+                name:'用户体验速率',
+                type:'line',
+                stack:'总量',
+                data:[110,123,45,99,140,230,166,188,200,190]
+            }
+        ]
+    };
+
+    myChart.setOption(option, true);
+
+
+</script>
 </body>
 </html>
