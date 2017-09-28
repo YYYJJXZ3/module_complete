@@ -1,0 +1,506 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>高铁高校</title>
+    <link rel="stylesheet" href="css/jquery-ui-1.10.3.custom.min.css">
+    <link rel="stylesheet" href="css/page.css">
+    <link rel="stylesheet" href="css/selfPage.css">
+    <script src="js/jquery-1.9.1.min.js"></script>
+    <script src="js/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="js/pagetools.js"></script>
+    <script src="js/timepicker.js"></script>
+    <script src="js/tools.js"></script>
+    <script src="js/echarts.js"></script>
+
+
+</head>
+<body>
+
+<div class="mainPage">
+    <div class="crhToolbar">
+
+        <div id="u1" class="ax_default _下拉列表框">
+            <span>按月：</span>
+            <select id="s1" class="text_sketch">
+                <option selected value="2017年1月">2017年1月</option>
+                <option value="2017年2月">2017年2月</option>
+                <option value="2017年3月">2017年3月</option>
+                <option value="其他月份">其他月份</option>
+            </select>
+
+            <span>---</span>
+
+            <select id="s2" class="text_sketch">
+                <option selected value="2017年1月">2017年1月</option>
+                <option value="2017年2月">2017年2月</option>
+                <option value="2017年3月">2017年3月</option>
+                <option value="其他月份">其他月份</option>
+            </select>
+        </div>
+
+        <div id="u3" class="ax_default _下拉列表框">
+            <span>场景：</span>
+            <select id="s3">
+                <option value="">高铁</option>
+                <option value="">高校</option>
+            </select>
+        </div>
+
+        <div id="u4" class="ax_default _下拉列表框">
+            <span>省份：</span>
+            <select id="s4" class="text_sketch">
+                <option selected value="北京">北京</option>
+                <option value="天津">天津</option>
+                <option value="河北">河北</option>
+            </select>
+        </div>
+
+
+        <div id="u5" class="ax_default _下拉列表框">
+            <span>地市：</span>
+            <select id="s5" class="text_sketch">
+                <option value=""></option>
+                <option value="">对应省份下地市</option>
+            </select>
+        </div>
+
+        <div id="u6" class="ax_default _下拉列表框">
+            <span>小区：</span>
+            <select id="s6" class="text_sketch">
+                <option value=""></option>
+                <option value="">对应地市小区</option>
+            </select>
+        </div>
+
+
+        <input type="button" value="查询" class="ax_default" id="btn1">
+        <!--<input type="button" value="导出" class="ax_default" id="btn2">-->
+
+    </div>
+
+    <div class="dataZone">
+
+        <div class="leftZone">
+            <div class="radar zoneDis" id="main"></div>
+            <div class="leftTable">
+                <table width="100%" class="table" style="border-collapse: collapse" border="1">
+                    <thead>
+                    <tr>
+                        <th>指标</th>
+                        <th>高铁线1</th>
+                        <th>高铁线2</th>
+                    </tr>
+                    </thead>
+
+                    <tbody id="jsonTip">
+                    <tr>
+                        <td class="click">平均激活用户数</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+                    <tr>
+                        <td class="click">上行平均激活用户数</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+                    <tr>
+                        <td class="click">下行平均激活用户数</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+                    <tr>
+                        <td class="click">平均RRC连接用户数</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+        <div class="rightZone">
+            <div class="radar zoneDis" id="main2"></div>
+            <div class="rightTable">
+                <table width="100%" class="table" style="border-collapse: collapse" border="1">
+                    <thead>
+                    <tr>
+                        <th>指标</th>
+                        <th>高铁线1</th>
+                        <th>高铁线2</th>
+                    </tr>
+                    </thead>
+
+                    <tbody id="jsonTip2">
+                    <tr>
+                        <td class="click">4G忙时载扇流量负荷比</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+                    <tr>
+                        <td class="click">4G忙时载扇理想用户负荷比</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+                    <tr>
+                        <td class="click">4G下行PRB平均占用率</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+                    <tr>
+                        <td class="click">4G上行PRB平均占用率</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+                    <tr>
+                        <td class="click">PDCCH信道CCE占用率</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+                    <tr>
+                        <td class="click">PRACH信道占用率</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+                    <tr>
+                        <td class="click">寻呼信道占用率</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div style="clear:both;"></div>
+
+    </div>
+
+    <div class="dataZone1">
+        <div class="line" id="main1"></div>
+        <div class="lineTable">
+
+            <h2 style="color: #5e8bc9">各高铁详情</h2>
+            <table width="100%" class="table" style="border-collapse: collapse" border="1">
+                <thead class="th">
+                <tr>
+                    <th>时间</th>
+                    <th>高铁1平均激活用户数</th>
+                    <th>高铁2平均激活用户数</th>
+                    <th>.......</th>
+                </tr>
+                </thead>
+
+                <tbody id="jsonTip1">
+                <tr>
+                    <td>0时</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+
+                <tr>
+                    <td>1时</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+
+                <tr>
+                    <td>2时</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+
+                <tr>
+                    <td>3时</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+
+                <tr>
+                    <td>4时</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+
+                <tr>
+                    <td>5时</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+
+                <tr>
+                    <td>6时</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+
+                <tr>
+                    <td>7时</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+
+                <tr>
+                    <td>8时</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+
+                <tr>
+                    <td>9时</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                </tbody>
+
+
+            </table>
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    var indexName = "平均激活用户数";
+
+    var myChart;
+    var domMain = document.getElementById('main');
+
+    option = {
+        title : {
+            text: '高铁高校差异性比较',
+            subtext: ''
+        },
+        tooltip : {
+            trigger: 'axis'
+        },
+        legend: {
+            orient : 'horizontal',
+            x : 'right',
+            y : 'top',
+            data:['高铁1','高铁2']
+        },
+        toolbox: {
+            show : true,
+            feature : {
+            }
+        },
+        polar : [
+            {
+                indicator : [
+                    { text: '平均激活用户数', max: 1},
+                    { text: '平均RRC连接用户数', max: 1},
+                    { text: '下行激活用户数', max: 1},
+                    { text: '上行激活用户数', max: 1}
+                ]
+            }
+        ],
+        calculable : true,
+        series : [
+            {
+                name: '高铁高校',
+                type: 'radar',
+                data : [
+                    {
+                        value : [0.8, 0.9, 0.7, 0.5],
+                        name : '高铁1'
+                    },
+                    {
+                        value : [0.2, 0.5, 0.6, 0.7],
+                        name : '高铁2'
+                    }
+                ]
+            }
+        ]
+    };
+
+
+    myChart = echarts.init(domMain);
+    myChart.setOption(option, true);
+
+
+    var myChart2;
+    var domMain2 = document.getElementById('main2');
+
+    option2 = {
+        title : {
+            text: '高铁高校差异性比较',
+            subtext: ''
+        },
+        tooltip : {
+            trigger: 'axis'
+        },
+        legend: {
+            orient : 'horizontal',
+            x : 'right',
+            y : 'top',
+            data:['高铁1','高铁2']
+        },
+        toolbox: {
+            show : true,
+            feature : {
+            }
+        },
+        polar : [
+            {
+                indicator : [
+                    { text: '寻呼信道占用率', max: 1},
+                    { text: 'PRACH信道占用率', max: 1},
+                    { text: 'PDCCH信道CCE占用率', max: 1},
+                    { text: '4G上行PRB平均占用率', max: 1},
+                    { text: '4G下行PRB平均占用率', max:1},
+                    { text: '4G忙时载扇理想用户负荷比', max:1},
+                    { text: '4G忙时载扇流量负荷比', max:1}
+                ]
+            }
+        ],
+        calculable : true,
+        series : [
+            {
+                name: '高铁高校',
+                type: 'radar',
+                data : [
+                    {
+                        value : [0.8, 0.9, 0.7, 0.5,0.4,0.9,0.6],
+                        name : '高铁1'
+                    },
+                    {
+                        value : [0.2, 0.5, 0.6, 0.7,0.8,0.6,0.8],
+                        name : '高铁2'
+                    }
+                ]
+            }
+        ]
+    };
+
+
+    myChart2 = echarts.init(domMain2);
+    myChart2.setOption(option2, true);
+
+
+    var myChart1;
+    var domMain1 = document.getElementById('main1');
+    option1 = {
+        title : {
+            text : '高铁高校'+indexName+'24小时差异性比较',
+            subtext : ''
+        },
+        tooltip : {
+            trigger: 'item',
+            formatter : function (params) {
+                var date = new Date(params.value[0]);
+                data = date.getFullYear() + '-'
+                    + (date.getMonth() + 1) + '-'
+                    + date.getDate() + ' '
+                    + date.getHours() + ':'
+                    + date.getMinutes();
+                return data + '<br/>'
+                    + params.value[1] + ', '
+                    + params.value[2];
+            }
+        },
+        toolbox: {
+            show : true,
+            feature : {
+
+            }
+        },
+        dataZoom: {
+            show: true,
+            start : 70
+        },
+        legend : {
+            data : ['高铁1','高铁2']
+        },
+        grid: {
+            y2: 80
+        },
+        xAxis : [
+            {
+                type : 'time',
+                splitNumber:10
+            }
+        ],
+        yAxis : [
+            {
+                type : 'value'
+            }
+        ],
+        series : [
+            {
+                name: '高铁1',
+                type: 'line',
+                showAllSymbol: true,
+                symbolSize: function (value){
+                    return Math.round(value[2]/10) + 2;
+                },
+                data: (function () {
+                    var d = [];
+                    var len = 0;
+                    var now = new Date();
+                    var value;
+                    while (len++ < 200) {
+                        d.push([
+                            new Date(2014, 9, 1, 0, len * 10000),
+                            (Math.random()*30).toFixed(2) - 0,
+                            (Math.random()*100).toFixed(2) - 0
+                        ]);
+                    }
+                    return d;
+                })()
+            },
+            {
+                name: '高铁2',
+                type: 'line',
+                showAllSymbol: true,
+                symbolSize: function (value){
+                    return Math.round(value[2]/10) + 2;
+                },
+                data: (function () {
+                    var d = [];
+                    var len = 0;
+                    var now = new Date();
+                    var value;
+                    while (len++ < 200) {
+                        d.push([
+                            new Date(2014, 9, 1, 0, len * 10000),
+                            (Math.random()*30).toFixed(2) - 0,
+                            (Math.random()*100).toFixed(2) - 0
+                        ]);
+                    }
+                    return d;
+                })()
+            }
+        ]
+    };
+
+
+    myChart1 = echarts.init(domMain1);
+    myChart1.setOption(option1, true);
+</script>
+</body>
+</html>

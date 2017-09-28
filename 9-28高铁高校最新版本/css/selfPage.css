@@ -1,0 +1,87 @@
+.mainPage {
+    margin: 0;
+    padding: 0;
+}
+
+.crhToolbar {
+    width: 100%;
+    height: auto;
+
+}
+
+.ax_default {
+    display: inline-block;
+    margin-top: 10px;
+    margin-left: 3%;
+}
+
+input {
+    width: 66px;
+}
+
+#btn1 {
+    background-color: #0e6fc4;
+    color: #fff;
+}
+
+#btn2 {
+    background-color: #2fc486;
+    color: #fff;
+}
+
+.dataZone{
+    width: 100%;
+    height:auto;
+    margin-top: 10px;
+    /*border: 1px solid #c1c1c1;*/
+}
+
+.leftZone{
+    float: left;
+    width: 49%;
+    height:500px;
+    border: 1px solid #c1c1c1;
+}
+
+.rightZone{
+    float: right;
+    width: 49%;
+    height: 500px;
+    border: 1px solid #c1c1c1;
+}
+
+.radar{
+    width: 100%;
+    height: 300px;
+}
+
+
+
+
+.line{
+    width: 100%;
+    height: 350px;
+    background-color: #afa;
+}
+
+.lineTable{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+
+.dataZone1{
+    margin-top: 10px;
+    border: 1px solid #c1c1c1;
+}
+
+.table{
+    text-align: center;
+}
+
+.th{
+
+    background-color: #2a83fe;
+    color: #fff;
+}
+
