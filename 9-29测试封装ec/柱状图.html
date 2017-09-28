@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/SampleChart.js"></script>
+    <script src="js/jquery-1.9.1.min.js"></script>
+    <script src="js/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="js/pagetools.js"></script>
+    <script src="js/tools.js"></script>
+
+    <style>
+        #map{
+            width: 100%;
+            height: 300px;
+        }
+    </style>
+</head>
+<body>
+<div id="map"></div>
+
+<script>
+    $(function () {
+        getChart1();
+    });
+
+
+    function getChart1() {
+        var data = { "colnames": ["月", "流量（GB）", "时延"], "rows": [{ "col0": "01月", "col1": "22", "col2": "15" }, { "col0": "02月", "col1": "12", "col2": "7" }, { "col0": "03月", "col1": "10", "col2": "" }, { "col0": "04月", "col1": "6", "col2": "11" }, { "col0": "05月", "col1": "4", "col2": "16" }, { "col0": "06月", "col1": "8", "col2": "4" }, { "col0": "07月", "col1": "4", "col2": "10" }, { "col0": "08月", "col1": "12", "col2": "18" }, { "col0": "09月", "col1": "8", "col2": "16" }] };
+        //var data = { "colnames": ["月", "流量（GB）", "时延"], "rows": [] };
+        bindChart("map", {
+            DataSource: data,
+            ChartType: "Line",
+            YDataColIndex: '1',
+            Y2DataColIndex: '2',
+            IsShowMaxMin: true,
+            IsScroll: true,
+            ScrollNum: 8,
+            LegendPosition: "TOP",
+            PaddingTop: 30,
+            ClickEvent: [{ colindex: 1, click: click }, { colindex: 2, click: click }],
+            Line: [{ colindex: 1, type: 'custom', name: '“流量”阈值', value: 13 }, { colindex: 2, type: 'custom', name: '“时延”阈值', value: 14 }],
+            Toolbox: {
+                show: false
+            }
+        });
+    }
+
+    function bindChart(div, option) {
+        var opts = $.extend(true, {
+            YFormatType: "1000",
+            YDecimals: '2'
+        }, option);
+
+        $("#" + div).SampleChart(opts);
+    }
+
+</script>
+</body>
+</html>
