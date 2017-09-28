@@ -1,0 +1,39 @@
+
+<!doctype html>
+<html>
+<head>
+</head>
+<body>
+<select id="first">
+    <option>a</option>
+    <option>b</option>
+    <option>c</option>
+</select>
+<select id="second">
+</select>
+<script>
+    var ao = ['a1', 'a2', 'a3'];
+    var bo = ['b1', 'b2', 'b3'];
+    var co = ['c1', 'c2', 'c3'];
+    var items = [ao, bo, co];
+
+    var first = document.getElementById('first');
+    var second = document.getElementById('second');
+
+    setValue(second, ao);
+
+    first.addEventListener('change', function(){
+        setValue(second, items[this.selectedIndex]);
+    });
+
+    function setValue(e,v){
+        e.options.length = 0;
+        for(i in v){
+            var o = document.createElement('option');
+            o.text = v[i];
+            e.add(o, null);
+        }
+    }
+</script>
+</body>
+</html>
