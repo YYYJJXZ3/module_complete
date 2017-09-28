@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/jquery-1.9.1.min.js"></script>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        .bottomZone{
+            /*position: absolute;*/
+        }
+
+        .mainZone{
+            position: absolute;
+            width: 150px;
+            height: auto;
+            background-color: #5f89b2;
+            opacity:0.8;
+            z-index: 999;
+            color: #fff;
+        }
+        .all{
+
+            opacity: 1;
+            list-style: none;
+        }
+
+        .all li{
+            padding-left: 4px;
+        }
+
+        .secondList{
+            padding-left: 10px;
+        }
+
+        #s2 {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div class="mainZone">
+    <ul class="all"><span id="s1" >&#9650;</span><span id="s2">&#9660;</span>呈现内容
+        <div class="dropZone">
+            <li><input type="checkbox"  id="t2"/>关联小区</li>
+            <li><input type="checkbox"  id="t1" />规划新建区域
+                <ul class="secondList">
+                    <li><input type="radio" name="value" checked="checked"/>全部</li>
+                    <li><input type="radio" name="value">TOP100</li>
+                    <li><input type="radio" name="value">TOP200</li>
+                    <li><input type="radio" name="value">TOP500</li>
+                </ul>
+            </li>
+        </div>
+    </ul>
+
+</div>
+
+<div class="bottomZone">
+    <img src="img/map.png" alt="">
+</div>
+
+
+<script>
+    $("#s1").click(function () {
+        $(".dropZone").children().stop().slideToggle(300);
+
+        $("#s2").show();
+        $("#s1").hide();
+
+    })
+
+
+    $("#s2").click(function () {
+        $(".dropZone").children().stop().slideToggle(300);
+
+        $("#s1").show();
+        $("#s2").hide();
+
+    })
+</script>
+
+</body>
+</html>
