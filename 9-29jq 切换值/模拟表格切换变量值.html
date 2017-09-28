@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/jquery-1.9.1.min.js"></script>
+</head>
+<body>
+<table width="100%" class="table" style="border-collapse: collapse" border="1">
+    <thead>
+    <tr>
+        <th>时间</th>
+        <th>高铁1平均激活用户数</th>
+        <th>高铁2平均激活用户数</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr>
+        <td><a class="possValue">4G忙时载扇流量负荷比</a></td>
+        <td></td>
+        <td></td>
+    </tr>
+
+    <tr>
+        <td><a class="possValue">4G忙时载扇理想用户负荷比</a></td>
+        <td></td>
+        <td></td>
+    </tr>
+    </tbody>
+</table>
+
+<script>
+    $('.possValue').click(function () {
+        var a = $(this).html();
+        alert("接收到的值:"+a);
+    })
+</script>
+</body>
+</html>
