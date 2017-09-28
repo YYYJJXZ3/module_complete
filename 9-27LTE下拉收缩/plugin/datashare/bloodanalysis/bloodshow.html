@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>血统分析呈现</title>
+    <link href="../../../themes/lightblue/page/page.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/jqgrid/ui.jqgrid.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/css/dss-ui-dialog.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/plugin/datashare/bloodanalysis/css/searchMeasure.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/plugin/datashare/bloodanalysis/codebase/GooFlow.css" rel="stylesheet" />
+    <script src="../../../javascript/core/jquery-1.9.1.min.js"></script>
+    <script src="../../../javascript/core/jquery-ui-1.10.3.custom.js"></script>
+    <script src="../../../javascript/common/tools.js"></script>
+    <script src="../../../javascript/common/jquery.form.min.js"></script>
+    <script src="../../../javascript/JSControl/Common/pageheader.js"></script>
+    <script src="../../../javascript/JSControl/Condition/mulselect.js"></script>
+    <script src="../../../javascript/JSControl/Condition/controlmanagernew.js"></script>
+    <script src="../../../javascript/common/dialog-plus-min.js"></script>
+    <script src="../../../javascript/common/pagetools.js"></script>
+    <script src="../../../javascript/JSControl/SmartGrid/JqGrid/SmartGrid.js"></script>
+    <script type="text/javascript" src="js/GooFunc.js"></script>
+    <script type="text/javascript" src="js/GooFlow.js"></script>
+    <script type="text/javascript" src="js/CommonHelper.js"></script>
+    <script type="text/javascript">
+        var param = {
+            operType: dss.request("operType"),
+            meaID: dss.request("meaID"),
+            tableName: dss.request("tableName"),
+            flowObj: null,//流程对象
+            flowProperty: {//流程属性
+                width: 1000,
+                height: 400,
+                haveHead: true,
+                headBtns: ["reload"],
+                haveTool: true,//是否可以移动
+                isShowPager: true,//是否呈现界面
+                haveGroup: false,
+                click: function (item) {
+                    return false;
+                }
+            }
+        };
+
+        $(function () {
+            method.init();
+        });
+
+        var method = {
+            init: function () {
+                $("#divHeader").pageheader();
+
+                param["psb"] = {
+                    keyWord: param.meaID || param.tableName,
+                    type: param.meaID ? "m" : "f"
+                };
+                $("#txtSearch").val(param.tableName || param.meaID);
+
+                if (param.meaID || param.tableName) {
+                    $("#condition").hide();
+
+                    method.loadFlow();
+                }
+
+                if ($.trim(param.operType)) {
+                   // $("#condition").show();
+                    param.psb.type = param.operType == "0" ? "m" : "f";
+                }
+
+                method.initQueryCtrl();
+
+                $("#btnQuery").click(function () {
+                    if (method.getParam()) {
+                        method.loadFlow();
+                    }
+                });
+            },
+            initQueryCtrl: function () {
+                var p = [
+                    {
+                        defaultShow: '物理表',
+                        type: 'none',
+                        items: [{ levelname: '物理表' }, { levelname: '指标ID' }]
+                    }
+                ];
+
+                $("#divFilter").controlmanager(p);
+            },
+            getParam: function () {
+                var con = $("#divFilter").controlmanager("getSelResults");
+                param.psb.type = con[0].levelName == "物理表" ? "f" : "m";
+
+                var keyword = $.trim($("#txtSearch").val()).toUpperCase();
+                if (!keyword) {
+                    dss.alert("关键字不能为空！");
+                    return false;
+                }
+                if (param.psb.type == "m") {
+                    param.tableName = "";
+                    param.meaID = keyword;
+                    
+                    if(!method.isInteger(param.meaID)){
+                    	dss.alert("指标ID必须为数字！");
+                    	return false;
+                    }
+                } else if (param.psb.type == "f") {
+                    param.meaID = "";
+                    param.tableName = keyword;
+                }
+                return true;
+            },
+            isInteger: function (obj) {
+                return obj.match(/^\d+$/);//考虑小数写法 ^\d+(\.\d+)?$
+            },
+            loadFlow: function () {
+                var p = {
+                    meaID: param.meaID,
+                    tableName: param.tableName,
+                    operType: param.operType
+                };
+
+                dss.ajax({
+                    url: dss.rootPath + "plugin/datashare/bloodanalysis/bloodshow/queryFlowData",
+                    data: {
+                        param: dss.jsonToString(p)
+                    },
+                    beforeSend: function () { dss.load(true);},
+                    complete: function () { dss.load(false);},
+                    success: function (data) {
+                        var flowData = eval("(" + data + ")");
+
+                        param.flowProperty.height = 15450;
+                        param.flowProperty.width = 19080;
+
+                        $("#flow").empty();
+                        param.flowObj = $.createGooFlow($("#flow"), param.flowProperty);
+                        param.flowObj.loadData(flowData);
+                        param.flowObj.onItemDel = function () {
+                            dss.alert("不支持删除");
+                            return false;
+                        };
+                        param.flowObj.onNewNodeDBClick = function (id, nodeName, nodeType) {
+                            method.queryDetails(id, nodeName, nodeType);
+                        }
+                        param.flowObj.onFreshClick = function () {
+                            method.loadFlow();
+                        }
+                    }
+                });
+            },
+            queryDetails: function (id, nodeName, type) {
+                var tableOrFun = "table";
+                nodeName = $commonHelper.removeHTMLTag(nodeName);
+                //|| nodeName.indexOf("分析表") > -1 //第一个表也支持点击查看详情
+                if (nodeName.indexOf("指标") > -1 || nodeName.indexOf("空表") > -1 || nodeName.indexOf("未找到") > -1) {
+                    $.showMsg("该节点无需查询", 2, 2);
+                    return false;
+                } else if (nodeName.indexOf("处理") > -1) {  //处理程序
+                    tableOrFun = "Fun";
+                } else { //表名称
+                    tableOrFun = "table";
+                }
+
+                dss.ajax({
+                    url: dss.rootPath + "plugin/datashare/bloodanalysis/bloodshow/queryDetails",
+                    data: {
+                        tableOrFun: tableOrFun,
+                        tableName: nodeName
+                    },
+                    beforeSend: function () { dss.load(true);},
+                    complete: function () { dss.load(false);},
+                    success: function (data) {
+                        if (data.status == "0") {
+                            //绑定数据
+                            $("#details").empty();
+                            /* var opts = {
+                                width: "100%",
+                                datasource: data.data.dataSource
+                            };
+                            dss.table("details", opts); */
+
+                            $("#details").smartgrid({
+                                islocaldata: true,
+                                localdata: data.data.dataSource,
+                                paging: {
+                                    rowNum: 100,
+                                    rowList: [30, 50, 100]
+                                }
+                            });
+
+                            //弹出信息
+                            dss.dialog({
+                                id: "details",
+                                width: 600,
+                                title: nodeName + "详情",
+                                content: $("#details")
+                            });
+                        } else {
+                            dss.alert("查询异常,请联系管理员。", null, "提示信息", 2);
+                        }
+                    }
+                });
+            }
+        }
+    </script>
+</head>
+<body>
+    <div id="divHeader"></div>
+    <div style="margin-left: 10px; margin-right: 10px;">
+        <div id="condition">
+            <div class="toolbar">
+                <ul>
+                    <li class="item">
+                        <div id="divFilter"></div>
+                    </li>
+                    <li class="item">
+                        <input style="width: 300px;" id="txtSearch" type="text" /></li>
+                    <li class="item">
+                        <input class="button" id="btnQuery" value="搜索" type="button" /></li>
+                </ul>
+            </div>
+            <div style="margin-left: 15px; margin-bottom: 5px;">
+                                                    说明：用“指标ID”作为查询条件更准确，如果用“指标名称”不能唯一确定该“指标名称”所属物理表，分析有差异。
+            </div>
+        </div>
+        <div id="flow"></div>
+        <div id="details" style="width: 580px;"></div>
+    </div>
+</body>

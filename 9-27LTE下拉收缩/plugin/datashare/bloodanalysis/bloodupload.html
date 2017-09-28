@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>血统分析维护</title>
+    <link href="../../../javascript/JSControl/AjaxFileUploader/ajaxfileupload.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/page/page.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/jqgrid/ui.jqgrid.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/css/dss-ui-dialog.css" rel="stylesheet" />
+    <script src="../../../javascript/core/jquery-1.9.1.min.js"></script>
+    <script src="../../../javascript/core/jquery-ui-1.10.3.custom.js"></script>
+    <script src="../../../javascript/common/tools.js"></script>
+    <script src="../../../javascript/common/jquery.form.min.js"></script>
+    <script src="../../../javascript/JSControl/Common/pageheader.js"></script>
+    <script src="../../../javascript/JSControl/Condition/mulselect.js"></script>
+    <script src="../../../javascript/common/dialog-plus-min.js"></script>
+    <script src="../../../javascript/common/pagetools.js"></script>
+    <script src="../../../javascript/JSControl/SmartGrid/JqGrid/SmartGrid.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            method.init();
+        });
+
+        var method = {
+            init: function () {
+                $("#divHeader").pageheader();
+                $("#btnUpload").click(function () {
+                    if (method.checkData()) {
+                        $("#formUpload").ajaxSubmit({
+                            url: 'bloodupload/importBlood',
+                            dataType: 'text',
+                            success: function (msg) {
+                                dss.alert(msg);
+                                $("#fileExcel").val("");
+                                $("#btnQuery").click();
+                            },
+                            error: function () {
+                                alert("导入excel出错！");
+                            }
+                        });
+                    }
+                    else {
+                        return false;
+                    }
+                });
+
+                $("#lbtnTemplate").click(function () {
+                    location.href = "bloodupload/template";
+                });
+            },
+            checkData: function () {
+                var fileDir = $("#fileExcel").val();
+                var suffix = fileDir.substr(fileDir.lastIndexOf("."));
+                if ("" == fileDir) {
+                    alert("选择需要导入的Excel文件！");
+                    return false;
+                }
+                if (".xls" != suffix && ".xlsx" != suffix) {
+                    dss.alert("请选择Excel格式的文件导入！");
+                    return false;
+                }
+                return true;
+            }
+        }
+    </script>
+</head>
+<body>
+    <div id="divHeader"></div>
+    <div style="margin-left: 10px; margin-right: 10px;">
+        <form method="POST" enctype="multipart/form-data" id="formUpload"
+            action="bloodupload/importBlood">
+            <div class="toolbar">
+                <ul>
+                    <li class="item">
+                        <input id="fileExcel" type="file" name="fileExcel">
+                        <input class="button" type="button" id="btnUpload" value="上传" />
+                        <a style="color: blue; margin-left: 10px;" id="lbtnTemplate">下载模板</a>
+                    </li>
+                </ul>
+            </div>
+        </form>
+        <div style="font-size: 13px; color: #666; margin-top: 10px;">说明：本页面功能，仅限开发人员使用，一般不呈现</div>
+    </div>
+</body>

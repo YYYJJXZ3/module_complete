@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>省覆盖感知分析</title>
+<link rel="stylesheet" href="../LTE/css/layout.css">
+<link rel="stylesheet" href="../LTE/css/map.css">
+<link rel="stylesheet" href="../LTE/css/jsonTable.css">
+<link rel="stylesheet" href="../LTE/css/dropShowHide.css">
+<link rel="stylesheet"
+	href="../../themes/lightblue/jqueryui/jquery-ui-1.10.3.custom.min.css">
+<link rel="stylesheet" href="../../themes/lightblue/page/page.css">
+<script src="../../javascript/core/jquery-1.9.1.min.js"></script>
+<script src="../../javascript/common/tools.js"></script>
+<script src="../LTE/js/radio.js"></script>
+<script src="../LTE/js/dropShowHide.js"></script>
+<script src="../../javascript/core/jquery-ui-1.10.3.custom.min.js"></script>
+<script src="../../javascript/common/pagetools.js"></script>
+<script src="../../javascript/common/openTabPage.js"></script>
+<script src="../../javascript/JSControl/Condition/timepicker.js"></script>
+<script
+	src="../../javascript/JSControl/SampleChart/Scripts/SampleChart.js"></script>
+
+<script src="../../javascript/JSControl/Condition/comselect.js"></script>
+<script src="../../javascript/JSControl/SmartGrid/JqGrid/SmartGrid.js"></script>
+<link href="../../themes/lightblue/jqgrid/ui.jqgrid.css"
+	rel="stylesheet" />
+
+<script type="text/javascript">
+var dataSource = {};
+if (decodeURI(dss.request("time"))) {
+    date = decodeURI(dss.request("time"));
+}
+else {
+    date = null;
+}
+
+if (decodeURI(dss.request("province"))) {
+    prov = decodeURI(dss.request("province"));
+}
+else {
+    prov = "江苏";
+}
+
+
+	function getMapSign2(province) {
+		if (dss.request("province")) {
+			var province = decodeURI(dss.request("province"));
+		} else {
+			var province = "江苏";
+		}
+		$(".destination").html(province);
+		var data = {
+			"colnames" : [ "地区名称", "人口" ],
+			"rows" : [ {
+				"col0" : "连云港",
+				"col1" : 53
+			}, {
+				"col0" : "徐州",
+				"col1" : 63
+			}, {
+				"col0" : "宿迁",
+				"col1" : 73
+			}, {
+				"col0" : "淮安",
+				"col1" : 83
+			}, {
+				"col0" : "无锡",
+				"col1" : 93
+			} ]
+		};
+
+		bindChart("map", {
+			DataSource : dataSource,
+			MapRangeOrLegend : "legend",
+			XDataColIndex : "0",
+			YDataColIndex : "1",
+			YDecimals : '0',//小数位数
+			IsShowValue : true,
+			MapType : [ province ],
+			Event : {
+				MapSelected : mapSelected
+			//用ClickEvent时，拖动时也会触发地图，所以改用这个事件
+			},
+			LegendPosition : "RIGHTBOTTOM",
+			ChartType : "MapSign",
+			Theme : "lightblue",
+			MapLegend : [ {
+				name : '<=70%',
+				min : null,
+				max : 70,
+				color : '#CC0033'
+			}, {
+				name : '70%-90%',
+				min : 70,
+				max : 90,
+				color : '#FFFF00'
+			}, {
+				name : '>90%',
+				min : 90,
+				max : null,
+				color : '#00CC33'
+			} ],
+			Original : {//调用echarts的原生属性，个别场景用到，非通用，不设置则按默认，不会报错
+				series : {
+					markPoint : {
+						symbol : "pin",
+						symbolSize : 10,
+						large : false,
+						effect : {
+							show : false,
+							type : "bounce"
+						}
+					}
+				}
+			}
+		});
+	}
+
+	function bindChart(div, option) {
+		var opts = $.extend(true, {
+			YFormatType : "1000",
+			//BgColor: '#000',
+			ChartType : "map",
+			Map : {
+				areaColor : '#CEDFF7'
+			},
+			callback : {
+				complete : function(myChart) {
+					//window.onresize = myChart.resize;
+				}
+			}
+		}, option);
+
+		//dss.samplechart(div, opts);
+		$("#" + div).SampleChart(opts);
+	}
+
+	function mapSelected(xValue) {
+	    var url = "plugin/preception/city?city=" + encodeURI(xValue) + "&time=" + encodeURI($("#txtDate").timepicker("getDateStr")) + "&listid=" + 1407657179;
+		openPageInTab("地市覆盖感知分析", url);
+	}
+
+	$(function() {
+		
+		dss.pageheader("m");
+		var province = {
+		    dimid: "-281835306",
+		    levelname: '省',
+		    filterValue: ['未知省'],
+		    initValues: [{
+		        name: prov
+		    }],
+		    initClass: "commdata",
+		    selectmode: "single"
+		};
+		
+		$("#btnQuery").click(function() {
+			appendD1();
+		});
+		
+		$("#txtProvince").commonSelect(province);
+	//标记地图（无需指定经纬度，按省或地市的名称即可进行标记）
+		
+		$("#txtDate").timepicker({
+			showTypeDay : true,
+			showTypeMonth: true,
+			showTypeWeek:true,
+			defaultDateStr: date
+		});
+
+	
+		//dss.rootPath
+		//            alert(dss.rootPath);
+		//            alert($("#txtDate").timepicker("getDateStr"));
+
+			appendD1();
+
+
+		// 排序
+		function sortByKey(array, key) {
+			return array.sort(function(a, b) {
+				var x = a[key];
+				var y = b[key];
+				return ((x > y) ? -1 : ((x < y) ? 1 : 0));
+			});
+		}
+
+		function appendD1() {
+			var province = $("#txtProvince").commonSelect("getSelResults")[0].name;
+			if (province.length <= 0) {
+				province = "江苏";
+			}
+
+			
+			var url = encodeURI(dss.rootPath + "perception/region?tid=1641259300&dayStr="
+					+ $("#txtDate").timepicker("getDateStr")
+					+ "&provinceName="
+					+ province);
+			$.getJSON(url, function(data) {
+				var $jsontip = $("#jsonTip1");
+				dataSource = data.data;
+				getMapSign2();
+				var newdata = $.extend({}, data.data);
+				newdata.rows = [];
+
+				$.each(data.data.rows, function(i, r) {
+					var item = {};
+					$.each(r.cells, function(j, c) {
+						item["col" + j] = c;
+					})
+					newdata.rows.push(item);
+				})
+
+				newdata = sortByKey(newdata.rows, 'col1');
+
+				// 绘制
+				var strHtml = "";//存储数据的变量
+				$jsontip.empty();//清空内容
+				$.each(newdata, function (infoIndex, info) {
+				    if (info.col0 == null) {
+				        return true;
+				    }
+					strHtml += '<tr><td><b class="roleNum">' + (infoIndex + 1)
+							+ '</b></td><td>' + info.col0 + '</td><td>'
+							+ info.col1 + '</td></tr>';
+				})
+				$jsontip.html(strHtml);//显示处理后的数据
+
+				// 前十个tr中，第一个td中的b，设置背景样式。
+				$.each($('#div1 tr').slice(1, 11), function(i, item) {
+					$(item).children('td').eq(0).children('b').css(
+							"background-color", "#3590de");
+				});
+
+				$.each($('#div1 tr').slice(1, 7), function(i, item) {
+					$(item).children('td').eq(1).css("color", "#0002c0");
+				});
+			})
+		}
+
+	});
+</script>
+</head>
+<body>
+
+	<div id="m"></div>
+	<div class="toolbar">
+		<ul>
+			<li class="item"><span class="back">日期</span> <input type="text"
+				style="width: 100px" id="txtDate" /></li>
+			<li class="item"><span class="back">省份</span> <input type="text"
+				style="width: 100px" id="txtProvince" /></li>
+			<li class="item"><input type="button" class="button"
+				id="btnQuery" value="查询" /></li>
+		</ul>
+	</div>
+
+	<div class="mainZone">
+
+		<div class="rListZone">
+
+			<div id="div1">
+				<div class="divframe">
+					<table width="100%" class="table">
+						<thead>
+							<tr>
+								<th></th>
+								<th>区域</th>
+								<th>感知优良率</th>
+							</tr>
+						</thead>
+
+						<tbody id="jsonTip1"></tbody>
+
+					</table>
+				</div>
+			</div>
+
+		</div>
+
+		<div class="lComplexZone">
+
+			<div class="cmapZone">
+				<!--<div class="showHide">
+
+					<p class="pPage">
+						<input type="button" id="hide" /><span class="destination"
+							style="font-size: 18px"></span>省感知优良率<b>-</b>
+					</p>
+
+					<input id="show" type="button">
+				</div>-->
+
+
+				<div class="echart-map">
+					<div class="map" id="map"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
