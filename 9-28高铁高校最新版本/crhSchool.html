@@ -197,8 +197,8 @@
                 <thead class="th">
                 <tr>
                     <th>时间</th>
-                    <th>高铁1平均激活用户数</th>
-                    <th>高铁2平均激活用户数</th>
+                    <th>高铁1<span class="thHtml"></span></th>
+                    <th>高铁2<span class="thHtml"></span></th>
                     <th>.......</th>
                 </tr>
                 </thead>
@@ -291,6 +291,8 @@
 
     $(".possValue").click(function () {
         indexName = $(this).html();
+
+        $(".thHtml").html("-"+indexName);
 
 
         var myChart1;
