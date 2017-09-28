@@ -95,25 +95,25 @@
 
                     <tbody id="jsonTip">
                     <tr>
-                        <td class="click">平均激活用户数</td>
+                        <td><a class="possValue">平均激活用户数</a></td>
                         <td></td>
                         <td></td>
                     </tr>
 
                     <tr>
-                        <td class="click">上行平均激活用户数</td>
+                        <td><a class="possValue">上行平均激活用户数</a></td>
                         <td></td>
                         <td></td>
                     </tr>
 
                     <tr>
-                        <td class="click">下行平均激活用户数</td>
+                        <td><a class="possValue">下行平均激活用户数</a></td>
                         <td></td>
                         <td></td>
                     </tr>
 
                     <tr>
-                        <td class="click">平均RRC连接用户数</td>
+                        <td><a class="possValue">平均RRC连接用户数</a></td>
                         <td></td>
                         <td></td>
                     </tr>
@@ -138,43 +138,43 @@
 
                     <tbody id="jsonTip2">
                     <tr>
-                        <td class="click">4G忙时载扇流量负荷比</td>
+                        <td><a class="possValue">4G忙时载扇流量负荷比</a></td>
                         <td></td>
                         <td></td>
                     </tr>
 
                     <tr>
-                        <td class="click">4G忙时载扇理想用户负荷比</td>
+                        <td><a class="possValue">4G忙时载扇理想用户负荷比</a></td>
                         <td></td>
                         <td></td>
                     </tr>
 
                     <tr>
-                        <td class="click">4G下行PRB平均占用率</td>
+                        <td><a class="possValue">4G下行PRB平均占用率</a></td>
                         <td></td>
                         <td></td>
                     </tr>
 
                     <tr>
-                        <td class="click">4G上行PRB平均占用率</td>
+                        <td><a class="possValue">4G上行PRB平均占用率</a></td>
                         <td></td>
                         <td></td>
                     </tr>
 
                     <tr>
-                        <td class="click">PDCCH信道CCE占用率</td>
+                        <td><a class="possValue">PDCCH信道CCE占用率</a></td>
                         <td></td>
                         <td></td>
                     </tr>
 
                     <tr>
-                        <td class="click">PRACH信道占用率</td>
+                        <td><a class="possValue">PRACH信道占用率</a></td>
                         <td></td>
                         <td></td>
                     </tr>
 
                     <tr>
-                        <td class="click">寻呼信道占用率</td>
+                        <td><a class="possValue">寻呼信道占用率</a></td>
                         <td></td>
                         <td></td>
                     </tr>
@@ -285,7 +285,116 @@
 
 <script>
 
-    var indexName = "平均激活用户数";
+
+
+    var indexName = "";
+
+    $(".possValue").click(function () {
+        indexName = $(this).html();
+
+
+        var myChart1;
+        var domMain1 = document.getElementById('main1');
+        option1 = {
+            title : {
+                text : '高铁高校'+indexName+'24小时差异性比较',
+                subtext : ''
+            },
+            tooltip : {
+                trigger: 'item',
+                formatter : function (params) {
+                    var date = new Date(params.value[0]);
+                    data = date.getFullYear() + '-'
+                        + (date.getMonth() + 1) + '-'
+                        + date.getDate() + ' '
+                        + date.getHours() + ':'
+                        + date.getMinutes();
+                    return data + '<br/>'
+                        + params.value[1] + ', '
+                        + params.value[2];
+                }
+            },
+            toolbox: {
+                show : true,
+                feature : {
+
+                }
+            },
+            dataZoom: {
+                show: true,
+                start : 70
+            },
+            legend : {
+                data : ['高铁1','高铁2']
+            },
+            grid: {
+                y2: 80
+            },
+            xAxis : [
+                {
+                    type : 'time',
+                    splitNumber:10
+                }
+            ],
+            yAxis : [
+                {
+                    type : 'value'
+                }
+            ],
+            series : [
+                {
+                    name: '高铁1',
+                    type: 'line',
+                    showAllSymbol: true,
+                    symbolSize: function (value){
+                        return Math.round(value[2]/10) + 2;
+                    },
+                    data: (function () {
+                        var d = [];
+                        var len = 0;
+                        var now = new Date();
+                        var value;
+                        while (len++ < 200) {
+                            d.push([
+                                new Date(2014, 9, 1, 0, len * 10000),
+                                (Math.random()*30).toFixed(2) - 0,
+                                (Math.random()*100).toFixed(2) - 0
+                            ]);
+                        }
+                        return d;
+                    })()
+                },
+                {
+                    name: '高铁2',
+                    type: 'line',
+                    showAllSymbol: true,
+                    symbolSize: function (value){
+                        return Math.round(value[2]/10) + 2;
+                    },
+                    data: (function () {
+                        var d = [];
+                        var len = 0;
+                        var now = new Date();
+                        var value;
+                        while (len++ < 200) {
+                            d.push([
+                                new Date(2014, 9, 1, 0, len * 10000),
+                                (Math.random()*30).toFixed(2) - 0,
+                                (Math.random()*100).toFixed(2) - 0
+                            ]);
+                        }
+                        return d;
+                    })()
+                }
+            ]
+        };
+
+
+        myChart1 = echarts.init(domMain1);
+        myChart1.setOption(option1, true);
+
+    });
+
 
     var myChart;
     var domMain = document.getElementById('main');
@@ -406,7 +515,7 @@
     var domMain1 = document.getElementById('main1');
     option1 = {
         title : {
-            text : '高铁高校'+indexName+'24小时差异性比较',
+            text : '',
             subtext : ''
         },
         tooltip : {
@@ -458,20 +567,7 @@
                 symbolSize: function (value){
                     return Math.round(value[2]/10) + 2;
                 },
-                data: (function () {
-                    var d = [];
-                    var len = 0;
-                    var now = new Date();
-                    var value;
-                    while (len++ < 200) {
-                        d.push([
-                            new Date(2014, 9, 1, 0, len * 10000),
-                            (Math.random()*30).toFixed(2) - 0,
-                            (Math.random()*100).toFixed(2) - 0
-                        ]);
-                    }
-                    return d;
-                })()
+                data: ''
             },
             {
                 name: '高铁2',
@@ -480,20 +576,8 @@
                 symbolSize: function (value){
                     return Math.round(value[2]/10) + 2;
                 },
-                data: (function () {
-                    var d = [];
-                    var len = 0;
-                    var now = new Date();
-                    var value;
-                    while (len++ < 200) {
-                        d.push([
-                            new Date(2014, 9, 1, 0, len * 10000),
-                            (Math.random()*30).toFixed(2) - 0,
-                            (Math.random()*100).toFixed(2) - 0
-                        ]);
-                    }
-                    return d;
-                })()
+                data:''
+
             }
         ]
     };
@@ -501,6 +585,7 @@
 
     myChart1 = echarts.init(domMain1);
     myChart1.setOption(option1, true);
+
 </script>
 </body>
 </html>
