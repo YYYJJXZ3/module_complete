@@ -1,0 +1,379 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>仪表盘</title>
+    <link href="../../../themes/lightblue/p.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/page/page.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/jqgrid/ui.jqgrid.css" rel="stylesheet" />
+
+    <script src="../../core/jquery-1.9.1.min.js"></script>
+    <script src="../../core/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="../../common/tools.js"></script>
+    <script src="../../common/pagetools.js"></script>
+    <script src="Scripts/SampleChart.js"></script>
+    <script>
+        $(function () {
+            getChart();
+        });
+
+        function getChart() {
+            var data = '{"colnames":["二级业务","终端侧得分"],"rows":[{"col0":"微信","col1":"50"}]}';
+            bindChart('four1', {
+                DataSource: eval("(" + data + ")"),
+                YDataColIndex: "1",
+                GaugeColor: [[0.8, '#7CB5EC'], [1, '#32E38B']]
+            });
+            bindChart('four2', {
+                GaugeValue: '90',
+                GaugeName: '无线侧得分',
+                GaugeColor: [[0.4, '#ff4500'], [0.7, '#7CB5EC'], [1, '#32E38B']]
+            });
+            bindChart('four3', {
+                GaugeValue: '40',
+                GaugeName: '核心侧得分',
+                GaugeColor: [[0.5, '#ff4500'], [1, '#32E38B']],
+                YMinValue: 20,
+                YMaxValue: 200
+            });
+            bindChart('four4', {
+                GaugeValue: '80',
+                GaugeName: 'SP侧得分',
+                GaugeColor: [[20, '#ff4500'], [80, '#7CB5EC'], [100, '#32E38B']]
+            });
+            var dataMorePointer = '{"colnames":["二级业务","指标1","指标2"],"rows":[{"col0":"微信","col1":"80","col2":"50"}]}';
+            bindChart('morePointer1', {
+                DataSource: eval("(" + dataMorePointer + ")"),
+                YDataColIndex: "2",
+                YMaxValue: 100,
+                IsShowValue: false,
+                IsShowLegend: true,
+                GaugeColor: [[0.6, '#ff4500'], [0.8, '#FDB302'], [1, '#32E38B']]
+            });
+            bindChart('morePointer2', {
+                DataSource: eval("(" + dataMorePointer + ")"),
+                YDataColIndex: "1,2",
+                YMaxValue: 100,
+                IsShowLegend: true,
+                ColorArr: ["#7CB5EC", "#90EC7D", "#F7A35B"],//图例和指针的颜色保持一致
+                GaugeColor: [[0.6, '#ff4500'], [0.8, '#FDB302'], [1, '#32E38B']]
+            });
+            bindChart('morePointer3', {
+                GaugeValue: '15,50,90',
+                GaugeName: '指标1,指标2,指标3',
+                YMaxValue: 100,
+                IsShowLegend: true,
+                ColorArr: ["#7CB5EC", "#90EC7D", "#F7A35B"],//图例和指针的颜色保持一致
+                GaugeColor: [[0.2, '#ff4500'], [0.8, '#FDB302'], [1, '#32E38B']]//表盘的分段颜色
+            });
+            bindChart('morePointer4', {
+                GaugeValue: '15,90,180',
+                GaugeName: '指标1,指标2,指标3',
+                YMaxValue: 100,
+                IsShowLegend: true,
+                GaugeColor: [[80, '#ff4500'], [120, '#FDB302'], [200, '#32E38B']]
+            });
+            var dataMoreGauge = '{"colnames":["业务","浏览","视频"],"rows":[{"col0":"30","col1":"80","col2":null}]}';
+            bindChart('moreGauge1', {
+                ChartType: "GaugeMore",
+                DataSource: eval("(" + dataMoreGauge + ")"),
+                YDataColIndex: "0￥1￥2",
+                Original: {
+                    series: [
+                        {
+                            min: 0,
+                            max: 100,
+                            radius: '65%',//半径
+                            center: ['25%', '50%'],//中心位置
+                            startAngle: 135,
+                            endAngle: -135,
+                            axisLine: {// 坐标轴线
+                                lineStyle: {// 属性lineStyle控制线条样式
+                                    color: [[0.6, '#FF5345'], [0.8, '#FEB302'], [1, '#34E58D']],
+                                    width: 30
+                                }
+                            },
+                            axisTick: {            // 坐标轴小标记
+                                show: true,        // 属性show控制显示与否，默认不显示
+                                splitNumber: 5,    // 每份split细分多少段
+                                length: 8,         // 属性length控制线长
+                                lineStyle: {       // 属性lineStyle控制线条样式
+                                    color: '#eee',
+                                    width: 1,
+                                    type: 'solid'
+                                }
+                            },
+                            axisLabel: {           // 坐标轴文本标签，详见axis.axisLabel
+                                show: true,
+                                formatter: function (v) {
+                                    switch (v + '') {
+                                        case '30': return '差';
+                                        case '70': return '良';
+                                        case '90': return '优';
+                                        default: return '';
+                                    }
+                                },
+                                textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+                                    fontSize: 13,
+                                    color: '#333'
+                                }
+                            },
+                            splitLine: {           // 分隔线
+                                show: true,        // 默认显示，属性show控制显示与否
+                                length: 30,         // 属性length控制线长
+                                lineStyle: {       // 属性lineStyle（详见lineStyle）控制线条样式
+                                    color: '#eee',
+                                    width: 2,
+                                    type: 'solid'
+                                }
+                            },
+                            pointer: {
+                                length: '70%',
+                                width: 8,
+                                color: 'auto'
+                            },
+                            title: {
+                                show: true,
+                                offsetCenter: ['-65%', -10],       // x, y，单位px
+                                textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+                                    color: '#8e9090',
+                                    fontSize: 15
+                                }
+                            },
+                            detail: {
+                                show: true,
+                                backgroundColor: 'rgba(0,0,0,0)',
+                                borderWidth: 0,
+                                borderColor: '#ccc',
+                                width: 100,
+                                height: 40,
+                                offsetCenter: ['-60%', 0],       // x, y，单位px
+                                formatter: '{value}%',
+                                textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+                                    color: 'auto',
+                                    fontSize: 30
+                                }
+                            }
+                        },
+                        {
+                            min: 0,
+                            max: 100,
+                            radius: '45%',//半径
+                            center: ['70%', '25%'],//中心位置
+                            startAngle: 135,
+                            endAngle: -135,
+                            axisLine: {// 坐标轴线
+                                lineStyle: {// 属性lineStyle控制线条样式
+                                    color: [[0.6, '#FF5345'], [0.8, '#FEB302'], [1, '#34E58D']],
+                                    width: 20
+                                }
+                            },
+                            axisTick: {            // 坐标轴小标记
+                                show: true,        // 属性show控制显示与否，默认不显示
+                                splitNumber: 5,    // 每份split细分多少段
+                                length: 8,         // 属性length控制线长
+                                lineStyle: {       // 属性lineStyle控制线条样式
+                                    color: '#eee',
+                                    width: 1,
+                                    type: 'solid'
+                                }
+                            },
+                            axisLabel: {           // 坐标轴文本标签，详见axis.axisLabel
+                                show: true,
+                                formatter: function (v) {
+                                    switch (v + '') {
+                                        case '30': return '差';
+                                        case '70': return '良';
+                                        case '90': return '优';
+                                        default: return '';
+                                    }
+                                },
+                                textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+                                    fontSize: 13,
+                                    color: '#333'
+                                }
+                            },
+                            splitLine: {           // 分隔线
+                                show: true,        // 默认显示，属性show控制显示与否
+                                length: 20,         // 属性length控制线长
+                                lineStyle: {       // 属性lineStyle（详见lineStyle）控制线条样式
+                                    color: '#eee',
+                                    width: 2,
+                                    type: 'solid'
+                                }
+                            },
+                            pointer: {
+                                length: '80%',
+                                width: 6,
+                                color: 'auto'
+                            },
+                            title: {
+                                show: true,
+                                offsetCenter: ['-65%', -10],       // x, y，单位px
+                                textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+                                    color: '#8e9090',
+                                    fontSize: 15
+                                }
+                            },
+                            detail: {
+                                show: true,
+                                backgroundColor: 'rgba(0,0,0,0)',
+                                borderWidth: 0,
+                                borderColor: '#ccc',
+                                width: 100,
+                                height: 40,
+                                offsetCenter: ['-60%', 0],       // x, y，单位px
+                                formatter: '{value}%',
+                                textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+                                    color: 'auto',
+                                    fontSize: 30
+                                }
+                            }
+                        },
+                        {
+                            min: 0,
+                            max: 100,
+                            radius: '45%',//半径
+                            center: ['70%', '75%'],//中心位置
+                            startAngle: 135,
+                            endAngle: -135,
+                            axisLine: {// 坐标轴线
+                                lineStyle: {// 属性lineStyle控制线条样式
+                                    color: [[0.6, '#FF5345'], [0.8, '#FEB302'], [1, '#34E58D']],
+                                    width: 20
+                                }
+                            },
+                            axisTick: {            // 坐标轴小标记
+                                show: true,        // 属性show控制显示与否，默认不显示
+                                splitNumber: 5,    // 每份split细分多少段
+                                length: 8,         // 属性length控制线长
+                                lineStyle: {       // 属性lineStyle控制线条样式
+                                    color: '#eee',
+                                    width: 1,
+                                    type: 'solid'
+                                }
+                            },
+                            axisLabel: {           // 坐标轴文本标签，详见axis.axisLabel
+                                show: true,
+                                formatter: function (v) {
+                                    switch (v + '') {
+                                        case '30': return '差';
+                                        case '70': return '良';
+                                        case '90': return '优';
+                                        default: return '';
+                                    }
+                                },
+                                textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+                                    fontSize: 13,
+                                    color: '#333'
+                                }
+                            },
+                            splitLine: {           // 分隔线
+                                show: true,        // 默认显示，属性show控制显示与否
+                                length: 20,         // 属性length控制线长
+                                lineStyle: {       // 属性lineStyle（详见lineStyle）控制线条样式
+                                    color: '#eee',
+                                    width: 2,
+                                    type: 'solid'
+                                }
+                            },
+                            pointer: {
+                                length: '80%',
+                                width: 6,
+                                color: 'auto'
+                            },
+                            title: {
+                                show: true,
+                                offsetCenter: ['-65%', -10],       // x, y，单位px
+                                textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+                                    color: '#8e9090',
+                                    fontSize: 15
+                                }
+                            },
+                            detail: {
+                                show: true,
+                                backgroundColor: 'rgba(0,0,0,0)',
+                                borderWidth: 0,
+                                borderColor: '#ccc',
+                                width: 100,
+                                height: 40,
+                                offsetCenter: ['-60%', 0],       // x, y，单位px
+                                formatter: function (v) {
+                                    if (typeof v === "object" && dss.isNullOrEmpty(v.value)) {
+                                        return "-- ";
+                                    }
+                                    else {
+                                        return v.toString() + "%";
+                                    }
+                                },
+                                textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+                                    color: 'auto',
+                                    fontSize: 30
+                                }
+                            }
+                        }
+                    ]
+                }
+            });
+        }
+
+        function bindChart(div, option) {
+            var opts = $.extend(true, {
+                YFormatType: "1000",
+                YDecimals: '2',
+                //BgColor: '#e2eefc',
+                BorderColor: '#7D7DFF',
+                ClickEvent: [{ click: gaugeClick }],
+                ChartType: "gauge"
+            }, option);
+
+            //dss.samplechart(div, opts);
+            $("#" + div).SampleChart(opts);
+        }
+
+        function gaugeClick(xValue, yValue, value) {
+            alert(xValue + "：" + value);//样例：“终端侧得分：50”
+        }
+    </script>
+</head>
+<body>
+    <div class="captionWithoutIcon">
+        全省四侧得分
+    </div>
+    <div id="four">
+        <table cellpadding="0" cellspacing="0" border="0" style="width: 100%;">
+            <tr>
+                <td style="width: 25%">
+                    <div id="four1" style="height: 270px; width: 100%;"></div>
+                </td>
+                <td style="width: 25%">
+                    <div id="four2" style="height: 270px; width: 100%;"></div>
+                </td>
+                <td style="width: 25%">
+                    <div id="four3" style="height: 270px; width: 100%;"></div>
+                </td>
+                <td style="width: 25%">
+                    <div id="four4" style="height: 270px; width: 100%;"></div>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 25%">
+                    <div id="morePointer1" style="height: 270px; width: 100%;"></div>
+                </td>
+                <td style="width: 25%">
+                    <div id="morePointer2" style="height: 270px; width: 100%;"></div>
+                </td>
+                <td style="width: 25%">
+                    <div id="morePointer3" style="height: 270px; width: 100%;"></div>
+                </td>
+                <td style="width: 25%">
+                    <div id="morePointer4" style="height: 270px; width: 100%;"></div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div>
+        <div id="moreGauge1" style="height: 420px; width: 550px;"></div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--<link rel="stylesheet" href="themes/lightblue/p.css">-->
+    <link rel="stylesheet" href="themes/page/page.css">
+    <script src="javascript/core/jquery-1.9.1.min.js" type="text/javascript"></script>
+    <script src="javascript/core/jquery-ui-1.10.3.custom.js" type="text/javascript"></script>
+    <script src="javascript/JSControl/Condition/timepicker.js" type="text/javascript"></script>
+    <script src="javascript/common/tools.js"></script>
+    <script src="javascript/common/pagetools.js"></script>
+    <script src="Scripts/SampleChart.js"></script>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        #map{
+            width: auto;
+            height: 250px;
+        }
+
+    </style>
+</head>
+<body>
+<div id="map"></div>
+
+
+<script>
+    $(function () {
+        getChart1();
+    });
+
+
+    function getChart1() {
+        var data = { "colnames": ["指标","北京","上海","广州"], "rows": [{col0: "总流量", col1: "568370159.29", col2: "268370159.29", col3: "321494718.29"},{col0: "4G流量", col1: "238370159", col2: "68370159", col3: "81494718"},{col0: "成功率", col1: "95", col2: "80", col3: "75"},{col0: "下载速率", col1: "550", col2: "380", col3: "220"},{col0: "时延", col1: "500", col2: "1200", col3: "1500"}] };
+        bindChart("map", {
+            DataSource: data,
+            ChartType: "Radar",
+            IsShowLegend:"false",
+            XDataColIndex: '0',
+            YDataColIndex: '1,2,3',
+            XLabelStep:'1',
+            XLabelStyle:"Wrap"
+
+        });
+    }
+
+    function bindChart(div, option) {
+        var opts = $.extend(true, {
+            YFormatType: "1000",
+            YDecimals: '2'
+        }, option);
+
+        $("#" + div).SampleChart(opts);
+    }
+
+
+</script>
+</body>
+</html>

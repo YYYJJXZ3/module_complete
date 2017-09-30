@@ -1,0 +1,166 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>无标题文档</title>
+    <link href="../../themes/lightblue/page/page.css" rel="stylesheet" />
+    <style>
+        dl.cond {
+            list-style: none;
+        }
+
+        html {
+            overflow-y: scroll;
+        }
+
+        dd.conditem {
+            font-size: 12px;
+            border: solid 1px blue;
+            color: white;
+            background: #0cbdfa;
+            float: left;
+            padding: 3px;
+            padding-left: 10px;
+            padding-right: 15px;
+            margin: 5px;
+            cursor: pointer;
+        }
+
+            dd.conditem:hover {
+                background: #0084cf url('images/tag_item_close.png') right center no-repeat;
+                color: white;
+            }
+
+        dl.filter {
+            list-style: none;
+        }
+
+        dd.filteritem {
+            font-size: 12px;
+            border: solid 1px #ccc;
+            float: left;
+            padding: 3px;
+            padding-left: 10px;
+            padding-right: 10px;
+            margin: 5px;
+            cursor: pointer;
+            color: #666666;
+            display: list-item;
+        }
+
+            dd.filteritem:hover {
+                border-color: #ff6a00;
+            }
+
+        dd.selecteditem {
+            background-color: #0026ff;
+            color: white;
+        }
+
+        .filtertitle {
+            font-size: 12px;
+            float: left;
+            font-weight: 600;
+            padding: 3px;
+            margin: 3px;
+            width: 80px;
+            text-align: right;
+        }
+
+        .filteritemdiv {
+        }
+
+        .checkbox {
+            float: left;
+        }
+
+        .checkboxtext {
+            display: block;
+            float: left;
+            margin-top: 3px;
+            padding-right: 10px;
+            color: #666666;
+        }
+    </style>
+    <link href="../../themes/lightblue/jqueryui/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" />
+    <link href="../../themes/lightblue/jqgrid/ui.jqgrid.css" rel="stylesheet" />
+    <script src="../../javascript/core/jquery-1.9.1.min.js"></script>
+    <script src="../../javascript/core/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="../../javascript/JSControl/Common/pageheader.js"></script>
+    <script src="../../javascript/common/tools.js"></script>
+    <script src="../../javascript/common/pagetools.js"></script>
+    <script src="../../javascript/JSControl/SmartGrid/JqGrid/jquery.jqGrid.src.js"></script>
+    <script src="../../javascript/JSControl/SmartGrid/JqGrid/SmartGrid.js"></script>
+    <script src="../../javascript/JSControl/SmartGrid/JqGrid/grid.locale-cn.js"></script>
+    <script src="../../javascript/JSControl/Common/toolbar.js"></script>
+    <script src="../../javascript/JSControl/Condition/timepicker.js"></script>
+    <script src="../../javascript/JSControl/SampleChart/Scripts/SampleChart.js"></script>
+    <script src="js/quickquery.js"></script>
+    <script type="text/javascript">
+
+        $(function () {
+            var settings = {
+                templateId: "-1179127847",//可以写多个，用逗号隔开，当前报表没有对应的维度，会到其他id去找，优先级从前往后
+                arrCondName: ["地区", "一级业务"],//过滤条件
+                arrDrill: ["地区", "业务"],//对应url传来的idx
+                levelIdx: dss.request("idx"),
+                attachLevels: [{ display: "业务", levels: ["一级业务", "二级业务"] }],//在“关联分析”列，将哪些维度合并
+                arrMutex: ["业务,SGW"]//哪些维度是互斥的，可以多组，用逗号隔开
+            }
+            var tid = dss.request("tid");
+            if (tid != null && tid != "") {
+                settings.templateId = tid;
+            }
+
+            dss.pageheader("sitemap");
+
+            $.fn.quickQuery(settings);
+            $("#btnQuery").click(function () {
+                $.fn.quickQuery("query");
+            });
+        });
+    </script>
+</head>
+<body>
+    <div id="sitemap"></div>
+    <div id="divCond">
+        <dl id="dlCond" class="cond">
+            <dt class="filtertitle">已选条件：</dt>
+        </dl>
+    </div>
+    <div id="divDimFilter" style="clear: both;">
+    </div>
+    <div style="clear: both; border-top: 1px solid #eeeeee; padding-top: 3px">
+        <dl>
+            <dt class="filtertitle">时间：</dt>
+            <dd style="float: left; padding: 2px; border: 0;">
+                <input type="text" style="width: 102px; margin: 1px;" id="txtDate" /></dd>
+            <dt id="dtTopN" class="filtertitle" style="display: none;">TopN：</dt>
+            <dd id="ddTopN" style="float: left; padding: 2px; border: 0; display: none;">
+                <select id="ddlTopN">
+                    <option value="0">全部</option>
+                    <option value="5">5</option>
+                    <option selected="selected" value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="30">30</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                    <option value="200">200</option>
+                    <option value="1000">1000</option>
+                </select>
+            </dd>
+            <dd style="float: left; padding: 2px; border: 0;">
+                <input type="button" class="button" value="查询" id="btnQuery" /></dd>
+            <dd style="float: right; padding: 2px; border: 0; padding-right: 20px;">
+                <input type="button" class="button" disabled="disabled" value="上一步" id="btnPre" /></dd>
+        </dl>
+    </div>
+    <div style="clear: both;" id="divGrid"></div>
+    <div id="divChartDialog" style="display: none;">
+        <div style="text-align: right">
+            <select id="ddlMeasure"></select>
+        </div>
+        <div id="divChart" style="width: 720px;"></div>
+    </div>
+</body>
+</html>

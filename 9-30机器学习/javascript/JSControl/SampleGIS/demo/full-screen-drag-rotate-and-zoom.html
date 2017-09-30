@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Full Screen Drag, Rotate, and Zoom</title>
+    <link rel="stylesheet" href="https://openlayers.org/en/v4.1.0/css/ol.css" type="text/css">
+    <!-- The line below is only needed for old environments like Internet Explorer and Android 4.x -->
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
+    <script src="https://openlayers.org/en/v4.1.0/build/ol.js"></script>
+    <style>
+        .map:-moz-full-screen {
+            height: 100%;
+        }
+
+        .map:-webkit-full-screen {
+            height: 100%;
+        }
+
+        .map:fullscreen {
+            height: 100%;
+        }
+        /* position the rotate control lower than usual */
+        .ol-rotate {
+            top: 3em;
+        }
+    </style>
+</head>
+<body>
+    <div id="map" class="map"></div>
+    <script>
+        var map = new ol.Map({
+            controls: ol.control.defaults().extend([
+              new ol.control.FullScreen()
+            ]),
+            interactions: ol.interaction.defaults().extend([
+              new ol.interaction.DragRotateAndZoom()
+            ]),
+            layers: [
+              new ol.layer.Tile({
+                  source: new ol.source.BingMaps({
+                      key: 'Your Bing Maps Key from http://www.bingmapsportal.com/ here',
+                      imagerySet: 'Aerial'
+                  })
+              })
+            ],
+            // Use the canvas renderer because it's currently the fastest
+            target: 'map',
+            view: new ol.View({
+                center: [-33519607, 5616436],
+                rotation: -Math.PI / 8,
+                zoom: 8
+            })
+        });
+    </script>
+</body>
+</html>

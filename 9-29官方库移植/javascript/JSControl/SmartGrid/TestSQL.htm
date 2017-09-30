@@ -1,0 +1,83 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>JQGrid--异步数据--测试</title>
+    <link href="../../../Themes/lightblue/jqueryui/jquery-ui-1.10.3.custom.css" rel="stylesheet" />
+    <link href="../../../Themes/lightblue/jqgrid/ui.jqgrid.css" rel="stylesheet" />
+    <script src="../../core/jquery-1.9.1.min.js" type="text/javascript"></script>
+    <script src="JqGrid/grid.locale-cn.js" type="text/javascript"></script>
+    <script src="JqGrid/jquery.jqGrid.src.js" type="text/javascript"></script>
+    <script src="JqGrid/SmartGrid.js" type="text/javascript"></script>
+    <script src="JqMenu/smartMenu.float.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+            queryData("load");
+            //查询事件
+            $("#Search").bind("click", function () {
+                queryData("search");
+            });
+        });
+
+        function queryData(actiontype) {
+            var strSql = "select measure_id, measure_desc, measure_displayname, conn_rolap, from_table, theme_id, theme_desc, keyword, decimal_digits, unit, measure_explain, measure_rdn, user_id, is_inuse, load_time, fact_id  from sys_meta_measure t";
+            var strConn = "SQL_ConnStr";
+            var dataPath = "handler/jqGriddata.ashx";
+            //自定义属性
+            var opts = {
+                captionName: "st_load_log 异步展示信息",
+                width: 0,
+                showrownum: true,
+                pagingId: "pager",
+                //数据来源
+                ajax: {
+                    path: dataPath,
+                    sqlstr: strSql,
+                    connstr: strConn
+                },
+                //分页属性
+                paging: {
+                    rowNum: 20,
+                    rowList: [20, 40, 60]
+                },
+                //默认排序
+                sort: {},
+                //单元格属性
+                col: {
+                    poperty: [//{ datafrom: "user", colindex: 0, name: "", width: 50, adddom: "aaa" },
+                        { colindex: 5, rowspan: true, name: "1111|||测试" },
+                        { colindex: 4 },
+                        { colindex: 3, rowspan: true, sort: false },
+                        { colindex: 2, hidden: false }]
+                },
+                //表头设置
+                header: {
+
+                },
+                //绑定加载完成后事件
+                callback: {
+                },
+                // 开启测试状态
+                test: {
+                    showColId: false
+                }
+            };
+
+            // 初始化表格
+            $("#list").smartgrid(opts);
+        }
+
+
+    </script>
+</head>
+<body>
+    <form>
+        <div style="width: 100%">
+            <div id="listleft" style="width: 69%; border: 2px dotted red; float: left"></div>
+            <div id="listright" style="width: 30%; float: right"></div>
+        </div>
+        <div id="list" style="width: 98%; border: 2px dotted red; float: left"></div>
+        <hr />
+    </form>
+</body>
+</html>
+

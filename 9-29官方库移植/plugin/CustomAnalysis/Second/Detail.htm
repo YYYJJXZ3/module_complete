@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>详单</title>
+    <link href="../../../Themes/lightblue/p.css" rel="stylesheet" type="text/css" />
+    <link href="../../../Themes/lightblue/jqueryui/jquery-ui-1.10.3.custom.min.css" rel="stylesheet"
+        type="text/css" />
+    <link href="../../../Themes/lightblue/jqgrid/ui.jqgrid.css" rel="stylesheet" type="text/css" />
+    <script src="../../../Javascript/core/jquery-1.9.1.min.js" type="text/javascript"></script>
+    <script src="../../../Javascript/core/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
+    <script src="../../../Javascript/JSControl/SmartGrid/JqGrid/grid.locale-cn.js" type="text/javascript"></script>
+    <script src="../../../Javascript/JSControl/SmartGrid/JqGrid/jquery.jqGrid.min.js"
+        type="text/javascript"></script>
+    <script src="../../../Javascript/JSControl/SmartGrid/JqGrid/SmartGrid.js" type="text/javascript"></script>
+    <script src="../../../Javascript/frame/openTabPage.js" type="text/javascript"></script>
+    <script src="../../../Themes/JS/csvexp.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#btnExport").button();
+            var drillstr = getCookie("detailsql");
+            if (drillstr != null && drillstr != "") {
+                var sqlList = $.parseJSON(drillstr);
+                if (sqlList.length > 0) {
+                    var sql = sqlList[0].Sql;
+                    var conn = sqlList[0].ConnStr;
+                    $("#gridDrill").smartgrid({
+                        ajax: {
+                            sqlstr: sql,
+                            connstr: conn
+                        },
+                        showrownum: false,
+                        pagingId: "pager",
+                        paging: {
+                            rowNum: 20
+                        }
+                    });
+                }
+            }
+            $("#btnExport").click(function () {
+                analyzerCsvExport(ana);
+            });
+        });
+
+        function getCookie(c_name) {
+            if (document.cookie.length > 0) {
+                var c_start = document.cookie.indexOf(c_name + "=")
+                if (c_start != -1) {
+                    c_start = c_start + c_name.length + 1
+                    c_end = document.cookie.indexOf(";", c_start)
+                    if (c_end == -1) c_end = document.cookie.length
+                    return unescape(document.cookie.substring(c_start, c_end))
+                }
+            } return ""
+        }
+    </script>
+</head>
+<body>
+<div id="gridDrill">
+    </div>
+    <div id="pager">
+    </div>
+    <div style="text-align:right;">
+    <input type="button" value="CSV导出" id="btnExport" /></div>
+</body>
+</html>

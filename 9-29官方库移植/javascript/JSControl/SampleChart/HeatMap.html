@@ -1,0 +1,258 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>地图demo页面</title>
+    <link href="../../../themes/lightblue/p.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/page/page.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/jqgrid/ui.jqgrid.css" rel="stylesheet" />
+
+    <script src="../../core/jquery-1.9.1.min.js"></script>
+    <script src="../../core/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="../../common/tools.js"></script>
+    <script src="../../common/pagetools.js"></script>
+    <script src="Scripts/SampleChart.js"></script>
+    <script>
+        var param = {
+            data: {
+                "colnames": ["地区", "经度", "纬度", "PM2.5"],
+                "rows": [
+                        { col0: "海门", col1: 121.15, col2: 31.89, col3: 246 },
+                        { col0: "鄂尔多斯", col1: 109.781327, col2: 39.608266, col3: 186 },
+                        { col0: "招远", col1: 120.38, col2: 37.35, col3: 19 },
+                        { col0: "舟山", col1: 122.207216, col2: 29.985295, col3: 78 },
+                        { col0: "齐齐哈尔", col1: 123.97, col2: 47.33, col3: 139 },
+                        { col0: "盐城", col1: 120.13, col2: 33.38, col3: 180 },
+                        { col0: "赤峰", col1: 118.87, col2: 42.28, col3: 243 },
+                        { col0: "青岛", col1: 120.33, col2: 36.07, col3: 191 },
+                        { col0: "乳山", col1: 121.52, col2: 36.89, col3: 175 },
+                        { col0: "金昌", col1: 102.188043, col2: 38.520089, col3: 124 },
+                        { col0: "泉州", col1: 118.58, col2: 24.93, col3: 213 },
+                        { col0: "莱西", col1: 120.53, col2: 36.86, col3: 93 },
+                        { col0: "日照", col1: 119.46, col2: 35.42, col3: 70 },
+                        { col0: "胶南", col1: 119.97, col2: 35.88, col3: 217 },
+                        { col0: "南通", col1: 121.05, col2: 32.08, col3: 102 },
+                        { col0: "拉萨", col1: 91.11, col2: 29.97, col3: 208 },
+                        { col0: "云浮", col1: 112.02, col2: 22.93, col3: 24 },
+                        { col0: "梅州", col1: 116.1, col2: 24.55, col3: 96 },
+                        { col0: "文登", col1: 122.05, col2: 37.2, col3: 81 },
+                        { col0: "上海", col1: 121.48, col2: 31.22, col3: 91 },
+                        { col0: "攀枝花", col1: 101.718637, col2: 26.582347, col3: 219 },
+                        { col0: "威海", col1: 122.1, col2: 37.5, col3: 121 },
+                        { col0: "承德", col1: 117.93, col2: 40.97, col3: 184 },
+                        { col0: "厦门", col1: 118.1, col2: 24.46, col3: 55 },
+                        { col0: "汕尾", col1: 115.375279, col2: 22.786211, col3: 108 },
+                        { col0: "潮州", col1: 116.63, col2: 23.68, col3: 182 },
+                        { col0: "丹东", col1: 124.37, col2: 40.13, col3: 201 },
+                        { col0: "太仓", col1: 121.1, col2: 31.45, col3: 196 },
+                        { col0: "曲靖", col1: 103.79, col2: 25.51, col3: 268 },
+                        { col0: "烟台", col1: 121.39, col2: 37.52, col3: 185 },
+                        { col0: "福州", col1: 119.3, col2: 26.08, col3: 25 },
+                        { col0: "瓦房店", col1: 121.979603, col2: 39.627114, col3: 134 },
+                        { col0: "即墨", col1: 120.45, col2: 36.38, col3: 202 },
+                        { col0: "抚顺", col1: 123.97, col2: 41.97, col3: 118 },
+                        { col0: "玉溪", col1: 102.52, col2: 24.35, col3: 274 },
+                        { col0: "张家口", col1: 114.87, col2: 40.82, col3: 287 },
+                        { col0: "阳泉", col1: 113.57, col2: 37.85, col3: 94 },
+                        { col0: "莱州", col1: 119.942327, col2: 37.177017, col3: 11 },
+                        { col0: "湖州", col1: 120.1, col2: 30.86, col3: 60 },
+                        { col0: "汕头", col1: 116.69, col2: 23.39, col3: 7 },
+                        { col0: "昆山", col1: 120.95, col2: 31.39, col3: 85 },
+                        { col0: "宁波", col1: 121.56, col2: 29.86, col3: 194 },
+                        { col0: "湛江", col1: 110.359377, col2: 21.270708, col3: 220 },
+                        { col0: "揭阳", col1: 116.35, col2: 23.55, col3: 79 },
+                        { col0: "荣成", col1: 122.41, col2: 37.16, col3: 6 },
+                        { col0: "连云港", col1: 119.16, col2: 34.59, col3: 94 },
+                        { col0: "葫芦岛", col1: 120.836932, col2: 40.711052, col3: 97 },
+                        { col0: "常熟", col1: 120.74, col2: 31.64, col3: 170 },
+                        { col0: "东莞", col1: 113.75, col2: 23.04, col3: 222 },
+                        { col0: "河源", col1: 114.68, col2: 23.73, col3: 235 },
+                        { col0: "淮安", col1: 119.15, col2: 33.5, col3: 105 },
+                        { col0: "泰州", col1: 119.9, col2: 32.49, col3: 27 },
+                        { col0: "南宁", col1: 108.33, col2: 22.84, col3: 269 },
+                        { col0: "营口", col1: 122.18, col2: 40.65, col3: 187 },
+                        { col0: "惠州", col1: 114.4, col2: 23.09, col3: 23 },
+                        { col0: "江阴", col1: 120.26, col2: 31.91, col3: 172 },
+                        { col0: "蓬莱", col1: 120.75, col2: 37.8, col3: 87 },
+                        { col0: "韶关", col1: 113.62, col2: 24.84, col3: 172 },
+                        { col0: "嘉峪关", col1: 98.289152, col2: 39.77313, col3: 76 },
+                        { col0: "广州", col1: 113.23, col2: 23.16, col3: 175 },
+                        { col0: "延安", col1: 109.47, col2: 36.6, col3: 39 },
+                        { col0: "太原", col1: 112.53, col2: 37.87, col3: 0 },
+                        { col0: "清远", col1: 113.01, col2: 23.7, col3: 279 },
+                        { col0: "中山", col1: 113.38, col2: 22.52, col3: 191 },
+                        { col0: "昆明", col1: 102.73, col2: 25.04, col3: 241 },
+                        { col0: "寿光", col1: 118.73, col2: 36.86, col3: 150 },
+                        { col0: "盘锦", col1: 122.070714, col2: 41.119997, col3: 26 },
+                        { col0: "长治", col1: 113.08, col2: 36.18, col3: 130 },
+                        { col0: "深圳", col1: 114.07, col2: 22.62, col3: 277 },
+                        { col0: "珠海", col1: 113.52, col2: 22.3, col3: 32 },
+                        { col0: "宿迁", col1: 118.3, col2: 33.96, col3: 138 },
+                        { col0: "咸阳", col1: 108.72, col2: 34.36, col3: 195 },
+                        { col0: "铜川", col1: 109.11, col2: 35.09, col3: 73 },
+                        { col0: "平度", col1: 119.97, col2: 36.77, col3: 63 },
+                        { col0: "佛山", col1: 113.11, col2: 23.05, col3: 183 },
+                        { col0: "海口", col1: 110.35, col2: 20.02, col3: 227 },
+                        { col0: "江门", col1: 113.06, col2: 22.61, col3: 37 },
+                        { col0: "章丘", col1: 117.53, col2: 36.72, col3: 109 },
+                        { col0: "肇庆", col1: 112.44, col2: 23.05, col3: 155 },
+                        { col0: "大连", col1: 121.62, col2: 38.92, col3: 75 },
+                        { col0: "临汾", col1: 111.5, col2: 36.08, col3: 99 },
+                        { col0: "吴江", col1: 120.63, col2: 31.16, col3: 290 },
+                        { col0: "石嘴山", col1: 106.39, col2: 39.04, col3: 52 },
+                        { col0: "沈阳", col1: 123.38, col2: 41.8, col3: 166 },
+                        { col0: "苏州", col1: 120.62, col2: 31.32, col3: 298 },
+                        { col0: "茂名", col1: 110.88, col2: 21.68, col3: 22 },
+                        { col0: "嘉兴", col1: 120.76, col2: 30.77, col3: 100 },
+                        { col0: "长春", col1: 125.35, col2: 43.88, col3: 66 },
+                        { col0: "胶州", col1: 120.03336, col2: 36.264622, col3: 208 },
+                        { col0: "银川", col1: 106.27, col2: 38.47, col3: 256 },
+                        { col0: "张家港", col1: 120.555821, col2: 31.875428, col3: 131 },
+                        { col0: "三门峡", col1: 111.19, col2: 34.76, col3: 279 },
+                        { col0: "锦州", col1: 121.15, col2: 41.13, col3: 208 },
+                        { col0: "南昌", col1: 115.89, col2: 28.68, col3: 272 },
+                        { col0: "柳州", col1: 109.4, col2: 24.33, col3: 191 },
+                        { col0: "三亚", col1: 109.511909, col2: 18.252847, col3: 104 },
+                        { col0: "自贡", col1: 104.778442, col2: 29.33903, col3: 231 },
+                        { col0: "吉林", col1: 126.57, col2: 43.87, col3: 93 },
+                        { col0: "阳江", col1: 111.95, col2: 21.85, col3: 33 },
+                        { col0: "泸州", col1: 105.39, col2: 28.91, col3: 86 },
+                        { col0: "西宁", col1: 101.74, col2: 36.56, col3: 205 },
+                        { col0: "宜宾", col1: 104.56, col2: 29.77, col3: 218 },
+                        { col0: "呼和浩特", col1: 111.65, col2: 40.82, col3: 195 },
+                        { col0: "成都", col1: 104.06, col2: 30.67, col3: 69 },
+                        { col0: "大同", col1: 113.3, col2: 40.12, col3: 113 },
+                        { col0: "镇江", col1: 119.44, col2: 32.2, col3: 90 },
+                        { col0: "桂林", col1: 110.28, col2: 25.29, col3: 284 },
+                        { col0: "张家界", col1: 110.479191, col2: 29.117096, col3: 60 },
+                        { col0: "宜兴", col1: 119.82, col2: 31.36, col3: 152 },
+                        { col0: "北海", col1: 109.12, col2: 21.49, col3: 252 },
+                        { col0: "西安", col1: 108.95, col2: 34.27, col3: 142 },
+                        { col0: "金坛", col1: 119.56, col2: 31.74, col3: 184 },
+                        { col0: "东营", col1: 118.49, col2: 37.46, col3: 120 },
+                        { col0: "牡丹江", col1: 129.58, col2: 44.6, col3: 141 },
+                        { col0: "遵义", col1: 106.9, col2: 27.7, col3: 276 },
+                        { col0: "绍兴", col1: 120.58, col2: 30.01, col3: 85 },
+                        { col0: "扬州", col1: 119.42, col2: 32.39, col3: 253 },
+                        { col0: "常州", col1: 119.95, col2: 31.79, col3: 128 },
+                        { col0: "潍坊", col1: 119.1, col2: 36.62, col3: 159 },
+                        { col0: "重庆", col1: 106.54, col2: 29.59, col3: 25 },
+                        { col0: "台州", col1: 121.420757, col2: 28.656386, col3: 267 },
+                        { col0: "南京", col1: 118.78, col2: 32.04, col3: 63 },
+                        { col0: "滨州", col1: 118.03, col2: 37.36, col3: 204 },
+                        { col0: "贵阳", col1: 106.71, col2: 26.57, col3: 293 },
+                        { col0: "无锡", col1: 120.29, col2: 31.59, col3: 32 },
+                        { col0: "本溪", col1: 123.73, col2: 41.3, col3: 21 },
+                        { col0: "克拉玛依", col1: 84.77, col2: 45.59, col3: 105 },
+                        { col0: "渭南", col1: 109.5, col2: 34.52, col3: 173 },
+                        { col0: "马鞍山", col1: 118.48, col2: 31.56, col3: 47 },
+                        { col0: "宝鸡", col1: 107.15, col2: 34.38, col3: 250 },
+                        { col0: "焦作", col1: 113.21, col2: 35.24, col3: 238 },
+                        { col0: "句容", col1: 119.16, col2: 31.95, col3: 144 },
+                        { col0: "北京", col1: 116.46, col2: 39.92, col3: 177 },
+                        { col0: "徐州", col1: 117.2, col2: 34.26, col3: 193 },
+                        { col0: "衡水", col1: 115.72, col2: 37.72, col3: 129 },
+                        { col0: "包头", col1: 110, col2: 40.58, col3: 17 },
+                        { col0: "绵阳", col1: 104.73, col2: 31.48, col3: 150 },
+                        { col0: "乌鲁木齐", col1: 87.68, col2: 43.77, col3: 199 },
+                        { col0: "枣庄", col1: 117.57, col2: 34.86, col3: 96 },
+                        { col0: "杭州", col1: 120.19, col2: 30.26, col3: 298 },
+                        { col0: "淄博", col1: 118.05, col2: 36.78, col3: 288 },
+                        { col0: "鞍山", col1: 122.85, col2: 41.12, col3: 167 },
+                        { col0: "溧阳", col1: 119.48, col2: 31.43, col3: 215 },
+                        { col0: "库尔勒", col1: 86.06, col2: 41.68, col3: 38 },
+                        { col0: "安阳", col1: 114.35, col2: 36.1, col3: 116 },
+                        { col0: "开封", col1: 114.35, col2: 34.79, col3: 138 },
+                        { col0: "济南", col1: 117, col2: 36.65, col3: 62 },
+                        { col0: "德阳", col1: 104.37, col2: 31.13, col3: 173 },
+                        { col0: "温州", col1: 120.65, col2: 28.01, col3: 275 },
+                        { col0: "九江", col1: 115.97, col2: 29.71, col3: 215 },
+                        { col0: "邯郸", col1: 114.47, col2: 36.6, col3: 269 },
+                        { col0: "临安", col1: 119.72, col2: 30.23, col3: 238 },
+                        { col0: "兰州", col1: 103.73, col2: 36.03, col3: 246 },
+                        { col0: "沧州", col1: 116.83, col2: 38.33, col3: 59 },
+                        { col0: "临沂", col1: 118.35, col2: 35.05, col3: 9 },
+                        { col0: "南充", col1: 106.110698, col2: 30.837793, col3: 182 },
+                        { col0: "天津", col1: 117.2, col2: 39.13, col3: 195 },
+                        { col0: "富阳", col1: 119.95, col2: 30.07, col3: 150 },
+                        { col0: "泰安", col1: 117.13, col2: 36.18, col3: 153 },
+                        { col0: "诸暨", col1: 120.23, col2: 29.71, col3: 228 },
+                        { col0: "郑州", col1: 113.65, col2: 34.76, col3: 255 },
+                        { col0: "哈尔滨", col1: 126.63, col2: 45.75, col3: 76 },
+                        { col0: "聊城", col1: 115.97, col2: 36.45, col3: 122 },
+                        { col0: "芜湖", col1: 118.38, col2: 31.33, col3: 234 },
+                        { col0: "唐山", col1: 118.02, col2: 39.63, col3: 226 },
+                        { col0: "平顶山", col1: 113.29, col2: 33.75, col3: 259 },
+                        { col0: "邢台", col1: 114.48, col2: 37.05, col3: 297 },
+                        { col0: "德州", col1: 116.29, col2: 37.45, col3: 120 },
+                        { col0: "济宁", col1: 116.59, col2: 35.38, col3: 194 },
+                        { col0: "荆州", col1: 112.239741, col2: 30.335165, col3: 34 },
+                        { col0: "宜昌", col1: 111.3, col2: 30.7, col3: 206 },
+                        { col0: "义乌", col1: 120.06, col2: 29.32, col3: 264 },
+                        { col0: "丽水", col1: 119.92, col2: 28.45, col3: 43 },
+                        { col0: "洛阳", col1: 112.44, col2: 34.7, col3: 213 },
+                        { col0: "秦皇岛", col1: 119.57, col2: 39.95, col3: 203 },
+                        { col0: "株洲", col1: 113.16, col2: 27.83, col3: 32 },
+                        { col0: "石家庄", col1: 114.48, col2: 38.03, col3: 119 },
+                        { col0: "莱芜", col1: 117.67, col2: 36.19, col3: 107 },
+                        { col0: "常德", col1: 111.69, col2: 29.05, col3: 290 },
+                        { col0: "保定", col1: 115.48, col2: 38.85, col3: 209 },
+                        { col0: "湘潭", col1: 112.91, col2: 27.87, col3: 46 },
+                        { col0: "金华", col1: 119.64, col2: 29.12, col3: 177 },
+                        { col0: "岳阳", col1: 113.09, col2: 29.37, col3: 276 },
+                        { col0: "长沙", col1: 113, col2: 28.21, col3: 22 },
+                        { col0: "衢州", col1: 118.88, col2: 28.97, col3: 298 },
+                        { col0: "廊坊", col1: 116.7, col2: 39.53, col3: 47 },
+                        { col0: "菏泽", col1: 115.480656, col2: 35.23375, col3: 136 },
+                        { col0: "合肥", col1: 117.27, col2: 31.86, col3: 21 },
+                        { col0: "武汉", col1: 114.31, col2: 30.52, col3: 260 },
+                        { col0: "大庆", col1: 125.03, col2: 46.58, col3: 45 }
+                ]
+            }
+        };
+
+        $(function () {
+            getHeatMap();
+        });
+
+        function getHeatMap() {
+            bindChart("HeatMap", {
+                DataSource: param.data,
+                XDataColIndex: "0,1,2",
+                YDataColIndex: "3",
+                MapType: ['china'],
+                IsShowLegend: true,
+                ChartType: "HeatMap",
+                BgColor: "#404a59",
+                Map: {
+                    borderColor: "#161D25",
+                    areaColor: "#323C48",
+                    roam: true
+                },
+                Theme: "cmcc_dark"
+            });
+        }
+
+        function bindChart(div, option) {
+            var opts = $.extend(true, {
+                YFormatType: "1000",
+                BgColor: '#e2eefc',
+                BorderColor: '#7D7DFF',
+                ChartType: "map"
+            }, option);
+
+            $("#" + div).SampleChart(opts);
+        }
+
+        function mapClick(xValue, yValue, value) {
+            alert(xValue + "：" + value);//样例：“那曲地区：15”
+        }
+    </script>
+</head>
+<body>
+    <div class="captionWithoutIcon">
+        热力图：
+    </div>
+    <div id="HeatMap" style="height: 620px;"></div>
+</body>
+</html>

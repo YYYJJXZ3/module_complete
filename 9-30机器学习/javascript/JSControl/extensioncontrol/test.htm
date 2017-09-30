@@ -1,0 +1,131 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Page of MultipleSelectControl</title>
+    <link href="../../../Themes/lightblue/multiple-select.css" rel="stylesheet" />
+    <link href="../../../Themes/lightblue/jqueryui/jquery-ui-1.10.3.custom.css" rel="stylesheet" />
+    <link href="../../../Themes/lightblue/jqgrid/ui.jqgrid.css" rel="stylesheet" />
+    <script src="../../core/jquery-1.9.1.min.js"></script>
+    <script src="../../core/jquery-ui-1.10.3.custom.js"></script>
+    <script src="conditionmanager.js"></script>
+    <script src="../SmartGrid/JqGrid/grid.locale-cn.js"></script>
+    <script src="../SmartGrid/JqGrid/jquery.jqGrid.src.js"></script>
+    <script src="../SmartGrid/JqGrid/SmartGrid.js"></script>
+    <script src="../Condition/mulselect.js"></script>
+    <script src="../Condition/bigdataSelect.js"></script>
+    <script src="../Condition/comselect.js"></script>
+    <script type="text/javascript">
+        var conditionManager;
+        $(function () {
+            //var options = {
+            //    showTopSelectControl: true,
+            //    defaultControlType: "single",
+            //    theme: "GSM无线主题",
+            //    items: [
+            //         {
+            //             "dimension": "小区维",
+            //             "levels": [
+            //                     { "level": "地区", selected: [{ id: "8254030", name: "S27潮阳竹林A" }] },
+            //                     { "level": "MSC", defaultShow: true, selected: [{ id: "", name: "惠州" }] },
+            //                     { "level": "Cell", controlType: "multiple", defaultShow: true, selected: [{ id: "", name: "惠州" }] }
+            //             ]
+            //         }
+            //    ],
+            //    dependencyOptions: [
+            //        {
+            //            "level": "地区",
+            //            "items": [
+            //                {
+            //                    "level": "MSC",
+            //                    "items": [
+            //                        {
+            //                            "level": "Cell",
+            //                            "items": []
+            //                        }]
+            //                }
+            //            ]
+            //        }
+            //    ]
+            //};
+
+            var area;
+            var defaultArea = "";
+            var defaultAreaDesc = "";
+            if (typeof defaultArea == "undefined") {
+                area = [];
+            }
+            else {
+                area = [{ id: defaultArea, name: defaultAreaDesc }];
+            }
+            var options = {
+                showTopSelectControl: false,
+                defaultControlType: "multiple",
+                theme: "四网协同片区主题",
+                items: [
+                     {
+                         "dimension": "片区维",
+                         "levels": [
+                                 { "level": "地区", defaultShow: true, selected: [] },
+                                 { "level": "区县", defaultShow: true, selected: [] },
+                                 { "level": "片区", defaultShow: true, selected: area }
+                         ]
+                     }
+                ],
+                dependencyOptions: [
+                    {
+                        "level": "地区",
+                        "items": [
+                            {
+                                "level": "区县",
+                                "items": [
+                                    {
+                                        "level": "片区",
+                                        "items": []
+                                    }]
+                            }
+                        ]
+                    }
+                ]
+            };
+            conditionManager = $("#multipleSelectControl").createConditionManager(options);
+        });
+
+        function getSelectedValues() {
+            if (conditionManager != undefined) {
+                var selected = conditionManager.getSelectedCondition();
+                var html = $.map(selected, function (item) {
+                    var temp = item.key + "{ Ids:" + item.Ids + ", Values:" + item.values + "}";
+                    return temp;
+                });
+                $("#selectValuesControl").html(html);
+            }
+            return false;
+        }
+    </script>
+</head>
+
+<body style="margin: 0px;">
+    <div style="background-color: AppWorkspace; height: 80px; border-bottom: 3px solid orange;">
+    </div>
+    <div style="height: 500px; margin: 10px; padding: 30px 0px 0px 100px; border: 1px dashed pink;">
+        <a onclick="getSelectedValues()">Selected Values</a>
+        <div id="selectValuesControl" style="margin-top: 10px;">&nbsp;</div>
+        <div id="monitorEventControl" style="margin-top: 10px;">&nbsp;</div>
+        <div id="multipleSelectControl" style="width: 800px; border: dashed 1px red;"></div>
+<!--        <table>
+            <tr>
+                <td>正确的解决方案
+                    <select></select></td>
+                <td>
+                    <div id="multipleSelectControl" style="width: 800px; border: dashed 1px red;">
+                        <div style="float: left;">
+                            asdfad
+                        <select></select>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>-->
+    </div>
+</body>
+</html>

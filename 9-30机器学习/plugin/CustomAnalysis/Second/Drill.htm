@@ -1,0 +1,162 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>钻取</title>
+    <link href="../../../Themes/lightblue/p.css" rel="stylesheet" type="text/css" />
+    <link href="../../../Themes/lightblue/jqueryui/jquery-ui-1.10.3.custom.min.css" rel="stylesheet"
+        type="text/css" />
+    <link href="../../../Themes/lightblue/jqgrid/ui.jqgrid.css" rel="stylesheet" type="text/css" />
+    <script src="../../../Javascript/core/jquery-1.9.1.min.js" type="text/javascript"></script>
+    <script src="../../../Javascript/core/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
+    <script src="../../../Javascript/JSControl/SmartGrid/JqGrid/grid.locale-cn.js" type="text/javascript"></script>
+    <script src="../../../Javascript/JSControl/SmartGrid/JqGrid/jquery.jqGrid.min.js"
+        type="text/javascript"></script>
+    <script src="../../../Javascript/JSControl/SmartGrid/JqGrid/SmartGrid.js" type="text/javascript"></script>
+    <script src="../../../Javascript/frame/openTabPage.js" type="text/javascript"></script>
+    <script src="../../../Themes/JS/csvexp.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        var analyzerStr = "{\"MeasureList\":[{\"MeasureID\":\"2061951184\",\"Decimal\":\"2\",\"Unit\":\"%\",\"DisplayName\":\"上行TBF建立成功率\",\"MeasureType\":0,\"Formula\":\"\",\"Visible\":true},{\"MeasureID\":\"2061951184\",\"Decimal\":\"2\",\"Unit\":\"%\",\"DisplayName\":\"上行TBF建立成功率\",\"MeasureType\":1,\"Formula\":\"\",\"Visible\":true},{\"MeasureID\":\"2061951184\",\"Decimal\":\"2\",\"Unit\":\"%\",\"DisplayName\":\"上行TBF建立成功率\",\"MeasureType\":2,\"Formula\":\"\",\"Visible\":true},{\"MeasureID\":\"2061951184\",\"Decimal\":\"2\",\"Unit\":\"%\",\"DisplayName\":\"上行TBF建立成功率\",\"MeasureType\":5,\"Formula\":\"\",\"Visible\":true},{\"MeasureID\":\"2061951184\",\"Decimal\":\"2\",\"Unit\":\"%\",\"DisplayName\":\"上行TBF建立成功率\",\"MeasureType\":4,\"Formula\":\"\",\"Visible\":true}],\"RowDimList\":[{\"DimensionID\":\"-727496196\",\"DimensionName\":\"小区维\",\"HierarchyName\":null,\"LevelName\":\"地区\",\"DimensionType\":2,\"ValType\":0,\"Val\":\"六安市\",\"ValList\":[]},{\"DimensionID\":\"-727496196\",\"DimensionName\":\"小区维\",\"HierarchyName\":null,\"LevelName\":\"小区\",\"DimensionType\":2,\"ValType\":0,\"Val\":\"\",\"ValList\":[]}],\"ColDimList\":[],\"SliceDimList\":[{\"DimensionID\":\"1590121686\",\"DimensionName\":\"日期维\",\"HierarchyName\":null,\"LevelName\":\"日\",\"DimensionType\":0,\"ValType\":0,\"Val\":\"2013年11月20日\",\"ValList\":[]}],\"MeasureFilter\":\"\",\"SortSetting\":{\"SortColIndex\":0,\"SortDirection\":1,\"SecondSortColIndex\":-1,\"SecondSortDirection\":0},\"PageSetting\":{\"PageSize\":0,\"Page\":0,\"TotalPage\":0,\"TotalRecord\":0,\"EnableComputeTotal\":true},\"TopN\":0,\"StatisticsSetting\":{\"DimensionIndexList\":[],\"StatisticsList\":[]}}";
+        var ana = $.parseJSON(analyzerStr);
+        $(document).ready(function () {
+            $("#btnExport").button();
+            if (request("d") == "1") {
+                var drillstr = getCookie("anadrill");
+                var drillstr2 = getCookie("anadrill2");
+                var drillstr3 = getCookie("anadrill3"); 
+                if (drillstr != "") {
+                    analyzerStr = unescape(drillstr+drillstr2+drillstr3);
+                    ana = $.parseJSON(analyzerStr);
+                }
+            }
+            bindGrid();
+            $("#btnExport").click(function () {
+                analyzerCsvExport(ana);
+            });
+        });
+
+        function rightClick(rowid, colid, rowdata, e) {
+            var items = [{ text: "添加计算列", clickFun: function (e) {
+                $(this).formulaedit({
+                    analyzer: ana,
+                    confirm: function (mea) {
+                        ana.MeasureList.push(mea);
+                        bindGrid();
+                    }
+                });
+
+            }
+            }];
+            var meacol = colid - ana.RowDimList.length;
+        if (meacol >= 0 && ana.MeasureList[meacol].MeasureType == 7) {
+            items.push({ text: "编辑计算列", clickFun: function (e) {
+                $(this).formulaedit({
+                    analyzer: ana,
+                    measure:ana.MeasureList[meacol],
+                    confirm: function (mea) {
+                        ana.MeasureList[meacol] = mea;
+                        bindGrid();
+                    }
+                });
+            } 
+            });
+            items.push({ text: "删除计算列", clickFun: function (e) {
+                var newmeas = [];
+                for (var m = 0; m < ana.MeasureList.length; m++) {
+                    if (m != e.data.colIndex - ana.RowDimList.length) {
+                        newmeas.push(ana.MeasureList[m]);
+                    }
+                }
+                ana.MeasureList = newmeas;
+                bindGrid();
+            }
+            });
+            }
+            if (ana.ColDimList == null || ana.ColDimList.length == 0) {
+                $(this).contextmenu({ showDrill: true, showRelatedAnalysis: true, showDimStatistics: true, topX: e.clientX, topY: e.clientY, analyzer: ana,
+                    rowData: rowdata, colIndex: colid, items: items
+                });
+            }
+        }
+
+        function bindGrid() {
+            $("#gridDrill").smartgrid({
+                analyzer: ana,
+                showrownum: false,
+                pagingId: "pager",
+                paging: {
+                    rowNum: 20
+                }
+            });
+        }
+
+        function getCookie(c_name) {
+            if (document.cookie.length > 0) {
+                var c_start = document.cookie.indexOf(c_name + "=")
+                if (c_start != -1) {
+                    c_start = c_start + c_name.length + 1
+                    c_end = document.cookie.indexOf(";", c_start)
+                    if (c_end == -1) c_end = document.cookie.length
+                    return document.cookie.substring(c_start, c_end)
+                }
+            } return ""
+        }
+
+        function request(strParame) {
+            var args = new Object();
+            var query = location.search.substring(1);
+
+            var pairs = query.split("&"); // Break at ampersand 
+            for (var i = 0; i < pairs.length; i++) {
+                var pos = pairs[i].indexOf('=');
+                if (pos == -1) continue;
+                var argname = pairs[i].substring(0, pos);
+                var value = pairs[i].substring(pos + 1);
+                value = unescape(value);
+                args[argname] = value;
+            }
+            return args[strParame];
+        }
+
+        function jsonToString(obj) {
+            var THIS = this;
+            switch (typeof (obj)) {
+                case 'string':
+                    return '"' + obj.replace(/(["\\])/g, '\\$1') + '"';
+                case 'array':
+                    return '[' + obj.map(jsonToString).join(',') + ']';
+                case 'object':
+                    if (obj instanceof Array) {
+                        var strArr = [];
+                        var len = obj.length;
+                        for (var i = 0; i < len; i++) {
+                            strArr.push(jsonToString(obj[i]));
+                        }
+                        return '[' + strArr.join(',') + ']';
+                    } else if (obj == null) {
+                        return 'null';
+
+                    } else {
+                        var string = [];
+                        for (var property in obj) string.push(jsonToString(property) + ':' + jsonToString(obj[property]));
+                        return '{' + string.join(',') + '}';
+                    }
+                case 'number':
+                    return obj;
+                default:
+                    return obj;
+            }
+        }
+
+        
+
+    </script>
+</head>
+<body>
+    <div id="gridDrill">
+    </div>
+    <div id="pager">
+    </div>
+    <div style="text-align:right;">
+    <input type="button" value="CSV导出" id="btnExport" /></div>
+</body>
+</html>

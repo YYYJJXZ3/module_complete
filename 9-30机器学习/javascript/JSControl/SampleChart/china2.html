@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>全国覆盖感知分析</title>
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/map.css">
+    <link rel="stylesheet" href="css/jsonTable.css">
+    <link rel="stylesheet" href="css/dropShowHide.css">
+    <link rel="stylesheet" href="css/jquery-ui-1.10.3.custom.min.css">
+    <link rel="stylesheet" href="css/page.css">
+    <script src="js/jquery-1.9.1.min.js"></script>
+    <script src="js/radio.js"></script>
+    <script src="js/dropShowHide.js"></script>
+    <script src="js/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="js/pagetools.js"></script>
+    <script src="js/timepicker.js"></script>
+    <script src="js/tools.js"></script>
+    <script src="Scripts/SampleChart.js"></script>
+        <!--<script src="../../javascript/JSControl/SampleChart/Scripts/SampleChart.js"></script>-->
+    <script type="text/javascript">
+        $(function () {
+            getMapSign();//标记地图（无需指定经纬度，按省或地市的名称即可进行标记）
+            //getMapSign2();//标记地图（无需指定经纬度，按省或地市的名称即可进行标记）
+        });
+
+        function getMapSign() {
+            var data = {
+                "colnames": ["地区名称", "人口"],
+                "rows": [
+                    { "col0": "河北", "col1": 80 },
+                    { "col0": "上海", "col1": 93 },
+                    { "col0": "广东", "col1": 80 },
+                    { "col0": "新疆", "col1": 40 },
+                    { "col0": "西藏", "col1": 50 }
+                ]
+            };
+
+            bindChart("map", {
+                DataSource: data,
+                MapRangeOrLegend: "legend",
+                XDataColIndex: "0",
+                YDataColIndex: "1",
+                YDecimals: '0',//小数位数
+                IsShowValue: true,
+                MapType: ['china'],
+                Event: {
+                    MapSelected: mapSelected//用ClickEvent时，拖动时也会触发地图，所以改用这个事件
+                },
+                LegendPosition: "RIGHTBOTTOM",
+                ChartType: "MapSign",
+                Theme: "lightblue",
+                MapLegend: [
+                        { name: '<=70%', min: null, max: 70, color: '#CC0033' },
+                        { name: '70%-90%', min: 70, max: 90, color: '#FFFF00' },
+                        { name: '>90%', min: 90, max: null, color: '#00CC33' }
+                ],
+                Original: {//调用echarts的原生属性，个别场景用到，非通用，不设置则按默认，不会报错
+                    series: {
+                        markPoint: {
+                            symbol: "pin",
+                            symbolSize: 10,
+                            large: false,
+                            effect: {
+                                show: false,
+                                type: "bounce"
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function mapSelected(xValue) {
+            //getMapSign2(xValue);
+            ////尝试在此处，进行window.location href 调用省
+            window.location.href = "province2.html?province=" + xValue;
+        }
+
+        function bindChart(div, option) {
+            var opts = $.extend(true, {
+                YFormatType: "1000",
+                //BgColor: '#000',
+                ChartType: "map",
+                Map: {
+                    areaColor: '#CEDFF7'
+                },
+                callback: {
+                    complete: function (myChart) {
+                        //window.onresize = myChart.resize;
+                    }
+                }
+            }, option);
+
+            //dss.samplechart(div, opts);
+            $("#" + div).SampleChart(opts);
+        }
+
+        function mapClick(xValue, yValue, value) {
+            alert(xValue + "：" + value);//样例：“那曲地区：15”
+        }
+
+        
+        $(function () {
+            $("#txtDate").timepicker({
+                showTypeDay: true,
+                showTypeMonth: false
+            });
+            //dss.rootPath
+//            alert(dss.rootPath);
+//            alert($("#txtDate").timepicker("getDateStr"));
+            window.onload = function () {
+                appendD1();
+            };
+
+
+            // 排序
+            function sortByKey(array, key) {
+                return array.sort(function (a, b) {
+                    var x = a[key];
+                    var y = b[key];
+                    return ((x > y) ? -1 : ((x < y) ? 1 : 0));
+                });
+            }
+
+
+            function appendD1() {
+                $.getJSON("js/chinaData2.json", function (data) {
+                    var $jsontip = $("#jsonTip1");
+
+                    var newdata = $.extend({}, data.data);
+                    newdata.rows = [];
+
+                    $.each(data.data.rows, function (i, r) {
+                        var item = {};
+                        $.each(r.cells, function (j, c) {
+                            item["col" + j] = c;
+                        })
+                        newdata.rows.push(item);
+                    })
+
+                    newdata = sortByKey(newdata.rows, 'col1');
+
+
+                    // 绘制
+                    var strHtml = "";//存储数据的变量
+                    $jsontip.empty();//清空内容
+                    $.each(newdata, function (infoIndex, info) {
+                        strHtml += '<tr><td><b class="roleNum">' + (infoIndex + 1) + '</b></td><td>' + info.col0 + '</td><td>' + info.col1 + '</td></tr>';
+                    })
+                    $jsontip.html(strHtml);//显示处理后的数据
+
+
+                    // 前十个tr中，第一个td中的b，设置背景样式。
+                    $.each($('#div1 tr').slice(1, 11), function (i, item) {
+                        $(item).children('td').eq(0).children('b').css("background-color", "#3590de");
+                    });
+
+                    $.each($('#div1 tr').slice(1, 7), function (i, item) {
+                        $(item).children('td').eq(1).css("color", "#0002c0");
+                    });
+                })
+            }
+
+
+        });
+
+
+    </script>
+</head>
+<body>
+  
+    <div id="m"></div>
+    <div class="toolbar">
+        <ul>
+            <li class="item"><span class="back">日期</span>
+                <input type="text"
+                    style="width: 100px" id="txtDate" /></li>
+            <li class="item">
+                <input type="button" class="button"
+                    id="btnQuery" value="查询" /></li>
+        </ul>
+    </div>
+
+    <div class="mainZone">
+
+        <div class="rListZone">
+
+            <div id="div1">
+                <div class="divframe">
+                    <table width="100%" class="table">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>区域</th>
+                                <th>感知优良率</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="jsonTip1"></tbody>
+
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="lComplexZone">
+
+            <div class="cmapZone">
+                <div class="showHide">
+                <p class="pPage"><input type="button" id="hide" value="&nbsp;全国感知优良率 "><b>98%</b></p>
+                    
+
+                <input id="show" type="button">
+                </div>
+
+
+                <div class="echart-map" id="map" >
+            
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

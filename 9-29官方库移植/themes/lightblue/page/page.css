@@ -1,0 +1,187 @@
+div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,form,label,legend,time,mark,audio,video{margin:0;padding:0;border:0;font-size:12px;text-decoration:none}
+select{height:22px}
+input[type=checkbox]{cursor:pointer}
+html{padding:0px;margin:0px;font-size:12px}
+body{margin:0px;font-size:12px;color:#282828;font-family:'Microsoft YaHei';background-color:#fff}
+input[type=text]{border:solid 1px #d4d4d4;padding:1px 5px 1px 5px;line-height:18px;height:18px}
+q,blockquote{quotes:none}
+q:before,q:after,blockquote:before,blockquote:after{content:"";content:none}
+a{color:black;text-decoration:none;cursor:pointer}
+a:link{color:black;text-decoration:none}
+a:active{color:#ee3366;text-decoration:none}
+a:visited{color:black;text-decoration:none}
+a:hover{color:#ee3366;text-decoration:underline}
+ol,ul{list-style:none}
+table{border-collapse:collapse;border-spacing:0}
+button.button,input.button{height:24px;color:#fff;font-size:12px;text-align:center;line-height:24px;padding:0 15px 0 15px !important;padding:0 8px 0 8px;overflow:visible;border:0px;cursor:pointer;background-color:#0084CF}
+button.button:hover,input.button:hover{background-color:#00A2F9}
+button.button:disabled,input.button:disabled{cursor:default;background-color:#bbbbbb}
+.loading{background-image:url('../images/bigloading.gif');background-repeat:no-repeat;width:48px;height:48px;background-position:center center}
+.commdataloading{background-image:url('../images/load.gif');background-repeat:no-repeat;width:16px;height:16px;background-position:right center}
+.load{text-align:center;padding-top:200px;color:Red;font-size:larger}
+.load .img{background-image:url('../images/loading.gif');background-repeat:no-repeat;width:100%;background-position:center top;padding-top:20px}
+.pre{white-space: pre-wrap;white-space: -moz-pre-wrap;white-space: -pre-wrap;white-space: -o-pre-wrap;word-wrap: break-word;}
+.main_top_bg_left{width:10px;height:30px;background-repeat:no-repeat;padding-left:10px}
+.main_top_bg{color:#404e6f}
+.main_top_bg a{color:#3399FF;font:bold}
+.main_top_bg_right{width:19px;height:30px;padding-left:10px;background-repeat:no-repeat}
+.main_top_bg img{vertical-align:middle}
+.toolbar{height:30px;margin-left:10px;list-style:none outside none;display:block;margin-bottom:0px;margin-top:10px}
+.toolbar .item{float:left;margin-right:10px;margin-bottom:3px;list-style:none outside none}
+.toolbar .item .tag{padding:3px 3px 3px 3px;float:left}
+.toolbar .item .back{padding:3px 6px 3px 6px;float:left;background-color:#16a0d3;border-color:#16a0d3;color:#fff;text-align:center;}
+.tabControl{height:22px;float:left}
+.tabControl li{cursor:pointer;padding:1px 6px 1px 6px;float:left;border:solid 1px #d4d4d4;line-height:18px;margin-top:0px;margin-right:-1px}
+.tabControl li:hover{background:#C9E1EF;text-decoration:none;border-color:#C9E1EF}
+.tabControl li:active{text-decoration:none}
+.tabControl li.selected{background:#16a0d3;border-color:#1096c7;color:#fff}
+.tabtimeControl{height:22px;float:left;margin-left:3px}
+.tabtimeControl li{cursor:pointer;padding:1px 6px 1px 6px;float:left;line-height:18px;margin-top:1px;margin-right:-1px}
+.tabtimeControl li:hover{text-decoration:underline}
+.dss_auto{clear:both}
+.dss_auto .dss_auto_table{background-color:rgb(0,132,207);border-collapse:separate;border-spacing:1px;color:#fff}
+.dss_auto .dss_auto_table tr{height:25px;padding-left:7px;font-weight:normal}
+.dss_auto .dss_auto_table tbody tr{background-color:#fff;color:#666}
+.ui-tabs{padding:0px}
+.ui-tabs-nav{background-color:#fff}
+.ui-tabs .ui-tabs-nav{border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #dddddd;padding:0px;line-height:30px;height:30px}
+.ui-tabs .ui-tabs-nav li{border:1px solid #dddddd;border-bottom:0px;border-top:0px;background-color:transparent;margin:0px;margin-left:-1px;height:100%}
+.ui-tabs .ui-tabs-nav li a{padding:0px 30px 3px 30px;color:#333333;font-weight:400;font-family:'Microsoft YaHei';bblr:expression(this.onFocus=this.blur());outline-style:none}
+.ui-tabs .ui-tabs-nav .ui-tabs-active a{background-color:#fff;color:#13B7DF}
+.commselect{position:absolute;background-color:#fff;display:block}
+
+
+.dss_comm_big{position:absolute;z-index:12;width:404px;background-color:#fff}
+.dss_comm_big .search{height:28px;margin-top:0px;line-height:30px;height:30px;vertical-align:middle;border:1px solid #ddd;border-bottom:0px;}
+.dss_comm_big .search span{padding-left:10px}
+.dss_comm_big .search input[type=text]{margin:3px 0px 0px;width:100px;height:19px;line-height:19px;margin-right:10px;margin-left:5px;border:1px solid #ddd}
+.dss_comm_big .search input[type=button]{margin-right:10px}
+.dss_comm_big .data{width:404px;margin:0px}
+.dss_comm_big .bottom {width:404px;margin:0px;border:1px solid #ddd;border-top:0px;box-sizing:border-box;}
+.dss_comm_big .bottom .selectbig{width:380px;margin:0px 0px 0px 0px;overflow-y:auto;max-height:60px;padding:5px}
+.dss_comm_big .bottom .selectbig li{line-height:15px;padding:3px 5px;font-size:10px;margin-right:5px;white-space:nowrap;float:left;border:1px solid #ddd;margin-bottom:5px}
+.dss_comm_big .bottom .selectbig li i{background-image:url('../images/toolbar/close.png');padding:0px 2px 2px 2px;background-repeat:no-repeat;background-position:center center;cursor:pointer;margin-left:3px}
+.dss_comm_small{display:block;position:absolute;z-index:12;overflow-x:scroll;overflow-y:auto;background-color:#fff}
+.dss_comm_small ul{list-style:none;margin:0px;padding:0px;border-bottom-width:0px}
+.dss_comm_small ul li{border-width:0px 0px 1px;border-style:none none solid;border-color:currentColor currentColor rgb(221,221,221);border-image:none;width:100%;height:20px;line-height:20px;display:inline-block;white-space:nowrap;cursor:pointer;}
+.dss_comm_small ul li:hover{background-color:gold}
+.dss_comm_small ul li.select{background-color:gold}
+.dss_comm_small ul li span{margin-left:3px;display:inline-block}
+
+.dss_comm_small_ck{display:block;position:absolute;z-index:12;overflow-x:scroll;overflow-y:auto;background-color:#fff}
+.dss_comm_small_ck ul{list-style:none;margin:0px;padding:0px;border-bottom-width:0px}
+.dss_comm_small_ck ul li{border-width:0px 0px 1px;border-style:none none solid;border-color:currentColor currentColor rgb(221,221,221);border-image:none;width:100%;height:20px;line-height:20px;display:inline-block;white-space:nowrap;cursor:pointer;background-image:url('../images/toolbar/checkbox.png');background-repeat:no-repeat;background-position-x:2px;background-position-y:-47px;}
+.dss_comm_small_ck ul li:hover{background-color:gold}
+.dss_comm_small_ck ul li.select{background-color:gold;background-position-y:-100px;}
+.dss_comm_small_ck ul li span{margin-left:18px;display:inline-block}
+
+.contenTitle{clear:both;margin:0px 0px 0px 0px;padding:0px;display:table;line-height:28px;height:28px;width:100%;background-color:#f2f2e6}
+.contenTitle .title{height:18px;font-size:12px;font-weight:700;display:block;float:left;color:#3399FF;padding:1px 10px 9px 10px;float:left}
+.contenTitle .right{float:right;height:100%;padding-top:2px}
+
+
+/*日历控件样式表*/
+.dss_timeControl{border:1px solid #dddddd;padding:5px 10px;width:497px;background-color:#fff;z-index:999;overflow:auto;position:absolute;padding:0px;}
+.dss_timeControl .title{height:25px}
+.dss_date_month{width:73px;position:absolute;z-index:1000;background-color:#fff}
+.dss_date_month ul{border:1px solid #dddddd;height:154px}
+.dss_date_month ul li{float:left;padding:3px 5px;cursor:pointer}
+.dss_date_month ul li.disabled{color:#bbb}
+.dss_date_year{width:80px;position:absolute;z-index:1000;background-color:#fff}
+.dss_date_year ul{border:1px solid #dddddd;height:120px}
+.dss_date_year ul li{float:left;padding:2px 5px;cursor:pointer}
+.dss_date_year ul li.disabled{color:#bbb}
+.dss_timeControl{border:1px solid #19B7B6;padding:5px 0px;width:497px;background-color:#fff;z-index:999;overflow:auto;position:absolute}
+
+.dss_timeControl .Day{width:230px}
+.dss_timeControl .title{height:25px;border-bottom:1px solid #ccc}
+.dss_timeControl .title .left{background-image:url('../images/frame2/bd_tb_24.png');padding:0px;background-repeat:no-repeat;background-position-y:-144px;background-position-x:0px;cursor:pointer;float:left;display:block;height:24px;border:0px;width:23px}
+.dss_timeControl .title .left:hover{background-position-y:-168px}
+.dss_timeControl .title .right{background-image:url('../images/frame2/bd_tb_24.png');background-repeat:no-repeat;background-position-x:0px;background-position-y:-96px;cursor:pointer;float:right;display:block;height:24px;border:0px;width:23px}
+.dss_timeControl .title .right:hover{background-position-y:-120px}
+.dss_timeControl .title .center{float:none;height:24px;line-height:24px;text-align:center;vertical-align:middle;width:100%}
+.dss_timeControl .title .center span{cursor:pointer}
+.dss_timeControl .title .center .m{cursor:pointer}
+
+.dss_timeControl .Day ol{background-color:rgb(247,248,250);height:26px;color:#19B7B6;margin:5px 0px 0px 0px;padding:0px;}
+.dss_timeControl .Day ol li{float:left;padding:5px 10px;width:12px}
+.dss_timeControl .clear{clear:both}
+.dss_timeControl .Day ul{display:block;padding:0px;}
+.dss_timeControl .Day ul li{float:left;padding:4px 10px;width:12px;color:#bbb;font-size:12px}
+.dss_timeControl .Day ul li.t{cursor:pointer;color:#333}
+.dss_timeControl .Day ul li.now{color:#333 !important;background-image:url('../images/frame2/bd_tb_24.png');background-repeat:no-repeat;background-position-x:5px;background-position-y:-240px}
+.dss_timeControl .Day ul li.select{cursor:pointer;}
+.dss_timeControl .Day ul li.select:hover{color:#fff;background-image:url('../images/frame2/bd_tb_24.png');background-repeat:no-repeat;background-position-x:5px;background-position-y:-216px;}
+.dss_timeControl .Day ul li.selected{color:#fff;background-image:url('../images/frame2/bd_tb_24.png');background-repeat:no-repeat;background-position-x:5px;background-position-y:-192px}
+
+.dss_timeControl .Hour ol{background-color:rgb(247,248,250);height:26px;color:#19B7B6;margin-top:5px}
+.dss_timeControl .Hour ol li{float:left;padding:5px 10px;width:12px}
+.dss_timeControl .Hour ul{display:block}
+.dss_timeControl .Hour ul li{float:left;padding:4px 10px;width:12px;color:#bbb;font-size:12px;}
+.dss_timeControl .Hour ul li.t{cursor:pointer;color:#333;}
+.dss_timeControl .Hour ul li.now{color:#333 !important;background-image:url('../images/frame2/bd_tb_24.png');background-repeat:no-repeat;background-position-x:5px;background-position-y:-240px}
+.dss_timeControl .Hour ul li.select{cursor:pointer;}
+.dss_timeControl .Hour ul li.select:hover{color:#fff;background-image:url('../images/frame2/bd_tb_24.png');background-repeat:no-repeat;background-position-x:5px;background-position-y:-216px}
+.dss_timeControl .Hour ul li.selected{color:#fff;background-image:url('../images/frame2/bd_tb_24.png');background-repeat:no-repeat;background-position-x:5px;background-position-y:-192px}
+
+.dss_timeControl .Minute ol{background-color:rgb(247,248,250);height:26px;color:#19B7B6;margin-top:5px}
+.dss_timeControl .Minute ol li{float:left;padding:5px 10px;width:12px}
+.dss_timeControl .Minute ul{display:block}
+.dss_timeControl .Minute ul li{float:left;padding:4px 10px;width:12px;color:#bbb;font-size:12px;}
+.dss_timeControl .Minute ul li.t{cursor:pointer;color:#333;}
+.dss_timeControl .Minute ul li.now{color:#333 !important;background-image:url('../images/frame2/bd_tb_24.png');background-repeat:no-repeat;background-position-x:5px;background-position-y:-240px}
+.dss_timeControl .Minute ul li.select{cursor:pointer;}
+.dss_timeControl .Minute ul li.select:hover{color:#fff;background-image:url('../images/frame2/bd_tb_24.png');background-repeat:no-repeat;background-position-x:5px;background-position-y:-216px}
+.dss_timeControl .Minute ul li.selected{color:#fff;background-image:url('../images/frame2/bd_tb_24.png');background-repeat:no-repeat;background-position-x:5px;background-position-y:-192px}
+
+.dss_timeControl .Second ol{background-color:rgb(247,248,250);height:26px;color:#19B7B6;margin-top:5px}
+.dss_timeControl .Second ol li{float:left;padding:5px 10px;width:12px}
+.dss_timeControl .Second ul{display:block}
+.dss_timeControl .Second ul li{float:left;padding:4px 10px;width:12px;color:#bbb;font-size:12px;}
+.dss_timeControl .Second ul li.t{cursor:pointer;color:#333;}
+.dss_timeControl .Second ul li.now{color:#333 !important;background-image:url('../images/frame2/bd_tb_24.png');background-repeat:no-repeat;background-position-x:5px;background-position-y:-240px}
+.dss_timeControl .Second ul li.select{cursor:pointer;}
+.dss_timeControl .Second ul li.select:hover{color:#fff;background-image:url('../images/frame2/bd_tb_24.png');background-repeat:no-repeat;background-position-x:5px;background-position-y:-216px}
+.dss_timeControl .Second ul li.selected{color:#fff;background-image:url('../images/frame2/bd_tb_24.png');background-repeat:no-repeat;background-position-x:5px;background-position-y:-192px}
+
+
+.dss_timeControl .Month ul{display:block;margin-top:10px;}
+.dss_timeControl .Month ul li{float:left;padding:0px 25px;width:25px;height:40px; color:#bbb;line-height:40px;vertical-align:middle;}
+.dss_timeControl .Month ul li.t{cursor:pointer;color:#333;}
+.dss_timeControl .Month ul li.now{color:#333 !important;background-image:url('../images/frame2/bd_tb_48.png');background-repeat:no-repeat;background-position-x:12px;background-position-y:-100px}
+.dss_timeControl .Month ul li.select{cursor:pointer;}
+.dss_timeControl .Month ul li.select:hover{color:#fff;background-image:url('../images/frame2/bd_tb_48.png');background-repeat:no-repeat;background-position-x:12px;background-position-y:-52px}
+.dss_timeControl .Month ul li.selected{color:#fff;background-image:url('../images/frame2/bd_tb_48.png');background-repeat:no-repeat;background-position-x:12px;background-position-y:-4px}
+
+.dss_timeControl .Week ul{display:block;}
+.dss_timeControl .Week ul li{float:left;padding:6px 2px 7px 3px;width:27px; color:#bbb;}
+.dss_timeControl .Week ul li.t{cursor:pointer;color:#333;}
+.dss_timeControl .Week ul li.now{color:#333 !important;background-image:url('../images/frame2/bd_tb_48.png');background-repeat:no-repeat;background-position-x:-8px;background-position-y:-250px}
+.dss_timeControl .Week ul li.select{cursor:pointer;}
+.dss_timeControl .Week ul li.select:hover{color:#fff;background-image:url('../images/frame2/bd_tb_48.png');background-repeat:no-repeat;background-position-x:-8px;background-position-y:-202px}
+.dss_timeControl .Week ul li.selected{color:#fff;background-image:url('../images/frame2/bd_tb_48.png');background-repeat:no-repeat;background-position-x:-8px;background-position-y:-154px}
+
+.dss_timeControl .Quarter ul{display:block;}
+.dss_timeControl .Quarter ul li{float:left;padding:20px 15px 20px 15px;width:50px; color:#bbb;margin:5px 12px 5px 20px;}
+.dss_timeControl .Quarter ul li.t{cursor:pointer;color:#333;}
+.dss_timeControl .Quarter ul li.now{color:#333 !important;background-image:url('../images/frame2/bd_tb_48.png');background-repeat:no-repeat;background-position-x:8px;background-position-y:-92px}
+.dss_timeControl .Quarter ul li.select{cursor:pointer;}
+.dss_timeControl .Quarter ul li.select:hover{color:#fff;background-image:url('../images/frame2/bd_tb_48.png');background-repeat:no-repeat;background-position-x:8px;background-position-y:-44px}
+.dss_timeControl .Quarter ul li.selected{color:#fff;background-image:url('../images/frame2/bd_tb_48.png');background-repeat:no-repeat;background-position-x:8px;background-position-y:4px}
+
+.dss_timeControl .bottom{height:20px;border-top:1px solid #e1e1e1;padding-top:10px;line-height:20px;vertical-align:middle}
+.dss_timeControl .bottom .left{width:78%;float:left}
+.dss_timeControl .bottom .left div{float:left}
+.dss_timeControl .bottom .left div.border{border:1px solid #ccc;width:37px;height:20px;line-height:20px;text-align:center;margin-right:2px;margin-left:5px;cursor:pointer;white-space:nowrap;text-overflow:clip;-o-text-overflow:ellipsis;overflow:hidden}
+.dss_timeControl .bottom .left div.none{cursor:default}
+.dss_timeControl .bottom .right{width:20%;float:right}
+.dss_timeControl .bottom .right span{border:1px solid #dddddd;padding:3px 5px;cursor:pointer}
+.dss_timeControl .bottom .right span.btn{border-top-left-radius:5px;border-top-right-radius:5px;border-bottom-left-radius:5px;border-bottom-right-radius:5px;background-color:rgb(0,161,203);color:#fff;margin-left:5px}
+.dss_date_num{width:228px;position:absolute;z-index:1000;background-color:#fff;border:1px solid #dddddd}
+.dss_date_num ul li{float:left;padding:4px 5px 5px 9px;cursor:pointer;font-size:12px }
+.dss_date_num ul li.selected{color:#fff;background-image:url('../images/frame2/bd_tb_24.png');background-repeat:no-repeat;background-position-x:5px;background-position-y:-192px;}
+.dss_date_num ul li:hover{color:#fff;background-image:url('../images/frame2/bd_tb_24.png');background-repeat:no-repeat;background-position-x:5px;background-position-y:-216px;}
+/*日历控件样式表结束*/
+
+
+.ui-widget-overlay {background: #eeeeee url(../images/toolbar/doam.png) 50% 50% repeat;opacity: .8;filter: Alpha(Opacity=80);position: fixed;top: 0;left: 0;width: 100%;height: 100%;}

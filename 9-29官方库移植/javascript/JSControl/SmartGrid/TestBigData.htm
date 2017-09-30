@@ -1,0 +1,212 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1" runat="server">
+    <title>JQGrid--大数据本地化--测试</title>
+    <link href="../../../Themes/lightblue/jqueryui/jquery-ui-1.10.3.custom.css" rel="stylesheet" />
+    <link href="../../../Themes/lightblue/jqgrid/ui.jqgrid.css" rel="stylesheet" />
+    <script src="../../core/jquery-1.9.1.min.js" type="text/javascript"></script>
+    <script src="JqGrid/grid.locale-cn.js" type="text/javascript"></script>
+    <script src="JqGrid/jquery.jqGrid.src.js" type="text/javascript"></script>
+    <script src="JqGrid/SmartGrid.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        var opts = [];
+        jQuery(document).ready(function () {
+            onPageClick(1,110,10);
+        });
+        function QueryData(datasource) {
+                    //自定义属性
+                    opts = {
+                        captionName: "本地数据展示",
+                        width: 1000,
+                        height: 400,
+                        showrownum: false,
+                        islocaldata: true,
+                        localdata: datasource,
+                        //单元格属性
+                        col: {
+                            poperty: [
+                                { datafrom: "user", colindex: 0, name: "", width: 50, adddom: "<input type='checkbox'  />" },
+                                { colindex: 1, sorttype: "int", name: "添加链接", align: "center", addurl: "http://www.baidu.com/search/error.html?ra={0}&b={2}&c=3", ulrtype: "" },
+                                { colindex: 2, name: "姓名单击事件", width: 150, addclick: testClick },
+                                { colindex: 3, name: "性别", width: 150, addclick: testClick2 },
+                                { colindex: 4, name: "邮箱添加颜色", sorttype: "float", fontcolor: "red", bgcolor: "#274499" },
+                                { colindex: 5, name: "分数", sorttype: "int", align: "right", width: 150, addclick: testClick },
+                                { colindex: 6, sorttype: "date", align: "right" }
+                            ],
+                            setlinks: [{ "colindex": 2, "href": "http://www.baidu.com", "params": "a=[1]&b=[8]&c=3", "property": "target=\"_target\"" }],
+
+                        },
+                        //绑定加载完成后事件
+                        callback: {
+                            gridComplete: gridComplete,
+                            onSelectRow: onSelectRow,
+                            onPaging:onPageClick
+                        },
+                        //表头设置
+                        header: {
+                            isMulHeader: true,
+                            useColSpanStyle: true,
+                            groups: {
+                                cur: [{ colindex: 1, columntotle: 3, newtitle: "资源类问题" },
+                                                    { colindex: 4, columntotle: 2, newtitle: "质量类问题" }],
+                                next: {
+                                    cur: [{ colindex: 1, columntotle: 2, newtitle: "多表头二" },
+                                            { colindex: 3, columntotle: 4, newtitle: "多表头" }]
+                                }
+                            }
+                        },
+                        //开启测试状态
+                        test: {
+                            showColId: false
+                        }
+                    };
+
+                    // 初始化表格
+                    jQuery("#list").smartgrid(opts);
+        }
+
+        function testClick(rowid, colid, rowdata) {
+            alert("单击测试方法 1 :您单击第" + rowid + "行第" + colid + "列 ：" + rowdata);
+            return false;
+        }
+        function testClick2(rowid, colid, rowdata) {
+            alert("单击测试方法 2 :您单击第" + rowid + "行第" + colid + "列 ：" + rowdata[1]);
+            return false;
+        }
+        // 右击    没完善
+        function rightClick(obj) {
+            alert("右击  测试 ：" + obj.attr("rpostdata"));
+            return false;
+        }
+
+        // 加载行完成事件
+        function afterInsertRow(rowid, rowdata, rowelem) {
+        }
+
+        function onSelectRow(rowid, rowData) {
+            // alert("选中后，触发的事件  返回值有行ID：" + rowid + " 和 行数据(数组形式)" + typeof (rowData));
+        }
+
+        //加载完成绑定事件
+        function gridComplete(objGrid) {
+            //$("#tip").html("据你刚才的设置，JqGrid生成的表格:“" + objGrid.getGridParam("caption") + "”");
+            //$("#tip").append("<br/>");
+            //$("#tip").append("当前页码：" + objGrid.getGridParam("page"));
+            //$("#tip").append("<br/>");
+            //$("#tip").append("本事件已经把第2行第3列显示内同已经改变，你也可以自定义自己的操作！");
+            //objGrid.setCell(1, 3, "<div class=\"redColor\" style=\"width:100%; height: 100%;color:red\">自定义显示！</div>");
+            //alert(objGrid.find("tr:eq(1)>td:eq(2)").text());
+            //alert(objGrid.getCell(1,2));
+            return false;
+        }
+
+        function SetDBClickEvent(id) {
+            var obj = $("#div_dbClickMenu");
+            var para = obj.attr("params");
+            alert("双击菜单窗口触发了事件" + id + ";参数：" + para);
+            return false;
+        }
+        function SetDBClick(name) {
+            return {
+                popid: "div_dbClickMenu",
+                params: name,
+                menuList: [
+                        { menuName: "趋势分析", clickEvent: "SetDBClickEvent(1)" },
+                        { menuName: "占比分析", clickEvent: "SetDBClickEvent(2)" },
+                        { menuName: "分布分析", clickEvent: "SetDBClickEvent(3)" },
+                        { menuName: "TopN分析", clickEvent: "SetDBClickEvent(4)" },
+                        { menuName: "同环比分析", clickEvent: "SetDBClickEvent(5)" }
+                ]
+            };
+        }
+        function SetContextMenuEvent(id) {
+            var obj = $("#div_ContextMenu");
+            var para = obj.attr("params");
+            alert("右键菜单窗口触发了事件" + id + ";参数：" + para);
+        }
+        function SetContextMenu(name) {
+            return {
+                popid: "div_ContextMenu",
+                params: name,
+                menuList: [
+                        { menuName: "下钻", clickEvent: "SetContextMenuEvent(1)" },
+                        { menuName: "下钻1", clickEvent: "SetContextMenuEvent(2)" },
+                        { menuName: "下钻2", clickEvent: "SetContextMenuEvent(3)" },
+                        { menuName: "右键菜单4", clickEvent: "SetContextMenuEvent(4)" },
+                        { menuName: "右键菜单5", clickEvent: "SetContextMenuEvent(5)" }
+                ]
+            };
+        }
+        function getDatas() {
+            var a = jQuery("#list").smartgrid("getDatasource");
+            alert(a.rows.length);
+            return;
+        }
+    </script>
+    <script>
+        function onPageClick(curpage, curRecords, curRowNum) {
+            $.ajax({
+                cache: true,
+                type: "POST",
+                url: "Handler/testdata.ashx",
+                beforeSend: function () { },
+                complete: function () { },
+                data: { dtype: "1111", pagenum: curpage, pageTotle: curRecords },
+                datatype: "json",
+                success: function (datasource) {
+                    alert(curRecords + "|" + curRowNum + "|" + curpage);
+                    datasource = eval("(" + datasource + ")")
+                    datasource.page = curpage;
+                    if (curRecords > 0) {
+                        datasource.records = curRecords;
+                    }
+                    QueryData(datasource);
+                },
+                error: function () {
+                    alert("请求数据出错！");
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+    <form id="form1" runat="server">
+    <input id="Button1" type="button" value="获取当前绑定的数据" onclick="getDatas();" />
+    <table>
+        <tr>
+            <td>
+                <div class="demo11" style="color: green;">
+                    双击测试—11</div>
+            </td>
+            <td>
+                <div class="demo22" style="color: green;">
+                    双击测试-22</div>
+            </td>
+            <td>
+                <div class="demo33" style="color: green;">
+                    右键点此-33</div>
+            </td>
+            <td>
+                <div class="demo44" style="color: green;">
+                    右键点此-44</div>
+            </td>
+        </tr>
+    </table>
+    <!--        <table id="list">
+            
+        </table>-->
+    <div id="list" style="width: 800px">
+        <!--用于数据显示-->
+    </div>
+    <span id="tip"></span>
+    <br />
+    <br />
+    <span id="tip1">如果有脚本错误，请反馈给我。然后请在火狐或者IE10下测试。 目前完成的功能有：
+        <br />
+        <ins>1</ins>. 表格的基本设置 ：表格名,表格宽,分页的信息,行显示。opts.captionName, opts.paging 列属性设置 包括隐藏列，重命名列名，设置列宽。
+        opts.col.poperty
+        <br />
+    </span>
+    </form>
+</body>
+</html>

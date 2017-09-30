@@ -1,0 +1,437 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+
+    <!--样式-->
+    <link href="../../../Themes/lightblue/jqueryui/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/jqgrid/ui.jqgrid.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/page/page.css" rel="stylesheet" />
+    <link href="../../../javascript/JSControl/SampleChart/Css/MeasureView.css" rel="stylesheet" />
+
+    <!--整体指标概览插件的样式-->
+    <link href="../../Common/css/common.css" rel="stylesheet" />
+
+    <!--jquery核心库-->
+    <script src="../../../javascript/core/jquery-1.9.1.min.js"></script>
+    <script src="../../../javascript/core/jquery-ui-1.10.3.custom.min.js"></script>
+
+    <!--工具库-->
+    <script src="../../../javascript/common/tools.js" type="text/javascript"></script>
+    <script src="../../../javascript/common/pagetools.js" type="text/javascript"></script>
+
+    <!--下拉框-->
+    <script src="../../../Javascript/JSControl/Condition/comselect.js" type="text/javascript"></script>
+
+    <!--条件插件-->
+    <script src="../../../javascript/JSControl/Condition/controlmanagernew.js"></script>
+
+    <!--表格右上角的按钮-->
+    <script src="../../../javascript/JSControl/Common/toolbar.js"></script>
+
+    <!--时间插件-->
+    <script src="../../../javascript/JSControl/Condition/timepicker.js"></script>
+
+    <!--整体指标概览插件-->
+    <script src="../../Common/js/common.js"></script>
+
+    <!--表格-->
+    <script src="../../../javascript/JSControl/SmartGrid/JqGrid/grid.locale-cn.js"></script>
+    <script src="../../../javascript/JSControl/SmartGrid/JqGrid/jquery.jqGrid.min.js"></script>
+    <script src="../../../javascript/JSControl/SmartGrid/JqGrid/SmartGrid.js"></script>
+
+    <!--图形-->
+    <script src="../../../javascript/JSControl/SampleChart/Scripts/SampleChart.js"></script>
+
+    <!--指标概览-->
+    <script src="../../../javascript/JSControl/SampleChart/Scripts/MeasureView.js"></script>
+
+    <!--本专题的公共js方法-->
+    <script src="../../Common/js/CommonHelp.js"></script>
+
+    <script type="text/javascript">
+        //公共条件对象
+        var param = {
+            item: "总流量",//模板化时用到，接收url中传来的“item”参数
+            timeType: "Day",//时间类型：Month、Day、Week
+            time: null,
+            province: "",//省
+            region: "",//地区
+            city: "",//区县
+            topN: 10,
+            templateID: {//默认的“自定义分析”的报表ID，下面会从配置文件'../data/DemoDIY.json'中读取
+                MeaView: "-1490962457",//整体指标概览
+                Region: "655612495",//地区柱图
+                App: "-2010569741",//一级业务饼图
+                SubApp: "-1548285531",//二级业务柱图
+                Grid: "893648637" //表格
+            }
+        };
+
+        //入口
+        $(function () {
+            method.init();
+        });
+
+        //方法对象
+        var method = {
+            init: function () {
+                dss.pageheader("m");//显示页面导航、查询页面帮助、查询页面sql按钮
+                method.getRequest();//获取别的页面传来的参数
+                method.initTime();//初始化时间控件
+                method.initQueryCtrl();//初始化除时间之外的其他查询条件
+                method.getParam();//获取查询条件
+                method.getMeaView();
+
+                //绑定“查询”按钮的click事件
+                $("#btnQuery").click(function () {
+                    method.getParam();
+                    method.getMeaView();
+                });
+
+                //绑定“导出”按钮的click事件
+                $("#btnExport").click(function () {
+                    dss.download({
+                        //下面是指定sheet页的名称，不设置则按“sheet1”、“sheet2”...
+                        "colAttr": [
+                            {
+                                "divName": "divMeaTotal",
+                                "sheetName": "整体指标概览"
+                            },
+                            {
+                                "divName": "RegionChart",
+                                "sheetName": "地区柱图"
+                            },
+                            {
+                                "divName": "AppChart",
+                                "sheetName": "一级业务"
+                            },
+                            {
+                                "divName": "SubAppChart",
+                                "sheetName": "二级业务"
+                            },
+                            {
+                                "divName": "Grid",
+                                "sheetName": "表格"
+                            }
+                        ]
+                    });
+                });
+
+                $("#btnDialog").click(function () {
+                    method.dialog();
+                });
+            },
+            //获取别的页面传来的参数
+            getRequest: function () {
+                var tmpItem = decodeURI(dss.request("item"));
+                if (!dss.isNullOrEmpty(tmpItem)) {
+                    param.item = tmpItem;
+                }
+
+                var tmpTimeType = decodeURI(dss.request("timeType"));
+                if (!dss.isNullOrEmpty(tmpTimeType)) {
+                    param.timeType = tmpTimeType;
+                }
+
+                var tmpTime = decodeURI(dss.request("timeStr"));
+                if (!dss.isNullOrEmpty(tmpTime)) {
+                    param.time = tmpTime;
+                }
+
+                var tmpRegion = decodeURI(dss.request("regionDesc"));
+                if (!dss.isNullOrEmpty(tmpRegion)) {
+                    param.region = tmpRegion;
+                }
+            },
+            //初始化时间控件
+            initTime: function () {
+                var opt = {
+                    showTypeDay: true,
+                    showTypeMonth: true,
+                    defaultTimeType: dss.isNullOrEmpty(param.timeType) ? "Day" : param.timeType,
+                    defaultDateStr: dss.isNullOrEmpty(param.time) ? null : param.time,
+                    isTile: true
+                };
+                $("#txtTime").timepicker(opt);
+            },
+            //初始化除时间之外的其他查询条件
+            initQueryCtrl: function () {
+                var p = [];
+
+                p.push({
+                    labelname: '网元',
+                    width: 50,
+                    defaultShow: '地区',//默认显示的粒度
+                    type: 'dropdown',//下拉：dropdown，输入：text
+                    items: [
+                        {
+                            dimid: "209237174",//在“系统管理-语义管理-语义管理-维度配置-XX维-编辑ER图”页面右击，点“属性”可查到此维度ID
+                            levelname: '省',//粒度名称
+                            selectmode: "single",//单选：single，多选：multiple
+                            filterValue: ['未知'],//过滤掉“未知”
+                            hascheckall: true,//是否包含“全部”的选项
+                            initValues: [{ "name": "吉林省" }],//不设置此项的话就默认第一项
+                            child: [1],//通过此属性设置关联
+                            initClass: "commdata"//commdata bigdata treedata
+                        },
+                        {
+                            dimid: "209237174",
+                            levelname: '地区',
+                            selectmode: "single",
+                            filterValue: ['未知地区'],//过滤掉“未知地区”
+                            hascheckall: true,
+                            initValues: [{ "name": "全部" }],
+                            child: [1],//通过此属性设置关联，1表示子项在p数组中的索引
+                            initClass: "commdata"//commdata bigdata   treedata
+                        }
+                    ]
+                });
+
+                p.push({
+                    labelname: '网元',
+                    width: 60,
+                    defaultShow: '区县',
+                    type: 'dropdown',
+                    items: [
+                        {
+                            dimid: "209237174",
+                            levelname: '区县',
+                            selectmode: "single",
+                            filterValue: ['未知'],
+                            hascheckall: true,
+                            initClass: "commdata"//commdata bigdata   treedata
+                        }
+                    ]
+                });
+
+                p.push({
+                    labelname: '网元',
+                    width: 30,
+                    defaultShow: 'TOP',
+                    type: 'dropdown',
+                    items: [
+                        {
+                            levelname: 'TOP',
+                            selectmode: "single",
+                            datasource: [{ "name": "10" }, { "name": "20" }, { "name": "30" }, { "name": "50" }],
+                            initValues: [{ "name": "20" }],
+                            initClass: "commdata"//commdata bigdata   treedata
+                        }
+                    ]
+                });
+
+                $("#divFilter").controlmanager(p);
+            },
+            //获取查询条件
+            getParam: function () {
+                param.timeType = $("#txtTime").timepicker("getTimeType");
+                param.time = $("#txtTime").timepicker("getDateStr");
+
+                var con = $("#divFilter").controlmanager("getSelResults");
+                param.province = "";
+                param.region = "";
+                param.city = "";
+                switch (con[0].levelName) {
+                    case "省": param.province = con[0].value.join(','); break;
+                    case "地区": param.region = con[0].value.join(','); break;
+                    default: break;
+                }
+                param.city = con[1].value.join(',');
+                param.topN = con[2].value.join(',');
+            },
+            //从配置文件中获取“自定义分析”报表的TemplateID
+            getTemplateID: function () {
+                $.getJSON('../data/DemoDIY.json', function (data) {
+                    $.each(data, function (i, item) {
+                        if (item.Item == param.item) {
+                            param.templateID = item.TemplateID;
+                            method.getMeaTotal();
+                            method.getRegionData();
+                            method.getAppData();
+                            method.getGridData();
+                            method.getGridByAnalyzer();
+                            method.getGridBySql();
+                            method.getGridBySqlSmall();
+                            method.getChartByExcel();
+                            method.getGridByExcel("GridByExcel", "用Excel作为数据源的表格，只限于测试时的紧急处理，不能在生产系统用", "手写代码_表格");
+                        }
+                    });
+                });
+            },
+            //下钻别的页面
+            drill: function (dimValue, measure) {
+                var initvalues = [];
+                initvalues.push({
+                    k: param.timeType == "Day" ? "日" : "月",
+                    v: param.time
+                });
+                initvalues.push({
+                    k: "地区",
+                    v: dimValue
+                });
+
+                var url = "plugin/Demo/html/DrillPage.html";
+                url += "?initvalues=" + dss.jsonToString(initvalues);//下钻到dashboard的页面需要用此参数传参
+                url += "&measure=" + measure;
+
+                url = encodeURI(url);
+
+                dss.openPageInTab("下钻表格", url);
+            },
+            dialog: function () {
+                dss.dialog({
+                    content: $("#divDialog"),
+                    width: 680,
+                    height: 405,
+                    title: "编辑",
+                    open: function () {
+                        $("#divDialog").show();
+                    },
+                    buttons: {
+                        '取消': function () { }
+                    }
+                });
+            },
+            getMeaView: function () {
+                var act = {
+                    "Time": param.time,
+                    "TimeType": param.timeType,
+                    "GridChart": "Analyzer",
+                    "TemplateID": param.templateID.MeaView,
+                    "Region": param.region,
+                    "City": param.city
+                };
+                $.ajax({
+                    url: '../ashx/Demo.ashx',
+                    data: {
+                        strCon: dss.jsonToString(act)
+                    },
+                    beforeSend: function () {
+                        dss.load(true);
+                    },
+                    complete: function () {
+                        dss.load(false);
+                    },
+                    dataType: 'json',
+                    success: function (analyzer) {
+                        var opt = {
+                            analyzer: analyzer,
+                            items: [
+                                { colindex: 0, icon: "../images/meaview/success.png", titleBgColor: "#6CCAC9", shortName: "总流量" },
+                                { colindex: 1, icon: "../images/meaview/success.png", titleBgColor: "#57C8F2", shortName: "用户数" },
+                                { colindex: 2, icon: "../images/meaview/success.png", titleBgColor: "#63ACE5", shortName: "CPE用户数" },
+                                { colindex: 3, icon: "../images/meaview/success.png", titleBgColor: "#8075C4", shortName: "终端数" }
+                            ],
+                            clickEvent: function (measureId, measureName, measureUnit) {
+                                alert("指标ID：" + measureId + "\n指标名称：" + measureName + "\n单位：" + measureUnit);
+                            }
+                        };
+
+                        $("#divMeaView").MeasureView(opt);
+                    }
+                });
+            }
+        };
+    </script>
+</head>
+<body>
+    <div style="width: 99%; margin: auto; margin-bottom: 8px;">
+        <div id="m"></div>
+        <div class="toolbar">
+            <ul>
+                <li class="item">
+                    <input style="width: 100px;" id="txtTime" type="text" /></li>
+                <li class="item">
+                    <div id="divFilter"></div>
+                </li>
+                <li class="item">
+                    <input class="button" id="btnQuery" value="查询" type="button" /></li>
+                <li class="item">
+                    <input class="button" id="btnExport" value="导出" type="button" /></li>
+                <li class="item">
+                    <input class="button" id="btnDialog" value="弹框" type="button" /></li>
+            </ul>
+        </div>
+        <div id="divMeaView">
+            <!--<div class="meaItem">
+                <div class="title">
+                    <div class="titleIcon">
+                        <img src="../images/meaview/success.png" />
+                    </div>
+                    <div class="titleName">成功率总注册</div>
+                </div>
+                <div class="value">
+                    <table>
+                        <tr class="meaName">
+                            <td>成功率</td>
+                            <td>同比</td>
+                            <td>环比</td>
+                        </tr>
+                        <tr>
+                            <td class="meaValue">89%</td>
+                            <td class="meaContrastUp">12%<img src="../images/meaview/up.png" /></td>
+                            <td class="meaContrastUp">19%<img src="../images/meaview/down.png" /></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="meaItem">
+                <div class="title">
+                    <div class="titleIcon">
+                        <img src="../images/meaview/success.png" />
+                    </div>
+                    <div class="titleName">成功率总注册</div>
+                </div>
+                <div class="value">
+                    <table>
+                        <tr class="meaName">
+                            <td>成功率</td>
+                            <td>同比</td>
+                            <td>环比</td>
+                        </tr>
+                        <tr>
+                            <td class="meaValue">89%</td>
+                            <td class="meaContrastUp">12%<img src="../images/meaview/up.png" /></td>
+                            <td class="meaContrastUp">19%<img src="../images/meaview/down.png" /></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>-->
+        </div>
+        <div id="divDialog" style="height: 405px; overflow-y: scroll; display: none;">
+            名称：<input id="Text1" value="" type="text" /><br />
+            名称：<input id="Text2" value="" type="text" /><br />
+            名称：<input id="Text3" value="" type="text" /><br />
+            名称：<input id="Text4" value="" type="text" /><br />
+            名称：<input id="Text5" value="" type="text" /><br />
+            名称：<input id="Text6" value="" type="text" /><br />
+            名称：<input id="Text7" value="" type="text" /><br />
+            名称：<input id="Text8" value="" type="text" /><br />
+            名称：<input id="Text9" value="" type="text" /><br />
+            名称：<input id="Text10" value="" type="text" /><br />
+            名称：<input id="Text11" value="" type="text" /><br />
+            名称：<input id="Text12" value="" type="text" /><br />
+            名称：<input id="Text13" value="" type="text" /><br />
+            名称：<input id="Text14" value="" type="text" /><br />
+            名称：<input id="Text15" value="" type="text" /><br />
+            名称：<input id="Text16" value="" type="text" /><br />
+            名称：<input id="Text17" value="" type="text" /><br />
+            名称：<input id="Text18" value="" type="text" /><br />
+            名称：<input id="Text19" value="" type="text" /><br />
+            名称：<input id="Text20" value="" type="text" /><br />
+            名称：<input id="Text21" value="" type="text" /><br />
+            名称：<input id="Text22" value="" type="text" /><br />
+            名称：<input id="Text23" value="" type="text" /><br />
+            名称：<input id="Text24" value="" type="text" /><br />
+            名称：<input id="Text25" value="" type="text" /><br />
+            名称：<input id="Text26" value="" type="text" /><br />
+            名称：<input id="Text27" value="" type="text" /><br />
+            名称：<input id="Text28" value="" type="text" /><br />
+            名称：<input id="Text29" value="" type="text" /><br />
+            名称：<input id="Text30" value="" type="text" /><br />
+        </div>
+    </div>
+</body>
+</html>

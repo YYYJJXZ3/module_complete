@@ -1,0 +1,479 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <link href="../../../Themes/lightblue/jqueryui/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/jqgrid/ui.jqgrid.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/page/page.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/ca/db/dashboard.css" rel="stylesheet" />
+    <link href="../../../javascript/ztree/css/zTreeStyle/zTreeStyle.css" rel="stylesheet" />
+    <script src="../../../Javascript/core/jquery-1.9.1.min.js" type="text/javascript"></script>
+    <script src="../../../javascript/core/jquery-ui-1.10.3.custom.min.js"></script>
+
+    <script src="../../../javascript/common/tools.js" type="text/javascript"></script>
+    <script src="../../../javascript/common/pagetools.js" type="text/javascript"></script>
+    <script src="../../../Javascript/JSControl/Condition/comselect.js" type="text/javascript"></script>
+    <script src="../../../javascript/JSControl/Condition/controlmanagernew.js"></script>
+    <script src="../../../javascript/JSControl/Common/toolbar.js"></script>
+    <script src="../../../javascript/JSControl/Condition/timepicker.js"></script>
+
+    <script src="../../../javascript/JSControl/SmartGrid/JqGrid/grid.locale-cn.js"></script>
+    <script src="../../../javascript/JSControl/SmartGrid/JqGrid/jquery.jqGrid.min.js"></script>
+    <script src="../../../javascript/JSControl/SmartGrid/JqGrid/SmartGrid.js"></script>
+    <script src="../../../javascript/JSControl/SampleChart/Scripts/SampleChart.js"></script>
+    <script src="../../Common/js/common.js"></script>
+    
+    <script src="../js/DataTools.js"></script>
+    <script type="text/javascript">
+        var param = {
+            timeType: "Week",
+            time: "2016年53周",
+            hour: "",
+            MSISDN: "",
+            pagePower: {
+                IsQuery: 1,
+                IsEdit: 0,
+                IsExport: 0
+            }
+        };
+
+        $(function () {
+            method.init();
+        });
+
+        var method = {
+            init: function () {
+                dss.pageheader("m");
+
+                var timeOpt = {
+                        showTypeWeek: true,
+                        defaultDateStr: param.time
+                };
+                $("#txtTime").timepicker(timeOpt);
+
+                //var p = [];
+                //var curLevel = {
+                //    labelname: '网元',
+                //    width: 80,
+                //    defaultShow: '用户号码',
+                //    type: 'text',
+                //    items: [
+                //       {
+                //           levelname: '用户号码',
+                //           initValues: [""]
+                //       }
+                //    ]
+                //};
+                //p.push(curLevel);
+
+                //$("#divFilter").controlmanager(p);
+
+                //method.getParam();
+
+                //dataMethods.getPagePower(dss.request("listid"), function (data) {
+                //    if (!dataMethods.isNullProperty(data) && data.rows.length > 0) {
+                //        $.extend(true, param.pagePower, {
+                //            IsQuery: data.rows[0].col1,
+                //            IsEdit: data.rows[0].col2,
+                //            IsExport: data.rows[0].col3
+                //        });
+                //    }
+
+                //    if (param.pagePower.IsEdit == 1) {
+                //        $("#btnAdd").show();
+                //    }
+                //    else {
+                //        $("#btnAdd").hide();
+                //    }
+
+                //    method.getData();
+                //});
+
+                $("#btnQuery").click(function () {
+                    method.getParam();
+                    method.getData();
+                });
+
+                $("#btnAdd").click(function () {
+                    method.showDialog(1);
+                });
+            },
+            getParam: function () {
+                var p = $("#time").timeControl("getResult");
+                param.timeType = p.type;
+                param.time = p.time;
+                param.hour = p.hour;
+
+                var con = $("#divFilter").controlmanager("getSelResults");
+                param.MSISDN = con[0].value.join(",");
+                if (param.MSISDN != "" && param.MSISDN.substr(0, 2) != "86") {
+                    param.MSISDN = "86" + param.MSISDN;
+                }
+            },
+            showDialog: function (type, row) {
+                if (type == "0") {
+                    dss.alert("派单成功！", function () {
+                    }, "提示信息", 1);
+                }
+                else {
+                    $("#divForm").dialog({
+                        height: 220,
+                        width: 560,
+                        modal: true, //蒙层（弹出会影响页面大小） 
+                        title: '阈值设置',
+                        open: function () {
+                            if (type == "1") {
+                                $("#divForm input").val("");
+                                $("#divForm input").attr("disabled", false);
+                            }
+                            else if (type == "2") {
+                                row = row.split(',')
+                                $("#txtUserNum").val(row[0]);
+                                $("#txtCmpTime").val(row[1]);
+                                $("#txtQuestion").val(row[2]);
+                                $("#txtOccurTime").val(row[3]);
+                                $("#txtOccurAddress").val(row[4]);
+                                $("#txtHandler").val(row[5]);
+                                $("#txtStatus").val(row[6]);
+                                $("#txtDuration").val(row[7]);
+                                $("#txtResult").val(row[8]);
+
+                                $("#txtUserNum").attr("disabled", "disabled");
+                                $("#txtCmpTime").attr("disabled", "disabled");
+                            }
+                        },
+                        buttons: {
+                            "提交": function () {
+                                if (type == "1") {
+                                    method.addData();
+                                }
+                                else if (type == "2") {
+                                    method.editData(row);
+                                }
+                            },
+                            "取消": function () {
+                                $("#divForm").dialog("close");
+                            }
+                        }
+                    });
+                }
+            },
+            delData: function (row) {
+                dss.confirm("确定要删除吗？", function () {
+                    row = row.split(',')
+
+                    var opt = {
+                        Type: "1",
+                        SQL: "delete from dw_f_xdr_complaint_d where MSISDN='" + row[0] + "' and COMPLAINT_TIME='" + row[1] + "'"
+                    };
+                    $.ajax({
+                        url: "../ashx/Data.ashx",
+                        data: {
+                            strCon: dss.jsonToString(opt)
+                        },
+                        dataType: "text",
+                        cache: false,
+                        success: function (data) {
+                            if (data == "1") {
+                                dss.alert("删除成功！", function () {
+                                    method.getData();
+                                }, "提示信息", 1);
+                            }
+                            else {
+                                dss.alert("删除失败，请重试！", function () {
+                                }, "提示信息", 2);
+                            }
+                        }
+                    });
+                }, function () {
+
+                }, "提示信息");
+            },
+            editData: function (row) {
+                var opt = {
+                    UserNum: $("#txtUserNum").val(),
+                    CmpTime: $("#txtCmpTime").val(),
+                    Question: $("#txtQuestion").val(),
+                    OccurTime: $("#txtOccurTime").val(),
+                    OccurAddress: $("#txtOccurAddress").val(),
+                    Handler: $("#txtHandler").val(),
+                    Status: $("#txtStatus").val(),
+                    Duration: $("#txtDuration").val(),
+                    Result: $("#txtResult").val()
+                };
+                
+                if (checkTime(opt.OccurTime, "yyyy/M/d")) {
+                    opt.OccurTime = opt.OccurTime.replace(/\/0/gm, '/');
+                }
+                else {
+                    dss.alert("“故障发生时间”的日期格式参照<br/>“2016/1/2 20:25”，请调整！", function () {
+                    }, "提示信息", 2);
+                    return;
+                }
+
+                var opt = {
+                    Type: "1",
+                    SQL: "update dw_f_xdr_complaint_d set MSISDN=" + opt.UserNum + ",COMPLAINT_TIME='" + opt.CmpTime + "',COMPLAINT_DESC='"
+                        + opt.Question + "',FAULT_TIME='" + opt.OccurTime + "',FAULT_LOCATION='" + opt.OccurAddress + "',HANDLE_PERSON='" + opt.Handler + "',HANDLE_STATUS='"
+                        + opt.Status + "',HANDLE_DURATION='" + opt.Duration + "',HANDLE_RESULT='" + opt.Result + "' where MSISDN=" + row[0] + " and COMPLAINT_TIME='" + row[1] + "'"
+                };
+                $.ajax({
+                    url: "../ashx/Data.ashx",
+                    data: {
+                        strCon: dss.jsonToString(opt)
+                    },
+                    dataType: "text",
+                    cache: false,
+                    success: function (data) {
+                        if (data == "1") {
+                            dss.alert("修改成功！", function () {
+                                $("#divForm").dialog("close");
+                                method.getData();
+                            }, "提示信息", 1);
+                        }
+                        else {
+                            dss.alert("修改失败，请重试！", function () {
+                            }, "提示信息", 2);
+                        }
+                    }
+                });
+            },
+            addData: function () {
+                var row = {
+                    UserNum: $("#txtUserNum").val(),
+                    CmpTime: $("#txtCmpTime").val(),
+                    Question: $("#txtQuestion").val(),
+                    OccurTime: $("#txtOccurTime").val(),
+                    OccurAddress: $("#txtOccurAddress").val(),
+                    Handler: $("#txtHandler").val(),
+                    Status: $("#txtStatus").val(),
+                    Duration: $("#txtDuration").val(),
+                    Result: $("#txtResult").val()
+                };
+
+                if (isNullProperty(row.UserNum)) {
+                    dss.alert("“用户号码”不能为空！", function () {
+                    }, "提示信息", 0);
+
+                    return;
+                }
+
+                if (checkTime(row.CmpTime, "yyyy/M/d")) {
+                    row.CmpTime = row.CmpTime.replace(/\/0/gm, '/');
+                }
+                else {
+                    dss.alert("“投诉时间”的日期格式参照<br/>“2016/1/2 20:25”，请调整！", function () {
+                    }, "提示信息", 2);
+                    return;
+                }
+
+                if (checkTime(row.OccurTime, "yyyy/M/d")) {
+                    row.OccurTime = row.OccurTime.replace(/\/0/gm, '/');
+                }
+                else {
+                    dss.alert("“故障发生时间”的日期格式参照<br/>“2016/1/2 20:25”，请调整！", function () {
+                    }, "提示信息", 2);
+                    return;
+                }
+
+                var opt = {
+                    Type: "1",
+                    SQL: "insert into dw_f_xdr_complaint_d values(20160129,'" + row.UserNum + "','" + row.CmpTime + "','"
+                        + row.Question + "','" + row.OccurTime + "','" + row.OccurAddress + "','" + row.Handler + "','"
+                        + row.Status + "','" + row.Duration + "','" + row.Result + "',SYSDATE)"
+                };
+                $.ajax({
+                    url: "../ashx/Data.ashx",
+                    data: {
+                        strCon: dss.jsonToString(opt)
+                    },
+                    dataType: "text",
+                    cache: false,
+                    success: function (data) {
+                        if (data == "1") {
+                            dss.alert("添加成功！", function () {
+                                $("#divForm").dialog("close");
+                                method.getData();
+                            }, "提示信息", 1);
+                        }
+                        else {
+                            dss.alert("添加失败，请重试！", function () {
+                            }, "提示信息", 2);
+                        }
+                    }
+                });
+            },
+            getData: function () {
+                var strSql = "SELECT MSISDN 用户号码,COMPLAINT_TIME 投诉时间,COMPLAINT_DESC 投诉问题,FAULT_TIME 故障发生时间,FAULT_LOCATION 故障发生地点,HANDLE_PERSON 投诉处理人员,HANDLE_STATUS 投诉处理状态,HANDLE_DURATION 投诉处理时长,HANDLE_RESULT 投诉处理结果,'操作' 操作 FROM DW_F_XDR_COMPLAINT_D WHERE 1=1 ";
+
+                if (!isNullProperty(param.time)) {
+                    var day = formatDate(param.time, "yyyy/M/d");
+                    if (!isNullProperty(param.hour)) {
+                        param.hour = param.hour.replace(/时/gm, "");
+                        var start = day + " " + param.hour.split(':')[0] + ":00";
+                        var end = day + " " + param.hour.split(':')[1] + ":59";
+                        strSql += " and (COMPLAINT_TIME >='" + start + "' and COMPLAINT_TIME <='" + end + "')";
+                    }
+                    else {
+                        var start = day + " " + "00:00";
+                        var end = day + " " + "23:59";
+                        strSql += " and (COMPLAINT_TIME >='" + start + "' and COMPLAINT_TIME <='" + end + "')";
+                    }
+                }
+                if (!isNullProperty(param.MSISDN)) {
+                    strSql += " and MSISDN='" + param.MSISDN + "'";
+                }
+
+                var strConn = "SQL_ConnDm";
+                var dataPath = "../../../javascript/JSControl/SmartGrid/Handler/JqGridData.ashx";
+
+                var opt = {
+                    captionName: "投诉库信息",
+                    ajax: {
+                        path: dataPath,
+                        sqlstr: strSql,
+                        connstr: strConn,
+                        //分页属性
+                        paging: {
+                            rowNum: 20,
+                            rowList: [20, 40, 60]
+                        }
+                    },
+                    callback: {
+                        gridComplete: function (grid) {
+                            $.each(grid.find("tr"), function (i, val) {
+                                if (i != 0) {
+                                    var row = [];
+
+                                    for (var j = 0; j < 9; j++) {
+                                        row.push($(this).find("td").eq(j).text().trim());
+                                    }
+                                    row = row.join(",");
+
+                                    if (param.pagePower.IsEdit == 1) {
+                                        $(this).find("td").eq(9).html("<a style='cusor:pointer;color:blue;' onclick='method.showDialog(0,\"" + row + "\")'>派单</a>&nbsp;<a style='cusor:pointer;color:blue;' onclick='method.showDialog(2,\"" + row + "\")'>编辑</a>&nbsp;<a style='cusor:pointer;color:blue;' onclick='method.delData(\"" + row + "\")'>删除</a>");
+                                    }
+                                    else {
+                                        $(this).find("td").eq(9).html("<a style='cusor:pointer;color:blue;' onclick='method.showDialog(0,\"" + row + "\")'>派单</a>");
+                                    }
+                                }
+                            });
+
+                            if (param.pagePower.IsExport == 1) {
+                                $(".export").parent().show();
+                            }
+                            else {
+                                $(".export").parent().hide();
+                            }
+                        }
+                    }
+                };
+
+                $("#divGrid").smartgrid(opt);
+            }
+        };
+
+        //将日期处理成“2015/2/5”的格式
+        function formatDate(date, type) {
+            var time = date.replace("年", "").replace("月", "").replace("日", "");
+            var year = time.substr(0, 4);
+            var month = time.substr(4, 2);
+            var day = time.substr(6, 2);
+            if (type == "yyyy/M/d") {
+                month = parseInt(month);
+                day = parseInt(day);
+                time = year + "/" + month + "/" + day;
+            }
+
+            return time;
+        }
+
+        //检查时间格式是否为“2015/2/5 20:25”格式
+        function checkTime(date, type) {
+            var isRight = false;
+            var time = date.replace(/\/\d{1}\//gm, "/0" + date.substr(date.indexOf("/") + 1, 2)).replace(/\/\d{1} /gm, "/0" + date.substr(date.indexOf("/", date.indexOf("/") + 1) + 1, 2));
+            if (type == "yyyy/M/d") {
+                var DATE_FORMAT = /^(\d{4})\/(0\d{1}|1[0-2])\/(0\d{1}|[12]\d{1}|3[01]) (0\d{1}|1\d{1}|2[0-3]):([0-5]\d{1})$/;
+                if (DATE_FORMAT.test(time)) {
+                    isRight = true;
+                }
+            }
+
+            return isRight;
+        }
+
+        //判断值是否为空
+        function isNullProperty(p) {
+            if (p == undefined || p == null || (typeof (p) == "string" && (p == "" || p == "全部"))) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+    </script>
+</head>
+<body>
+    <div id="m"></div>
+    <div class="toolbar">
+        <ul>
+            <li class="item">
+                <span class="tag"></span>
+                <input style="width: 100px;" id="txtTime" type="text" />                
+            </li>
+            <li class="item">
+                <div id="divFilter"></div>
+            </li>
+            <li class="item">
+                <input class="button" id="btnQuery" value="查询" type="button" /></li>
+            <li class="item">
+                <input class="button" id="btnAdd" value="添加" type="button" /></li>
+        </ul>
+    </div>
+    <div id="divGrid"></div>
+    <div id="divForm" style="width: 620px; height: 200px; display: none;">
+        <table>
+            <tbody>
+                <tr>
+                    <td>投诉用户号码：</td>
+                    <td colspan="3">
+                        <input type="text" id="txtUserNum" /></td>
+                </tr>
+                <tr>
+                    <td>投诉时间：</td>
+                    <td>
+                        <input type="text" id="txtCmpTime" /></td>
+                    <td>投诉问题：</td>
+                    <td>
+                        <input type="text" id="txtQuestion" /></td>
+                </tr>
+                <tr>
+                    <td>投诉故障发生时间：</td>
+                    <td>
+                        <input type="text" id="txtOccurTime" /></td>
+                    <td>投诉故障发生地点：</td>
+                    <td>
+                        <input type="text" id="txtOccurAddress" /></td>
+                </tr>
+                <tr>
+                    <td>投诉处理人员：</td>
+                    <td>
+                        <input type="text" id="txtHandler" /></td>
+                    <td>投诉处理状态：</td>
+                    <td>
+                        <input type="text" id="txtStatus" /></td>
+                </tr>
+                <tr>
+                    <td>投诉处理时长：</td>
+                    <td>
+                        <input type="text" id="txtDuration" /></td>
+                    <td>投诉处理结果和建议：</td>
+                    <td>
+                        <input type="text" id="txtResult" /></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

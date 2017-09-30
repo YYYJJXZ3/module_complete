@@ -1,0 +1,186 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <link href="../../../Themes/lightblue/jqueryui/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/jqgrid/ui.jqgrid.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/page/page.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/ca/db/dashboard.css" rel="stylesheet" />
+    <link href="../../../javascript/ztree/css/zTreeStyle/zTreeStyle.css" rel="stylesheet" />
+    <script src="../../../Javascript/core/jquery-1.9.1.min.js" type="text/javascript"></script>
+    <script src="../../../javascript/core/jquery-ui-1.10.3.custom.min.js"></script>
+
+    <script src="../../../javascript/common/tools.js" type="text/javascript"></script>
+    <script src="../../../javascript/common/pagetools.js" type="text/javascript"></script>
+    <script src="../../../Javascript/JSControl/Condition/comselect.js" type="text/javascript"></script>
+    <script src="../../../javascript/JSControl/Condition/controlmanagernew.js"></script>
+    <script src="../../../javascript/JSControl/Common/toolbar.js"></script>
+    <script src="../../../javascript/JSControl/Condition/timepicker.js"></script>
+
+    <script src="../../../javascript/JSControl/SmartGrid/JqGrid/grid.locale-cn.js"></script>
+    <script src="../../../javascript/JSControl/SmartGrid/JqGrid/jquery.jqGrid.min.js"></script>
+    <script src="../../../javascript/JSControl/SmartGrid/JqGrid/SmartGrid.js"></script>
+    <script src="../../../javascript/JSControl/SampleChart/Scripts/SampleChart.js"></script>
+
+    <script type="text/javascript">
+        var param = {
+            app: "",
+            subApp: ""
+        };
+
+        $(function () {
+            method.init();
+            method.getData();
+        });
+
+        var method = {
+            init: function () {
+                dss.pageheader("m");
+                $("#btnSubmit").click(function () {
+                    method.updateData();
+                });
+                $("#btnReset").click(function () {
+                    method.getData();
+                });
+            },
+            getData: function () {
+                var strSql = "select p.list_id ID,l.list_desc 页面,p.is_query 查询权限,p.is_edit 修改权限,p.is_export 导出权限 from app_page_power p,sys_fw_list l where p.list_id=l.list_id";
+
+                var strConn = "SQL_ConnStr";
+                var dataPath = "../../../javascript/JSControl/SmartGrid/Handler/JqGridData.ashx";
+
+                var opt = {
+                    captionName: "数据层页面权限配置",
+                    ajax: {
+                        path: dataPath,
+                        sqlstr: strSql,
+                        connstr: strConn,
+                        //分页属性
+                        paging: {
+                            rowNum: 20,
+                            rowList: [20, 40, 60]
+                        }
+                    },
+                    col: {
+                        property: [
+                            { colindex: 0, hidden: true },
+                            { colindex: 2, align: "center" },
+                            { colindex: 3, align: "center" },
+                            { colindex: 4, align: "center" }
+                        ]
+                    },
+                    callback: {
+                        gridComplete: function (grid) {
+                            $.each(grid.find("tr"), function (i, val) {
+                                if (i != 0) {
+                                    var tmpValue = 0;
+
+                                    //查询权限
+                                    tmpValue = $(this).find("td").eq(2).text();
+                                    if (tmpValue == 1) {
+                                        $(this).find("td").eq(2).html("<input disabled='disabled' type='checkbox' checked='checked'></input>");
+                                    }
+                                    else {
+                                        $(this).find("td").eq(2).html("<input disabled='disabled' type='checkbox'></input>");
+                                    }
+
+                                    //编辑权限
+                                    tmpValue = $(this).find("td").eq(3).text();
+                                    var listid = $(this).find("td").eq(0).text();
+                                    var isDisabled = "";
+                                    if (listid == "675612924" || listid == "1434946665") {//投诉库和专家库页面才有编辑功能
+                                        isDisabled = "";
+                                    }
+                                    else {
+                                        isDisabled = "disabled='disabled'";
+                                    }
+                                    if (tmpValue == 1) {
+                                        $(this).find("td").eq(3).html("<input " + isDisabled + " type='checkbox' checked='checked'></input>");
+                                    }
+                                    else {
+                                        $(this).find("td").eq(3).html("<input " + isDisabled + " type='checkbox'></input>");
+                                    }
+
+                                    //导出权限
+                                    tmpValue = $(this).find("td").eq(4).text();
+                                    if (tmpValue == 1) {
+                                        $(this).find("td").eq(4).html("<input type='checkbox' checked='checked'></input>");
+                                    }
+                                    else {
+                                        $(this).find("td").eq(4).html("<input type='checkbox'></input>");
+                                    }
+                                }
+                            });
+                        }
+                    }
+                };
+
+                $("#divGrid").smartgrid(opt);
+            },
+            updateData: function () {
+                var sqlList = "";
+                $.each($("#divGriddb").find("tr"), function (i, val) {
+                    if (i != 0) {
+                        var sql = "update app_page_power set ";
+                        sql += " is_query='" + ($(this).find("input").eq(0).is(':checked') ? "1" : "0");
+                        sql += "',is_edit='" + ($(this).find("input").eq(1).is(':checked') ? "1" : "0");
+                        sql += "',is_export='" + ($(this).find("input").eq(2).is(':checked') ? "1" : "0");
+                        sql += "' where list_id=" + $(this).find("td").eq(0).text();
+                        sqlList += sql + "￥";
+                    }
+                });
+                sqlList = sqlList.substr(0, sqlList.length - 1);
+
+                var opt = {
+                    Type: "1",
+                    ConnStr: "SQL_ConnStr",
+                    SQL: sqlList
+                };
+                $.ajax({
+                    url: "../ashx/Data.ashx",
+                    data: {
+                        strCon: dss.jsonToString(opt)
+                    },
+                    dataType: "text",
+                    cache: false,
+                    success: function (data) {
+                        if (data == "1") {
+                            dss.alert("修改成功！", function () {
+                                $("#divForm").dialog("close");
+                                method.getData();
+                            }, "提示信息", 1);
+                        }
+                        else {
+                            dss.alert("修改失败，请重试！", function () {
+                            }, "提示信息", 2);
+                        }
+                    }
+                });
+            }
+        };
+
+        //判断值是否为空
+        function isNullProperty(p) {
+            if (p == undefined || p == null || (typeof (p) == "string" && (p == "" || p == "全部"))) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+    </script>
+</head>
+<body>
+    <div id="m"></div>
+    <div id="divGrid"></div>
+    <div class="toolbar" style="float: right; margin-right: 30px;">
+        <ul>
+            <li class="item">
+                <input class="button" id="btnSubmit" value="提交" type="button" /></li>
+            <li class="item">
+                <input class="button" id="btnReset" value="重置" type="button" /></li>
+        </ul>
+    </div>
+</body>
+</html>

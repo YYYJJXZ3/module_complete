@@ -1,0 +1,280 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>中铝订餐</title>
+
+    <!--样式-->
+    <link href="../../../Themes/lightblue/jqueryui/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/jqgrid/ui.jqgrid.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/page/page.css" rel="stylesheet" />
+    <link href="../../../javascript/JSControl/SampleChart/Css/MeasureView.css" rel="stylesheet" />
+
+    <!--整体指标概览插件的样式-->
+    <link href="../../Common/css/common.css" rel="stylesheet" />
+
+    <!--jquery核心库-->
+    <script src="../../../javascript/core/jquery-1.9.1.min.js"></script>
+    <script src="../../../javascript/core/jquery-ui-1.10.3.custom.min.js"></script>
+
+    <!--工具库-->
+    <script src="../../../javascript/common/tools.js" type="text/javascript"></script>
+    <script src="../../../javascript/common/pagetools.js" type="text/javascript"></script>
+
+    <!--下拉框-->
+    <script src="../../../Javascript/JSControl/Condition/comselect.js" type="text/javascript"></script>
+
+    <!--条件插件-->
+    <script src="../../../javascript/JSControl/Condition/controlmanagernew.js"></script>
+
+    <!--表格右上角的按钮-->
+    <script src="../../../javascript/JSControl/Common/toolbar.js"></script>
+
+    <!--时间插件-->
+    <script src="../../../javascript/JSControl/Condition/timepicker.js"></script>
+
+    <!--整体指标概览插件-->
+    <script src="../../Common/js/common.js"></script>
+
+    <!--表格-->
+    <script src="../../../javascript/JSControl/SmartGrid/JqGrid/grid.locale-cn.js"></script>
+    <script src="../../../javascript/JSControl/SmartGrid/JqGrid/jquery.jqGrid.min.js"></script>
+    <script src="../../../javascript/JSControl/SmartGrid/JqGrid/SmartGrid.js"></script>
+
+    <!--图形-->
+    <script src="../../../javascript/JSControl/SampleChart/Scripts/SampleChart.js"></script>
+
+    <!--指标概览-->
+    <script src="../../../javascript/JSControl/SampleChart/Scripts/MeasureView.js"></script>
+
+    <!--本专题的公共js方法-->
+    <script src="../../Common/js/CommonHelp.js"></script>
+
+    <script type="text/javascript">
+        //公共条件对象
+        var param = {
+            timeType: "Day",
+            time: Date.parse(new Date()).format("yyyy年MM月dd日")
+        };
+
+        //入口
+        $(function () {
+            method.init();
+        });
+
+        //方法对象
+        var method = {
+            init: function () {
+                method.initTime();//初始化时间控件
+
+                method.getGrid();
+
+                $("#btnSubmit").click(function () {
+                    if (!$("#txtUserName").val().trim()) {
+                        dss.alert("请输入姓名！");
+                        return false;
+                    }
+                    if ($("#normalNum").val() == 0 && $("#faceNum").val() == 0) {
+                        dss.alert("份数不能都为0！");
+                        return false;
+                    }
+
+                    dss.dialog({
+                        title: "支付",
+                        width: 330,
+                        height: 370,
+                        content: $("#divPay"),
+                        open: function () {
+                            $("#divPay").show();
+                        },
+                        buttons: {
+                            "已支付": function () {
+                                method.saveOrder();
+                            },
+                            "取消": function () {
+                            }
+                        }
+                    });
+                });
+            },
+            //初始化时间控件
+            initTime: function () {
+                var opt = {
+                    showTypeDay: true,
+                    showTypeMonth: false,
+                    defaultTimeType: "Day",
+                    defaultDateStr: param.time,
+                    isTile: true
+                };
+                $("#txtTime").timepicker(opt);
+            },
+            saveOrder: function () {
+                var order = {
+                    Type: "saveOrder",
+                    UserName: $("#txtUserName").val(),
+                    NormalNum: $("#normalNum").val(),
+                    FaceNum: $("#faceNum").val(),
+                    DayId: param.time.replace("年", "").replace("月", "").replace("日", "")
+                };
+
+                $.ajax({
+                    url: '../handler/Order.ashx',
+                    data: {
+                        strCon: dss.jsonToString(order)
+                    },
+                    beforeSend: function () {
+                        dss.load(true);
+                    },
+                    complete: function () {
+                        dss.load(false);
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data == "success") {
+                            dss.alert("提交成功！");
+                            method.getGrid();
+                        }
+                    },
+                    error: function (a, b) {
+                        dss.alert("提交成功！");
+                        method.getGrid();
+                    }
+                });
+            },
+            getGrid: function () {
+                var act = {
+                    "Time": param.time,
+                    "TimeType": param.timeType,
+                    "GridChart": "SqlGrid",
+                    "SQL": "select u.user_name 姓名,o.normal_number 正常份数,o.face_number 全面份数 from meal_order o,meal_user u where o.user_id=u.user_id and o.day_id=" + param.time.replace("年", "").replace("月", "").replace("日", ""),
+                    "ConnStr": "dwdb_demo"
+                };
+                $.ajax({
+                    url: '../../Demo/ashx/Demo.ashx?rand='+Math.random(),
+                    data: {
+                        strCon: dss.jsonToString(act)
+                    },
+                    cache: false,
+                    beforeSend: function () {
+                        dss.load(true);
+                    },
+                    complete: function () {
+                        dss.load(false);
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        var normalNum = 0;
+                        var faceNum = 0;
+                        $.each(data.rows, function (i, r) {
+                            normalNum += r.col1;
+                            faceNum += r.col2;
+                        });
+
+                        $("#total").html("<br/><span style='font-size:15px;color:red;'>共计：" + (normalNum + faceNum) + "份（" + faceNum + "份全面）<br/></span>");
+
+                        method.bindGrid("grid", {
+                            captionName: "今日订购列表",
+                            islocaldata: true,
+                            localdata: data,
+                            paging: {
+                                rowNum: 30,
+                                rowList: [30, 50, 60]
+                            }
+                        });
+                    }
+                });
+            },
+            bindGrid: function (div, option) {
+                var opts = $.extend(true, {
+                    analyzer: null,
+                    titleName: "",
+                    formatFlowValue: '1'
+                }, option);
+
+                $("#" + div).smartgrid(opts);//绑定表格
+            }
+        };
+    </script>
+</head>
+<body>
+    <div style="width: 98%; margin: auto; margin-bottom: 8px;">
+        <div class="toolbar">
+            <ul>
+                <li class="item">
+                    <input style="width: 100px;" id="txtTime" type="text" /></li>
+            </ul>
+        </div>
+        <div style="margin: auto;">
+            <div style="width: 500px; float: left;">
+                <div id="divOrder" style="width: 450px; margin: auto; margin-top: 30px;">
+                    <table>
+                        <tr>
+                            <td>姓名：</td>
+                            <td>
+                                <input style="width: 60px;" id="txtUserName" type="text" /></td>
+                        </tr>
+                        <tr>
+                            <td>正常：</td>
+                            <td>
+                                <select id="normalNum">
+                                    <option value="0">0</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
+                                份
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>全面：</td>
+                            <td>
+                                <select id="faceNum">
+                                    <option value="0">0</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
+                                份
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <br />
+                                <input class="button" id="btnSubmit" value="提交" type="button" />
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <br />
+                                说明：
+                            </td>
+                            <td>
+                                <br />
+                                1、中铝订餐电话：82406600
+                                <br />
+                                2、“正常”的主食为米饭，“全面”的主食为馒头等面食，其他都一样<br />
+                                3、价格：15元/份
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div id="total">
+                </div>
+                <div id="grid">
+                </div>
+            </div>
+            <div id="divMenu" style="width: 650px; float: left; margin-left: 10px;">
+                <img src="../images/Menu/menu.png" style="width: 650px;" />
+            </div>
+            <div id="divPay" style="display: none; width: 330px;">
+                <img src="../images/alipay.jpg" style="width: 330px;" />
+            </div>
+        </div>
+    </div>
+</body>
+</html>

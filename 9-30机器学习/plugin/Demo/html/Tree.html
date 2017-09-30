@@ -1,0 +1,405 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <link href="../../../Themes/lightblue/jqueryui/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/page/page.css" rel="stylesheet" />
+    <link href="../../../javascript/JSControl/jsmind/style/jsmind.css" rel="stylesheet" />
+    <style type="text/css">
+        #jsmind_container {
+            position: absolute;
+            left: 0px;
+            top: 30px;
+            bottom: 0px;
+            right: 0px;
+            /*border: solid 1px #ccc;
+            background: #f4f4f4;*/
+        }
+    </style>
+</head>
+<body style="overflow-y: hidden;">
+    <div id="m"></div>
+    <div>
+        <div id="dashboard-query" class="dss_db_view_query">
+            <ul class="toolbar">
+                <li class='item'>
+                    <input type="text" id="txtTime" style='width: 105px;' /></li>
+                <li class='item'>
+                    <div id='queryControl'></div>
+                </li>
+                <li class='item'>
+                    <input type='button' id='btnThreshold' value='阈值设置' class='button' /></li>
+                <li class='item'>
+                    <input type='button' id='btnQuery' value='查询' class='button' /></li>
+                <li class='item' id="selMea" style="float: right;"></li>
+            </ul>
+        </div>
+        <div id="jsmind_container"></div>
+    </div>
+    <div id="divThreshold" style="display: none; padding-top: 25px;">
+    </div>
+
+    <script src="../../../Javascript/core/jquery-1.9.1.min.js" type="text/javascript"></script>
+    <script src="../../../javascript/core/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="../../../javascript/common/tools.js" type="text/javascript"></script>
+    <script src="../../../javascript/common/pagetools.js" type="text/javascript"></script>
+    <script src="../../../Javascript/JSControl/Condition/comselect.js" type="text/javascript"></script>
+    <script src="../../../javascript/JSControl/Condition/controlmanagernew.js"></script>
+    <script src="../../../javascript/JSControl/Condition/timepicker.js"></script>
+
+    <script src="../../../javascript/JSControl/jsmind/js/jsmind.js"></script>
+    <script src="../../../javascript/JSControl/jsmind/js/jsmind.draggable.js"></script>
+    <script src="../../../javascript/JSControl/jsmind/features/jsmind.shell.js"></script>
+    <script src="../../../javascript/JSControl/SampleChart/Scripts/TreeChart.js"></script>
+
+    <script type="text/javascript">
+        var param = {
+            dataRole: "省",//分权分域拥有的权限，省或某个地市
+            time: null,
+            selMeaName: "总流量",
+            topN: 20,
+            threshold: [
+                {
+                    def: null,//默认值
+                    cur: null,//当前值
+                    saveData: "",//保存的时候的数据
+                    isFirst: true//是否第一次打开“阈值设置”的按钮
+                }
+            ],
+            thresholdFlag: 0,
+            templateId: {
+                Tree: 2140759882
+            }
+        };
+
+        $(function () {
+            method.init();
+            method.getThreshold();
+            //method.getDataRole();
+        });
+
+        var method = {
+            init: function () {
+                //dss.pageheader("m");
+                $("#jsmind_container").tooltip();
+                method.initTime();
+                method.initQueryCtrl();
+
+                method.getParam();
+
+                $("#btnQuery").click(function () {
+                    method.getParam();
+                    method.getTree();
+                });
+
+                $("#btnThreshold").click(function () {
+                    if (param.threshold[param.thresholdFlag].isFirst) {
+                        method.getThreshold();
+                        method.showSet();
+                    }
+                    else {
+                        method.showSet();
+                    }
+                });
+            },
+            initTime: function () {
+                var timeOpt = {
+                    showTypeDay: true,
+                    showTypeMonth: false,
+                    defaultDateStr: param.time,
+                    isTile: true
+                };
+
+                $("#txtTime").timepicker(timeOpt);
+            },
+            initQueryCtrl: function () {
+                var p = [];
+                p.push({
+                    labelname: '网元',
+                    width: 80,
+                    defaultShow: '指标',
+                    type: 'dropdown',
+                    items: [
+                        {
+                            levelname: '指标',
+                            selectmode: "single",
+                            datasource: [{ "name": "总流量" }, { "name": "用户数" }, { "name": "终端数" }],
+                            initValues: [{ "name": "总流量" }],
+                            initClass: "commdata"
+                        }
+                    ]
+                });
+                p.push({
+                    labelname: '网元',
+                    width: 30,
+                    defaultShow: '质差TOP',
+                    type: 'dropdown',
+                    items: [
+                        {
+                            levelname: '质差TOP',
+                            selectmode: "single",
+                            datasource: [{ "name": "10" }, { "name": "20" }, { "name": "30" }, { "name": "50" }],
+                            initValues: [{ "name": "20" }],
+                            initClass: "commdata"
+                        }
+                    ]
+                });
+
+                $("#queryControl").controlmanager(p);
+            },
+            getParam: function () {
+                param.time = $("#txtTime").timepicker("getDateStr");
+                var con = $("#queryControl").controlmanager("getSelResults");
+                param.selMeaName = con[0].value.join(",");
+                param.topN = con[1].value.join(",");
+            },
+            getTree: function () {
+                var opt = {
+                    time: param.time,
+                    topN: param.topN,
+                    templateId: param.templateId.Tree,
+                    rootName: "吉林省",//根节点的名称
+                    initDeep: 2,//默认展开到第几层，从1开始
+                    levels: ["省", "地区", "分公司", "一级业务"],//每层的粒度名称
+                    measure: { name: param.selMeaName, sort: param.selMeaName.indexOf("时延") > -1 ? 'desc' : 'asc' },
+                    pieces: [
+                         { name: '差', min: null, max: 80, color: '#E85B79' },
+                         { name: '良', min: 80, max: 100, color: '#198FCD' },
+                         { name: '优', min: 100, max: null, color: '#3FB97E' }
+                    ]
+                };
+
+                $("#jsmind_container").treeChart(opt);
+            },
+            getDataRole: function () {
+                var conOpt = {
+                    Type: "getDataRole"
+                };
+
+                $.ajax({
+                    url: "handler/Tree.ashx",
+                    data: {
+                        strCon: dss.jsonToString(conOpt)
+                    },
+                    dataType: "text",
+                    cache: false,
+                    async: false,
+                    success: function (data) {
+                        param.dataRole = data;
+                    },
+                    error: function (a, b) {
+                        alert(a + b);
+                    }
+                });
+            },
+            getThreshold: function () {
+                var conOpt = {
+                    Type: "getThreshold",
+                    Flag:"Tree"
+                };
+
+                $.ajax({
+                    url: "../ashx/Demo.ashx",
+                    data: {
+                        strCon: dss.jsonToString(conOpt)
+                    },
+                    dataType: "json",
+                    cache: false,
+                    async: false,
+                    success: function (data) {
+                        param.threshold[param.thresholdFlag].def = data;
+                        param.threshold[param.thresholdFlag].cur = $.extend(true, {}, data);
+                        param.threshold[param.thresholdFlag].isFirst = false;
+                    },
+                    error: function (a, b) {
+                        alert(a + b);
+                    }
+                });
+            },
+            setThreshold: function (thresholdData) {
+                var conOpt = {
+                    Type: "setThreshold",
+                    Property1: thresholdData
+                };
+
+                $.ajax({
+                    url: "handler/Tree.ashx",
+                    data: {
+                        strCon: dss.jsonToString(conOpt)
+                    },
+                    dataType: "json",
+                    cache: false,
+                    async: false,
+                    success: function (data) {
+                        if (data == 1) {
+                            dss.alert("修改成功！", function () {
+                                $("#divThreshold").dialog("close");
+                            }, "提示信息", 1);
+                        }
+                        else {
+                            dss.alert("修改失败，请重试！", function () {
+                                $("#divThreshold").dialog("close");
+                            }, "提示信息", 1);
+                        }
+                    },
+                    error: function (a, b) {
+                        dss.alert("修改失败，请重试！", function () {
+                            $("#divThreshold").dialog("close");
+                        }, "提示信息", 1);
+                    }
+                });
+            },
+            showSet: function () {
+                var threshold = param.threshold[param.thresholdFlag];
+                $("#divThreshold").dialog({
+                    height: 230,
+                    width: param.thresholdFlag == 0 ? 440 : 320,
+                    modal: true, //蒙层（弹出会影响页面大小） 
+                    title: '阈值设置',
+                    open: function () {
+                        method.makeThresholdList();
+                    },
+                    buttons: {
+                        //"恢复默认": function () {
+                        //    threshold.cur = $.extend(true, {}, threshold.def);
+                        //    method.makeThresholdList();
+
+                        //    dss.alert("恢复成功！", function () {
+                        //        $("#defTab" + param.thresholdFlag).show();
+                        //        $("#curTab" + param.thresholdFlag).hide();
+                        //        $(param.thresholdFlag == 0 ? "#a_report_4" : "#a_report_5").click();
+
+                        //        $("#divThreshold").dialog("close");
+                        //    }, "提示信息", 1);
+                        //},
+                        "确定": function () {
+                            threshold.cur.rows = [];
+
+                            $.each($("#divThreshold").find("li"), function (i, item) {
+                                threshold.cur.rows.push({
+                                    col0: $("#thresholdName" + i).text(),
+                                    col1: $("#thresholdSignGood" + i).val(),
+                                    col2: $("#thresholdValueGood" + i).val(),
+                                    col3: $("#thresholdSignBad" + i).val(),
+                                    col4: $("#thresholdValueBad" + i).val(),
+                                    col5: $("#thresholdUnitGood" + i).text()
+                                });
+
+                                threshold.saveData +=
+                                    $("#thresholdName" + i).text() + "," +
+                                    $("#thresholdSignGood" + i).val() + "," +
+                                    $("#thresholdValueGood" + i).val() + "," +
+                                    $("#thresholdSignBad" + i).val() + "," +
+                                    $("#thresholdValueBad" + i).val() + "￥";
+                            });
+
+                            threshold.saveData = threshold.saveData.substr(0, threshold.saveData.length - 1);
+
+                            method.setThreshold(threshold.saveData);
+                        },
+                        "取消": function () {
+                            $("#divThreshold").dialog("close");
+                        }
+                    }
+                });
+            },
+            makeThresholdList: function () {
+                var data = param.threshold[param.thresholdFlag].cur;
+
+                $("#divThreshold").html("");
+                var thresholdUl = $("<ul></ul>");
+                $.each(data.rows, function (i, item) {
+                    var li = "<li style='margin-bottom:10px;'>";
+                    li += "<label id='thresholdName" + i + "'>" + item.col0 + "</label>";
+                    li += "<select id='thresholdSignGood" + i + "' class='selector' style='width: 40px;margin-left:10px;margin-right:10px;'>";
+
+                    if (item.col1 == ">") {
+                        li += "<option selected value='>'>></option>";
+                    }
+                    else {
+                        li += "<option value='>'>></option>";
+                    }
+
+                    if (item.col1 == ">=") {
+                        li += "<option selected value='>='>>=</option>";
+                    }
+                    else {
+                        li += "<option value='>='>>=</option>";
+                    }
+
+                    if (item.col1 == "<") {
+                        li += "<option selected value='<'><</option>";
+                    }
+                    else {
+                        li += "<option value='<'><</option>";
+                    }
+
+                    if (item.col1 == "<=") {
+                        li += "<option selected value='<='><=</option>";
+                    }
+                    else {
+                        li += "<option value='<='><=</option>";
+                    }
+
+                    if (item.col1 == "=") {
+                        li += "<option selected value='='>=</option>";
+                    }
+                    else {
+                        li += "<option value='='>=</option>";
+                    }
+
+                    li += "</select>";
+                    li += "<input id='thresholdValueGood" + i + "' type='text' style='width: 40px;' value='" + item.col2 + "'/>" + "<label id='thresholdUnitGood" + i + "'>" + item.col5 + "</label>" + "（优）";
+
+
+                    li += "<select id='thresholdSignBad" + i + "' class='selector' style='width: 40px;margin-left:10px;margin-right:10px;'>";
+
+                    if (item.col3 == ">") {
+                        li += "<option selected value='>'>></option>";
+                    }
+                    else {
+                        li += "<option value='>'>></option>";
+                    }
+
+                    if (item.col3 == ">=") {
+                        li += "<option selected value='>='>>=</option>";
+                    }
+                    else {
+                        li += "<option value='>='>>=</option>";
+                    }
+
+                    if (item.col3 == "<") {
+                        li += "<option selected value='<'><</option>";
+                    }
+                    else {
+                        li += "<option value='<'><</option>";
+                    }
+
+                    if (item.col3 == "<=") {
+                        li += "<option selected value='<='><=</option>";
+                    }
+                    else {
+                        li += "<option value='<='><=</option>";
+                    }
+
+                    if (item.col3 == "=") {
+                        li += "<option selected value='='>=</option>";
+                    }
+                    else {
+                        li += "<option value='='>=</option>";
+                    }
+
+                    li += "</select>";
+                    li += "<input id='thresholdValueBad" + i + "' type='text' style='width: 40px;' value='" + item.col4 + "'/>" + "<label id='thresholdUnitBad" + i + "'>" + item.col5 + "</label>" + "（差）";
+                    li += "</li>";
+
+                    $(li).appendTo(thresholdUl);
+                });
+
+                thresholdUl.appendTo($("#divThreshold"));
+            }
+        };
+    </script>
+</body>
+</html>

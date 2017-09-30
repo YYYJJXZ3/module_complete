@@ -1,0 +1,28 @@
+﻿<div class="tab-content" style="width:380px;height:130px;">  
+		<dl>
+            <dt>选择方式</dt>
+            <dd>
+               <div id="ten"></div>
+            </dd>
+        </dl>
+		<dl id=sexfive>
+            <dt>链接路径</dt>
+            <dd>
+               <input type="text" class="input" value="" id="txtAutoUrlHttp" />
+            </dd>
+        </dl>
+		<div id="allhttpurl">
+		<dl>
+            <dt>链接名称</dt>
+            <dd>
+                <input type="text" class="input" value="" id="txtUrlName" />
+            </dd>
+        </dl>
+		 <dl>
+            <dt>链接路径</dt>
+            <dd>
+                <input type="text" class="input" value="" id="txtUrlHttp" />
+            </dd>
+        </dl>
+		</div>
+    </div>

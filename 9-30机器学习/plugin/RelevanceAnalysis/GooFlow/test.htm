@@ -1,0 +1,142 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <!--[if lt IE 9]>
+<?import namespace="v" implementation="#default#VML" ?>
+<![endif]-->
+    <link href="../../../themes/lightblue/p.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/jqueryui/jquery-ui-1.10.3.custom.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/jqgrid/ui.jqgrid.css" rel="stylesheet" />
+    <link href="codebase/GooFlow.css" rel="stylesheet" />
+    <link href="codebase/gf_show.css" rel="stylesheet" />
+
+
+    <script type="text/javascript" src="../../../Javascript/core/jquery-1.9.1.min.js"></script>
+    <script src="../../../javascript/core/jquery-ui-1.10.3.custom.js" type="text/javascript"></script>
+    <script type="text/javascript" src="../../../Javascript/GooFlow/GooFunc.js"></script>
+    <script type="text/javascript" src="js/GooFlow.js"></script>
+    <script type="text/javascript" src="js/gf_Show.js"></script>
+    <script src="../../../javascript/JSControl/SmartGrid/JqGrid/grid.locale-cn.js"></script>
+    <script src="../../../javascript/JSControl/SmartGrid/JqGrid/jquery.jqGrid.src.js"></script>
+    <script src="../../../javascript/JSControl/SmartGrid/JqGrid/SmartGrid.js"></script>
+    <script src="../../../javascript/JSControl/Condition/timepicker.js"></script>
+    <script src="../../../javascript/JSControl/Condition/mulselect.js"></script>
+    <script src="../../../javascript/common/csvexp.js"></script>
+
+
+
+
+    <script>
+        $(document).ready(function () {
+            $("#txtDate").timepicker({ showTypeWeek: false, showTypeMonth: true, showTypeDay: false, range: false });
+            var UrlParameter = {
+                ReportId: "-1900463244",
+                Version_Desc: $("#selVersion").mulselect("getSelects", "text").join(','),//版本名称
+                DateType: "月",//时间类型
+                Date: $("#txtDate").timepicker("getDateStr"),
+                NeType: "地区",//
+                NeStr: $("#selRegion").mulselect("getSelects", "text").join(',') == "全省" ? "" : $("#selRegion").mulselect("getSelects", "text").join(','),
+                Hour: "",
+                UserId: "1394",
+                isResult: "0",// 0 代表 false 1 true
+                IsCache: function () {
+                    if ($("#iscache").prop("checked")) {
+                        return "";
+                    }
+                    else {
+                        return "0";
+                    };
+                }, // 为空是使用缓存
+                isPassval: "0"//
+            };
+
+            $show.Init(UrlParameter);
+            $("#btnQuery").click(function () {
+                var UrlParameter1 = {
+                    ReportId: "-1900463244",
+                    Version_Desc: $("#selVersion").mulselect("getSelects", "text").join(','),//版本名称
+                    DateType: "月",//时间类型
+                    Date: $("#txtDate").timepicker("getDateStr"),
+                    NeType: "地区",//
+                    NeStr: $("#selRegion").mulselect("getSelects", "text").join(',') == "全省" ? "" : $("#selRegion").mulselect("getSelects", "text").join(','),
+                    Hour: "",
+                    UserId: "1394",
+                    isResult: "0",// 0 代表 false 1 true
+                    IsCache: function () {
+                        if ($("#iscache").prop("checked")) {
+                            return "";
+                        }
+                        else {
+                            return "0";
+                        };
+                    }, // 为空是使用缓存
+                    isPassval: "0"//
+                };
+                $show.initFlow(UrlParameter1);
+            });
+        });
+        
+
+    </script>
+</head>
+<body>
+
+    <table border="0" cellpadding="0" cellspacing="0">
+        <tr>
+            <td>时间：</td>
+            <td>
+                <input type="text" id="txtDate" class="ui-button-text" /></td>
+            <td>时间：</td>
+            <td>
+                <select id="selRegion">
+                    <option>全省</option>
+                    <option>潮州</option>
+                    <option>东莞</option>
+                    <option>佛山</option>
+                    <option>广州</option>
+                    <option>河源</option>
+                    <option>惠州</option>
+                    <option>江门</option>
+                    <option>揭阳</option>
+                    <option>茂名</option>
+                    <option>梅州</option>
+                    <option>清远</option>
+                    <option>汕头</option>
+                    <option>汕尾</option>
+                    <option>韶关</option>
+                    <option>深圳</option>
+                    <option>未知</option>
+                    <option>阳江</option>
+                    <option>云浮</option>
+                    <option>湛江</option>
+                    <option>肇庆</option>
+                    <option>中山</option>
+                    <option>珠海</option>
+                </select>
+            </td>
+            <td>版本号</td>
+            <td>
+                <select id="selVersion">
+                    <option>123456</option>
+                </select>
+            </td>
+            <td>是否使用缓存
+            </td>
+            <td>
+                <input id="iscache" type="checkbox" />
+            </td>
+            <td>
+                <input type="button" id="btnQuery" value="查询" class="button buttonWidth54" />
+            </td>
+        </tr>
+    </table>
+
+    <div id="flow" ></div>
+    <div id="divLoadingStatus" style="display: none; text-align: center; padding-top: 100px; color: Red; font-size: larger;" class="ui-widget-overlay">
+        <img alt="" style="display: inline;" src="codebase/img/loading.gif" />
+        <div>&nbsp;&nbsp;&nbsp;请稍等,数据加载中.....</div>
+    </div>
+</body>
+</html>

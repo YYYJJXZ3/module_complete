@@ -1,0 +1,157 @@
+﻿body, html {
+    margin: 0;
+    padding: 0;
+    color: #649fce;
+}
+
+body {
+    min-width: 1024px;
+    min-height: 600px;
+    background-color: #143752;
+    overflow: hidden;
+    font-size: 12px;
+}
+
+#root {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    min-width: 1024px;
+    min-height: 600px;
+}
+
+#main {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 150px;
+    vertical-align: middle;
+}
+
+    #main .loginPart {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin: -200px auto 0 -401px;
+        width: 804px;
+        height: 401px;
+        text-align: center;
+    }
+
+.loginPart .logo {
+    margin: 87px auto 0;
+    width: 362px;
+    height: 30px;
+    background: url(../images/login/Sign_logo.png);
+}
+
+.loginPart ul.login {
+    margin: 95px auto 0;
+    padding: 0 0 0 100px;
+    list-style: none;
+    text-align: center;
+}
+
+    .loginPart ul.login li {
+        display: inline-block;
+        float: left;
+        margin: 1px 10px 1px 1px;
+        list-style: none;
+        width: 200px;
+        height: 44px;
+        padding: 0 0 0 50px;
+        overflow: hidden;
+    }
+
+        .loginPart ul.login li input {
+            margin: 0;
+            border: 0;
+            width: 180px;
+            height: 100%;
+            line-height: 40px;
+            min-height: 44px;
+            padding: 0 0 0 20px;
+            font-size: 14px;
+            color: #69a8d8;
+            background-color: #0a6b87;
+        }
+
+        .loginPart ul.login li.userName {
+            background: url(../images/login/User.png) 2px center no-repeat #164b70;
+        }
+
+            .loginPart ul.login li.userName:hover {
+                margin: 0 10px 1px 0;
+                width: 199px;
+                height: 44px;
+                border: 1px solid #16557b;
+                padding: 0 0 0 50px;
+                background: url(../images/login/User_a.png) 2px center no-repeat #164b70;
+            }
+
+        .loginPart ul.login li.password {
+            background: url(../images/login/key.png) 2px center no-repeat #164b70;
+        }
+
+            .loginPart ul.login li.password:hover {
+                margin: 0 10px 1px 0;
+                width: 199px;
+                height: 44px;
+                border: 1px solid #16557b;
+                background: url(../images/login/key_a.png) 2px center no-repeat #164b70;
+            }
+
+        .loginPart ul.login li.submit {
+            margin: 0;
+            padding: 0;
+            width: 46px;
+            border: 0;
+            background: url(../images/login/Sign_in.png) center center no-repeat;
+        }
+
+            .loginPart ul.login li.submit:hover {
+                cursor: pointer;
+                border: 0;
+                background: url(../images/login/Sign_in_a.png) center center no-repeat;
+            }
+
+.loginPart .message {
+    margin: 20px 0 0;
+}
+
+#foot {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 200px;
+    text-align: center;
+}
+
+    #foot span {
+        display: table;
+        color: #649fce;
+        font-family: "Microsoft YaHei", Verdana, Arial, Helvetica, AppleGothic, sans-serif;
+        font-size: 12px;
+        margin: 5px auto 0;
+    }
+
+        #foot span a {
+            color: #649fce;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+            #foot span a:hover, #foot span a:visited {
+                color: #649fce;
+                text-decoration: underline;
+            }
+
+span.loginTip {
+    background: url(../images/login/tishi.png) no-repeat;
+    height: 30px;
+    margin: 10px 0 20px;
+    padding: 5px 0 0 25px;
+}

@@ -1,0 +1,438 @@
+﻿<?xml version="1.0"?>
+<ConfigList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Lists>
+    <ListInfo  ListKey="Region" ListDesc="地区">
+      <Items>
+        <ItemInfo name="浙江省" value="浙江省省份"/>
+        <ItemInfo name="杭州市" value="杭州市地区"/>
+        <ItemInfo name="湖州市" value="湖州市地区"/>
+        <ItemInfo name="嘉兴市" value="嘉兴市地区"/>
+        <ItemInfo name="金华市" value="金华市地区"/>
+        <ItemInfo name="丽水市" value="丽水市地区"/>
+        <ItemInfo name="宁波市" value="宁波市地区"/>
+        <ItemInfo name="衢州市" value="衢州市地区"/>
+        <ItemInfo name="绍兴市" value="绍兴市地区"/>
+        <ItemInfo name="台州市" value="台州市地区"/>
+        <ItemInfo name="温州市" value="温州市地区"/>
+        <ItemInfo name="舟山市" value="舟山市地区"/>
+      </Items>
+    </ListInfo>
+    <!--彩铃播放成功率-->
+    <ListInfo  ListKey="CrbtSql" ListDesc="CrbtSql">
+      <Items>
+        <ItemInfo name="CrbtValue" value="select {[Measures].[彩铃播放成功率]} on columns, 
+ {[地理维].[地区].[$Region]} 
+ on rows from [彩铃业务分析专题] 
+where ({[日期维].[日].[日].[$date]} )"/>
+
+        <ItemInfo name="CrbtDay" value="
+select t1.小时||'时' 小时,
+       t1.彩铃播放成功率 &quot;彩铃播放成功率(%)&quot;,
+       t1.彩铃平台正常响应次数,
+       t1.彩铃平台收到的试呼次数,
+       decode(t2.彩铃播放成功率,
+              0,
+              0,
+              round((t1.彩铃播放成功率 - t2.彩铃播放成功率) / t2.彩铃播放成功率,
+                    4) * 100) &quot;增幅(%)&quot;
+  from (select cm_f_qos_crbt_h.hour_id 小时,
+               decode(sum(RECEIVE_COUNT),
+                      0,
+                      0,
+                      round(sum(RESPONSE_COUNT) / sum(RECEIVE_COUNT), 4) * 100) 彩铃播放成功率,
+               sum(RESPONSE_COUNT) 彩铃平台正常响应次数,
+               sum(RECEIVE_COUNT) 彩铃平台收到的试呼次数
+          from cm_d_cdr_localpc , CM_F_QOS_CRBT_H 
+         where cm_d_cdr_localpc.lpc_id =cm_f_qos_crbt_h.msc_code
+           and cm_f_qos_crbt_h.day_id =
+               to_char(to_date('[$date]', 'yyyy-mm-dd'), 'yyyymmdd')
+           [$ne]
+         group by cm_f_qos_crbt_h.hour_id) t1,
+       (select cm_f_qos_crbt_h.hour_id 小时,
+               decode(sum(RECEIVE_COUNT),
+                      0,
+                      0,
+                      round(sum(RESPONSE_COUNT) / sum(RECEIVE_COUNT), 4) * 100) 彩铃播放成功率
+          from cm_d_cdr_localpc, CM_F_QOS_CRBT_H 
+         where cm_d_cdr_localpc.lpc_id = cm_f_qos_crbt_h.msc_code
+           and cm_f_qos_crbt_h.day_id =
+               to_char(to_date('[$date]', 'yyyy-mm-dd') - 7, 'yyyymmdd')
+          [$ne]
+         group by cm_f_qos_crbt_h.hour_id) t2
+ where t1.小时 = t2.小时  
+ [$where]"></ItemInfo>
+        <!--and t1.彩铃播放成功率 &lt;99
+        order by t1.小时-->
+
+        <ItemInfo name="CrbtDaySql" value="select decode(sum(RECEIVE_COUNT),
+              0,
+              0,
+              round(sum(RESPONSE_COUNT) / sum(RECEIVE_COUNT), 4) * 100) 彩铃播放成功率
+  from cm_d_cdr_localpc, CM_F_QOS_CRBT_H
+ where cm_d_cdr_localpc.lpc_id = cm_f_qos_crbt_h.msc_code
+   and cm_f_qos_crbt_h.day_id =
+       to_char(to_date('[$date]', 'yyyy-mm-dd'), 'yyyymmdd')
+       [$ne]">
+        </ItemInfo>
+
+        <ItemInfo name="CrbtMenXian" value="99.80"/>
+
+
+
+        <ItemInfo name="Crbttime" value="
+select t1.小时||'时' 小时,
+       t1.彩铃平台平均响应时长 &quot;彩铃平台平均响应时长(s)&quot;,
+       t1.彩铃平台响应时延 &quot;彩铃平台响应时延(含早释)&quot;,
+       t1.彩铃平台正常响应次数,
+       decode(t2.彩铃平台平均响应时长,
+              0,
+              0,
+              round((t1.彩铃平台平均响应时长 - t2.彩铃平台平均响应时长) / t2.彩铃平台平均响应时长,
+                    4) * 100) &quot;增幅(%)&quot;
+  from (select cm_f_qos_crbt_h.hour_id 小时,
+               decode(sum(RESPONSE_COUNT),
+                      0,
+                      0,
+                      round(sum(RESPONSE_EDELAY) / sum(RESPONSE_COUNT) / 1000,
+                            3)) 彩铃平台平均响应时长,
+               sum(RESPONSE_EDELAY) 彩铃平台响应时延,
+               sum(RESPONSE_COUNT) 彩铃平台正常响应次数
+          from cm_f_qos_crbt_h, cm_d_cdr_localpc
+         where cm_d_cdr_localpc.lpc_id = cm_f_qos_crbt_h.msc_code
+           and cm_f_qos_crbt_h.day_id =
+               to_char(to_date('[$date]', 'yyyy-mm-dd'), 'yyyymmdd')
+            [$ne]
+         group by cm_f_qos_crbt_h.hour_id) t1,
+       (select cm_f_qos_crbt_h.hour_id 小时,
+               decode(sum(RESPONSE_COUNT),
+                      0,
+                      0,
+                      round(sum(RESPONSE_EDELAY) / sum(RESPONSE_COUNT) / 1000,
+                            3)) 彩铃平台平均响应时长,
+               sum(RESPONSE_EDELAY) 彩铃平台响应时延,
+               sum(RESPONSE_COUNT) 彩铃平台正常响应次数
+          from cm_f_qos_crbt_h, cm_d_cdr_localpc
+         where cm_d_cdr_localpc.lpc_id = cm_f_qos_crbt_h.msc_code
+           and cm_f_qos_crbt_h.day_id =
+               to_char(to_date('[$date]', 'yyyy-mm-dd') - 7, 'yyyymmdd')
+          [$ne]
+         group by cm_f_qos_crbt_h.hour_id) t2
+ where t1.小时 = t2.小时 
+ [$where]"></ItemInfo>
+        <!--and t1.彩铃平台平均响应时长&gt;0.8-->
+
+        <ItemInfo name="CrbttimeSql" value="select decode(sum(RESPONSE_COUNT),
+              0,
+              0,
+              round(sum(RESPONSE_EDELAY) / sum(RESPONSE_COUNT) / 1000, 3)) 彩铃平台平均响应时长
+  from cm_f_qos_crbt_h, cm_d_cdr_localpc
+ where cm_d_cdr_localpc.lpc_id = cm_f_qos_crbt_h.msc_code
+   and cm_f_qos_crbt_h.day_id =
+       to_char(to_date('[$date]', 'yyyy-mm-dd'), 'yyyymmdd') 
+       [$ne]"></ItemInfo>
+        
+        <ItemInfo name="Crbtreceive" value="select t1.小时||'时' 小时,
+       t1.彩铃平台收到的试呼次数,
+       decode(t2.彩铃平台收到的试呼次数,
+              0,
+              0,
+              round((t1.彩铃平台收到的试呼次数 - t2.彩铃平台收到的试呼次数) / t2.彩铃平台收到的试呼次数,
+                    4) * 100) &quot;增幅（%）&quot;
+  from (select cm_f_qos_crbt_h.hour_id 小时,
+               sum(RECEIVE_COUNT) 彩铃平台收到的试呼次数
+          from cm_f_qos_crbt_h, cm_d_cdr_localpc
+         where cm_f_qos_crbt_h.msc_code = cm_d_cdr_localpc.lpc_id
+           and cm_f_qos_crbt_h.day_id =
+               to_char(to_date('[$date]', 'yyyy-mm-dd'), 'yyyymmdd') 
+               [$ne]
+         group by cm_f_qos_crbt_h.hour_id) t1,
+       (select cm_f_qos_crbt_h.hour_id 小时,
+               sum(RECEIVE_COUNT) 彩铃平台收到的试呼次数
+          from cm_f_qos_crbt_h, cm_d_cdr_localpc
+         where cm_f_qos_crbt_h.msc_code = cm_d_cdr_localpc.lpc_id
+           and cm_f_qos_crbt_h.day_id =
+               to_char(to_date('[$date]', 'yyyy-mm-dd') - 7, 'yyyymmdd')
+               [$ne]
+         group by cm_f_qos_crbt_h.hour_id) t2
+ where t1.小时 = t2.小时 
+ [$where]">
+
+
+        </ItemInfo>
+
+        <ItemInfo name="CrbtreceiveSql" value="select decode(t2.彩铃平台收到的试呼次数,
+              0,
+              0,
+              round((t1.彩铃平台收到的试呼次数 - t2.彩铃平台收到的试呼次数) / t2.彩铃平台收到的试呼次数,
+                    4) * 100) 彩铃平台收到的试呼次数增幅
+  from (select sum(RECEIVE_COUNT) 彩铃平台收到的试呼次数
+          from cm_f_qos_crbt_h, cm_d_cdr_localpc
+         where cm_f_qos_crbt_h.msc_code = cm_d_cdr_localpc.lpc_id
+           and cm_f_qos_crbt_h.day_id =
+               to_char(to_date('[$date]', 'yyyy-mm-dd'), 'yyyymmdd') [$ne]) t1,
+       (select sum(RECEIVE_COUNT) 彩铃平台收到的试呼次数
+          from cm_f_qos_crbt_h, cm_d_cdr_localpc
+         where cm_f_qos_crbt_h.msc_code = cm_d_cdr_localpc.lpc_id
+           and cm_f_qos_crbt_h.day_id =
+               to_char(to_date('[$date]', 'yyyy-mm-dd') - 7, 'yyyymmdd') [$ne]) t2"></ItemInfo>
+
+      </Items>
+    </ListInfo>
+
+    <!--语音掉话率异常关联-->
+
+    <ListInfo  ListKey="DropRateSql" ListDesc="DropRateSql">
+      <Items>
+        <ItemInfo name="DropRateValue" value="select {[Measures].[网络掉话率]} on columns, 
+ {[地理维].[地区].[$Region]} 
+ on rows from [语音业务分析专题] 
+where ({[日期维].[日].[日].[$date]} )"/>
+
+        <ItemInfo name="DropRateDay" value="select t1.小时||'时' 小时, t1.MSC, to_char(t1.网络掉话率,'990.000')||'%' 掉话率,               to_char(round(decode(t2.网络掉话率,
+                    0,
+                    0,
+                    (t1.网络掉话率 - t2.网络掉话率) / t2.网络掉话率),
+             6) * 100,'990.000')||'%' 掉话率增幅,
+             t1.无线掉话次数,
+             t1.Release重发掉话次数,
+             t1.MSC切换超时掉话次数,
+             t1.应答次数
+  from (select CM_D_TIME_HOUR.Hour_id 小时,
+               v_cm_d_ne_msc.msc_desc MSC,
+               round(decode(SUC_ANSW_SYS,0,0,((DROP9 + DROP10 + DROP11 + DROP12 + DROP13 +
+                            DROP14 + DROP15 + DROP16 + DROP17 + DROP18 +
+                            DROP19 + DROP20 + DROP21 + DROP22 + DROP23 +
+                            DROP24 + DROP25 + DROP26 + DROP27 + DROP28 +
+                            DROP29 + DROP30 + drop_call_tch) / SUC_ANSW_SYS) * 100) ,3) 网络掉话率,
+               DROP_CALL_TCH  无线掉话次数,
+               round(drop18,0) Release重发掉话次数,
+               round(drop9,0) MSC切换超时掉话次数,
+               SUC_ANSW_SYS   应答次数
+          from CM_A_QOS_CR_MSC_H,
+               cm_d_geo_region,
+               cm_d_time_day,
+               CM_D_TIME_HOUR,
+               v_cm_d_ne_msc
+         where CM_A_QOS_CR_MSC_H.Day_id = cm_d_time_day.Day_id
+           and CM_A_QOS_CR_MSC_H.msc_id = v_cm_d_ne_msc.msc_id
+           and CM_A_QOS_CR_MSC_H.Hour_id = CM_D_TIME_HOUR.Hour_id
+           and cm_d_geo_region.Region_id = v_cm_d_ne_msc.Region_id
+           and CM_A_QOS_CR_MSC_H.Hour_id>8 and CM_A_QOS_CR_MSC_H.Hour_id&lt;23 
+           [$ne]
+           and CM_A_QOS_CR_MSC_H.Day_id = [$date]) t1,
+       (select CM_D_TIME_HOUR.Hour_id 小时,
+               v_cm_d_ne_msc.msc_desc MSC,
+               round(decode(SUC_ANSW_SYS,0,0,((DROP9 + DROP10 + DROP11 + DROP12 + DROP13 +
+                            DROP14 + DROP15 + DROP16 + DROP17 + DROP18 +
+                            DROP19 + DROP20 + DROP21 + DROP22 + DROP23 +
+                            DROP24 + DROP25 + DROP26 + DROP27 + DROP28 +
+                            DROP29 + DROP30 + drop_call_tch) / SUC_ANSW_SYS) * 100) ,3) 网络掉话率
+          from CM_A_QOS_CR_MSC_H,
+               cm_d_geo_region,
+               cm_d_time_day,
+               CM_D_TIME_HOUR,
+               v_cm_d_ne_msc
+         where CM_A_QOS_CR_MSC_H.Day_id = cm_d_time_day.Day_id
+           and CM_A_QOS_CR_MSC_H.msc_id = v_cm_d_ne_msc.msc_id
+           and CM_A_QOS_CR_MSC_H.Hour_id = CM_D_TIME_HOUR.Hour_id
+           and cm_d_geo_region.Region_id = v_cm_d_ne_msc.Region_id
+           and CM_A_QOS_CR_MSC_H.Hour_id>8 and CM_A_QOS_CR_MSC_H.Hour_id&lt;23 
+           [$ne]
+           and CM_A_QOS_CR_MSC_H.Day_id = to_char(to_date( '[$date]', 'yyyymmdd ')-7,'yyyyMMdd')) t2
+ where t1.小时 = t2.小时 and t1.MSC=t2.MSC and t1.网络掉话率>0.9 order by t1.网络掉话率 desc
+"/>
+
+        <ItemInfo name="DropRateMenXian" value="0.9"/>
+
+        <ItemInfo name="MdxValue" value="select {[Measures].[[$MeaName]]} on columns from [语音呼损业务专题] where( {[日期维].[日].[[$Date]]} , {[小时维].[小时].[[$Hour]]} , {[Msc维].[MSC].[[$MSC]]})"/>
+      </Items>
+    </ListInfo>
+
+    <!--短信异常关联-->
+
+    <ListInfo  ListKey="SMS" ListDesc="短信端到端接通率">
+      <Items>
+        <ItemInfo name="SMSValue" value="select {[Measures].[短信端到端成功率]} on columns from [短信专题] where( {[日期维].[日].[[$Date]]} )"/>
+
+        <ItemInfo name="SMSSql" value=" select h.hour_id||'时' 小时,
+              round(sum(h.MO_SUC) / sum(h.MO_ATT) *
+             (sum(h.SUCCESS_PTP) + sum(h.SUCCESS_HTGW) +
+              sum(h.SUCCESS_DELIVER)) /
+             (sum(h.ATT_PTP) + sum(h.ATT_HTGW) + sum(h.ATT_DELIVER)),
+             4) * 100 &quot;短信端到端接通率(%)&quot;,
+       round(sum(h1.MO_SUC) / sum(h1.MO_ATT) *
+             (sum(h1.SUCCESS_PTP) + sum(h1.SUCCESS_HTGW) +
+              sum(h1.SUCCESS_DELIVER)) /
+             (sum(h1.ATT_PTP) + sum(h1.ATT_HTGW) + sum(h1.ATT_DELIVER)),
+             4) * 100 &quot;环比值(%)&quot;,
+       round(((sum(h.MO_SUC) / sum(h.MO_ATT) *
+             (sum(h.SUCCESS_PTP) + sum(h.SUCCESS_HTGW) +
+             sum(h.SUCCESS_DELIVER)) /
+             (sum(h.ATT_PTP) + sum(h.ATT_HTGW) + sum(h.ATT_DELIVER))) -
+             (sum(h1.MO_SUC) / sum(h1.MO_ATT) *
+             (sum(h1.SUCCESS_PTP) + sum(h1.SUCCESS_HTGW) +
+             sum(h1.SUCCESS_DELIVER)) /
+             (sum(h1.ATT_PTP) + sum(h1.ATT_HTGW) + sum(h1.ATT_DELIVER)))) /
+             (sum(h1.MO_SUC) / sum(h1.MO_ATT) *
+             (sum(h1.SUCCESS_PTP) + sum(h1.SUCCESS_HTGW) +
+             sum(h1.SUCCESS_DELIVER)) /
+             (sum(h1.ATT_PTP) + sum(h1.ATT_HTGW) + sum(h1.ATT_DELIVER))),
+             4) * 100 &quot;环比增幅(%)&quot;,
+       round(sum(h2.MO_SUC) / sum(h2.MO_ATT) *
+             (sum(h2.SUCCESS_PTP) + sum(h2.SUCCESS_HTGW) +
+              sum(h2.SUCCESS_DELIVER)) /
+             (sum(h2.ATT_PTP) + sum(h2.ATT_HTGW) + sum(h2.ATT_DELIVER)),
+             4) * 100 &quot;同比值(%)&quot;,
+       round(((sum(h.MO_SUC) / sum(h.MO_ATT) *
+             (sum(h.SUCCESS_PTP) + sum(h.SUCCESS_HTGW) +
+             sum(h.SUCCESS_DELIVER)) /
+             (sum(h.ATT_PTP) + sum(h.ATT_HTGW) + sum(h.ATT_DELIVER))) -
+             (sum(h2.MO_SUC) / sum(h2.MO_ATT) *
+             (sum(h2.SUCCESS_PTP) + sum(h2.SUCCESS_HTGW) +
+             sum(h2.SUCCESS_DELIVER)) /
+             (sum(h2.ATT_PTP) + sum(h2.ATT_HTGW) + sum(h2.ATT_DELIVER)))) /
+             (sum(h2.MO_SUC) / sum(h2.MO_ATT) *
+             (sum(h2.SUCCESS_PTP) + sum(h2.SUCCESS_HTGW) +
+             sum(h2.SUCCESS_DELIVER)) /
+             (sum(h2.ATT_PTP) + sum(h2.ATT_HTGW) + sum(h2.ATT_DELIVER))),
+             4) * 100 &quot;同比增幅(%)&quot;
+  from CM_F_QOSKPI_SMSC_GP_H      h,
+       cm_d_time_day              d,
+       CM_D_TIME_HOUR             ho,
+       obiodsdb.cm_d_geo_province p,
+       CM_F_QOSKPI_SMSC_GP_H      h1,
+       CM_F_QOSKPI_SMSC_GP_H      h2 
+ where h.day_id = to_char(to_date('[$Date]', 'yyyy-mm-dd'), 'yyyymmdd')
+   and h1.day_id =
+       to_char(to_date('[$Date]', 'yyyy-mm-dd') - 1, 'yyyymmdd') 
+   and h2.day_id =
+       to_char(to_date('[$Date]', 'yyyy-mm-dd') - 7, 'yyyymmdd')
+   and h.hour_id = h1.hour_id 
+   and h.hour_id = h2.hour_id
+   and h.day_id = d.day_id
+   and h.hour_id = ho.hour_id
+   and p.province_id = -1308712042
+ group by h.day_id, h.hour_id, p.province_desc 
+"/>
+
+        <ItemInfo name="SMSMenXian" value="0.9"/>
+
+        <ItemInfo name="MdxValue" value="select {[Measures].[[$MeaName]]} on columns from [短信业务分析专题] where( {[日期维].[日].[[$Date]]}，{[地理维].[省份].[浙江省]} })"/>
+      </Items>
+    </ListInfo>
+
+    <ListInfo  ListKey="SMS1" ListDesc="短信业务量">
+      <Items>
+        <ItemInfo name="SMS1Value" value="select round((sum(ALLMO)) / 1000000,
+    2) as &quot;浙江省短信业务量&quot;
+    from cm_a_qos_smsc_d t
+    where DAY_ID=[$Date]
+"/>
+        <ItemInfo name="SMS1Sql" value="select h.Hour_desc 小时,
+       round(sum(q.ALLMO) / 10000, 2) &quot;短信端到端MO业务量(万)&quot;,
+       round(sum(q2.ALLMO) / 10000, 2) &quot;环比值(万)&quot;,
+       to_char(round(decode(sum(q2.allmo),
+                            0,
+                            0,
+                            (sum(q.ALLMO) - sum(q2.allmo)) / sum(q.allmo)) * 100,
+                     2),
+               '990.99') &quot;环比增幅(%)&quot;,
+       round(sum(q2.ALLMO) / 10000, 2) &quot;同比值(万)&quot;,
+       to_char(round(decode(sum(q1.allmo),
+                            0,
+                            0,
+                            (sum(q.ALLMO) - sum(q1.allmo)) / sum(q.allmo)) * 100,
+                     2),
+               '990.99') &quot;同比增幅(%)&quot;
+  from cm_d_geo_province p,
+       cm_d_time_day     t,
+       CM_D_TIME_HOUR    h,
+       CM_F_QOS_SMSC_H   q,
+       v_cm_d_ne_smsc    n,
+       CM_F_QOS_SMSC_H   q1,
+       CM_F_QOS_SMSC_H   q2
+ where q.hour_id = q1.hour_id
+   and q.smsc_id = q1.smsc_id
+   and q.hour_id = q2.hour_id
+   and q.smsc_id = q2.smsc_id
+   and q.day_id = t.Day_id
+   and q.smsc_id = n.smsc_id
+   and q.hour_id = h.Hour_id
+   and p.province_id = n.province_id
+   and p.province_id = -1308712042
+   and q.day_id = [$Date]
+   and q2.day_id = to_char(to_date('[$Date]', 'yyyymmdd') - 1, 'yyyymmdd')
+   and q1.day_id = to_char(to_date('[$Date]', 'yyyymmdd') - 7, 'yyyymmdd')
+ group by h.Hour_desc, p.province_desc, t.Day_desc
+ order by h.Hour_desc asc
+"/>
+        <ItemInfo name="SMS1MenXian" value="0.9"/>
+      </Items>
+    </ListInfo>
+
+    <ListInfo  ListKey="SMS2" ListDesc="端局MO提交短信量分布">
+      <Items>
+        
+        <ItemInfo name="SMS2Value" value="select {[Measures].[端局提交短信总量]} on columns from [短信业务分析专题]  where ( {[日期维].[日].[[$Date]]},   {[地理维].[地区].[[$Ne]]} )"/>
+        
+        <ItemInfo name="SMS2Sql" value="select h.hour_id || '时' 小时,
+       r.region_desc 地区,
+       round(h.mo_att / 10000, 2) &quot;端局MO提交短信量(万)&quot;,
+       round(g.mo_att / 10000, 2) &quot;环比值(万)&quot;,
+       to_char(round(decode(g.mo_att,
+                            0,
+                            0,
+                            (h.mo_att - g.mo_att) / h.mo_att) * 100,
+                     2),
+               '990.99') &quot;环比增幅(%)&quot;,
+       round(t.mo_att / 10000, 2) &quot;同比值(万)&quot;,
+       to_char(round(decode(t.mo_att,
+                            0,
+                            0,
+                            (h.mo_att - t.mo_att) / h.mo_att) * 100,
+                     2),
+               '990.99') &quot;同比增幅(%)&quot;
+  from CM_F_QOSKPI_SMSC_GR_H    h,
+       obiodsdb.cm_d_geo_region r,
+       cm_f_qoskpi_smsc_gr_h    g,
+       cm_f_qoskpi_smsc_gr_h    t
+ where g.region_id = h.region_id
+   and g.hour_id = h.hour_id
+   and t.region_id = h.region_id
+   and t.hour_id = h.hour_id
+   and h.region_id = r.region_id
+   and r.region_desc = '[$Ne]'
+   and h.day_id = [$Date]
+   and g.day_id =
+       to_char(to_date('[$Date]', 'yyyy-mm-dd') - 1, 'yyyymmdd')
+   and t.day_id =
+       to_char(to_date('[$Date]', 'yyyy-mm-dd') - 7, 'yyyymmdd')
+"/>
+        
+        <ItemInfo name="SMS2MenXian" value="0.9"/>
+      </Items>
+    </ListInfo>
+
+    <!--彩信异常关联-->
+    <ListInfo  ListKey="MMS" ListDesc="彩信端到端接通率省份">
+      <Items>
+        <ItemInfo name="MMSValue" value="select {[Measures].[有记录用户接通率]} on columns from [彩信业务分析专题] where( {[日期维].[日].[[$Date]]} )"/>
+
+        <ItemInfo name="MMSSql" value=" select {[Measures].[有记录用户接通率]} on columns, 
+Crossjoin( {[地理维].[省份].[浙江省]} , {[日期维].[日].[[$Date]],[日期维].[日].[[$Date1]],[日期维].[日].[[$Date2]]}  )  on rows from [彩信业务分析专题]"/>
+
+        <ItemInfo name="MMSMenXian" value="0.9"/>      
+      </Items>
+    </ListInfo>
+
+    <ListInfo  ListKey="MMS1" ListDesc="彩信端到端接通率地区">
+      <Items>
+        <ItemInfo name="MMS1Value" value="select {[Measures].[有记录用户接通率]} on columns from [彩信业务分析专题] where {[地理维].[地区].[[$Ne]]} , {[日期维].[日].[[$Date]]}"/>
+        <ItemInfo name="MMS1Sql" value="select {[Measures].[有记录用户接通率]} on columns, 
+Crossjoin( {[地理维].[地区].[[$Ne]]} , {[日期维].[日].[[$Date]],[日期维].[日].[[$Date1]],[日期维].[日].[[$Date2]]}  )  on rows from [彩信业务分析专题] "/>
+        <ItemInfo name="MMS1MenXian" value="0.9"/>
+      </Items>
+    </ListInfo>
+  </Lists>
+</ConfigList>
+

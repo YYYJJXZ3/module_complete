@@ -1,0 +1,37 @@
+﻿.titleBlock li {
+    margin-top: 1px;
+}
+
+.labelRed {
+    color: red;
+}
+
+.titleBlock {
+    width: 99%;
+    margin-top: 1px;
+    border: 1px #ccc solid;
+}
+
+.contentBlock {
+    white-space: normal;
+    width: 100%;
+    word-wrap: break-word;
+}
+
+.spanSolid {
+    padding-left: 5px;
+    font-size: 14px;
+    font-weight: 900;
+}
+
+.spanContent {
+    padding-left: 5px;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.tab2character {
+    padding-top: 5px;
+    padding-left: 5px;
+    text-indent: 2em;
+}

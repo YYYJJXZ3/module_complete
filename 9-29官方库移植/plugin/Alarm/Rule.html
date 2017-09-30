@@ -1,0 +1,236 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <link href="../../themes/lightblue/page/page.css" rel="stylesheet" />
+    <link href="../../themes/lightblue/jqueryui/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" />
+    <link href="../../javascript/JSControl/Condition/zTreeStyle/zTreeStyle.css" rel="stylesheet" />
+    <link href="css/rule.css" rel="stylesheet" />
+    <script src="../../javascript/core/jquery-1.9.1.min.js"></script>
+    <script src="../../javascript/core/jquery-ui-1.10.3.custom.js"></script>
+    <script src="../../javascript/common/tools.js"></script>
+    <script src="../../javascript/common/pagetools.js"></script>
+    <script src="../../javascript/JSControl/Condition/comselect.js"></script>
+    <script src="../../javascript/ztree/js/jquery.ztree.all-3.5.js"></script>
+    <script src="js/jqCheckbox.js"></script>
+    <script src="js/rule.js"></script>
+    <script type="text/javascript">
+        var datasource = window.datasource || {};
+        datasource.id = '';
+        window.datasource = datasource;
+        $(function () {
+            datasource.id = dss.request("id");
+            dss.pageheader("m");
+            method.initTree();
+            $("#btnOk").click(function () {
+                var rule = {
+                    "ID": datasource.id,
+                    "Name": $("#txtName").val(),
+                    "TemplateID": datasource.selectid,
+                    "RuleType": (datasource.type == 1 ? "Day" : "Hour"),
+                    "Contiunity": 8,
+                    "Abnormal": 8,
+                    "IsTrue": 1,
+                    "Remark": $("#txtRemark").val(),
+                    "SystemName": $("#ddlSystem").val(),
+                    "Department": $("#ddlDept").val(),
+                    "Day": "",
+                    "Hour": "",
+                    "SendGroupLevel": "0",
+                    "PushBack": 1,
+                    "AlarmRuleOne": "",
+                    "AlarmRuleTwo": "",
+                    "AlarmRuleThree": "",
+                    "AlarmRuleFour": ""
+                };
+                if ($("#ddTime").find("select").length > 0) {
+                    var sels = $("#ddTime").find("select");
+                    rule.Abnormal = sels.eq(1).val();
+                    rule.Contiunity = sels.eq(0).val();
+                    rule.PushBack = sels.eq(2).val();
+                }
+                var isTrs = $("#ulTrue").jqChecxbox("getSelResults");
+                if (isTrs.length > 0) {
+                    rule.IsTrue = isTrs[0].id;
+                }
+
+                var sendLevel = $("#ulSendLevel").jqChecxbox("getSelResults");
+                if (sendLevel.length > 0) {
+                    if (sendLevel[0].id == "1") {
+                        rule.SendGroupLevel = "";
+                    }
+                    else if (sendLevel[0].id == "2") {
+                        var groups = $("#ulGroup").jqChecxbox("getSelResults");
+                        if (groups.length == 0) {
+                            rule.SendGroupLevel = "";
+                        }
+                        else {
+                            rule.SendGroupLevel = "";
+                            for (var i = 0; i < groups.length; i++) {
+                                rule.SendGroupLevel += groups[i].name + ",";
+                            }
+                            rule.SendGroupLevel = rule.SendGroupLevel.substr(0, rule.SendGroupLevel.length - 1);
+                        }
+                    }
+                }
+
+                var days = $("#ulDay").jqChecxbox("getSelIds")
+                if (days.length > 0) {
+                    rule.Day = days.join(',');
+                }
+                var Hours = $("#ulHour").jqChecxbox("getSelIds")
+                if (Hours.length > 0) {
+                    rule.Hour = Hours.join(',');
+                }
+                if (datasource.alarm) {
+                    if (datasource.alarm.one) {
+                        rule.AlarmRuleOne = datasource.alarm.one;
+                    }
+                    if (datasource.alarm.two) {
+                        rule.AlarmRuleTwo = datasource.alarm.two;
+                    }
+                    if (datasource.alarm.three) {
+                        rule.AlarmRuleThree = datasource.alarm.three;
+                    }
+                    if (datasource.alarm.four) {
+                        rule.AlarmRuleFour = datasource.alarm.four;
+                    }
+
+                    if (datasource.alarm.level) {
+                        rule.Levels = [];
+                        $.each(datasource.alarm.level, function (i, item) {
+                            rule.Levels.push(item);
+                        });
+                    }
+                }
+
+                $.ajax({
+                    url: 'Handler/InitOperation.ashx',
+                    type: 'post',
+                    dataType: 'json',
+                    data: {
+                        act: 'save',
+                        contents: dss.jsonToString(rule)
+                    },
+                    beforeSend: function () {
+                        dss.load(true);
+                    },
+                    success: function (data) {
+                        if (data.status == 0) {
+                            if (data.data > 0) {
+                                dss.alert("保存数据成功", function () {
+                                    setTimeout(function () {
+                                        window.location.href = "List.html"
+                                    }, 2000);
+                                });
+                            }
+                            else {
+                                dss.alert("保存数据失败，请检查数据正确性！");
+                            }
+                        }
+                    },
+                    complete: function () {
+                        dss.load(false);
+                    }
+                });
+            });
+        });
+
+    </script>
+</head>
+<body>
+    <div id="m"></div>
+    <div class="r_content" id="dvContent">
+        <dl>
+            <dt>预警名称：</dt>
+            <dd>
+                <input type="text" id="txtName" style="width: 360px;" />
+            </dd>
+        </dl>
+        <div style="clear: both;"></div>
+        <dl>
+            <dt>归属专题：</dt>
+            <dd>
+                <select id="ddlSystem"></select>
+            </dd>
+        </dl>
+        <div style="clear: both;"></div>
+        <dl>
+            <dt>归属部门：</dt>
+            <dd>
+                <select id="ddlDept"></select>
+            </dd>
+        </dl>
+        <div style="clear: both;"></div>
+        <dl>
+            <dt>是否有效：</dt>
+            <dd>
+                <ul id="ulTrue"></ul>
+            </dd>
+        </dl>
+        <div style="clear: both;"></div>
+        <dl role="g" style="display: none;">
+            <dt>异常规则：</dt>
+            <dd id="ddTime"></dd>
+        </dl>
+        <div style="clear: both;"></div>
+        <dl role="g" style="display: none;">
+            <dt>执行时间：</dt>
+            <dd>
+                <ul id="ulDay"></ul>
+            </dd>
+        </dl>
+        <div style="clear: both;"></div>
+        <dl role="g" style="display: none;">
+            <dt>执行时间：</dt>
+            <dd>
+                <ul id="ulHour"></ul>
+            </dd>
+        </dl>
+        <div style="clear: both;"></div>
+        <dl>
+            <dt>告警级别：</dt>
+            <dd>
+                <ul id="ulLevelNuml">
+                    <li class="one" role="1">一级</li>
+                    <li class="two" role="2">二级</li>
+                    <li class="three" role="3">三级</li>
+                    <li class="four" role="4">四级</li>
+                </ul>
+            </dd>
+        </dl>
+        <div style="clear: both;"></div>
+        <dl>
+            <dt>派单粒度：</dt>
+            <dd>
+                <ul id="ulSendLevel">
+                </ul>
+            </dd>
+        </dl>
+        <div style="clear: both;"></div>
+        <dl id="dlGroup" style="display: none;">
+            <dt>选择分组：</dt>
+            <dd>
+                <ul id="ulGroup">
+                </ul>
+            </dd>
+        </dl>
+        <div style="clear: both;"></div>
+        <dl>
+            <dt>备注信息：</dt>
+            <dd>
+                <textarea id="txtRemark"></textarea>
+            </dd>
+        </dl>
+
+        <dl style="margin-top: 220px;">
+            <dt></dt>
+            <dd>
+                <input type="button" value="确定" id="btnOk" class="dss_button" />
+                <!-- <input type="button" value="取消" id="btnCancel" class="dss_button" />-->
+            </dd>
+        </dl>
+    </div>
+</body>
+</html>

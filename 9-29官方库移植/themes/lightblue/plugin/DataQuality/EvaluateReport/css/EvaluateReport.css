@@ -1,0 +1,34 @@
+﻿#divGauge {
+    margin-left: 1px;
+    margin-right: 1px;
+    border: #ccc 1px solid;
+    height: 200px;
+}
+
+.divForGauge {
+    height: 199px;
+    width: 24.5%;
+    padding-left: 1px;
+    float: left;
+}
+
+.divForColumn {
+    margin-top: 1px;
+    padding-top: 20px;
+    border: #ccc 1px solid;
+    height: 340px;
+    margin-left: 1px;
+    margin-right: 1px;
+}
+
+.divForGrid {
+    margin-top: 1px;
+    border: #ccc 1px solid;
+}
+
+#divgridcontent {
+    margin-top: 1px;
+    margin-left: 1px;
+    margin-right: 1px;
+    display: none;
+}

@@ -1,0 +1,175 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link href="../../themes/lightblue/page/page.css" rel="stylesheet" />
+    <link href="../../themes/lightblue/jqueryui/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" />
+    <link href="../../themes/lightblue/jqgrid/ui.jqgrid.css" rel="stylesheet" />
+    <script src="../../javascript/core/jquery-1.9.1.min.js"></script>
+    <script src="../../javascript/core/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="../../javascript/common/tools.js"></script>
+    <script src="../../javascript/common/pagetools.js"></script>
+    <script src="../../javascript/JSControl/Condition/controlmanagernew.js"></script>
+    <script src="../../javascript/JSControl/SmartGrid/JqGrid/grid.locale-cn.js"></script>
+    <script src="../../javascript/JSControl/SmartGrid/JqGrid/jquery.jqGrid.min.js"></script>
+    <script src="../../javascript/JSControl/SmartGrid/JqGrid/SmartGrid.js"></script>
+    <script src="../../javascript/JSControl/Condition/timepicker.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            dss.pageheader("m");
+            method.initTime();
+            method.init();
+        });
+        var method = {
+            init: function () {
+                $("#btnQuery").click(function () {
+                    method.queryData();
+                });
+                $("#btnAdd").click(function () {
+                    window.location.href = 'Rule.html?listid=' + dss.request("listid");
+                });
+                method.queryData();
+            },
+            initTime: function () {
+                var d = new Date();
+                var option = {
+                    showTypeMonth: false,
+                    showTypeWeek: false,
+                    showTypeDay: true,
+                    showTypeHour: false,
+                    showTypeMinute: false,
+                    showTypeSecond: false,
+                    showTypeQuarter: false,
+                    isMultipleHour: false,
+                    defaultTimeType: "Day",
+                    defaultDateStr: d.addDays(-30).format("yyyy年MM月dd日") + ":" + d.format("yyyy年MM月dd日"),
+                    defaultHourStr: undefined,
+                    range: true,
+                    isTile: true,
+                    isMultipleHour: true,
+                    datePickerOptions: {
+                        maxDate: "+0M +0D",
+                        minDate: "",
+                        firstDay: 1
+                    }
+                };
+                $("#txtTime").timepicker(option);
+            },
+            queryData: function () {
+                var conn = "SQL_ConnStr";
+                var opts = {
+                    captionName: "规则列表",
+                    formatFlowValue: "3",
+                    ajax: {
+                        sqlstr: $("#txtTime").timepicker("getDateStr"),
+                        connstr: conn,
+                        path: dss.rootPath + "plugin/Alarm/Handler/InitGrid.ashx"
+                    },
+                    paging: {
+                        rowNum: 10,
+                        rowList: [10, 20, 40]
+                    },
+                    sort: {
+                        colindex: 3,
+                        order: "desc"
+                    },
+                    toolbar: {
+                        extend: [],
+                        notShow: ["isexport"],
+                        defaultShow: true
+                    },
+                    col: {
+                        poperty: [
+                            { colindex: 0, hidden: true },
+                            { colindex: 2, align: 'left', width: 120 },
+                            { colindex: 3, align: 'right', width: 80 },
+                            { colindex: 4, align: 'right', width: 80 },
+                            {
+                                colindex: 5,
+                                align: 'center',
+                                width: 120,
+                                rowDataBind: function (data) {
+                                    var date = Date.parse(data);
+                                    return date.format("yyyy-MM-dd hh:mm");
+                                }
+                            },
+                            {
+                                colindex: 6, sort: false, align: 'center', width: 80
+                            },
+                            { colindex: 7, align: 'center', width: 100, sort: false }
+                        ]
+                    },
+                    callback: {
+                        onClickRow: function (rowid, rowdata) {
+                            //method.Select(rowdata[0], rowdata[1]);
+                        },
+                        gridComplete: method.gridComplete
+                    }
+                };
+
+                // 初始化表格
+                $("#list").smartgrid(opts);
+
+
+            },
+
+            gridComplete: function (objGrid) {
+                objGrid.find("tr").each(function (i, item) {
+                    if (i != 0) {
+                        var id = objGrid.getCell(i, 0);
+                        var title = objGrid.getCell(i, 1);
+                        if (!dss.isNullOrEmpty(id)) {
+                            var del = $("<a href='javascript:' style='color:blue'>删除</a>");
+                            del.click(function () {
+                                dss.confirm("你确认要删除吗？", function () {
+                                    dss.ajax({
+                                        url: 'Handler/InitOperation.ashx',
+                                        type: 'post',
+                                        dataType: 'json',
+                                        data: {
+                                            contents: id,
+                                            act: 'delete'
+                                        },
+                                        success: function (data) {
+                                            if (data.status == "0") {
+                                                if (data.data > 0) {
+                                                    method.queryData();
+                                                }
+                                            }
+                                        }
+                                    });
+                                }, function () { }, "提示信息");
+                            });
+                            var update = $("<a href='javascript:' style='color:blue'>查看</a>");
+                            update.click(function () {
+                                window.location.href = "Rule.html?listid=" + dss.request("listid") + "&id=" + id;
+                            });
+                            $(this).find("td").eq(7).empty().append(update).append(" | ").append(del);
+                        }
+                    }
+                })
+
+            },
+
+        };
+    </script>
+</head>
+<body>
+    <div id="m"></div>
+    <div class="toolbar">
+        <div class="item">
+            <input type="text" id="txtTime" style="width: 200px;" />
+        </div>
+        <div class="item">
+            <input type="button" id="btnQuery" class="button" value="查询" />
+        </div>
+        <div class="item">
+            <input type="button" id="btnAdd" class="button" value="添加" />
+        </div>
+    </div>
+    <div style="width: 99%; margin: 0px auto;">
+        <div id="list"></div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>瀑布图</title>
+    <link href="../../../themes/lightblue/jqueryui/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/page/page.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/jqgrid/ui.jqgrid.css" rel="stylesheet" />
+
+    <script src="../../core/jquery-1.9.1.min.js"></script>
+    <script src="../../core/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="../../common/tools.js"></script>
+    <script src="../../common/pagetools.js"></script>
+    <script src="Scripts/SampleChart.js"></script>
+    <script>
+        $(function () {
+            getChart();
+        });
+
+        function getChart() {
+            var data = '{"colnames":["费用类别","费用金额"],"rows":[{"col0":"总费用","col1":"1000"},{"col0":"房租","col1":"500"},{"col0":"水电费","col1":"50"},{"col0":"交通费","col1":"100"},{"col0":"伙食费","col1":"300"},{"col0":"日用品","col1":"50"}]}';
+            data = eval("(" + data + ")");
+            bindChart("Chart", {
+                DataSource: data,
+                IsAutoLimits: true,
+                ChartType: "ColumnWaterfall",
+                IsShowValue: true,
+                PaddingTop: 60,
+                PaddingLeft: 60,
+                PaddingRight: 50,
+                ColorArr: ["#7CB5EC", "#90EC7D", "#F7A35B", "#FF69B3", "#3FE0D0", '#dc69aa', '#CD5D5C', '#FF7F50', '#6395EC', '#DA70D5'],
+                Theme: "lightblue",//修改主题，图例的颜色在主题中设置，主题文件在“javascript\JSControl\SampleChart\Scripts\echarts\theme”下
+                Toolbox: {
+                    show: false
+                },
+                isSaveImg: true,//是否保存成图片
+                ImgPath: "~/Temp/ChartImg/",//指定将图标保存成图片的路径，未指定的话后台自动生成
+                ImgName: "aa.png",//未指定则会自动生成
+                callback: {
+                    complete: function (myChart, options) {
+                        alert("图片路径：" + options.ImgPath + "\n\n图片名称：" + options.ImgName);
+                    }
+                }
+            });
+        }
+
+        function bindChart(div, option) {
+            var opts = $.extend(true, {
+                YFormatType: "1000",
+                YDecimals: '2',
+                BorderColor: '#7D7DFF',
+                ClickEvent: []
+            }, option);
+
+            $("#" + div).SampleChart(opts);
+        }
+    </script>
+</head>
+<body>
+    <div class="captionWithoutIcon">
+        瀑布图
+    </div>
+    <div id="Chart" style="height: 450px;"></div>
+</body>
+</html>

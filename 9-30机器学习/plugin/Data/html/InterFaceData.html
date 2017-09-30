@@ -1,0 +1,514 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <link href="../../../Themes/lightblue/jqueryui/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/jqgrid/ui.jqgrid.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/page/page.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/ca/db/dashboard.css" rel="stylesheet" />
+    <link href="../../../javascript/ztree/css/zTreeStyle/zTreeStyle.css" rel="stylesheet" />
+    <script src="../../../Javascript/core/jquery-1.9.1.min.js" type="text/javascript"></script>
+    <script src="../../../javascript/core/jquery-ui-1.10.3.custom.min.js"></script>
+
+    <script src="../../../javascript/common/tools.js" type="text/javascript"></script>
+    <script src="../../../javascript/common/pagetools.js" type="text/javascript"></script>
+    <script src="../../../Javascript/JSControl/Condition/comselect.js" type="text/javascript"></script>
+    <script src="../../../javascript/JSControl/Condition/controlmanagernew.js"></script>
+    <script src="../../../javascript/JSControl/Common/toolbar.js"></script>
+    <script src="../../../javascript/JSControl/Condition/timepicker.js"></script>
+
+    <script src="../../../javascript/JSControl/SmartGrid/JqGrid/grid.locale-cn.js"></script>
+    <script src="../../../javascript/JSControl/SmartGrid/JqGrid/jquery.jqGrid.min.js"></script>
+    <script src="../../../javascript/JSControl/SmartGrid/JqGrid/SmartGrid.js"></script>
+    <script src="../../../javascript/JSControl/SampleChart/Scripts/SampleChart.js"></script>
+    
+    <script src="../js/DataTools.js"></script>
+    <script type="text/javascript">
+        var param = {
+            time: null,
+            page: "",
+            province: "",
+            region: "",
+            city: "",
+            vendor: "",
+            ne: "",
+            title: "",
+            CGI: "",//小区全球识别码
+            ec: "",//小区名称
+            tac: "",
+            id: "",//工单流水号
+            name: "",//客户姓名
+            phoneNum: "",//客户号码
+            isNeedTime: false,//是否需要时间控件
+            timeTitle: "",//时间控件的标题,
+            pagePower: {
+                IsQuery: 1,
+                IsEdit: 0,
+                IsExport: 0
+            }
+        };
+
+        $(function () {
+            method.init();
+        });
+
+        var method = {
+            init: function () {
+                dss.pageheader("m");
+                method.getRequest();
+
+                var p = [];
+                if (param.page == "alarm") {//综合告警系统接口
+                    param.isNeedTime = true;
+                    param.timeTitle = "告警发生时间";
+                    param.time = "2016年03月07日";
+
+                    p.push({
+                        labelname: '网元',
+                        width: 80,
+                        defaultShow: '省',
+                        type: 'text',
+                        items: [
+                           {
+                               levelname: '省',
+                               initValues: [""]
+                           }
+                        ]
+                    });
+                    p.push({
+                        labelname: '网元',
+                        width: 80,
+                        defaultShow: '地区',
+                        type: 'text',
+                        items: [
+                           {
+                               levelname: '地区',
+                               initValues: [""]
+                           }
+                        ]
+                    });
+                    p.push({
+                        labelname: '网元',
+                        width: 80,
+                        defaultShow: '区县',
+                        type: 'text',
+                        items: [
+                           {
+                               levelname: '区县',
+                               initValues: [""]
+                           }
+                        ]
+                    });
+                }
+                else if (param.page == "NMS") {//无线网管系统接口
+                    param.isNeedTime = true;
+                    param.timeTitle = "统计时间";
+                    param.time = "2016年03月07日";
+
+                    p.push({
+                        labelname: '网元',
+                        width: 80,
+                        defaultShow: '地区名称',
+                        type: 'text',
+                        items: [
+                           {
+                               levelname: '地区名称',
+                               initValues: [""]
+                           }
+                        ]
+                    });
+                    //p.push({
+                    //    labelname: '网元',
+                    //    width: 80,
+                    //    defaultShow: '设备厂商',
+                    //    type: 'text',
+                    //    items: [
+                    //       {
+                    //           levelname: '设备厂商',
+                    //           initValues: [""]
+                    //       }
+                    //    ]
+                    //});
+                }
+                else if (param.page == "MR") {//无线网优平台接口
+                    p.push({
+                        labelname: '网元',
+                        width: 80,
+                        defaultShow: '小区全球识别码',
+                        type: 'text',
+                        items: [
+                           {
+                               levelname: '小区全球识别码',
+                               initValues: [""]
+                           }
+                        ]
+                    });
+                    p.push({
+                        labelname: '网元',
+                        width: 80,
+                        defaultShow: '小区名称',
+                        type: 'text',
+                        items: [
+                           {
+                               levelname: '小区名称',
+                               initValues: [""]
+                           }
+                        ]
+                    });
+                }
+                else if (param.page == "EPC") {//EPC网管系统接口
+                    param.isNeedTime = true;
+                    param.timeTitle = "开始时间";
+                    param.time = "2016年03月07日";
+
+                    p.push({
+                        labelname: '网元',
+                        width: 80,
+                        defaultShow: '小区名称',
+                        type: 'text',
+                        items: [
+                           {
+                               levelname: '小区名称',
+                               initValues: [""]
+                           }
+                        ]
+                    });
+                    p.push({
+                        labelname: '网元',
+                        width: 80,
+                        defaultShow: 'TAC',
+                        type: 'text',
+                        items: [
+                           {
+                               levelname: 'TAC',
+                               initValues: [""]
+                           }
+                        ]
+                    });
+                }
+                else if (param.page == "workorder") {//电子工单系统接口
+                    param.isNeedTime = true;
+                    param.timeTitle = "派单时间";
+                    param.time = "2015年10月19日";
+
+                    p.push({
+                        labelname: '网元',
+                        width: 120,
+                        defaultShow: '工单流水号',
+                        type: 'text',
+                        items: [
+                           {
+                               levelname: '工单流水号',
+                               initValues: [""]
+                           }
+                        ]
+                    });
+                    p.push({
+                        labelname: '网元',
+                        width: 120,
+                        defaultShow: '告警标题',
+                        type: 'text',
+                        items: [
+                           {
+                               levelname: '告警标题',
+                               initValues: [""]
+                           }
+                        ]
+                    });
+                }
+                else if (param.page == "customer") {//10000客户系统接口
+                    param.isNeedTime = true;
+                    param.timeTitle = "投诉时间";
+                    param.time = "2015年10月18日";
+
+                    p.push({
+                        labelname: '网元',
+                        width: 120,
+                        defaultShow: '工单流水号',
+                        type: 'text',
+                        items: [
+                           {
+                               levelname: '工单流水号',
+                               initValues: [""]
+                           }
+                        ]
+                    });
+                    p.push({
+                        labelname: '网元',
+                        width: 80,
+                        defaultShow: '客户姓名',
+                        type: 'text',
+                        items: [
+                           {
+                               levelname: '客户姓名',
+                               initValues: [""]
+                           }
+                        ]
+                    });
+                    p.push({
+                        labelname: '网元',
+                        width: 80,
+                        defaultShow: '用户号码',
+                        type: 'text',
+                        items: [
+                           {
+                               levelname: '用户号码',
+                               initValues: [""]
+                           }
+                        ]
+                    });
+                }
+
+                $("#divFilter").controlmanager(p);
+
+                if (param.isNeedTime) {
+                    $("#liTime").show();
+                    $("#timeTitle").text(param.timeTitle + "：");
+
+                    var timeOpt = {
+                        showTypeDay: true,
+                        showTypeMonth: false,
+                        defaultDateStr: param.time,
+                        isTile: true
+                    };
+
+                    $("#txtTime").timepicker(timeOpt);
+                }
+                else {
+                    $("#liTime").hide();
+                }
+
+                method.getParam();
+
+                dataMethods.getPagePower(dss.request("listid"), function (data) {
+                    if (!dataMethods.isNullProperty(data) && data.rows.length > 0) {
+                        $.extend(true, param.pagePower, {
+                            IsQuery: data.rows[0].col1,
+                            IsEdit: data.rows[0].col2,
+                            IsExport: data.rows[0].col3
+                        });
+                    }
+
+                    method.getData();
+                });
+
+                $("#btnQuery").click(function () {
+                    method.getParam();
+                    method.getData();
+                });
+            },
+            getRequest: function () {
+                param.page = dss.request("page");
+            },
+            getParam: function () {
+                if (param.isNeedTime) {
+                    param.time = $("#txtTime").timepicker("getDateStr");
+                }
+
+                var con = $("#divFilter").controlmanager("getSelResults");
+
+                if (param.page == "alarm") {
+                    param.province = con[0].value.join(",");
+                    param.region = con[1].value.join(",");
+                    param.city = con[2].value.join(",");
+                }
+                else if (param.page == "NMS") {
+                    param.ne = con[0].value.join(",");
+                    //param.vendor = con[1].value.join(",");
+                }
+                else if (param.page == "MR") {//无线网优平台接口
+                    param.CGI = con[0].value.join(",");
+                    param.ec = con[1].value.join(",");
+                }
+                else if (param.page == "EPC") {//EPC网管系统接口
+                    param.ec = con[0].value.join(",");
+                    param.tac = con[1].value.join(",");
+                }
+                else if (param.page == "workorder") {//电子工单系统接口
+                    param.id = con[0].value.join(",");
+                    param.title = con[1].value.join(",");
+                }
+                else if (param.page == "customer") {//10000客户系统接口
+                    param.id = con[0].value.join(",");
+                    param.name = con[1].value.join(",");
+                    param.phoneNum = con[2].value.join(",");
+                }
+            },
+            getData: function () {
+                var gridTitle = "";
+                var strSql = "select  from  where 1=1 ";
+
+                if (param.page == "alarm") {//综合告警系统接口
+                    gridTitle = "综合告警系统接口";
+                    strSql = "select ALARM_TITLE 告警标题ID,ALARM_TITLE_TEXT 告警标题,EVENT_TIME 告警产生时间,ORG_SEVERITY 原始告警级别,VENDOR_SEVERITY 厂家告警级别,ORG_TYPE 原始告警类别,VENDOR_TYPE 厂家告警类别,ACTIVE_STATUS 告警活动状态,CANCEL_TIME 告警清除时间,PROBABLE_CAUSE_TXT 可能原因正文,LOCATE_INFO 定位信息,VENDOR_ID 厂家ID,VENDOR_NAME 厂家名称,NE_LABEL 网元名称,NE_LOCATION 网元定位信息,PROVINCE_NAME 省名称,REGION_NAME 地区名称,CITY_NAME 城市名称,NETWORK_TYPE 网络类型 from OP_RE_ST_TFA_ALARM where 1=1 ";
+
+                    if (!isNullProperty(param.time)) {
+                        var date = Date.parse(param.time);
+                        var start = date.format("yyyy-MM-dd");
+                        var end = date.addDays(1).format("yyyy-MM-dd");
+                        strSql += " and (EVENT_TIME >= to_date('" + start + "','yyyy-mm-dd') and EVENT_TIME <= to_date('" + end + "','yyyy-mm-dd'))";
+                    }
+
+                    if (!isNullProperty(param.province)) {
+                        strSql += " and PROVINCE_NAME like '%" + param.province + "%'";
+                    }
+                    if (!isNullProperty(param.region)) {
+                        strSql += " and REGION_NAME like '%" + param.region + "%'";
+                    }
+                    if (!isNullProperty(param.city)) {
+                        strSql += " and CITY_NAME like '%" + param.city + "%'";
+                    }
+                }
+                else if (param.page == "NMS") {//无线网管系统接口
+                    gridTitle = "无线网管系统接口";
+                    strSql = "select ELEMENT_NAME 地区名称,STAT_TIME 统计时间,UP_SERVICE_BYTES_NUM 空口上行业务字节数,DOWN_SERVICE_BYTES_NUM 空口下行业务字节数,AVER_UP_PRB_RATE 上行PRB平均利用率,AVER_DOWN_PRB_RATE 下行PRB平均利用率,AVER_UP_CHA_PRB_RATE 上行业务信道PRB平均利用率,AVER_DOWN_CHA_PRB_RATE 下行业务信道PRB平均利用率,WIRE_UTIL_RATE 无线利用率,UP_SERVICE_THR_PUT_RATE 上行每PRB平均吞吐率,DOWN_SERVICE_THR_PUT_RATE 下行每PRB平均吞吐率 from O_RE_ST_XDR_PS_NMS where 1=1 ";
+
+                    if (!isNullProperty(param.time)) {
+                        var date = Date.parse(param.time);
+                        var start = date.format("yyyy-MM-dd");
+                        var end = date.addDays(1).format("yyyy-MM-dd");
+                        strSql += " and (STAT_TIME >= to_date('" + start + "','yyyy-mm-dd') and STAT_TIME <= to_date('" + end + "','yyyy-mm-dd'))";
+                    }
+                    if (!isNullProperty(param.ne)) {
+                        strSql += " and ELEMENT_NAME like '%" + param.ne + "%'";
+                    }
+                    //if (!isNullProperty(param.vendor)) {
+                    //    strSql += " and TRAN_MAN like '%" + param.vendor + "%'";
+                    //}
+                }
+                else if (param.page == "MR") {//无线网优平台接口
+                    gridTitle = "无线网优平台接口";
+                    strSql = "select CGI 小区全球识别码,EC_DESC 小区名称,ULMEANNL_PRB 上行PRB电瓶测量值,ULMAXNL_PRB 上行PRB电瓶最大值,GTPU_IN_S1U_BYTES 用户面接收字节数,GTPU_OUT_S1U_BYTES 用户面发送字节数,MAXTHROUGHPUT 最大吞吐量,COVER_RAT 覆盖率,OVER_COVER_NUM 过覆盖数,WEAK_COVER 弱覆盖,RCOVER_RAT 重复覆盖率 from O_RE_ST_XDR_PS_MR where 1=1 ";
+
+                    if (!isNullProperty(param.CGI)) {
+                        strSql += " and CGI = '" + param.CGI + "'";
+                    }
+                    if (!isNullProperty(param.ec)) {
+                        strSql += " and EC_DESC like '%" + param.ec + "%'";
+                    }
+                }
+                else if (param.page == "EPC") {//EPC网管系统接口
+                    gridTitle = "EPC网管系统接口";
+                    strSql = "select EC_DESC 小区名称,EC_ID 小区ID,TAC TAC ,ECI ECI ,START_TIME 开始时间,RRCCREATE_SUCC_CNT RRC建立成功次数,RRCCREATE_REQ_CNT RRC建立请求次数,ERABCREATE_SUCC_CNT ERAB建立成功次数,ERABCREATE_REQ_CNT ERAB建立请求次数,RRC_DROP_CNT RRC掉话次数,ERAB_DROP_CNT ERAB掉话次数,RRC_RECREATE_CNT RRC重建立次数,HO_SUCC_CNT 切换成功次数,HO_REQ_CNT 切换请求次数,ENODEB_CALL_LOST_CNT 掉话次数,ENODEB_CALL_CNT 呼叫次数,SUC_INIT_SETUP 初始文本建立成功次数,DAY 日,HOUR 小时 from O_RE_ST_XDR_PS_TRA where 1=1 ";
+
+                    if (!isNullProperty(param.time)) {
+                        var date = Date.parse(param.time);
+                        var start = date.format("yyyy-MM-dd");
+                        var end = date.addDays(1).format("yyyy-MM-dd");
+                        strSql += " and (START_TIME >= to_date('" + start + "','yyyy-mm-dd') and START_TIME <= to_date('" + end + "','yyyy-mm-dd'))";
+                    }
+                    if (!isNullProperty(param.tac)) {
+                        strSql += " and TAC = '" + param.tac + "'";
+                    }
+                    if (!isNullProperty(param.ec)) {
+                        strSql += " and EC_DESC like '%" + param.ec + "%'";
+                    }
+                }
+                else if (param.page == "workorder") {//电子工单系统接口
+                    gridTitle = "电子工单系统接口";
+                    strSql = "select SHEETID 工单流水号,SHEETACCEPTLIMIT 工单受理时限,SHEETCOMPLETELIMIT 工单完成时限,SENDTIME 派单时间,SENDUSERID 建单人,SENDCONTACT 建单人联系方式,SENDDEPTID 建单人所属部门,TODEPTID 派往部门,CANCELREASON 作废原因,MAINALARMSTAID 网管告警ID,MAINORIALARMID 原始告警号,MAINALARMTITLE 告警标题,MAINEQUIPMENTFACTORY 设备厂家,MAINNETNAME 网元名称,MAINALARMLEVEL 告警级别,MAINFAULTGENERANTPRIV 告警省份,MAINFAULTGENERANTCITY 告警地市,MAINFAULTGENERANTCOUNTY 告警区县,MAINSENDMODE 派单方式 from OP_RE_ST_COMMONFAULT_MAIN where 1=1 ";
+
+                    if (!isNullProperty(param.time)) {
+                        var date = Date.parse(param.time);
+                        var start = date.format("yyyy-MM-dd");
+                        var end = date.addDays(1).format("yyyy-MM-dd");
+                        strSql += " and (SENDTIME >= to_date('" + start + "','yyyy-mm-dd') and SENDTIME <= to_date('" + end + "','yyyy-mm-dd'))";
+                    }
+
+                    //if (!isNullProperty(param.province)) {
+                    //    strSql += " and MAINFAULTGENERANTPRIV like '%" + param.province + "%'";
+                    //}
+                    //if (!isNullProperty(param.region)) {
+                    //    strSql += " and MAINFAULTGENERANTCITY like '%" + param.region + "%'";
+                    //}
+                    //if (!isNullProperty(param.city)) {
+                    //    strSql += " and MAINFAULTGENERANTCOUNTY like '%" + param.city + "%'";
+                    //}
+                    if (!isNullProperty(param.id)) {
+                        strSql += " and SHEETID = '" + param.id + "'";
+                    }
+                    if (!isNullProperty(param.title)) {
+                        strSql += " and MAINALARMTITLE like '%" + param.title + "%'";
+                    }
+                }
+                else if (param.page == "customer") {//10000客户系统接口
+                    gridTitle = "10000客户系统接口";
+                    strSql = "select SHEETID 工单流水号,SHEETACCEPTLIMIT 工单受理时限,SHEETCOMPLETELIMIT 工单处理时限,SENDTIME 派单时间,SENDUSERID 派单人员,SENDDEPTID 派单人员所属部门,TODEPTID 派往部门,CUSTOMERNAME 客户姓名,CUSTOMPHONE 用户号码,COMPLAINTTIME 投诉时间,FAULTTIME 故障时间,COMPLAINTADD 投诉位置,COMPLAINTDESC 投诉内容,CUSTOMTYPE 用户类型,CUSTOMBRAND 客户品牌,CUSTOMATTRIBUTION 用户归属地,STARTDEALCITY 投诉受理省份,FAULTDESC 故障现象 from OP_RE_ST_COMPLAINT_MAIN where 1=1 ";
+
+                    if (!isNullProperty(param.time)) {
+                        var date = Date.parse(param.time);
+                        var start = date.format("yyyy-MM-dd");
+                        var end = date.addDays(1).format("yyyy-MM-dd");
+                        strSql += " and (COMPLAINTTIME >= to_date('" + start + "','yyyy-mm-dd') and COMPLAINTTIME <= to_date('" + end + "','yyyy-mm-dd'))";
+                    }
+
+                    if (!isNullProperty(param.id)) {
+                        strSql += " and SHEETID = '" + param.id + "'";
+                    }
+                    if (!isNullProperty(param.name)) {
+                        strSql += " and CUSTOMERNAME like '%" + param.name + "%'";
+                    }
+                    if (!isNullProperty(param.phoneNum)) {
+                        strSql += " and CUSTOMPHONE = '" + param.phoneNum + "'";
+                    }
+                }
+
+                var strConn = "SQL_ConnDm";
+                var dataPath = "../../../javascript/JSControl/SmartGrid/Handler/JqGridData.ashx";
+
+                var opt = {
+                    captionName: gridTitle,
+                    ajax: {
+                        path: dataPath,
+                        sqlstr: strSql,
+                        connstr: strConn,
+                        //分页属性
+                        paging: {
+                            rowNum: 20,
+                            rowList: [20, 40, 60]
+                        }
+                    },
+                    callback: {
+                        gridComplete: function () {
+                            if (param.pagePower.IsExport == 1) {
+                                $(".export").parent().show();
+                            }
+                            else {
+                                $(".export").parent().hide();
+                            }
+                        }
+                    }
+                };
+
+                $("#divGrid").smartgrid(opt);
+            }
+        };
+
+        //判断值是否为空
+        function isNullProperty(p) {
+            if (p == undefined || p == null || (typeof (p) == "string" && (p == "" || p == "全部"))) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+    </script>
+</head>
+<body>
+    <div id="m"></div>
+    <div class="toolbar">
+        <ul>
+            <li id="liTime" class="item"><span id="timeTitle" class="tag"></span>
+                <input style="width: 100px;" id="txtTime" type="text" /></li>
+            <li class="item">
+                <div id="divFilter"></div>
+            </li>
+            <li class="item">
+                <input class="button" id="btnQuery" value="查询" type="button" /></li>
+        </ul>
+    </div>
+    <div id="divGrid"></div>
+</body>
+</html>

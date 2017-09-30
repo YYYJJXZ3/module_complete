@@ -1,0 +1,207 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Page of MultipleSelectControl</title>
+    <link href="../../../Themes/lightblue/multiple-select.css" rel="stylesheet" />
+    <link href="../../../Themes/lightblue/jqueryui/jquery-ui-1.10.3.custom.css" rel="stylesheet" />
+    <link href="../../../Themes/lightblue/jqgrid/ui.jqgrid.css" rel="stylesheet" />
+    <script src="../../core/jquery-1.9.1.min.js"></script>
+    <script src="../../core/jquery-ui-1.10.3.custom.js"></script>
+    <script src="conditionmanager.js"></script>
+    <script src="../SmartGrid/JqGrid/grid.locale-cn.js"></script>
+    <script src="../SmartGrid/JqGrid/jquery.jqGrid.src.js"></script>
+    <script src="../SmartGrid/JqGrid/SmartGrid.js"></script>
+    <script src="../Condition/mulselect.js"></script>
+    <script src="../Condition/bigdataSelect.js"></script>
+    <script src="../Condition/comselect.js"></script>
+    <script type="text/javascript">
+        var conditionManager;
+        $(function () {
+            var options = {
+                showTopSelectControl: true,
+                defaultControlType: "single",
+                theme: "GSM无线主题",
+                items: [
+                    {
+                        "dimension": "小区维",
+                        "dimid": "123133334",
+                        "levels": [
+                                { "level": "小区", controlType: "multiple", "selected": [{ id: "8254030", name: "S27潮阳竹林A" }] },
+                                { "level": "区县" },
+                                { "level": "覆盖场景", alwaysShow: false },
+                                { "level": "地区", defaultShow: false, selected: [{ id: "", name: "惠州" }] },
+                                { "level": "test", controlType: "text", selected: [{ id: "", name: "tt" }] },  // 由于以前的限制，这里只能用selected属性，数据必须是数组。
+                                { "level": "小区1_2_1" }
+                        ]
+                    },
+                    {
+                        "dimension": "小区维",
+                        "dimid": "123134",
+                        "levels": [
+                                { "level": "小区", controlType: "multiple", "selected": [{ id: "8254030", name: "S27潮阳竹林A" }] },
+                                { "level": "区县" },
+                                { "level": "覆盖场景", alwaysShow: false },
+                                { "level": "地区", defaultShow: false, selected: [{ id: "", name: "惠州" }] },
+                                { "level": "test", controlType: "text", selected: [{ id: "", name: "tt" }] },  // 由于以前的限制，这里只能用selected属性，数据必须是数组。
+                                { "level": "小区1_2_1" }
+                        ]
+                    }
+                ],
+                dependencyOptions: [
+                    //{
+                    //    "level": "覆盖场景",
+                    //    "items": [
+                    //        {
+                    //            "level": "地区",
+                    //            "items": [
+                    //                {
+                    //                    "level": "区县",
+                    //                    "items": [
+                    //                        {
+                    //                            "level": "小区",
+                    //                            "items": [
+                    //                                {
+                    //                                    "level": "小区1_2_1"
+                    //                                }
+                    //                            ]
+                    //                        }
+                    //                    ]
+                    //                }]
+                    //        },
+                    //        {
+                    //            "level": "区县2",
+                    //            "items": [
+                    //                {
+                    //                    "level": "小区2"
+                    //                }
+                    //            ]
+                    //        }
+                    //    ]
+                    //}
+                ]
+            };
+            conditionManager = $("#multipleSelectControl").createConditionManager(options);
+        });
+
+        function getSelectedValues() {
+            if (conditionManager != undefined) {
+                var selected = conditionManager.getSelectedCondition();
+                var html = $.map(selected, function (item) {
+                    var temp = "key:"+item.key+",dimid:"+ item.dimid + ",{ Ids:" + item.Ids + ", Values:" + item.values + "}";
+                    return temp;
+                });
+                $("#selectValuesControl").html(html);
+            }
+            return false;
+        }
+    </script>
+</head>
+
+<body style="margin: 0px;">
+    <div style="background-color: AppWorkspace; height: 80px; border-bottom: 3px solid orange;">
+    </div>
+    <div style="height: 500px; margin: 10px; padding: 30px 0px 0px 100px; border: 1px dashed pink;">
+        <a onclick="getSelectedValues()">Selected Values</a>
+        <div id="selectValuesControl" style="margin-top: 10px;">&nbsp;</div>
+        <div id="monitorEventControl" style="margin-top: 10px;">&nbsp;</div>
+        <table>
+            <tr>
+                <td>正确的解决方案
+                    <select></select></td>
+                <td>
+                    <div id="multipleSelectControl" style="width: 800px; border: dashed 1px red;">
+                        <div style="float: left;">
+                            asdfad
+                        <select></select>yyy
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+        <hr style="margin-top: 30px; margin-right: 100px;" />
+        <div style="border: 1px dashed orange; padding: 10px; margin-right: 100px;">
+            页面上的其他控件，请监控上面控件的各种事件是否影响本控件的布局/显示效果<br />
+            <div style="background-color: pink; height: 30px;">
+                <div style="float: left;">
+                    asdfad
+                    <select></select>
+                </div>
+                <div style="background-color: orange;">
+                    <div style="padding-right: 0px; padding-left: 0px; float: left;">
+                        <select style="width: 100px; display: none;">
+                            <option value="multiple%$^&amp;GSM无线主题%$^&amp;小区维%$^&amp;小区">小区</option>
+                            <option value="multiple%$^&amp;GSM无线主题%$^&amp;小区维%$^&amp;覆盖场景">覆盖场景</option>
+                            <option value="multiple%$^&amp;GSM无线主题%$^&amp;小区维%$^&amp;地区">地区</option>
+                            <option value="multiple%$^&amp;GSM无线主题%$^&amp;小区维%$^&amp;LAC">LAC</option>
+                            <option value="multiple%$^&amp;GSM无线主题%$^&amp;小区维%$^&amp;CI">CI</option>
+                            <option value="multiple%$^&amp;GSM无线主题%$^&amp;小区维%$^&amp;簇">簇</option>
+                            <option value="multiple%$^&amp;GSM无线主题%$^&amp;小区维%$^&amp;市郊">市郊</option>
+                            <option value="multiple%$^&amp;GSM无线主题%$^&amp;小区维%$^&amp;区县">区县</option>
+                            <option value="multiple%$^&amp;GSM无线主题%$^&amp;日期维%$^&amp;月">月</option>
+                        </select><div class="ms-parent">
+                            <div class="ms-choice" style="width: 98px;">
+                                <span style="width: 78px;">小区,月</span><div></div>
+                            </div>
+                            <div class="ms-drop" style="width: 98px;">
+                                <ul>
+                                    <li>
+                                        <label>
+                                            <input name="selectAll" type="checkbox">
+                                            [全选]</label></li>
+                                    <li>
+                                        <label>
+                                            <input name="selectItem" type="checkbox" value="multiple%$^&amp;GSM无线主题%$^&amp;小区维%$^&amp;小区">
+                                            小区</label></li>
+                                    <li>
+                                        <label>
+                                            <input name="selectItem" type="checkbox" value="multiple%$^&amp;GSM无线主题%$^&amp;小区维%$^&amp;覆盖场景">
+                                            覆盖场景</label></li>
+                                    <li>
+                                        <label>
+                                            <input name="selectItem" type="checkbox" value="multiple%$^&amp;GSM无线主题%$^&amp;小区维%$^&amp;地区">
+                                            地区</label></li>
+                                    <li>
+                                        <label>
+                                            <input name="selectItem" type="checkbox" value="multiple%$^&amp;GSM无线主题%$^&amp;小区维%$^&amp;LAC">
+                                            LAC</label></li>
+                                    <li>
+                                        <label>
+                                            <input name="selectItem" type="checkbox" value="multiple%$^&amp;GSM无线主题%$^&amp;小区维%$^&amp;CI">
+                                            CI</label></li>
+                                    <li>
+                                        <label>
+                                            <input name="selectItem" type="checkbox" value="multiple%$^&amp;GSM无线主题%$^&amp;小区维%$^&amp;簇">
+                                            簇</label></li>
+                                    <li>
+                                        <label>
+                                            <input name="selectItem" type="checkbox" value="multiple%$^&amp;GSM无线主题%$^&amp;小区维%$^&amp;市郊">
+                                            市郊</label></li>
+                                    <li>
+                                        <label>
+                                            <input name="selectItem" type="checkbox" value="multiple%$^&amp;GSM无线主题%$^&amp;小区维%$^&amp;区县">
+                                            区县</label></li>
+                                    <li>
+                                        <label>
+                                            <input name="selectItem" type="checkbox" value="multiple%$^&amp;GSM无线主题%$^&amp;日期维%$^&amp;月">
+                                            月</label></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-left: 2px; float: left; max-width: 500px;"></div>
+                </div>
+                <div style="margin-bottom: 4px; margin-left: 10px; float: left;">
+                    <span style="margin-right: 3px;">小区:</span>
+                    <input id="input_text_551" style="width: 80px;" type="text">
+                </div>
+                <div style="margin-bottom: 4px; margin-left: 10px; float: left;">
+                    <span style="margin-right: 3px;">月:</span>
+                    <input id="input_text_556" style="width: 80px;" type="text">
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

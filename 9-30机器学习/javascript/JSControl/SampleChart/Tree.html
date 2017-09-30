@@ -1,0 +1,208 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>矩形树图</title>
+    <link href="../../../themes/lightblue/p.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/jqgrid/ui.jqgrid.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/jqueryui/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" />
+
+    <script src="../../core/jquery-1.9.1.min.js"></script>
+    <script src="../../core/jquery-ui-1.10.3.custom.min.js"></script>
+    <!--<script src="Scripts/echarts/echarts.js"></script>-->
+    <script src="Scripts/SampleChart.js"></script>
+    <script>
+        var param = {
+            name: "长春市",
+            data1: {
+                "name": "河北",
+                "name2":1,
+                "children": [
+                    {
+                        "name": "石家庄",
+                        "children": [
+                            {
+                                "name": "正定",
+                                "children": [
+                                ]
+                            },
+                            {
+                                "name": "鹿泉",
+                                "children": [
+                                    {
+                                        "name": "小区3"
+                                    },
+                                    {
+                                        "name": "小区4"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "name": "邢台",
+                        "children": [
+                            {
+                                "name": "隆尧",
+                                "children": [
+                                    {
+                                        "name": "小区5",
+                                        "value": 4
+                                        //,
+                                        //"symbol": 'image://http://pic.58pic.com/58pic/12/36/51/66d58PICMUV.jpg',
+                                        //"symbolSize": [60, 60]
+                                    },
+                                    {
+                                        "name": "小区6",
+                                        "value": 4
+                                        //,
+                                        //"symbol": 'image://http://pic.58pic.com/58pic/12/36/51/66d58PICMUV.jpg',
+                                        //"symbolSize": [60, 60]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "内丘",
+                                "children": [
+                                    {
+                                        "name": "小区7"
+                                    },
+                                    {
+                                        "name": "小区8"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            data2: {
+                "name": "北京",
+                "name2": 1,
+                "children": [
+                    {
+                        "name": "石家庄",
+                        "children": [
+                            {
+                                "name": "正定",
+                                "children": [
+                                    {
+                                        "name": "小区1",
+                                        "value": 4
+                                        //,
+                                        //"symbol": 'image://http://pic.58pic.com/58pic/12/36/51/66d58PICMUV.jpg',
+                                        //"symbolSize": [60, 60]
+                                    },
+                                    {
+                                        "name": "小区2",
+                                        "value": 4
+                                        //,
+                                        //"symbol": 'image://http://pic.58pic.com/58pic/12/36/51/66d58PICMUV.jpg',
+                                        //"symbolSize": [60, 60]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "鹿泉",
+                                "children": [
+                                    {
+                                        "name": "小区3"
+                                    },
+                                    {
+                                        "name": "小区4"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "name": "邢台",
+                        "children": [
+                            {
+                                "name": "隆尧",
+                                "children": [
+                                    {
+                                        "name": "小区5",
+                                        "value": 4
+                                        //,
+                                        //"symbol": 'image://http://pic.58pic.com/58pic/12/36/51/66d58PICMUV.jpg',
+                                        //"symbolSize": [60, 60]
+                                    },
+                                    {
+                                        "name": "小区6",
+                                        "value": 4
+                                        //,
+                                        //"symbol": 'image://http://pic.58pic.com/58pic/12/36/51/66d58PICMUV.jpg',
+                                        //"symbolSize": [60, 60]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "内丘",
+                                "children": [
+                                    {
+                                        "name": "小区7"
+                                    },
+                                    {
+                                        "name": "小区8"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        };
+        $(function () {
+            getChart();
+        });
+
+        function getChart() {
+            var data = '{"colnames":["省","地区","区县","省指标（TB）","地区指标（GB）","区县指标（MB）"],"rows":[{"col0":"吉林省","col1":"长春市","col2":"朝阳区","col3":10,"col4":800,"col5":1000},{"col0":"吉林省","col1":"长春市","col2":"双阳区","col3":10,"col4":800,"col5":600}]}';
+            data = eval("(" + data + ")");
+            $("#Chart").data("getDatasource", data);
+            bindChart("Chart", {
+                Data: param.data1,
+                XDataColIndex: "0,1,2",
+                YDataColIndex: "3,4,5",
+                IsShowValue: true,
+                HighLight: [{ colindex: 1, highvales: [param.name] }],
+                ClickEvent: [{ colindex: 1, click: chartClick }],
+                ChartType: "Tree"
+            });
+        }
+
+        function bindChart(div, option) {
+            var opts = $.extend(true, {
+                DataSource: $("#" + div).data("getDatasource"),
+                YFormatType: "1000",
+                YDecimals: '2',
+                BgColor: '#e2eefc',
+                BorderColor: '#7D7DFF',
+                ClickEvent: []
+            }, option);
+
+            //dss.samplechart(div, opts);
+            $("#" + div).SampleChart(opts);
+        }
+
+        function chartClick(xvalue, yvalue, value, xdataindex, ycolindex) {
+            bindChart("Chart", {
+                Data: param.data2,
+                XDataColIndex: "0,1,2",
+                YDataColIndex: "3,4,5",
+                IsShowValue: true,
+                HighLight: [{ colindex: 1, highvales: [param.name] }],
+                ClickEvent: [{ colindex: 1, click: chartClick }],
+                ChartType: "Tree"
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="captionWithoutIcon">
+        树图
+    </div>
+    <div id="Chart" style="width: 100%; height: 450px;"></div>
+</body>
+</html>

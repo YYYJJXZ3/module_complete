@@ -1,0 +1,763 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+
+    <!--样式-->
+    <link href="../../../Themes/lightblue/jqueryui/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/jqgrid/ui.jqgrid.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/page/page.css" rel="stylesheet" />
+
+    <!--整体指标概览插件的样式-->
+    <link href="../../Common/css/common.css" rel="stylesheet" />
+
+    <!--jquery核心库-->
+    <script src="../../../javascript/core/jquery-1.9.1.min.js"></script>
+    <script src="../../../javascript/core/jquery-ui-1.10.3.custom.min.js"></script>
+
+    <!--工具库-->
+    <script src="../../../javascript/common/tools.js" type="text/javascript"></script>
+    <script src="../../../javascript/common/pagetools.js" type="text/javascript"></script>
+
+    <!--下拉框-->
+    <script src="../../../Javascript/JSControl/Condition/comselect.js" type="text/javascript"></script>
+
+    <!--条件插件-->
+    <script src="../../../javascript/JSControl/Condition/controlmanagernew.js"></script>
+
+    <!--表格右上角的按钮-->
+    <script src="../../../javascript/JSControl/Common/toolbar.js"></script>
+
+    <!--时间插件-->
+    <script src="../../../javascript/JSControl/Condition/timepicker.js"></script>
+
+    <!--整体指标概览插件-->
+    <script src="../../Common/js/common.js"></script>
+
+    <!--表格-->
+    <script src="../../../javascript/JSControl/SmartGrid/JqGrid/grid.locale-cn.js"></script>
+    <script src="../../../javascript/JSControl/SmartGrid/JqGrid/jquery.jqGrid.min.js"></script>
+    <script src="../../../javascript/JSControl/SmartGrid/JqGrid/SmartGrid.js"></script>
+
+    <!--图形-->
+    <script src="../../../javascript/JSControl/SampleChart/Scripts/SampleChart.js"></script>
+
+    <!--本专题的公共js方法-->
+    <script src="../../Common/js/CommonHelp.js"></script>
+
+    <script type="text/javascript">
+        //公共条件对象
+        var param = {
+            item: "总流量",//模板化时用到，接收url中传来的“item”参数
+            timeType: "Day",//时间类型：Month、Day、Week
+            time: null,
+            province: "",//省
+            region: "",//地区
+            city: "",//区县
+            topN: 10,
+            templateID: {//默认的“自定义分析”的报表ID，下面会从配置文件'../data/DemoDIY.json'中读取
+                MeaView: "69692531",//整体指标概览
+                Region: "655612495",//地区柱图
+                App: "-2010569741",//一级业务饼图
+                SubApp: "-1548285531",//二级业务柱图
+                Grid: "893648637" //表格
+            }
+        };
+
+        //入口
+        $(function () {
+            method.init();
+        });
+
+        //方法对象
+        var method = {
+            init: function () {
+                dss.pageheader("m");//显示页面导航、查询页面帮助、查询页面sql按钮
+                method.getRequest();//获取别的页面传来的参数
+                method.initTime();//初始化时间控件
+                method.initQueryCtrl();//初始化除时间之外的其他查询条件
+                method.getParam();//获取查询条件
+                method.getTemplateID();//从配置文件中获取“自定义分析”报表的TemplateID
+
+                //绑定“查询”按钮的click事件
+                $("#btnQuery").click(function () {
+                    method.getParam();
+                    method.getMeaTotal();//获取整体指标概览
+                    method.getRegionData();//获取地区柱图的数据
+                    method.getAppData();//获取一级业务的数据
+                    method.getGridData();
+                    method.getGridByAnalyzer();
+                    method.getGridBySql();
+                    method.getGridBySqlSmall();
+                    method.getChartByExcel();
+                    method.getGridByExcel("GridByExcel", "用Excel作为数据源的表格，只限于测试时的紧急处理，不能在生产系统用", "手写代码_表格");
+                });
+
+                //绑定“导出”按钮的click事件
+                $("#btnExport").click(function () {
+                    dss.download({
+                        //下面是指定sheet页的名称，不设置则按“sheet1”、“sheet2”...
+                        "colAttr": [
+                            {
+                                "divName": "divMeaTotal",
+                                "sheetName": "整体指标概览"
+                            },
+                            {
+                                "divName": "RegionChart",
+                                "sheetName": "地区柱图"
+                            },
+                            {
+                                "divName": "AppChart",
+                                "sheetName": "一级业务"
+                            },
+                            {
+                                "divName": "SubAppChart",
+                                "sheetName": "二级业务"
+                            },
+                            {
+                                "divName": "Grid",
+                                "sheetName": "表格"
+                            }
+                        ]
+                    });
+                });
+            },
+            //获取别的页面传来的参数
+            getRequest: function () {
+                var tmpItem = decodeURI(dss.request("item"));
+                if (!dss.isNullOrEmpty(tmpItem)) {
+                    param.item = tmpItem;
+                }
+
+                var tmpTimeType = decodeURI(dss.request("timeType"));
+                if (!dss.isNullOrEmpty(tmpTimeType)) {
+                    param.timeType = tmpTimeType;
+                }
+
+                var tmpTime = decodeURI(dss.request("timeStr"));
+                if (!dss.isNullOrEmpty(tmpTime)) {
+                    param.time = tmpTime;
+                }
+
+                var tmpRegion = decodeURI(dss.request("regionDesc"));
+                if (!dss.isNullOrEmpty(tmpRegion)) {
+                    param.region = tmpRegion;
+                }
+            },
+            //初始化时间控件
+            initTime: function () {
+                var opt = {
+                    showTypeDay: true,
+                    showTypeMonth: true,
+                    defaultTimeType: dss.isNullOrEmpty(param.timeType) ? "Day" : param.timeType,
+                    defaultDateStr: dss.isNullOrEmpty(param.time) ? null : param.time,
+                    isTile: true
+                };
+                $("#txtTime").timepicker(opt);
+            },
+            //初始化除时间之外的其他查询条件
+            initQueryCtrl: function () {
+                var p = [];
+
+                p.push({
+                    labelname: '网元',
+                    width: 50,
+                    defaultShow: '地区',//默认显示的粒度
+                    type: 'dropdown',//下拉：dropdown，输入：text
+                    items: [
+                        {
+                            dimid: "209237174",//在“系统管理-语义管理-语义管理-维度配置-XX维-编辑ER图”页面右击，点“属性”可查到此维度ID
+                            levelname: '省',//粒度名称
+                            selectmode: "single",//单选：single，多选：multiple
+                            filterValue: ['未知'],//过滤掉“未知”
+                            hascheckall: true,//是否包含“全部”的选项
+                            initValues: [{ "name": "吉林省" }],//不设置此项的话就默认第一项
+                            child: [1],//通过此属性设置关联
+                            initClass: "commdata"//commdata bigdata treedata
+                        },
+                        {
+                            dimid: "209237174",
+                            levelname: '地区',
+                            selectmode: "single",
+                            filterValue: ['未知地区'],//过滤掉“未知地区”
+                            hascheckall: true,
+                            initValues: [{ "name": "全部" }],
+                            child: [1],//通过此属性设置关联，1表示子项在p数组中的索引
+                            initClass: "commdata"//commdata bigdata   treedata
+                        }
+                    ]
+                });
+
+                p.push({
+                    labelname: '网元',
+                    width: 40,
+                    defaultShow: '区县',
+                    type: 'dropdown',
+                    items: [
+                        {
+                            dimid: "209237174",
+                            levelname: '区县',
+                            selectmode: "single",
+                            filterValue: ['未知'],
+                            hascheckall: true,
+                            initClass: "commdata"//commdata bigdata   treedata
+                        }
+                    ]
+                });
+
+                p.push({
+                    labelname: '网元',
+                    width: 20,
+                    defaultShow: 'TOP',
+                    type: 'dropdown',
+                    items: [
+                        {
+                            levelname: 'TOP',
+                            selectmode: "single",
+                            datasource: [{ "name": "10" }, { "name": "20" }, { "name": "30" }, { "name": "50" }],
+                            initValues: [{ "name": "20" }],
+                            initClass: "commdata"//commdata bigdata   treedata
+                        }
+                    ]
+                });
+
+                p.push({
+                    labelname: '指标分类',
+                    width: 40,
+                    defaultShow: '指标分类',
+                    type: 'dropdown',
+                    items: [
+                        {
+                            levelname: '指标分类',
+                            selectmode: "single",
+                            datasource: [{ "name": "分类一" }, { "name": "分类二" }],
+                            initValues: [{ "name": "分类一" }],
+                            child: [4],
+                            initClass: "commdata"
+                        }
+                    ]
+                });
+
+                p.push({
+                    labelname: '指标',
+                    width: 80,
+                    defaultShow: '指标',
+                    type: 'dropdown',
+                    items: [
+                        {
+                            levelname: '指标',
+                            selectmode: "single",
+                            initValues: [{ "name": "总流量" }],
+                            url: "../ashx/QueryCtrl.ashx"
+                        }
+                    ]
+                });
+
+                $("#divFilter").controlmanager(p);
+            },
+            //获取查询条件
+            getParam: function () {
+                param.timeType = $("#txtTime").timepicker("getTimeType");
+                param.time = $("#txtTime").timepicker("getDateStr");
+
+                var con = $("#divFilter").controlmanager("getSelResults");
+                param.province = "";
+                param.region = "";
+                param.city = "";
+                switch (con[0].levelName) {
+                    case "省": param.province = con[0].value.join(','); break;
+                    case "地区": param.region = con[0].value.join(','); break;
+                    default: break;
+                }
+                param.city = con[1].value.join(',');
+                param.topN = con[2].value.join(',');
+            },
+            //从配置文件中获取“自定义分析”报表的TemplateID
+            getTemplateID: function () {
+                $.getJSON('../data/DemoDIY.json', function (data) {
+                    $.each(data, function (i, item) {
+                        if (item.Item == param.item) {
+                            param.templateID = item.TemplateID;
+                            method.getMeaTotal();
+                            method.getRegionData();
+                            method.getAppData();
+                            method.getGridData();
+                            method.getGridByAnalyzer();
+                            method.getGridBySql();
+                            method.getGridBySqlSmall();
+                            method.getChartByExcel();
+                            method.getGridByExcel("GridByExcel", "用Excel作为数据源的表格，只限于测试时的紧急处理，不能在生产系统用", "手写代码_表格");
+                        }
+                    });
+                });
+            },
+            //下钻别的页面
+            drill: function (dimValue, measure) {
+                var initvalues = [];
+                initvalues.push({
+                    k: param.timeType == "Day" ? "日" : "月",
+                    v: param.time
+                });
+                initvalues.push({
+                    k: "地区",
+                    v: dimValue
+                });
+
+                var url = "plugin/Demo/html/DrillPage.html";
+                url += "?initvalues=" + dss.jsonToString(initvalues);//下钻到dashboard的页面需要用此参数传参
+                url += "&measure=" + measure;
+
+                url = encodeURI(url);
+
+                dss.openPageInTab("下钻表格", url);
+            },
+            //获取整体指标概览
+            getMeaTotal: function () {
+                $("#divMeaTotal").tooltip();//重写“整体指标概览”处鼠标悬浮时的事件，改变样式，鼠标不移开不会消失
+
+                var p = {
+                    Slice: [//过滤维度
+                        {
+                            DimensionName: '日期维',
+                            LevelName: param.timeType == "Month" ? '月' : '日',
+                            ValType: 0,
+                            Val: param.time,
+                            ValList: []
+                        },
+                        {
+                            DimensionName: '地理维',
+                            LevelName: '地区',
+                            ValType: 0,
+                            Val: param.region,
+                            ValList: []
+                        }
+                    ],
+                    List: [],//指标列表
+                    Templateid: param.templateID.MeaView//“自定义分析”报表的ID
+                };
+                methods.init(p);
+            },
+            //获取地区柱图的数据
+            getRegionData: function () {
+                //与后台的Model对应，方便传参
+                var act = {
+                    "GridChart": "Chart",
+                    "TemplateID": param.templateID.Region,
+                    "SortIndex": 1,
+                    "Sort": "desc",
+                    "TopN": 10,
+
+                    "TimeType": param.timeType,
+                    "Time": param.time,
+                    "Region": param.region,
+                    "City": param.city
+                };
+                $.ajax({
+                    url: '../ashx/Demo.ashx',
+                    data: {
+                        strCon: dss.jsonToString(act)//将前台的json对象序列化成字符串，作为参数传给后台，在后台反序列化成Model对象
+                    },
+                    beforeSend: function () {
+                        dss.load(true);//开始“数据正在加载”的进度条
+                    },
+                    complete: function () {
+                        dss.load(false);//隐藏“数据正在加载”的进度条
+                    },
+                    dataType: 'json',//success中返回的就是json对象
+                    success: function (data) {
+                        $("#RegionChart").data("getDatasource", data);
+
+                        method.bindChart("RegionChart", {
+                            ChartType: "Column",
+                            XDataColIndex: "0",
+                            YDataColIndex: 1
+                        });
+                    }
+                });
+            },
+            //获取一级业务的数据
+            getAppData: function () {
+                var act = {
+                    "GridChart": "Chart",
+                    "TemplateID": param.templateID.App,
+                    "SortIndex": 1,
+                    "Sort": "desc",
+                    "TopN": 5,
+
+                    "TimeType": param.timeType,
+                    "Time": param.time,
+                    "Region": param.region,
+                    "City": param.city
+                };
+                $.ajax({
+                    url: '../ashx/Demo.ashx',
+                    data: {
+                        strCon: dss.jsonToString(act)
+                    },
+                    beforeSend: function () {
+                        dss.load(true);
+                    },
+                    complete: function () {
+                        dss.load(false);
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        var selItem = "NoData";
+                        if (data.rows.length > 0) {
+                            selItem = data.rows[0].col0;//默认点击饼图的第一个
+                        }
+                        method.getSubAppData(selItem);//联动二级业务
+
+                        $("#AppChart").data("getDatasource", data);//将数据以“getDatasource”标识保存到相应的div上，重新渲染图形时不用再请求数据
+
+                        method.bindChart("AppChart", {
+                            ChartType: "Pie",
+                            XDataColIndex: "0",
+                            YDataColIndex: 1,
+                            ClickEvent: [{ colindex: 1, click: method.appClick }]//点击事件
+                        });
+                    }
+                });
+            },
+            //获取二级业务的数据
+            getSubAppData: function (app) {
+                var act = {
+                    "GridChart": "Chart",
+                    "TemplateID": param.templateID.SubApp,
+                    "SortIndex": 1,
+                    "Sort": "desc",
+                    "TopN": 8,
+
+                    "TimeType": param.timeType,
+                    "Time": param.time,
+                    "Region": param.region,
+                    "City": param.city,
+                    "App": app
+                };
+                $.ajax({
+                    url: '../ashx/Demo.ashx',
+                    data: {
+                        strCon: dss.jsonToString(act)
+                    },
+                    beforeSend: function () {
+                        dss.load(true);
+                    },
+                    complete: function () {
+                        dss.load(false);
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        $("#SubAppChart").data("getDatasource", data);
+
+                        method.bindChart("SubAppChart", {
+                            ChartType: "Column",
+                            XDataColIndex: "0",
+                            YDataColIndex: 1
+                        });
+                    }
+                });
+            },
+            //以“localdata”作为数据源，适合小数据量的，后台通过analyzer或sql生成DataTable，转化成几行几列的json对象传到前台
+            getGridData: function () {
+                var act = {
+                    "Time": param.time,
+                    "TimeType": param.timeType,
+                    "GridChart": "Grid",
+                    "TemplateID": param.templateID.Grid,
+                    "Region": param.region,
+                    "City": param.city
+                };
+                $.ajax({
+                    url: '../ashx/Demo.ashx',
+                    data: {
+                        strCon: dss.jsonToString(act)
+                    },
+                    beforeSend: function () {
+                        dss.load(true);
+                    },
+                    complete: function () {
+                        dss.load(false);
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        method.bindGrid("Grid", {
+                            captionName: "表格（以“localdata”作为数据源，右上角只能有一个“导出”按钮）",
+                            islocaldata: true,
+                            localdata: data,//为几行几列的一个表格
+                            callback: {
+                                gridComplete: function (grid) {//呈现的表格是一个table元素，grid参数为此table对象
+                                    $.each(grid.find("tr"), function (i, val) {
+                                        if (i > 0) {//第0行为表格的标题行
+                                            var tds = $(this).find("td");
+                                            $.each(data.colnames, function (c, colName) {
+                                                if (colName.indexOf("总流量") > -1) {
+                                                    tds.eq(c).html("<a style='cursor:pointer;color:blue;' onclick='method.drill(\"" + tds.eq(1).text() + "\",\"总流量\")'>" + tds.eq(c).text() + "</a>");
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
+                            }
+                        });
+
+                        method.tileMeasure(data);
+                    }
+                });
+            },
+            tileMeasure: function (data) {
+                if (data.rows.length > 0) {
+                    var ul = $("<ul></ul>");
+
+                    var r = data.rows[0];
+                    $.each(data.colnames, function (i, colname) {
+                        $("<li>" + colname + "：</li><li>" + r["col" + i] + "</li><li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>").appendTo(ul);
+                    });
+
+                    ul.appendTo($("#MeasureList"));
+
+                    ul.children("li").css("float","left");
+                }
+            },
+            //以analyzer作为数据源
+            getGridByAnalyzer: function () {
+                var act = {
+                    "Time": param.time,
+                    "TimeType": param.timeType,
+                    "GridChart": "Analyzer",
+                    "TemplateID": param.templateID.Grid,
+                    "Region": param.region,
+                    "City": param.city
+                };
+                $.ajax({
+                    url: '../ashx/Demo.ashx',
+                    data: {
+                        strCon: dss.jsonToString(act)
+                    },
+                    beforeSend: function () {
+                        dss.load(true);
+                    },
+                    complete: function () {
+                        dss.load(false);
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        method.bindGrid("GridByAnalyzer", {
+                            captionName: "表格（以“analyzer”作为数据源）",
+                            islocaldata: false,
+                            analyzer: data
+                        });
+                    }
+                });
+            },
+            //以sql作为数据源，数据按分页获取，适合不能配置analyzer的大数据量表格，只限“表格”
+            getGridBySql: function () {
+                //字段别名中加“{}”是为了防止impala下中文列名出现乱码的情况
+                var strSql = "SELECT APP_ID 一级业务编码,APP_DESC 一级业务名称,SUBAPP_ID 二级业务编码,SUBAPP_DESC 二级业务名称 FROM DIM_XDR_SUBAPP where 1=1 ";
+
+                var strConn = "dwdb_demo";//WebConfig/connectionStrings.config文件中对应的某个连接串名
+
+                var opt = {
+                    captionName: "表格（以“sql”作为数据源，数据按分页获取，适合不能配置analyzer的大数据量表格，只限“表格”，基于安全考虑，此方式不推荐）",
+                    //分页属性
+                    paging: {
+                        rowNum: 10,
+                        rowList: [10, 20, 40, 60]
+                    },
+                    ajax: {
+                        sqlstr: strSql,
+                        connstr: strConn
+                    }
+                };
+
+                method.bindGrid("GridBySql", opt);
+            },
+            //以sql作为数据源，适合不能配置analyzer的小数据量，可用于“图形”或“表格”
+            getGridBySqlSmall: function () {
+                var act = {
+                    "Time": param.time,
+                    "TimeType": param.timeType,
+                    "GridChart": "SqlGrid",
+                    "Flag": "SubApp",
+                    "Region": param.region,
+                    "City": param.city
+                };
+                $.ajax({
+                    url: '../ashx/Demo.ashx',
+                    data: {
+                        strCon: dss.jsonToString(act)
+                    },
+                    beforeSend: function () {
+                        dss.load(true);
+                    },
+                    complete: function () {
+                        dss.load(false);
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        method.bindGrid("GridBySqlSmall", {
+                            captionName: "表格（在后台执行sql，生成DataTable传到前台，适合不能配置analyzer的小数据量，可用于“图形”或“表格”）",
+                            islocaldata: true,
+                            localdata: data//为几行几列的一个表格
+                        });
+                    }
+                });
+            },
+            //以Excel作为数据源的图形
+            getChartByExcel: function () {
+                var act = {
+                    "Time": param.time,
+                    "TimeType": param.timeType,
+                    "GridChart": "ExcelChart",
+                    "FilePath": "~/plugin/Demo/Data/手写代码_图形.xlsx"
+                };
+                $.ajax({
+                    url: '../ashx/Demo.ashx',
+                    data: {
+                        strCon: dss.jsonToString(act)
+                    },
+                    beforeSend: function () {
+                        dss.load(true);
+                    },
+                    complete: function () {
+                        dss.load(false);
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        method.bindChart("ChartByExcel", {
+                            DataSource: data,
+                            YDataColIndex: 1,
+                            ChartType: 'Column'
+                        });
+                    }
+                });
+            },
+            //以Excel作为数据源的表格
+            getGridByExcel: function (div, title, fileName) {
+                var act = {
+                    "Time": param.time,
+                    "TimeType": param.timeType,
+                    "GridChart": "ExcelGrid",
+                    "FilePath": "~/plugin/Demo/Data/" + fileName + ".xlsx"
+                };
+                $.ajax({
+                    url: '../ashx/Demo.ashx',
+                    data: {
+                        strCon: dss.jsonToString(act)
+                    },
+                    beforeSend: function () {
+                        dss.load(true);
+                    },
+                    complete: function () {
+                        dss.load(false);
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        method.bindGrid(div, {
+                            captionName: title,
+                            islocaldata: true,
+                            localdata: data
+                        });
+                    }
+                });
+            },
+            //一级业务饼图的click事件，参数依次为：对应的x轴值、对应的指标名、值、x轴的索引、指标对应的索引、div的ID、options对象
+            appClick: function (xValue, yName, yValue, xIndex, yIndex, divID, options) {
+                method.getSubAppData(xValue);
+            },
+            bindChart: function (div, option) {
+                var opts = $.extend(true, {
+                    DataSource: $("#" + div).data("getDatasource"),
+                    YFormatType: "1000",
+                    YDecimals: '2',
+                    IsAutoLimits: true
+                }, option);
+
+                $("#" + div).SampleChart(opts);//绑定图形
+            },
+            bindGrid: function (div, option) {
+                var opts = $.extend(true, {
+                    analyzer: null,
+                    titleName: "",
+                    formatFlowValue: '1'
+                }, option);
+
+                $("#" + div).smartgrid(opts);//绑定表格
+            }
+        };
+    </script>
+</head>
+<body>
+    <div style="width: 99%; margin: auto; margin-bottom: 8px;">
+        <div id="m"></div>
+        <div class="toolbar">
+            <ul>
+                <li class="item">
+                    <input style="width: 100px;" id="txtTime" type="text" /></li>
+                <li class="item">
+                    <div id="divFilter"></div>
+                </li>
+                <li class="item">
+                    <input class="button" id="btnQuery" value="查询" type="button" /></li>
+                <li class="item">
+                    <input class="button" id="btnExport" value="导出" type="button" /></li>
+            </ul>
+        </div>
+        <div id="divMeaTotal">
+        </div>
+        <div class="contenTitle" style="margin-top: 8px;">
+            <div class="title">
+                地区柱图
+            </div>
+        </div>
+        <div id="RegionChart" style="width: 100%; height: 250px; float: left; margin-bottom: 8px;"></div>
+        <div style="width: 49.5%; float: left;">
+            <div class="contenTitle">
+                <div class="title">
+                    一级业务（与右侧的二级业务联动）
+                </div>
+            </div>
+            <div id="AppChart" style="width: 100%; height: 250px;"></div>
+        </div>
+        <div style="width: 49.5%; float: right;">
+            <div class="contenTitle">
+                <div class="title">
+                    二级业务
+                </div>
+            </div>
+            <div id="SubAppChart" style="width: 100%; height: 250px;"></div>
+        </div>
+        <div id="Grid" style="width: 100%;"></div>
+        <div id="GridByAnalyzer" style="width: 100%;"></div>
+        <div id="GridBySql" style="width: 100%;"></div>
+        <div id="GridBySqlSmall" style="width: 100%;"></div>
+        <div>
+            <div style="width: 49.5%; float: left;">
+                <div class="contenTitle" style="width: 100%;">
+                    <div class="title">
+                        用Excel作为数据源的图形，只限于测试时的紧急处理，不能在生产系统用
+                    </div>
+                </div>
+                <div id="ChartByExcel" style="width: 100%;"></div>
+            </div>
+            <div style="width: 49.5%; float: right;">
+                <div id="GridByExcel"></div>
+            </div>
+        </div>
+        <div style="width: 100%; height: 130px; border: solid 1px #CCCCCC; float: left;">
+            <div class="contenTitle">
+                <div class="title">
+                    指标平铺
+                </div>
+            </div>
+            <div>
+                <div style="float: left; width: 14.5%; height: 60px; padding-top: 40px; background-color: #FDEED6;">
+                    基站经济效益
+                </div>
+                <div id="MeasureList" style="float: right; width: 85%; height: 100px;">
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

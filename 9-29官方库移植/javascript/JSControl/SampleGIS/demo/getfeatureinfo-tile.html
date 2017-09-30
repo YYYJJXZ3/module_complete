@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <title>WMS GetFeatureInfo (Tile Layer)</title>
+    <link rel="stylesheet" href="https://openlayers.org/en/v4.1.0/css/ol.css" type="text/css">
+    <!-- The line below is only needed for old environments like Internet Explorer and Android 4.x -->
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
+    <script src="https://openlayers.org/en/v4.1.0/build/ol.js"></script>
+  </head>
+  <body>
+    <div id="map" class="map"></div>
+    <div id="info">&nbsp;</div>
+    <script>
+        var wmsSource = new ol.source.TileWMS({
+            url: 'https://ahocevar.com/geoserver/wms',
+            params: { 'LAYERS': 'ne:ne', 'TILED': true },
+            serverType: 'geoserver',
+            crossOrigin: 'anonymous'
+        });
+
+        var wmsLayer = new ol.layer.Tile({
+            source: wmsSource
+        });
+
+        var view = new ol.View({
+            center: [0, 0],
+            zoom: 1
+        });
+
+        var map = new ol.Map({
+            layers: [wmsLayer],
+            target: 'map',
+            view: view
+        });
+
+        map.on('singleclick', function (evt) {
+            document.getElementById('info').innerHTML = '';
+            var viewResolution = /** @type {number} */ (view.getResolution());
+            var url = wmsSource.getGetFeatureInfoUrl(
+                evt.coordinate, viewResolution, 'EPSG:3857',
+                { 'INFO_FORMAT': 'text/html' });
+            if (url) {
+                document.getElementById('info').innerHTML =
+                    '<iframe seamless src="' + url + '"></iframe>';
+            }
+        });
+
+        map.on('pointermove', function (evt) {
+            if (evt.dragging) {
+                return;
+            }
+            var pixel = map.getEventPixel(evt.originalEvent);
+            var hit = map.forEachLayerAtPixel(pixel, function () {
+                return true;
+            });
+            map.getTargetElement().style.cursor = hit ? 'pointer' : '';
+        });
+    </script>
+  </body>
+</html>

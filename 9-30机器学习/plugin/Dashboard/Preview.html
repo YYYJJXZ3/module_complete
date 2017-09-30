@@ -1,0 +1,64 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <link href="../../Themes/lightblue/jqueryui/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" />
+    <link href="../../themes/lightblue/jqgrid/ui.jqgrid.css" rel="stylesheet" />
+    <link href="../../themes/lightblue/page/page.css" rel="stylesheet" />
+    <link href="../../themes/lightblue/ca/db/dashboard.css" rel="stylesheet" />
+
+    <script src="../../Javascript/core/jquery-1.9.1.min.js" type="text/javascript"></script>
+    <script src="../../javascript/core/jquery-ui-1.10.3.custom.min.js"></script>
+
+    <script src="../../javascript/common/tools.js" type="text/javascript"></script>
+    <script src="../../javascript/common/pagetools.js" type="text/javascript"></script>
+
+    <script src="../../Javascript/JSControl/Condition/comselect.js" type="text/javascript"></script>
+
+    <script src="../../javascript/JSControl/Condition/controlmanagernew.js"></script>
+
+    <script src="../../javascript/JSControl/Common/toolbar.js"></script>
+    <script src="../../javascript/JSControl/Condition/timepicker.js"></script>
+
+    <script src="../../javascript/JSControl/SmartGrid/JqGrid/grid.locale-cn.js"></script>
+    <script src="../../javascript/JSControl/SmartGrid/JqGrid/jquery.jqGrid.min.js"></script>
+    <script src="../../javascript/JSControl/SmartGrid/JqGrid/SmartGrid.js"></script>
+
+    <script src="../../javascript/JSControl/SampleChart/Scripts/SampleChart.js"></script>
+    <script src="Js/View.js" type="text/javascript"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            if (dss.cookie.get("preview").length > 0) {
+                var data = eval('(' + dss.cookie.get("preview") + ')');
+                $.preview.init(data);
+            }
+            else {
+                dss.alert("缓存已经过期", null, "提示信息", 3, "警告");
+            }
+        });
+
+    </script>
+</head>
+<body>
+    <div id="m"></div>
+    <div class="dss_db_view">
+        <div id="dashboard-query" class="dss_db_view_query">
+            <ul class="toolbar">
+                <li class='item'>
+                    <input type="text" id="txtTime" style='width: 105px;' /></li>
+                <li class='item'>
+                    <div id='queryControl'></div>
+                </li>
+                <li class='item'>
+                    <input type='button' id='btnQuery' value='查询' class='button' /></li>
+                <li class='item'>
+                    <input type='button' id='btnExport' value='导出' class='button' /></li>
+            </ul>
+        </div>
+        <div class="dss_db_view_layout" id="dashboard-layout">
+        </div>
+    </div>
+</body>
+</html>

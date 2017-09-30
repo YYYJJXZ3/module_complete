@@ -1,0 +1,17 @@
+﻿
+
+.split-line { margin: 2px; border-bottom: 1px gray dotted; height: 1px; }
+.split-gap { height: 1px; overflow: hidden; margin: 0px auto; clear: both; }
+
+/*头部*/
+.pbr-query { background: url(../img/choice_bg.gif) repeat-x; height: 30px; }
+/* 条件选择 */
+.ph-left { float: left; padding-top: 3px; }
+    .ph-left > ul { margin-left: 10px; }
+        .ph-left > ul > li { float: left; vertical-align: middle; margin-right: 10px; }
+            .ph-left > ul > li > span { float: left; margin-top: 3px; }
+            .ph-left > ul > li > div > select { margin-top: 3px; }
+            .ph-left > ul > li > div { float: left; }
+.ph-right { float: right; padding-top: 3px; padding-right: 5px; }
+.btn_01 { background: url(../img/btn_01.gif) no-repeat; width: 54px; height: 23px; border: 0px; }
+.btn_02 { background: url(../img/btn_02.gif) no-repeat; width: 78px; height: 23px; border: 0px; cursor: pointer; }

@@ -1,0 +1,246 @@
+﻿body {
+    margin: 0px;
+    font-size: 12px;
+    color: #282828;
+    font-family: "Lucida Grande",Verdana,Lucida, Arial, Helvetica, 宋体,sans-serif;
+    background-color: #e2eefc;
+}
+/*#navControl
+{
+    height: 25px;
+    padding: 4px 0px 0px 10px;
+    background: url('images/plugin/nav_mid.gif') repeat-x;
+    color: #404e6f;
+    font-size: 12px;
+    text-decoration: none;
+}*/
+#navControl a {
+    text-decoration: none;
+}
+
+#toolPanel {
+    padding: 5px 0px 3px 4px;
+}
+
+.toolPanelRow {
+    float: left;
+    margin-right: 10px;
+}
+
+.clear {
+    clear: both;
+}
+
+.contentPanel {
+    margin: 8px 10px 0px 10px;
+    padding: 0px;
+    background-color: #e2eefc;
+    border: 1px solid #a4bed9;
+}
+
+.captionWithIcon {
+    height: 24px;
+    font-size: 12px;
+    font-weight: 700;
+    width: 15px;
+    display: block;
+    background: url('images/plugin/caption1.gif') left top repeat-x;
+    float: left;
+    padding-top: 6px;
+}
+
+.captionWithoutIcon {
+    height: 22px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #003366;
+    padding: 6px 0px 0px 1%;
+    background: url('images/plugin/caption2.gif') left top repeat-x;
+    width: 99%;
+    display: table;
+}
+
+.dateControl {
+    height: 16px;
+    float: left;
+}
+
+fieldset {
+    border: 1px solid #c6d9fd;
+}
+
+td, select, areatext {
+    font-size: 13px;
+}
+
+hr {
+    border: 1px solid #ffffff;
+}
+
+li {
+    list-style-type: none;
+}
+
+a {
+    color: black;
+    text-decoration: none;
+    cursor: hand;
+}
+
+    a:link {
+        color: black;
+        text-decoration: none;
+    }
+
+    a:active {
+        color: #ee3366;
+        text-decoration: none;
+    }
+
+    a:visited {
+        color: black;
+        text-decoration: none;
+    }
+
+    a:hover {
+        color: #ee3366;
+        text-decoration: underline;
+    }
+
+.button {
+    height: 24px;
+    color: #fff;
+    font-size: 12px;
+    text-align: center;
+    line-height: 24px;
+    padding: 0 15px 0 15px;
+    border: 0px;
+    cursor: pointer;
+    background-color: #0084CF;
+}
+
+    .button:hover {
+        background-color: #00A2F9;
+    }
+
+.buttonWidth54 {
+    width: 54px;
+    color: #384861;
+    background: url('images/button/btn2.gif') center center no-repeat;
+}
+
+.buttonWidth77 {
+    width: 77px;
+    color: #384861;
+    background: url('images/button/btn4.gif') center center no-repeat;
+}
+
+.select {
+    height: 22px;
+}
+
+.width100 {
+    width: 100px;
+}
+
+.width80 {
+    width: 80px;
+}
+
+.width55 {
+    width: 55px;
+}
+
+/*- 新增导航条样式 -*/
+.main_top_bg_left {
+    width: 31px;
+    height: 30px;
+    padding-left: 30px;
+    background-image: url(images/nav/nav_left.gif);
+    background-repeat: no-repeat;
+}
+
+.main_top_bg {
+    background: url(images/nav/nav_mid.gif) repeat-x;
+    color: #404e6f;
+}
+
+.main_top_bg_right {
+    width: 19px;
+    height: 30px;
+    background-image: url(images/nav/nav_right.gif);
+    background-repeat: no-repeat;
+}
+
+.main_top_bg img {
+    vertical-align: middle;
+}
+
+#welcome {
+    height: 600px;
+    width: 100%;
+    background: url('Images/welcome_pic.jpg') no-repeat;
+    overflow: hidden;
+    background-repeat: no-repeat;
+    background-position: center top;
+}
+
+.loading {
+    background-image: url('images/bigloading.gif');
+    background-repeat: no-repeat;
+    width: 48px;
+    height: 48px;
+    background-position: center center;
+}
+
+.commdataloading {
+    background-image: url('images/load.gif');
+    background-repeat: no-repeat;
+    width: 16px;
+    height: 16px;
+    background-position: right center;
+}
+
+.load {
+    text-align: center;
+    padding-top: 200px;
+    color: Red;
+    font-size: larger;
+}
+
+    .load .img {
+        background-image: url('images/loading.gif');
+        background-repeat: no-repeat;
+        width: 100%;
+        background-position: center top;
+        padding-top: 20px;
+    }
+
+
+.ph-left {
+    display: inline-table;
+    width: 100%;
+    clear: both;
+}
+
+    .ph-left ul {
+        height: 25px;
+        line-height: 25px;
+        padding: 0px;
+        margin: 10px 10px 10px 10px;
+    }
+
+        .ph-left ul li {
+            float: left;
+            vertical-align: middle;
+            margin: 0px 10px 0px 0px;
+            padding: 3px 0px 3px 0px;
+            height: 25px;
+            line-height: 25px;
+            display: inline-table;
+            vertical-align: middle;
+        }
+
+            .ph-left ul li span {
+                float: left;
+            }

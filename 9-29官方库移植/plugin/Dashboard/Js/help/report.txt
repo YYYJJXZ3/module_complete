@@ -1,0 +1,20 @@
+﻿	<div class="tab-content" style="width:380px;height:140px;">  
+		<dl>
+            <dt>名称:</dt>
+            <dd>
+                <input id="txtReportName" class="input" style="width: 200px;" />
+            </dd>
+        </dl>
+		 <dl>
+            <dt>位置:</dt>
+            <dd>
+               <input id="txtReportUrl" class="input" style="width: 200px;" targetUrl=""  />
+            </dd>
+        </dl>
+		 <dl>
+			<dt></dt>
+            <dd>
+              <span id="txtReportTip" style="color:red"></span>
+            </dd>
+        </dl>
+    </div>

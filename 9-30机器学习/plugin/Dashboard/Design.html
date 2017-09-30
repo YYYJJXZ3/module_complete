@@ -1,0 +1,85 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <link href="../../themes/lightblue/ca/db/dashboard.css" rel="stylesheet" />
+    <link href="../../themes/lightblue/jqueryui/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" />
+    <link href="../../themes/lightblue/jqgrid/ui.jqgrid.css" rel="stylesheet" />
+    <link href="../../themes/lightblue/ca/menu.css" rel="stylesheet" />
+    <link href="../../themes/lightblue/page/page.css" rel="stylesheet" />
+    <link href="../../javascript/JSControl/Condition/zTreeStyle/zTreeStyle.css" rel="stylesheet" />
+    <script src="../../Javascript/core/jquery-1.9.1.min.js" type="text/javascript"></script>
+    <script src="../../javascript/core/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="../../javascript/common/tools.js" type="text/javascript"></script>
+    <script src="../../javascript/common/pagetools.js" type="text/javascript"></script>
+    <script src="Js/jqRadio.js" type="text/javascript"></script>
+    <script src="../../javascript/ztree/js/jquery.ztree.all-3.5.js"></script>
+    <script src="../../javascript/JSControl/Condition/comselect.js"></script>
+    <script src="Js/Design.js" type="text/javascript"></script>
+    <script src="Js/jqCheckBox.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function () {
+            initDom.init();
+        });
+    </script>
+</head>
+<body style="overflow: hidden;">
+    <div class="dashboard_all" id="dashboard_all">
+        <div class="dashboard_head">
+            <div class="dashboard_head_left">
+                <ul>
+                    <li>
+                        <span>布&nbsp;局：</span>
+                        <input type="text" id="txtLayout" style="width: 100px; height: 20px;" readonly="readonly" /></li>
+                    <li>
+                        <input type="button" id="btnSavaAct" value="保存" class="button" /></li>
+                    <li>
+                        <input type="button" id="btnSaveOne" value="另存为" class="button" /></li>
+                    <li>
+                        <input type="button" id="btnShowPageSetting" value="效果预览" class="button" />
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="dashboard_body">
+            <div class="dashboard_body_left">
+                <div id="treeD" class="dashboard-treebox">
+                    <div class="treebody">
+                        <div class="treeact">
+                            <input type="text" class="search_input" id="txtDDTreeSearch" />
+                            <input type="button" class="btn_search" id="btnDDTreeSearch" />
+                            <input type="button" class="btn_close" />
+                        </div>
+                        <ul id="treeDD" class="ztree ztreeReport">
+                        </ul>
+                    </div>
+                    <div class="treeact1" style="display: none;">
+                        <input type="button" class="btn_open" />
+                    </div>
+                </div>
+                <div id="treeR" class="dashboard-treebox">
+                    <div class="treebody">
+                        <div class="treeact">
+                            <input type="text" class="search_input" id="txtReportTreeSearch" />
+                            <input type="button" class="btn_search" id="btnReportTreeSearch" />
+                            <input type="button" class="btn_close" />
+                        </div>
+                        <ul id="treeReport" class="ztree ztreeReport">
+                        </ul>
+                    </div>
+                    <div class="treeact1" style="display: none;">
+                        <input type="button" class="btn_open" />
+                    </div>
+                </div>
+            </div>
+            <div class="dashboard-right">
+                <div class="dashboard-query" id="dashboard-query">
+                </div>
+                <div class="dashboard-layout" id="dashboard-layout">
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,171 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <link href="../../../themes/lightblue/jqueryui/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/jqgrid/ui.jqgrid.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/page/page.css" rel="stylesheet" />
+
+    <script src="../../core/jquery-1.9.1.min.js"></script>
+    <script src="../../core/jquery-ui-1.10.3.custom.min.js"></script>
+
+    <script src="../../common/tools.js"></script>
+    <script src="../../common/pagetools.js"></script>
+
+    <script src="../../Condition/timepicker.js"></script>
+    <script src="../../Condition/comselect.js"></script>
+    <script src="../../Condition/controlmanagernew.js"></script>
+
+    <script src="../../SmartGrid/JqGrid/grid.locale-cn.js"></script>
+    <script src="../../SmartGrid/JqGrid/jquery.jqGrid.min.js"></script>
+    <script src="../../SmartGrid/JqGrid/SmartGrid.js"></script>
+    <script src="../../Common/toolbar.js"></script>
+
+    <script src="Scripts/SampleChart.js"></script>
+    <script type="text/javascript">
+        var param = {
+            templateID: {
+                SuccessRate: 2032826405
+            }
+        };
+
+        $(function () {
+            method.init();
+            method.getData();
+        });
+
+        var method = {
+            init: function () {
+                //method.initTime();
+                //method.initQueryCtrl();
+
+                $("#btnQuery").click(function () {
+                    //method.getParam();
+                });
+            },
+            getParam: function () {
+                var con = $("#divFilter").controlmanager("getSelResults");
+                param.CRC32 = con[0].value.join(',');
+            },
+            initTime: function () {
+                var opt = {
+                    showTypeDay: true,
+                    showTypeMonth: false,
+                    defaultTimeType: null,
+                    defaultDateStr: null,
+                    isTile: true
+                };
+                $("#txtTime").timepicker(opt);
+            },
+            initQueryCtrl: function () {
+                var p = [];
+
+                p.push({
+                    width: 90,
+                    defaultShow: 'CRC32',
+                    type: 'text',
+                    items: [{
+                        levelname: 'CRC32'
+                    }]
+                });
+
+                $("#divFilter").controlmanager(p);
+            },
+            getData: function () {
+                var opt = {
+                    GridChart: "Analyzer",
+                    TemplateID: param.templateID.SuccessRate,
+                    TimeType: "Day",
+                    Time: "2016年09月25日",
+                    TopN: 10
+                };
+                $.ajax({
+                    url: '../../../plugin/Common/ashx/ComHandler.ashx',
+                    data: {
+                        strCon: dss.jsonToString(opt)
+                    },
+                    dataType: "json",
+                    success: function (data) {
+                        method.bindChart("divChart", {
+                            analyzer: data,
+                            XDataColIndex: 1,
+                            YDataColIndex: 2,
+                            ChartType: "Column",
+                            Toolbox: {
+                                show: true
+                            }
+                        });
+                    }
+                });
+            },
+            //公用的绑定图形的方法
+            bindChart: function (div, option) {
+                var opts = $.extend(true, {
+                    YFormatType: "1000",
+                    YDecimals: '2',
+                    BorderColor: '#7D7DFF',
+                    XLabelStyle: 'Stagger',
+                    Is2D: true,
+                    ClickEvent: [],
+                    ChartType: "Line",
+                    IsAutoLimits: true
+                }, option);
+
+                $("#" + div).SampleChart(opts);
+            }
+        };
+    </script>
+</head>
+<body>
+    <div class="toolbar">
+        <ul>
+            <li class="item">
+                <input style="width: 100px;" id="txtTime" type="text" /></li>
+            <li class="item">
+                <div id="divFilter"></div>
+            </li>
+            <li class="item">
+                <input class="button" id="btnQuery" value="查询" type="button" /></li>
+            <li class="item">
+                <input class="button" id="btnExport" value="导出" type="button" /></li>
+        </ul>
+    </div>
+    <div id="divChart"></div>
+    <div id="divSet">
+        <table>
+            <tr>
+                <td>默认排序列：</td>
+                <td>
+                    <select id="sort1">
+                        <option>成功率</option>
+                        <option>时延</option>
+                    </select>
+                    <select id="sort1Type">
+                        <option>降序</option>
+                        <option>升序</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>第二排序列：</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>TopN设置：</td>
+                <td><input type="text" style="width:40px;"/></td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td>X轴：</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Y轴：</td>
+                <td></td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

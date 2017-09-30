@@ -1,0 +1,239 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <link href="../../themes/lightblue/page/page.css" rel="stylesheet" />
+    <link href="../../themes/lightblue/jqueryui/jquery-ui-1.10.3.custom.css" rel="stylesheet" />
+    <link href="../../themes/lightblue/css/dss-ui-dialog.css" rel="stylesheet" />
+    <link href="page.css" rel="stylesheet" />
+    <script src="../../javascript/core/jquery-1.9.1.min.js"></script>
+    <script src="../../javascript/core/jquery-ui-1.10.3.custom.js"></script>
+    <script src="../../javascript/JSControl/Condition/timepicker.js"></script>
+    <script src="../../javascript/common/tools-b.js"></script>
+    <script src="timepicker.js"></script>
+    <script type="text/javascript">
+
+        $(function () {
+            //alert(p);
+            method.initTime();
+            method.createTime();
+            //tools.getDay();
+            a("s", "10");
+            //dss.loadcss(dss.rootPath + "themes/lightblue/page/page.css");
+        });
+        function a() {
+            b(Array.prototype.slice.call(arguments, 1));
+        };
+        function b() {
+            alert(arguments.length);
+        };
+        var method = {
+            initTime: function () {
+                var option = {
+                    showTypeMonth: true,
+                    showTypeWeek: true,
+                    showTypeDay: true,
+                    showTypeHour: false,
+                    showTypeMinute: false,
+                    showTypeQuarter: true,
+                    defaultTimeType: undefined,
+                    defaultDateStr: undefined,
+                    defaultHourStr: undefined,
+                    range: true,
+                    isTile: true
+                };
+                $("#txtStartTime").timepicker(option);
+            },
+            createTime: function () {
+                var option = {
+                    showTypeMonth: true,
+                    showTypeWeek: true,
+                    showTypeDay: true,
+                    showTypeHour: true,
+                    showTypeMinute: true,
+                    showTypeSecond: true,
+                    showTypeQuarter: true,
+                    isMultipleHour: false,
+                    defaultTimeType: undefined,
+                    defaultDateStr: undefined,
+                    defaultHourStr: undefined,
+                    range: true,
+                    isTile: true
+                };
+                $("#txtTime").timepickernew(option);
+            }
+        };
+
+
+    </script>
+    <style type="text/css">
+        
+    </style>
+</head>
+<body style="height: 600px;">
+    <div>
+        <input type="text" id="txtTime" value="sss" style="width: 240px;" />
+    </div>
+    <input type="text" id="txtStartTime" />
+    <div style="clear: both;"></div>
+    <div id="divTime" class="timeControl" style="display: none">
+        <div style="float: left; width: 230px;">
+            <div class="title">
+                <span class="left"></span>
+                <span class="y">2016年</span>
+                <span class="m">06月</span>
+                <span class="right"></span>
+            </div>
+            <div class="clear"></div>
+            <ol>
+                <li>一</li>
+                <li>二</li>
+                <li>三</li>
+                <li>四</li>
+                <li>五</li>
+                <li>六</li>
+                <li>日</li>
+            </ol>
+
+            <div class="clear"></div>
+            <ul>
+                <li class="t">01</li>
+                <li class="t">02</li>
+                <li class="t">03</li>
+                <li class="t">04</li>
+                <li class="t">05</li>
+                <li class="t">06</li>
+                <li class="t">07</li>
+                <li>08</li>
+                <li>09</li>
+                <li>10</li>
+                <li>01</li>
+                <li>02</li>
+                <li>03</li>
+                <li>04</li>
+                <li>05</li>
+                <li>06</li>
+                <li>07</li>
+                <li>08</li>
+                <li>09</li>
+                <li>10</li>
+                <li>01</li>
+                <li>02</li>
+                <li>03</li>
+                <li>04</li>
+                <li>05</li>
+                <li>06</li>
+                <li>07</li>
+                <li>08</li>
+                <li>09</li>
+                <li>10</li>
+            </ul>
+            <div class="clear"></div>
+            <div class="bottom">
+                <span>12</span><span class="t">:</span><span>12</span><span class="t">:</span><span>12</span>
+                <span class="btn">清空</span>
+                <span class="btn">今天</span>
+                <span class="btn">确认</span>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div style="float: right; width: 230px;">
+            <div class="title">
+                <span class="left"></span>
+                <span class="y">2016年</span>
+                <span class="m">06月</span>
+                <span class="right"></span>
+            </div>
+            <div class="clear"></div>
+            <ol>
+                <li>一</li>
+                <li>二</li>
+                <li>三</li>
+                <li>四</li>
+                <li>五</li>
+                <li>六</li>
+                <li>日</li>
+            </ol>
+
+            <div class="clear"></div>
+            <ul>
+                <li class="t">01</li>
+                <li class="t">02</li>
+                <li class="t">03</li>
+                <li class="t">04</li>
+                <li class="t">05</li>
+                <li class="t">06</li>
+                <li class="t">07</li>
+                <li>08</li>
+                <li>09</li>
+                <li>10</li>
+                <li>01</li>
+                <li>02</li>
+                <li>03</li>
+                <li>04</li>
+                <li>05</li>
+                <li>06</li>
+                <li>07</li>
+                <li>08</li>
+                <li>09</li>
+                <li>10</li>
+                <li>01</li>
+                <li>02</li>
+                <li>03</li>
+                <li>04</li>
+                <li>05</li>
+                <li>06</li>
+                <li>07</li>
+                <li>08</li>
+                <li>09</li>
+                <li>10</li>
+            </ul>
+            <div class="clear"></div>
+            <div class="bottom">
+                <span>12</span><span class="t">:</span><span>12</span><span class="t">:</span><span>12</span>
+                <span class="btn">清空</span>
+                <span class="btn">今天</span>
+                <span class="btn">确认</span>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="month">
+        <ul>
+            <li>一月</li>
+            <li>二月</li>
+            <li>三月</li>
+            <li>四月</li>
+            <li>五月</li>
+            <li>六月</li>
+            <li>七月</li>
+            <li>八月</li>
+            <li>九月</li>
+            <li>十月</li>
+            <li>十一</li>
+            <li>十二</li>
+        </ul>
+        <div class="clear"></div>
+    </div>
+    <div class="year">
+        <ul>
+            <li>2016</li>
+            <li>2015</li>
+            <li>2016</li>
+            <li>2016</li>
+            <li>2016</li>
+            <li>2016</li>
+            <li>2016</li>
+            <li>2016</li>
+            <li>2016</li>
+            <li>2016</li>
+            <li>←&nbsp;</li>
+            <li>×</li>
+            <li>&nbsp;→</li>
+        </ul>
+        <div class="clear"></div>
+    </div>
+</body>
+</html>

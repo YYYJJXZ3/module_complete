@@ -1,0 +1,87 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>测试 条件树</title>
+    <style>
+        /*background-color: #AED0EA;*/
+        .cc-checkitem {font-size: 12px; border-top: 1px solid #E5e5e5; width: 100%; }
+        .cc-title { float: left; }
+            .cc-title div { margin-top: 5px; text-align: right; }
+        .cc-context { float: left; width: 100%; }
+            .cc-context .cc-optionsdiv { float: left; margin-top: 1px; }
+            .cc-context .cc-more { cursor: pointer; width: 40px; margin-top: 1px; background-color: #ffd800; text-align: center; }
+        .cc-optionsdiv select { vertical-align: middle; }
+        .cc-optionsdiv input { width: 100px; vertical-align: middle; }
+        .cc-optionsdiv .cc-inputdiv { float: left; width: 100%; clear: both; white-space: nowrap; }
+
+        .cc-optionsdiv .cc-btn { cursor: pointer; vertical-align: middle; background-color: #E5e5e5; margin: 0px 2px 1px 0px; padding: 0px 5px; border: 1px solid #AED0EA; }
+        .cc-optionsdiv .cc-inputdiv div { float: left; }
+        .cc-optionsdiv .cc-inputdiv input { float: left; margin-top: 1px; }
+        .cc-optionsdiv .cc-inputdiv .cc-btn { margin: 2px 0px 1px 5px; padding: 2px 10px; }
+        .cc-optionsdiv .cc-btn:hover { background-color: #AED0EA; border: 1px solid #E5e5e5; }
+        .cc-optionsdiv .cc-citem { float: left; margin: 0px 2px 0px 0px; cursor: pointer; white-space: nowrap; }
+            .cc-optionsdiv .cc-citem input { width: 10px; }
+            .cc-optionsdiv .cc-citem:hover { padding: 0 1px; background-color: #ffd800; }
+        .cc-mulactdiv { float: left; width: 100%; }
+            .cc-mulactdiv div { float: left; }
+
+        .ccsel-item { float: left; vertical-align: middle; border: 1px solid #E5e5e5; white-space: nowrap; margin: 1px auto; margin: 1px 2px; }
+            .ccsel-item:hover { padding: 0 1px; background-color: #ffd800; }
+            .ccsel-item .ccsel-t { float: left; }
+            .ccsel-item .ccsel-c { float: left; color: red; font-weight: bolder; white-space: nowrap; overflow: hidden; }
+            .ccsel-item .ccsel-s { float: left; color: red; font-weight: bolder; }
+            .ccsel-item .ccsel-a { float: left; cursor: pointer; }
+        .clear { clear: both; }
+    </style>
+
+    <script src="../../../core/jquery-1.9.1.min.js"></script>
+    <link href="../../../../Themes/lightblue/jqueryui/jquery-ui-1.10.3.custom.css" rel="stylesheet" />
+    <script src="../../../core/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="../timepicker.js"></script>
+    <script src="../condControl.js"></script>
+    <script>
+        var ds = [
+            {
+                name: "时间", type: "date", setting: {
+                    showTypeWeek: true, range: true, showTypeMonth: true, showTypeHour: true
+                }
+            },
+            { name: "省份", type: "select", orgItems: [{ "name": "北京", "id": "111" }, { "name": "上海", "id": "222", checked: true }, { "name": "深圳", "id": "333" }, { "name": "天津", "id": "444" }, { "name": "黑龙江1212", "id": "555" }, { "name": "河南", "id": "666" }, { "name": "江西", "id": "777" }, { "name": "北京", "id": "111" }, { "name": "上海", "id": "222", checked: true }, { "name": "深圳", "id": "333" }, { "name": "天津", "id": "444" }, { "name": "黑龙江", "id": "555" }, { "name": "河南", "id": "666" }, { "name": "江西", "id": "777" }, { "name": "北京", "id": "111" }, { "name": "上海", "id": "222", checked: true }, { "name": "深圳", "id": "333" }, { "name": "天津", "id": "444" }, { "name": "黑龙江", "id": "555" }, { "name": "河南", "id": "666" }, { "name": "江西", "id": "777" }, { "name": "北京", "id": "111" }, { "name": "上海", "id": "222", checked: true }, { "name": "深圳", "id": "333" }, { "name": "天津", "id": "444" }, { "name": "黑龙江", "id": "555" }, { "name": "河南", "id": "666" }, { "name": "江西", "id": "777" }, { "name": "北京", "id": "111" }, { "name": "上海", "id": "222", checked: true }, { "name": "深圳", "id": "333" }, { "name": "天津", "id": "444" }, { "name": "黑龙江", "id": "555" }, { "name": "河南", "id": "666" }, { "name": "江西", "id": "777" }, { "name": "北京", "id": "111" }, { "name": "上海", "id": "222", checked: true }, { "name": "深圳", "id": "333" }, { "name": "天津", "id": "444" }, { "name": "黑龙江", "id": "555" }, { "name": "河南", "id": "666" }, { "name": "江西", "id": "777" }, { "name": "北京", "id": "111" }, { "name": "上海", "id": "222", checked: true }, { "name": "深圳", "id": "333" }, { "name": "天津", "id": "444" }, { "name": "黑龙江", "id": "555" }, { "name": "河南", "id": "666" }, { "name": "江西", "id": "777" }], initItems: [{ "name": "天津", "id": "444" }], multiple: true },
+            { name: "市区", type: "select", orgItems: [{ "name": "南昌市", "id": "7111", pId: "777", checked: true }, { "name": "九江市", "id": "7222", checked: true }, { "name": "赣州市", "id": "7333", checked: true }, { "name": "吉安市", "id": "7444" }, { "name": "上饶市", "id": "7555" }, { "name": "万安市", "id": "7666" }], multiple: true, pName: "省份" },
+            { name: "网元类型", type: "input", orgItems: [], multiple: true, pName: "省份" }
+        ];
+
+        $(document).ready(function () {
+            $("#testSel1").condControl({ datasource: ds });
+            $("#testSel").condControl({ datasource: ds });
+
+            $("#btnSel").bind("click", function () {
+                var chk = $("#testSel").condControl("getSelResults");
+
+                alert(chk);
+
+            });
+            $("#btnSel1").bind("click", function () {
+                var cke = $("#testSel1").condControl("getSelResults");
+
+            });
+        });
+    </script>
+    <style>
+        .divjt { }
+    </style>
+</head>
+<body>
+    <div style="width: 800px; margin: 10px 200px; border: 1px solid #383838">
+        <div class="divjt" style="width: 50px;">条件1</div>
+        <div id="testSel" style="margin: 10px;">测试</div>
+        <input type="button" id="btnSel" value="查询" />
+    </div>
+
+    <div style="width: 800px; margin: 100px 200px; border: 1px solid #2f2f2f">
+        <div class="divjt" style="width: 50px; float: left">条件2</div>
+        <div id="testSel1" style="width: 720px; margin-left: 10px; float: left">测试</div>
+        <input type="button" id="btnSel1" value="查询2" />
+    </div>
+</body>
+</html>

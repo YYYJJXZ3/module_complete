@@ -454,65 +454,6 @@
     myChart.setOption(option, true);
 
 
-    var myChart2;
-    var domMain2 = document.getElementById('main2');
-
-    option2 = {
-        title : {
-            text: '高铁高校差异性比较',
-            subtext: ''
-        },
-        tooltip : {
-            trigger: 'axis'
-        },
-        legend: {
-            orient : 'horizontal',
-            x : 'right',
-            y : 'top',
-            data:['高铁1','高铁2']
-        },
-        toolbox: {
-            show : true,
-            feature : {
-            }
-        },
-        polar : [
-            {
-                indicator : [
-                    { text: '寻呼信道占用率', max: 1},
-                    { text: 'PRACH信道占用率', max: 1},
-                    { text: 'PDCCH信道CCE占用率', max: 1},
-                    { text: '4G上行PRB平均占用率', max: 1},
-                    { text: '4G下行PRB平均占用率', max:1},
-                    { text: '4G忙时载扇理想用户负荷比', max:1},
-                    { text: '4G忙时载扇流量负荷比', max:1}
-                ]
-            }
-        ],
-        calculable : true,
-        series : [
-            {
-                name: '高铁高校',
-                type: 'radar',
-                data : [
-                    {
-                        value : [0.8, 0.9, 0.7, 0.5,0.4,0.9,0.6],
-                        name : '高铁1'
-                    },
-                    {
-                        value : [0.2, 0.5, 0.6, 0.7,0.8,0.6,0.8],
-                        name : '高铁2'
-                    }
-                ]
-            }
-        ]
-    };
-
-
-    myChart2 = echarts.init(domMain2);
-    myChart2.setOption(option2, true);
-
-
     var myChart1;
     var domMain1 = document.getElementById('main1');
     option1 = {
@@ -587,6 +528,66 @@
 
     myChart1 = echarts.init(domMain1);
     myChart1.setOption(option1, true);
+
+
+
+    var myChart2;
+    var domMain2 = document.getElementById('main2');
+
+    option2 = {
+        title : {
+            text: '高铁高校差异性比较',
+            subtext: ''
+        },
+        tooltip : {
+            trigger: 'axis'
+        },
+        legend: {
+            orient : 'horizontal',
+            x : 'right',
+            y : 'top',
+            data:['高铁1','高铁2']
+        },
+        toolbox: {
+            show : true,
+            feature : {
+            }
+        },
+        polar : [
+            {
+                indicator : [
+                    { text: '寻呼信道占用率', max: 1},
+                    { text: 'PRACH信道占用率', max: 1},
+                    { text: 'PDCCH信道CCE占用率', max: 1},
+                    { text: '4G上行PRB平均占用率', max: 1},
+                    { text: '4G下行PRB平均占用率', max:1},
+                    { text: '4G忙时载扇理想用户负荷比', max:1},
+                    { text: '4G忙时载扇流量负荷比', max:1}
+                ]
+            }
+        ],
+        calculable : true,
+        series : [
+            {
+                name: '高铁高校',
+                type: 'radar',
+                data : [
+                    {
+                        value : [0.8, 0.9, 0.7, 0.5,0.4,0.9,0.6],
+                        name : '高铁1'
+                    },
+                    {
+                        value : [0.2, 0.5, 0.6, 0.7,0.8,0.6,0.8],
+                        name : '高铁2'
+                    }
+                ]
+            }
+        ]
+    };
+
+
+    myChart2 = echarts.init(domMain2);
+    myChart2.setOption(option2, true);
 
 </script>
 </body>

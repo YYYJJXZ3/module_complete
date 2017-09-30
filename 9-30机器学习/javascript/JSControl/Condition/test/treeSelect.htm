@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>测试选择树</title>
+
+    <script src="../../../core/jquery-1.9.1.min.js"></script>
+    <link href="../../../ztree/css/zTreeStyle/zTreeStyle.css" rel="stylesheet" />
+    <script src="../../../ztree/js/jquery.ztree.all-3.5.js"></script>
+    <script src="../treeselect.js"></script>
+    <script>
+        var resjson1 = {
+            "colnames": ["REGION_DESC", "REGION_ID"],
+            "rows": [{ "name": "江西省", "id": "111" }, { "name": "南昌市", "id": "976532", pId: "111" }, { "name": "九江市", "id": "341245" }, { "name": "赣州市", "id": "455712" }, { "name": "吉安市", "id": "123412" }, { "name": "上饶市", "id": "578836" }, { "name": "万安市", "id": "1234556" }]
+
+        };
+
+        var resjson2 = {
+            "colnames": ["REGION_DESC", "REGION_ID"],
+            "rows": [
+                { "name": "江西省", "id": "111" },
+                { "name": "南昌市", "id": "976532", pId: "111" },
+                { "name": "九江市", "id": "341245" },
+                { "name": "赣州市", "id": "455712" }
+            ]
+        };
+
+        var initData = [{ "name": "南昌市", "id": "976532" }];
+        $(document).ready(function () {
+
+            $("#testSel").treeSelect({ orgNode: resjson1.rows,width: 120, height: 20,   initNode: initData, multiple: true });
+            $("#testSel1").treeSelect({ orgNode: resjson2.rows,  mustSel: true });
+
+
+            $("#btnSel").bind("click", function () {
+                var cke = $("#testSel").treeSelect("getSelNames");
+                alert(cke);
+            });
+            $("#btnSel1").bind("click", function () {
+                var cke = $("#testSel1").treeSelect("getSelNames");
+                alert(cke);
+            });
+        });
+    </script>
+</head>
+<body>
+
+
+    <div style="width: 500px; margin: 0 100px; border: 1px solid #383838">
+        <div class="divjt" style="width: 50px">测试</div>
+        <div id="testSel" style="margin-left: 10px;">测试</div>
+        <input type="button" id="btnSel" value="查询" />
+    </div>
+    <div style="width: 500px; margin: 100px 200px; border: 1px solid #2f2f2f">
+        <div class="divjt" style="width: 50px">测试</div>
+        <div id="testSel1" style="margin-left: 10px;">测试</div>
+        <input type="button" id="btnSel1" value="查询2" />
+    </div>
+
+</body>
+</html>

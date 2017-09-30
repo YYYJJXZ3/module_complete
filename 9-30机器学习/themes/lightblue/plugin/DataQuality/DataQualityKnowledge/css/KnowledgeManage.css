@@ -1,0 +1,14 @@
+﻿body {
+    width: 1079px;
+}
+
+.toolBarTxtWidth {
+    width: 80px;
+}
+
+.border_1_ccc {
+    border: 1px solid #ccc;
+    width: 99%;
+    height: 300px;
+    overflow: auto;
+}

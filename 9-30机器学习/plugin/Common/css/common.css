@@ -1,0 +1,84 @@
+﻿.flowChart {
+    background-color: #FDFEED;
+}
+
+.dss_ov_all {
+    width: 100%;
+    display: block;
+    height: 70px;
+}
+
+    .dss_ov_all .table {
+        border: 1px solid rgb(228, 228, 228);
+        height: 60px;
+        text-align: center;
+        margin-right: -1px;
+        float: left;
+        background-color: rgb(253, 242, 239);
+        padding-top: 10px;
+    }
+
+        .dss_ov_all .table .desc {
+            height: 30px;
+            width: 100%;
+            border: 0px;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+            .dss_ov_all .table .desc div {
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                padding: 0px 5px;
+                word-break: break-all;
+                text-overflow: ellipsis;
+                width: 96%;
+                overflow: hidden;
+            }
+
+                .dss_ov_all .table .desc div.font {
+                    font-size: 14px;
+                    font-weight: 700;
+                    color: #0095dd;
+                }
+
+        .dss_ov_all .table .chart {
+            height: 20px;
+            width: 100%;
+            border: 0px;
+        }
+
+            .dss_ov_all .table .chart div {
+                width: 16px;
+                height: 16px;
+                float: right;
+                margin-right: 10px;
+                background-repeat: no-repeat;
+                border: 0px;
+                cursor: pointer;
+                padding: 0px;
+            }
+
+                .dss_ov_all .table .chart div.desc {
+                    background-image: url('../images/item/shujusuanfa_2.png');
+                }
+
+                    .dss_ov_all .table .chart div.desc:hover {
+                        background-image: url('../images/item/shujusuanfa_3.png');
+                    }
+
+                .dss_ov_all .table .chart div.flow {
+                    background-image: url('../images/item/shujufenxi_2.png');
+                }
+
+                    .dss_ov_all .table .chart div.flow:hover {
+                        background-image: url('../images/item/shujufenxi_3.png');
+                    }
+
+                .dss_ov_all .table .chart div.data {
+                    background-image: url('../images/item/shujuzhiliang_2.png');
+                }
+
+                    .dss_ov_all .table .chart div.data:hover {
+                        background-image: url('../images/item/shujuzhiliang_3.png');
+                    }

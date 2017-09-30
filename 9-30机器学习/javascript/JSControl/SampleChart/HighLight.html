@@ -1,0 +1,112 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <link href="../../../themes/lightblue/p.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/jqgrid/ui.jqgrid.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/jqueryui/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" />
+
+    <script src="../../core/jquery-1.9.1.min.js"></script>
+    <script src="../../core/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="../../common/tools.js"></script>
+    <script src="../../common/pagetools.js"></script>
+    <script src="Scripts/SampleChart.js"></script>
+    <script>
+        $(function () {
+            getChart();
+            getLine();
+
+            setInterval(function () {
+                getLine();
+            }, 3000);
+        });
+
+        function getChart() {
+            var data = '{"colnames":["年份","指标1","指标2"],"rows":[{"col0":"2010年","col1":"50","col2":"60"},{"col0":"2011年","col1":"30","col2":"80"},{"col0":"2012年","col1":"40","col2":"50"},{"col0":"2013年","col1":"30","col2":"50"},{"col0":"2014年","col1":"80","col2":"30"},{"col0":"2015年","col1":"70","col2":"50"}]}';
+            data = eval("(" + data + ")");
+            $("#Chart").data("getDatasource", data);
+
+            bindChart("Chart", {
+                IsAutoLimits: false,//如果IsAutoLimits设置为true，同时设置了YMinValue、YMaxValue，IsAutoLimits属性优先
+                ChartType: "Combi1Y",
+                YDataColIndex: "1",
+                Y2DataColIndex: "2",
+                YMinValue: 20,//单独设置YMinValue不起作用,YMinValue和YMaxValue要同时设置
+                YMaxValue: 90,//单独设置YMaxValue倒可以起作用
+                ClickEvent: [{colindex:1,click:columnClick}],
+                //HighLight可以指定不同的颜色
+                HighLight: [{ colindex: 1, highvales: "2011年", color: "#ff00ff" }, { colindex: 1, highvales: "2014年", color: "#00ffff" }, { colindex: 2, highvales: "2013年", color: "#ffff00" }],
+                FontSize: 18,
+                Event: {
+                    LegendSelected: legendClick//图例的点击事件
+                },
+                LegendNotSelected: "2",//默认未显示的图例（灰色）
+                Theme: "dark"//修改主题，图例的颜色在主题中设置，主题文件在“javascript\JSControl\SampleChart\Scripts\echarts\theme”下
+            });
+        }
+
+        function getLine() {
+            var data = '{"colnames":["分钟","指标1"],"rows":[]}';
+            data = eval("(" + data + ")");
+
+            for (var j = 0; j < 24; j++) {
+                for (var i = 0; i < 12; i++) {
+                    data.rows.push({ "col0": j.toString() + ":" + (i * 5).toString(), "col1": Math.random() * 100 });
+                }
+            }
+
+            $("#Line").data("getDatasource", data);
+
+            bindChart("Line", {
+                IsAutoLimits: true,
+                ChartType: "Line",
+                YDataColIndex: "1",
+                //XLabelStep: 10,
+                IsScroll: true,
+                ScrollStart: 80,
+                ScrollEnd: 100,
+                XLabelStyle: "Rotate",
+                PaddingBottom: 80,
+                Theme: "dark",
+                Color: ["#2ec7c9"],
+                LegendPosition: "TOP"
+            });
+        }
+
+        function bindChart(div, option) {
+            var opts = $.extend(true, {
+                DataSource: $("#" + div).data("getDatasource"),
+                YFormatType: "1000",
+                YDecimals: '2',
+                //BorderColor: '#7D7DFF',
+                ClickEvent: []
+            }, option);
+
+            //dss.samplechart(div, opts);
+            $("#" + div).SampleChart(opts);
+        }
+
+        //图例的点击事件
+        function legendClick(a, b, c, d, e, f) {
+            var ee = "当前点击指标索引：" + a + "\n" + "当前点击指标名称：" + b + "\n" + "选中的指标索引：" + c + "\n" + "选中的指标名称：" + d + "\n" + "未选中的指标索引：" + e + "\n" + "未选中的指标名称：" + f;
+            alert(ee);
+        }
+
+        //柱图的点击事件
+        function columnClick(xValue, yValue, value) {
+            alert(xValue + "：" + value);//样例：“那曲地区：15”
+        }
+    </script>
+</head>
+<body>
+    <div class="captionWithoutIcon">
+        高亮显示多个柱子
+    </div>
+    <div id="Chart" style="background-color: black;"></div>
+    <div class="captionWithoutIcon">
+        X轴值较多时的处理
+    </div>
+    <div id="Line" style="background-color: black; width: 100%; height: 250px;"></div>
+</body>
+</html>

@@ -1,0 +1,447 @@
+﻿<!DOCTYPE  >
+<html>
+<head>
+    <title></title>
+    <link href="../../../Themes/lightblue/p.css" rel="stylesheet" type="text/css" />
+    <link href="../../../Themes/lightblue/jqueryui/jquery-ui-1.10.3.custom.min.css" rel="stylesheet"
+        type="text/css" />
+    <link href="../../../Themes/lightblue/jqgrid/ui.jqgrid.css" rel="stylesheet" type="text/css" />
+    <link href="../../../Javascript/JSControl/Sample/css/multiple-select.css" rel="stylesheet"
+        type="text/css" />
+    <script src="../../../Javascript/core/jquery-1.9.1.min.js" type="text/javascript"></script>
+    <script src="../../../Javascript/core/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
+    <script src="../../../Javascript/JSControl/SmartGrid/JqGrid/grid.locale-cn.js" type="text/javascript"></script>
+    <script src="../../../Javascript/JSControl/SmartGrid/JqGrid/jquery.jqGrid.min.js"
+        type="text/javascript"></script>
+    <script src="../../../Javascript/JSControl/SmartGrid/JqGrid/SmartGrid.js" type="text/javascript"></script>
+    <script src="../Js/jquery.ca.contextmenu.js" type="text/javascript"></script>
+    <script src="../../../Javascript/frame/openTabPage.js" type="text/javascript"></script>
+    <script src="../../../Javascript/JSControl/SampleChart/Scripts/FusionCharts.js" type="text/javascript"></script>
+    <script src="../../../Javascript/JSControl/SampleChart/Scripts/SampleChart.js" type="text/javascript"></script>
+    <script src="../../../Javascript/JSControl/Condition/mulselect.js" type="text/javascript"></script>
+    <script src="../../../Javascript/JSControl/Condition/timepicker.js" type="text/javascript"></script>
+    <script src="../../../Javascript/JSControl/extensioncontrol/conditionManager.js"
+        type="text/javascript"></script>
+    <script src="../../../Javascript/JSControl/Condition/comselect.js" type="text/javascript"></script>
+    <script src="../../../javascript/common/tools.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var conditionManager;
+            var analyzerStr = getCookie("ana");
+            var analyzerStr2 = getCookie("ana2");
+            var analyzerStr3 = getCookie("ana3");
+            var ana = $.parseJSON(unescape(analyzerStr + analyzerStr2 + analyzerStr3));
+            BindTime(ana);
+            BindDim(ana);
+            BindDDL(ana);
+            BindGrid(ana);
+            $("#btnQuery").click(function () {
+                ana.StatisticsSetting.StatisticsList[0].MeasureIndex = $("#selectMeasure").mulselect("getSelects", "value").join(',');
+                ana.StatisticsSetting.StatisticsList[0].StatisticsType = $("#Computing").mulselect("getSelects", "value").join(',');
+                for (var i = 0; i < ana.RowDimList.length; i++) {
+                    if (ana.RowDimList[i].DimensionName == "日期维") {
+                        ana.RowDimList[i].Val = $("#DateStart").timepicker("getDateStr");
+                        ana.RowDimList[i].ValList[0] = $("#DateStart").timepicker("getDateStr");
+                        if (ana.RowDimList[i].ValList.length > 1) {
+                            ana.RowDimList[i].Val = $("#DateStart").timepicker("getDateStr") + ":" + $("#DateEnd").timepicker("getDateStr");;
+                            ana.RowDimList[i].ValList[1] = $("#DateEnd").timepicker("getDateStr");
+                        }
+                    }
+                }
+
+                var dimvalue = getSelectedValues().replace("}\"]", "").split("Values:")[1];
+                ana.RowDimList[ana.StatisticsSetting.DimensionIndexList[0]].Val = dimvalue;
+                BindGrid(ana);
+            });
+            $("#btnExport").click(function () {
+                dss.download({
+                    fileName: '维度汇总'
+                });
+            });
+            $("#ibtnCsvExp").click(function () {
+
+            });
+            $("#Column").click(function () {
+                BindChart("Column");
+                $("#Column").css({ "border": "1px solid  Red" });
+                $("#Pie").css("border-color", "transparent");
+                $("#Line").css("border-color", "transparent");
+                $("#Bar").css("border-color", "transparent");
+                $("#Area").css("border-color", "transparent");
+                $("#Doughnut").css("border-color", "transparent");
+            });
+            $("#Pie").click(function () {
+                BindChart("Pie");
+                $("#Pie").css({ "border": "1px solid  Red" });
+                $("#Column").css("border-color", "transparent");
+                $("#Line").css("border-color", "transparent");
+                $("#Bar").css("border-color", "transparent");
+                $("#Area").css("border-color", "transparent");
+                $("#Doughnut").css("border-color", "transparent");
+            });
+            $("#Line").click(function () {
+                BindChart("Line");
+                $("#Line").css({ "border": "1px solid  Red" });
+                $("#Column").css("border-color", "transparent");
+                $("#Pie").css("border-color", "transparent");
+                $("#Bar").css("border-color", "transparent");
+                $("#Area").css("border-color", "transparent");
+                $("#Doughnut").css("border-color", "transparent");
+
+            });
+            $("#Bar").click(function () {
+                BindChart("Bar");
+                $("#Line").css("border-color", "transparent");
+                $("#Column").css("border-color", "transparent");
+                $("#Pie").css("border-color", "transparent");
+                $("#Bar").css({ "border": "1px solid  Red" });
+                $("#Area").css("border-color", "transparent");
+                $("#Doughnut").css("border-color", "transparent");
+
+            });
+            $("#Area").click(function () {
+                BindChart("Area");
+                $("#Line").css("border-color", "transparent");
+                $("#Column").css("border-color", "transparent");
+                $("#Pie").css("border-color", "transparent");
+                $("#Bar").css("border-color", "transparent");
+                $("#Area").css({ "border": "1px solid  Red" });
+                $("#Doughnut").css("border-color", "transparent");
+
+            });
+            $("#Doughnut").click(function () {
+                BindChart("Doughnut");
+                $("#Line").css("border-color", "transparent");
+                $("#Column").css("border-color", "transparent");
+                $("#Pie").css("border-color", "transparent");
+                $("#Bar").css("border-color", "transparent");
+                $("#Area").css("border-color", "transparent");
+                $("#Doughnut").css({ "border": "1px solid  Red" });
+
+            });
+
+        });
+        function exportExcle() {
+            var dataSource = jQuery("#divGrid").smartgrid("getDatasource");
+            $.ajax({
+                cache: true,
+                type: "POST",
+                url: "ashx/Gather.ashx",
+                beforeSend: function () { },
+                complete: function () { },
+                data: {
+                    type: "export", columsName: function () {
+                        if (dataSource != null) {
+                            return dataSource.colnames;
+                        };
+                    },
+                    jsonData: function () {
+                        if (dataSource != null) {
+                            return JsonToString(dataSource.rows);
+                        }
+                    }
+                },
+                datatype: "json",
+                success: function (datasource) {
+                    var url = "http://" + window.location.host + "/" + window.location.pathname.split('/')[1] + "/Temp/ExcelLoad.aspx?ExcelFileName=" + datasource;
+                    window.open(url, '', '');
+                }
+            });
+
+        }
+        function monitorSelectControlChangeEvent(newSelectedControlText) {
+            $("#monitorEventControl").html("Event: " + newSelectedControlText);
+        }
+        function getSelectedValues() {
+            if (conditionManager != undefined) {
+                var selected = conditionManager.getSelectedCondition();
+
+                var dimStr = $.map(selected, function (item) {
+                    var temp = item.key + "{ Ids:" + item.Ids + ", Values:" + item.values + "}";
+                    return temp;
+                });
+                eval("var str = '" + JSON.stringify(dimStr) + "';");
+                return str;
+            }
+        }
+        function BindTime(ana) {
+            $("#hiddenDateEnd").text = "hide";
+            for (var i = 0; i < ana.RowDimList.length; i++) {
+                if (ana.RowDimList[i].DimensionName == "日期维") {
+                    var dateStr = ana.RowDimList[i].ValList;
+                    var datetype = ana.RowDimList[i].LevelName;
+                    switch (datetype) {
+                        case "日":
+                            $("#DateStart").timepicker({ showTypeWeek: false, showTypeMonth: false, showTypeHour: false, showTypeDay: true, defaultDateStr: dateStr[0] });
+                            break;
+                        case "周":
+                            $("#DateStart").timepicker({ showTypeWeek: true, showTypeMonth: false, showTypeHour: false, showTypeDay: false, defaultDateStr: dateStr[0] });
+                            break;
+                        case "月":
+                            $("#DateStart").timepicker({ showTypeWeek: false, showTypeMonth: true, showTypeHour: false, showTypeDay: false, defaultDateStr: dateStr[0] });
+                            break;
+                        default: break;
+                    }
+                    if (ana.RowDimList[i].ValList.length > 1) {
+                        $("#tdend1").show();
+                        $("#tdend2").show();
+                        $("#hiddenDateEnd").text = "show";
+                        switch (datetype) {
+                            case "日":
+                                $("#DateEnd").timepicker({ showTypeWeek: false, showTypeMonth: false, showTypeHour: false, showTypeDay: true, defaultDateStr: dateStr[1] });
+                                break;
+                            case "周":
+                                $("#DateEnd").timepicker({ showTypeWeek: true, showTypeMonth: false, showTypeHour: false, showTypeDay: false, defaultDateStr: dateStr[1] });
+                                break;
+                            case "月":
+                                $("#DateEnd").timepicker({ showTypeWeek: false, showTypeMonth: true, showTypeHour: false, showTypeDay: false, defaultDateStr: dateStr[1] });
+                                break;
+                            default: break;
+                        }
+                    }
+                    else {
+                        $("#tdend1").hide();
+                        $("#tdend2").hide();
+                    }
+                }
+            }
+        }
+        function getCookie(c_name) {
+            if (document.cookie.length > 0) {
+                var c_start = document.cookie.indexOf(c_name + "=")
+                if (c_start != -1) {
+                    c_start = c_start + c_name.length + 1
+                    c_end = document.cookie.indexOf(";", c_start)
+                    if (c_end == -1) c_end = document.cookie.length
+                    return (document.cookie.substring(c_start, c_end))
+                }
+            }
+            return ""
+        }
+        function BindDim(ana) {
+            $.ajax({
+                cache: true,
+                type: "POST",
+                url: "ashx/Gather.ashx",
+                beforeSend: function () { },
+                complete: function () { },
+                data: { type: "theme", measureID: ana.MeasureList[0].MeasureID },
+                datatype: "json",
+                success: function (datasource) {
+                    var options = {
+                        showTopSelectControl: true,
+                        defaultControlType: "multiple",
+                        theme: datasource,
+                        items: [{
+                            "dimension": ana.RowDimList[ana.StatisticsSetting.DimensionIndexList[0]].DimensionName,
+                            "levels": [{ "level": ana.RowDimList[ana.StatisticsSetting.DimensionIndexList[0]].LevelName, controlId: "", controlType: "multiple", alwaysShow: true }]
+                        }]
+                    };
+                    conditionManager = $("#multipleSelectControl").createConditionManager(options);
+                }
+            });
+        }
+        function BindDDL(ana) {
+            labtitle.innerHTML = ana.MeasureList[0].DisplayName + " BY " + ana.RowDimList[ana.StatisticsSetting.DimensionIndexList[0]].DimensionName;
+            lbChartTitle.innerHTML = ana.MeasureList[0].DisplayName + "分布分析";
+            lblGridTitle.innerHTML = ana.MeasureList[0].DisplayName + "表格分析";
+            var colname = "{'colnames':['value','name'],'rows':[";
+            var ddlvalue = "";
+            for (var i = 0; i < ana.MeasureList.length; i++) {
+                ddlvalue += "{'col0':'" + i + "','col1':'" + ana.MeasureList[i].DisplayName + "'},";
+            }
+            var ddldatasource = colname + ddlvalue.substring(0, ddlvalue.length - 1) + "]}";
+            $("#selectMeasure").mulselect({ datastr: changeString(ddldatasource) });
+        }
+        function BindGrid(ana) {
+            var colPropertys = [];
+            $("#divGrid").smartgrid({
+                analyzer: ana,
+                showrownum: false,
+                pagingId: "pager",
+                paging: {
+                    rowNum: 10,
+                    rowList: [10, 20, 50]
+                },
+                callback: {
+                    gridComplete: gridComplete
+                }
+            });
+        }
+        function gridComplete() {
+            BindChart("Column");
+        }
+        function BindChart(chartType) {
+            var dataSource = jQuery("#divGrid").smartgrid("getDatasource");
+            var col = "";
+            for (var i = 0; i < dataSource.colnames.length; i++) {
+                col += "'" + dataSource.colnames[i] + "',";
+            }
+            var rows = JsonToString(dataSource.rows).replace(/'\d+':/g, "");
+            rows = rows.substring(1, rows.length - 1);
+            var val = "{'colnames':[" + col.substring(0, col.length - 1) + "],'rows':[" + rows + "]}";
+            var optionsChart = {
+                Width: '100%',
+                Height: '300',
+                DataSource: changeString(val),
+                Title: "",
+                ChartType: chartType,
+                XLabelStyle: 'Rotate',
+                YFormatType: '1000'
+            };
+            var chart = jQuery("#divChart").SampleChart(optionsChart);
+        }
+        function changeString(v) {
+            if (v == "") {
+                return v;
+            }
+            return eval("(" + v + ")");
+        }
+        function JsonToString(o) {
+            var arr = [];
+            var fmt = function (s) {
+                if (typeof s == 'object' && s != null) return JsonToString(s);
+                return /^(string|number)$/.test(typeof s) ? "'" + s + "'" : s;
+            }
+            for (var i in o)
+                arr.push("'" + i + "':" + fmt(o[i]));
+            return '{' + arr.join(',') + '}';
+        }
+    </script>
+</head>
+<body>
+    <div class="reportdivbg" style="width: 98%">
+        <div id="toolPanel">
+            <table border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td>
+                        <label id="labtitle">
+                        </label>
+                    </td>
+                </tr>
+            </table>
+            <table border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td style="padding-left: 4px">
+                        <img src="../images/chart/column.png" id="Column" style="cursor: pointer; border: 1px solid  Red; height: 25px; width: 25px" />
+                    </td>
+                    <td style="padding-left: 4px">
+                        <img src="../images/chart/pie.png" id="Pie" style="cursor: pointer; border: 1px solid  transparent; height: 25px; width: 25px" />
+                    </td>
+                    <td style="padding-left: 4px">
+                        <img src="../images/chart/line.png" id="Line" style="cursor: pointer; border: 1px solid  transparent; height: 25px; width: 25px" />
+                    </td>
+                    <td style="padding-left: 4px">
+                        <img src="../images/chart/bar.png" id="Bar" style="cursor: pointer; border: 1px solid  transparent; height: 25px; width: 25px" />
+                    </td>
+                    <td style="padding-left: 4px">
+                        <img src="../images/chart/area.png" id="Area" style="cursor: pointer; border: 1px solid  transparent; height: 25px; width: 25px" />
+                    </td>
+                    <td style="padding-left: 4px">
+                        <img src="../images/chart/ring.png" id="Doughnut" style="cursor: pointer; border: 1px solid  transparent; height: 25px; width: 25px" />
+                    </td>
+                    <td style="padding-left: 4px">时间：
+                    </td>
+                    <td style="padding-left: 4px">
+                        <input type="text" id="DateStart" class="ui-button-text" />
+                    </td>
+                    <td style="padding-left: 4px" id="tdend1">至:
+                    </td>
+                    <td style="padding-left: 4px" id="tdend2">
+                        <input type="hidden" id="hiddenDateEnd" />
+                        <input type="text" id="DateEnd" class="ui-button-text" />
+                    </td>
+                    <td style="padding-left: 4px">
+                        <div id="multipleSelectControl" style="font-size: 12px; padding-left: 4px">
+                            <div style="float: left; padding-top: 5px;">
+                            </div>
+                        </div>
+                    </td>
+                    <td style="padding-left: 4px">
+                        <select id="Computing">
+                            <option value="0">计数</option>
+                            <option value="1">求和</option>
+                            <option value="2">平均</option>
+                            <option value="3">最大值</option>
+                            <option value="4">最小值</option>
+                        </select>
+                    </td>
+                    <td style="padding-left: 4px">
+                        <select id="selectMeasure">
+                        </select>
+                    </td>
+                    <td style="padding-left: 10px">
+                        <input id="btnQuery" type="button" value="查询" class="button buttonWidth54" />
+                        <input type="button" id="btnExport" value="导出" class="button buttonWidth54" />
+                    </td>
+                </tr>
+            </table>
+            <div id="stable">
+                <table border="0" cellpadding="2" cellspacing="0" style="width: 100%;">
+                    <tr>
+                        <td>
+                            <table cellpadding="0" cellspacing="0" border="0" style="width: 100%;">
+                                <tr>
+                                    <td>
+                                        <div class="captionWithIcon">
+                                        </div>
+                                        <div class="captionWithoutIcon" style="padding-left: 0px;">
+                                            <table id="tableChart2" cellpadding="0" cellspacing="0" border="0" style="width: 98%;">
+                                                <tr>
+                                                    <td align="left">
+                                                        <label id="lbChartTitle">
+                                                        </label>
+                                                        <input type="hidden" id="detailName" />
+                                                    </td>
+                                                    <td align="right"></td>
+                                                    <td align="right" style="width: 2%">
+                                                        <!--                 <div onclick="chartCollapse('#divChart')">
+                                                            <img src="../../../App_Themes/Default/images/expand.jpg" style="cursor: hand;" alt="折叠" /></div>-->
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <div id="divChart" style="width: 100%;">
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+                <div class="captionWithIcon">
+                </div>
+                <div class="captionWithoutIcon" style="padding-left: 0px; padding-top: 2px">
+                    <table id="table1" cellpadding="0" cellspacing="0" border="0" style="width: 98%;">
+                        <tr>
+                            <td align="left" id="lblGridTitle"></td>
+                            <td align="right"></td>
+                            <td style="width: 25px;"></td>
+                            <td align="right" style="width: 25px">
+                                <!--   <img width="22" height="22" style="cursor: hand;" id="ibtnCsvExp" src="../../../App_Themes/red/images/toolbar/export.png"
+                                    title="全部数据导出" alt="全部数据导出" />
+                                <input type="hidden" id="hiddenCurSql" />
+                                <input type="hidden" id="hiddenCurConn" /><div id="dialogCsvExport">
+                                </div>-->
+                            </td>
+                            <td align="right" style="width: 20px">
+                                <!-- <div onclick="chartCollapse('#divGrid')">
+                                    <img src="../../../themes/red/images/expand.jpg" style="cursor: hand;" alt="折叠" />
+                                </div>-->
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div id="divGrid">
+                </div>
+                <div id="pager">
+                </div>
+                <div id="divLoadingStatus" style="display: none; text-align: center; padding-top: 200px; color: Red; font-size: larger;"
+                    class="ui-widget-overlay">
+                    加载中...
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

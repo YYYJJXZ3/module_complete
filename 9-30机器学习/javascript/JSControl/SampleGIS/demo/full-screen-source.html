@@ -1,0 +1,88 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Full Screen Control with extended source element</title>
+    <link rel="stylesheet" href="https://openlayers.org/en/v4.1.0/css/ol.css" type="text/css">
+    <!-- The line below is only needed for old environments like Internet Explorer and Android 4.x -->
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
+    <script src="https://openlayers.org/en/v4.1.0/build/ol.js"></script>
+    <style>
+        .fullscreen:-moz-full-screen {
+            height: 100%;
+        }
+
+        .fullscreen:-webkit-full-screen {
+            height: 100%;
+        }
+
+        .fullscreen:-ms-fullscreen {
+            height: 100%;
+        }
+
+        .fullscreen:fullscreen {
+            height: 100%;
+        }
+
+        .fullscreen {
+            margin-bottom: 10px;
+            width: 100%;
+            height: 400px;
+        }
+
+        .ol-rotate {
+            top: 3em;
+        }
+
+        .map {
+            width: 80%;
+            height: 100%;
+            float: left;
+        }
+
+        .sidepanel {
+            background: #1F6B75;
+            width: 20%;
+            height: 100%;
+            float: left;
+        }
+
+        .sidepanel-title {
+            width: 100%;
+            font-size: 3em;
+            color: #ffffff;
+            display: block;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div id="fullscreen" class="fullscreen">
+        <div id="map" class="map"></div>
+        <div class="sidepanel">
+            <span class="sidepanel-title">Side Panel</span>
+        </div>
+    </div>
+
+    <script>
+        var view = new ol.View({
+            center: [-9101767, 2822912],
+            zoom: 14
+        });
+
+        var map = new ol.Map({
+            controls: ol.control.defaults().extend([
+              new ol.control.FullScreen({
+                  source: 'fullscreen'
+              })
+            ]),
+            layers: [
+              new ol.layer.Tile({
+                  source: new ol.source.OSM()
+              })
+            ],
+            target: 'map',
+            view: view
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,111 @@
+
+.tabControl
+{
+    margin-top:-1px;
+    width: 100%;
+    height: 100%;
+}
+
+.tabControl .tabTitleContainer
+{
+    height: 28px;
+    float:left;
+    overflow:hidden;
+    padding-top:3px;
+    padding-left:5px;
+    width:200000px;
+}
+.tabControl .tabTitle,.tabControl .activeTabTitle
+{
+    width: 130px;
+    height: 28px;
+    float: left;
+    cursor:pointer;
+    color: #666;
+    line-height: 26px;
+    text-align: center;
+    margin:3px 2px 0px 0px;
+    padding:0 0 0 5px;
+    border-left:1px solid #d3d3d3;
+    border-top:1px solid #d3d3d3;
+    border-right:1px solid #d3d3d3;
+    background:url("../images/frame2/tabtitle.jpg") top right;
+}
+.tabControl .tabTitle:hover{
+    color: #fff;
+    border-left:1px solid #80be4c;
+    border-top:1px solid #80be4c;
+    border-right:1px solid #80be4c;
+    background:url("../images/frame2/tabtitle_a.jpg") top right;
+}
+.tabControl .activeTabTitle{
+    color: #fff;
+    font-weight:700;
+    border-left:1px solid #1eafe1;
+    border-top:1px solid #1eafe1;
+    border-right:1px solid #1eafe1;
+    background:url("../images/frame2/tabtitle_active.jpg") top right;
+}
+
+@media screen and (max-width: 480px){
+    .tabControl .tabPage{
+        position:absolute;
+        left:2px;
+        right:1px;
+        top:0px;
+        bottom:0;
+        /*width: 100%;
+        height: 100%;    
+        float: left;*/
+    }
+    .tabControl .tabTitlePart
+    {
+        display:none;
+    }
+}
+
+@media screen and (min-width: 481px){
+	.tabControl .tabPage{
+	    position:absolute;
+	    left:2px;
+	    right:1px;
+	    top:31px;
+	    bottom:0;
+	    /*width: 100%;
+	    height: 100%;    
+	    float: left;*/
+	}
+	.tabControl .tabTitlePart
+	{
+	    width:100%;
+	    height: 31px;
+	    border-bottom:1px solid #1eafe1;
+	    background-color:#fff;
+	}
+}
+
+
+
+.tabControl .showSidePanel{
+    background: url('../images/frame/hideLeft.png') 0 8px no-repeat;
+    width: 18px;
+    height:22px;
+    cursor: pointer;
+    float:left;
+    margin:3px 5px 0px 10px;
+}
+.tabControl .showSidePanel:hover{
+    background: url('../images/frame/hideLeft_over.png')  0 8px no-repeat;
+
+}
+.tabControl .hideSidePanel{
+    background: url('../images/frame/showLeft.png') 0 8px no-repeat;
+    width: 18px;
+    height:22px;
+    cursor: pointer;
+    float:left;
+    margin:3px 5px 0px 10px;
+}
+    .tabControl .hideSidePanel:hover {
+        background: url('../images/frame/showLeft_over.png') 0 8px no-repeat;
+    }

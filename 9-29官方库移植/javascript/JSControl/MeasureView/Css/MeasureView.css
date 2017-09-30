@@ -1,0 +1,77 @@
+﻿
+.meaItem {
+    width: 265px;
+    height: 110px;
+    margin-right: 8px;
+    margin-bottom: 8px;
+    float: left;
+    border: 1px solid #CCCCCC;
+}
+
+.selected {
+    border: 1px solid #0084CF;
+}
+
+.meaItem div {
+    width: 100%;
+    float: left;
+}
+
+.meaItem table {
+    width: 100%;
+    margin: 10px 0px 0px 10px;
+}
+
+.meaItem .title {
+    height: 50px;
+    background-color: #6CCAC9;
+}
+
+    .meaItem .title .titleIcon {
+        width: 30%;
+    }
+
+        .meaItem .title .titleIcon img {
+            margin: 8px 20px 8px 20px;
+        }
+
+    .meaItem .title .titleName {
+        width: 70%;
+        padding-top: 12px;
+        text-align: center;
+        color: #ffffff;
+        font-size: 17px;
+    }
+
+.meaItem .meaValue {
+    width: 35%;
+    font-size: 20px;
+    color: red;
+}
+
+    .meaItem .meaValue span {
+        font-size: 15px;
+        color: red;
+    }
+
+.meaItem .meaContrastUp {
+    width: 25%;
+    font-size: 18px;
+    color: green;
+}
+
+    .meaItem .meaContrastUp span {
+        font-size: 15px;
+        color: green;
+    }
+
+.meaItem .meaContrastDown {
+    width: 25%;
+    font-size: 18px;
+    color: red;
+}
+
+    .meaItem .meaContrastDown span {
+        font-size: 15px;
+        color: red;
+    }

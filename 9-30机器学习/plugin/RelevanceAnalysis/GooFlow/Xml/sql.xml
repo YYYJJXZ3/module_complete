@@ -1,0 +1,27 @@
+﻿<?xml version="1.0"?>
+<ConfigList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Lists>
+    <ListInfo ListKey="sqlList">
+      <Items>
+        <!--sql中where条件中的日期格式和小时格式 ：day_id>=[$dateStart] and day_id<=[$dateEnd] hour_id>=[$busyHourStart] hour_id<=[$busyHourEnd]-->
+
+          <ItemInfo name="deviantCell" value="select aa.cell
+                  from (SELECT DIM_NE_UTRANCELL.Uc_Desc cell,
+                               ROUND(sum(UP_FLOW), 4) &quot;-446830229&quot;
+                          FROM DW_A_RE_ST_XDR_UC_D T, DIM_NE_UTRANCELL
+                         WHERE T.uc_id = DIM_NE_UTRANCELL.uc_id
+                           AND T.DAY_ID = 20130912
+                         group by DIM_NE_UTRANCELL.Uc_Desc) aa,
+                       (SELECT DIM_NE_UTRANCELL.Uc_Desc cell,
+                               ROUND(sum(TOTAL_FLOW), 4) &quot;695866332&quot;
+                          FROM DW_A_RE_ST_XDR_UC_D T, DIM_NE_UTRANCELL
+                         WHERE T.uc_id = DIM_NE_UTRANCELL.uc_id
+                           AND T.DAY_ID = 20130912
+                         group by DIM_NE_UTRANCELL.Uc_Desc) bb
+                 where aa.cell = bb.cell
+                   and aa. &quot;-446830229&quot; >= 0
+                   and bb. &quot;695866332&quot; > 0         " />
+      </Items>
+    </ListInfo>
+  </Lists>
+</ConfigList>

@@ -1,0 +1,100 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>嵌套饼图</title>
+    <link href="../../../themes/lightblue/p.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/page/page.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/jqgrid/ui.jqgrid.css" rel="stylesheet" />
+
+    <script src="../../core/jquery-1.9.1.min.js"></script>
+    <script src="../../core/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="../../common/tools.js"></script>
+    <script src="../../common/pagetools.js"></script>
+    <script src="Scripts/SampleChart.js"></script>
+    <script>
+        $(function () {
+            getChart();
+            getPie1();
+            getPie2();
+        });
+
+        function getChart() {
+            var data = '{"colnames":["一级业务","二级业务","费用金额"],"rows":[{"col0":"即时通信","col1":"微信","col2":"18"},{"col0":"即时通信","col1":"QQ","col2":"12"},{"col0":"视频","col1":"爱奇艺","col2":"8"},{"col0":"视频","col1":"腾讯视频","col2":"5"},{"col0":"视频","col1":"优酷","col2":"4"},{"col0":"应用商店","col1":"手机助手","col2":"15"},{"col0":"应用商店","col1":"应用宝","col2":"10"},{"col0":"应用商店","col1":"豌豆荚","col2":"6"}]}';
+            data = eval("(" + data + ")");
+            bindChart("Chart", {
+                DataSource: data,
+                ChartType: "PieDoughnut",
+                XDataColIndex: "0,1",
+                YDataColIndex: "2",
+                IsShowValue: true,
+                Pie1: {//嵌套饼图内环
+                    radius: '45%',//半径
+                    center: ['55%', '50%']//中心位置
+                },
+                Pie2: {//嵌套饼图外环
+                    radius: ['60%', '85%'],//半径
+                    center: ['55%', '50%']//中心位置
+                },
+                YUnit: "个",
+                LegendPosition: "LEFT"
+            });
+        }
+
+
+        function getPie1() {
+            var data = '{"colnames":["一级业务","费用金额"],"rows":[{"col0":"即时通信","col1":"30"},{"col0":"视频","col1":"17"},{"col0":"应用商店","col1":"31"}]}';
+            data = eval("(" + data + ")");
+            bindChart("Pie1", {
+                DataSource: data,
+                ChartType: "Pie",
+                XDataColIndex: "0",
+                YDataColIndex: "1",
+                IsShowValue: true,
+                IsShowPercentValue: true,
+                Pie: {
+                    radius: '40%',//半径
+                    center: ['55%', '50%']//中心位置
+                },
+                LabelPosition: "inner",
+                IsShowLegend: false
+            });
+        }
+
+        function getPie2() {
+            var data = '{"colnames":["二级业务","费用金额"],"rows":[{"col0":"微信","col1":"18"},{"col0":"QQ","col1":"12"},{"col0":"爱奇艺","col1":"8"},{"col0":"腾讯视频","col1":"5"},{"col0":"优酷","col1":"4"},{"col0":"手机助手","col1":"15"},{"col0":"应用宝","col1":"10"},{"col0":"豌豆荚","col1":"6"}]}';
+            data = eval("(" + data + ")");
+            bindChart("Pie2", {
+                DataSource: data,
+                ChartType: "Pie",
+                XDataColIndex: "0",
+                YDataColIndex: "1",
+                IsShowValue: true,
+                Pie: {
+                    radius: ['55%', '80%'],//半径
+                    center: ['55%', '50%']//中心位置
+                },
+                LegendPosition: "LEFT"
+            });
+        }
+
+        function bindChart(div, option) {
+            var opts = $.extend(true, {
+                ClickEvent: []
+            }, option);
+
+            $("#" + div).SampleChart(opts);
+        }
+    </script>
+</head>
+<body>
+    <div class="captionWithoutIcon">
+        嵌套饼图
+    </div>
+    <div id="Chart" style="float: left; width: 49.5%; height: 300px; border: 1px solid #CCCCCC;"></div>
+    <div style="position: relative; width: 49.5%; float: right;">
+        <div id="Pie1" style="position: absolute; float: left; left: 0px; top: 0px; width: 100%; height: 300px;"></div>
+        <div id="Pie2" style="position: absolute; float: left; left: 0px; top: 0px; width: 100%; height: 300px; border: 1px solid #CCCCCC;"></div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,452 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>无标题文档</title>
+    <link href="../../../themes/lightblue/page/page.css" rel="stylesheet" />
+    <style>
+        dl.cond {
+            list-style:none
+        }
+
+        dd.conditem {
+            font-size: 12px;
+            border: solid 1px blue;
+            color:white;
+            background-color: #0cbdfa;
+            float: left;
+            padding: 3px;
+            margin: 3px;
+            cursor: pointer;
+        }
+
+            dd.conditem:hover {
+                background-color: #0084cf;
+                color: white;
+            }
+
+        dl.filter {
+            list-style: none;
+        }
+
+        dd.filteritem {
+            font-size: 12px;
+            border: solid 1px #808080;
+            float: left;
+            padding: 3px;
+            margin: 3px;
+            cursor: pointer;
+            display: list-item;
+        }
+
+            dd.filteritem:hover {
+                border-color:#ff6a00
+            }
+       dd.selecteditem {
+                background-color: #0026ff;
+                color: white;
+            }
+        .filtertitle {
+            font-size: 12px;
+            float: left;
+            font-weight:600;
+            padding: 3px;
+            margin:3px;
+            width:80px;
+            text-align:right
+        }
+        .filteritemdiv {
+        }
+
+    </style>
+    <link href="../../../themes/lightblue/jqueryui/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/jqgrid/ui.jqgrid.css" rel="stylesheet" />
+    <script src="../../../javascript/core/jquery-1.9.1.min.js"></script>
+    <script src="../../../javascript/core/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="../../../javascript/common/tools.js"></script>
+    <script src="../../../javascript/common/pagetools.js"></script>
+    <script src="../../../javascript/JSControl/SmartGrid/JqGrid/jquery.jqGrid.src.js"></script>
+    <script src="../../../javascript/JSControl/SmartGrid/JqGrid/SmartGrid.js"></script>
+    <script src="../../../javascript/JSControl/SmartGrid/JqGrid/grid.locale-cn.js"></script>
+    <script src="../../../javascript/JSControl/Common/toolbar.js"></script>
+    <script src="../../../javascript/JSControl/Condition/timepicker.js"></script>
+    
+    <script type="text/javascript">
+        var templateid = "-213659813";
+        var templatename = "";
+        var arrLvlName = ["省份", "地区", "MME","SGW", "分公司","MSC","BSC", "区县", "ENODEB", "eNodeB", "ECI", "小区", "一级业务", "二级业务", "原因码", "原因码类型"];
+        var arrCondName = ["省份", "地区", "MME", "SGW", "MSC", "分公司", "区县", "一级业务"];//, "二级业务"
+        var arrDrill = ["地区", "SGW", "分公司", "MSC", "ENODEB", "eNodeB", "小区"];
+        var analyzer = {};
+        var analyzerBakup = {};
+        var arrDimData = [];
+
+        $(function () {
+            dss.pageheader("sitemap");
+            templateInit();
+            $("#btnQuery").click(function(){query()});
+        });
+
+        function query() {
+            var ana = {};
+            $.extend(true,ana,analyzer);
+            setAnalyzerDim(ana);
+            $("#divGrid").smartgrid({
+                showrownum: true,
+                analyzer: ana,
+                captionName: templatename,
+                paging: {
+                    rowNum: ana.PageSetting.PageSize
+                },
+                col:{
+                    property:[{colindex:ana.RowDimList.length+ana.MeasureList.length,name:"其他粒度",sort:false}]
+                },
+                analyzercontextmenu: {
+                    show: false,
+                    showRelatedAnalysis: false,
+                    showDrill: false,
+                    showDimStatistics: false,
+                    showCalcCol: false
+                },
+                errorfun: function (msg) {
+                    alertDialog("error", msg);
+                },
+                callback: {
+                    gridComplete: function (grid, opts) {
+                        if (grid[0].rows.length > 1) {
+                            var deepestdim = "";
+                            for (var i = arrDrill.length - 1; i > -1; i--) {
+                                for (var j = 0; j < ana.RowDimList.length; j++) {
+                                    if (arrDrill[i] == ana.RowDimList[j].LevelName) {
+                                        deepestdim = arrDrill[i];
+                                        break;
+                                    }
+                                }
+                                if (deepestdim != "") { break;}
+                            }
+                          
+                            var otherdim = [];
+                            for (var i = 0; i < arrDrill.length;i++){
+                                for (var j = 0; j < analyzerBakup.RowDimList.length; j++) {
+                                    if (arrDrill[i] == analyzerBakup.RowDimList[j].LevelName && arrDrill[i] != deepestdim) {
+                                        otherdim.push(arrDrill[i]);
+                                    }
+                                }
+                            }
+                            var otherdimstr = otherdim.join('  ');
+
+                            var lastcol = grid[0].rows[0].cells.length - 1;
+                            for (var r = 1; r < grid[0].rows.length; r++) {
+                                for (var d = 0; d < otherdim.length; d++) {
+                                    var cc = $("<span>" + otherdim[d] + "<span>");
+                                    cc.css({ color: "blue", margin: "3px", cursor: "pointer" });
+                                    cc.click(function () { otherDimClick(this); });
+                                    $(grid[0].rows[r].cells[lastcol]).append(cc);
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function otherDimClick(obj)
+        {
+            analyzer = {};
+            $.extend(true, analyzer, analyzerBakup);
+            var lvlname = $(obj).text();
+            var dimid = "";
+            for (var i = 0; i < analyzer.RowDimList.length; i++)
+            {
+                if (analyzer.RowDimList[i].LevelName == lvlname)
+                {
+                    dimid = analyzer.RowDimList[i].DimensionID;
+                    break;
+                }
+            }
+            if (dimid != "")
+            {
+                var indexdrill = indexOfStrInArr(lvlname, arrLvlName);
+                for (var i = analyzer.RowDimList.length-1; i > -1; i--) {
+                    if (analyzer.RowDimList[i].DimensionID == dimid) {
+                        var index = indexOfStrInArr(analyzer.RowDimList[i].LevelName, arrLvlName);
+                        if (index > -1) {
+                            if (indexdrill < index) {
+                                analyzer.RowDimList.splice(i, 1);
+                            }
+                        }
+                    }
+                }
+                $("#divDimFilter>div").remove();
+                $("#divGrid").empty();
+                $("#dlCond").find(">dd").remove();
+                $(analyzer.RowDimList).each(function () {
+                    if (indexOfStrInArr(this.LevelName, arrCondName) > -1) {
+                        loadDimMemberDom(this.DimensionID, this.LevelName);
+                    }
+                });
+            }
+        }
+
+        function setAnalyzerDim(ana){
+            $("#dlCond").find(">dd").each(function () {
+                var dim = $(this).data("dimobj");
+                for (var i = 0; i < ana.RowDimList.length; i++) {
+                    if (ana.RowDimList[i].DimensionID == dim.DimensionID && ana.RowDimList[i].LevelName == dim.LevelName) {
+                        ana.RowDimList[i].ValType = dim.ValType;
+                        ana.RowDimList[i].ValList = dim.ValList;
+                    }
+                }
+            });
+            var timetype = $("#txtDate").timepicker("getTimeType");
+            var hour = $("#txtDate").timepicker("getHourStr");
+            var datestr = $("#txtDate").timepicker("getDateStr");
+            if (timetype == "Hour") {
+                resetDateDim(["周", "月"], ana);
+                setAnaDimDateVal(ana, "日", datestr);
+                setAnaDimDateVal(ana, "小时", hour);
+            }
+            else if (timetype == "Day") {
+                resetDateDim(["周", "月", "小时"], ana);
+                setAnaDimDateVal(ana, "日", datestr);
+            }
+            else if (timetype == "Month") {
+                resetDateDim(["周", "日", "小时"], ana);
+                setAnaDimDateVal(ana, "月", datestr);
+            }
+            else if (timetype == "Week") {
+                resetDateDim(["日", "月", "小时"], ana);
+                setAnaDimDateVal(ana, "周", datestr);
+            }
+        }
+
+        function setAnaDimDateVal(ana, levelname, val) {
+            for (var i = 0; i < ana.RowDimList.length; i++) {
+                if (ana.RowDimList[i].LevelName == levelname) {
+                    ana.RowDimList[i].ValType = 0;
+                    ana.RowDimList[i].Val = val;
+                }
+            }
+        }
+
+        function resetDateDim(dr,ana) {
+            for (var i = ana.RowDimList.length - 1; i > -1; i--) {
+                if (indexOfStrInArr(ana.RowDimList[i].LevelName, dr) > -1) {
+                    ana.RowDimList.splice(i, 1);
+                }
+            }
+        }
+
+        function indexOfStrInArr(str, arr) {
+            var index = -1;
+            for (var i = 0; i < arr.length; i++) {
+                if (arr[i] == str) {
+                    index = i;
+                }
+            }
+            return index;
+        }
+
+        function templateInit() {
+            var tid = dss.request("tid");
+            if (tid != null && tid != "") {
+                templateid = tid;
+            }
+            var url = "../pages/Handler.ashx?datatype=template&templateid=" + templateid;
+            $.ajax({
+                url: url,
+                success: function (data) {
+                    var tmp = $.parseJSON(data);
+                    templatename = tmp.TemplateName;
+                    var ana = tmp.Analyzer;
+                    var dateoption = getDateOption(ana);
+                    $("#txtDate").timepicker(dateoption);
+                    analyzerBakup = ana;
+                    $.extend(true, analyzer, analyzerBakup);
+                    $(ana.RowDimList).each(function () {
+                        if (indexOfStrInArr(this.LevelName, arrCondName) > -1) {
+                            loadDimMember(this.DimensionID, this.LevelName);
+                        }
+                    });
+                }
+            });
+        }
+
+        function getDateOption(ana){
+            var dateoption = {
+                showTypeMonth: false,
+                showTypeWeek: false,
+                showTypeHour: false,
+                showTypeDay: false
+            };
+            for (var i = 0; i < ana.RowDimList.length; i++) {
+                switch (ana.RowDimList[i].LevelName) {
+                    case "日": dateoption.showTypeDay = true; break;
+                    case "月": dateoption.showTypeMonth = true; break;
+                    case "周": dateoption.showTypeWeek = true; break;
+                    case "小时": dateoption.showTypeHour = true; break;
+                    default: break;
+                }
+            }
+            return dateoption;
+        }
+
+        function getDimDataFromCache(dimid, levelname) {
+            var data = null;
+            for (var i = 0; i < arrDimData.length; i++) {
+                if (arrDimData[i].dimid == dimid&&arrDimData[i].levelname == levelname) {
+                    data = arrDimData[i].data;
+                }
+            }
+            return data;
+        }
+
+        function loadDimMember(dimid, levelname) {
+            dss.ajax({
+                url: "QuickQuery.ashx?qtype=dim",
+                data: {
+                    dimid: dimid,
+                    levelname: levelname
+                },
+                type: "post",
+                success: function (data) {
+                    arrDimData.push({ dimid: dimid, levelname: levelname, data: data });
+                    loadDimMemberDom(dimid, levelname);
+                }
+            });
+        }
+
+        function loadDimMemberDom(dimid, levelname) {
+            var $div = $("<div style='clear:left; border-top:1px solid #eeeeee;padding-top:3px;padding-bottom:3px'></div>");
+            var $dl = $("<dl class='filter'></dl>");
+            $div.append("<div class='filtertitle'>" + levelname + "：<div>");
+            var data = getDimDataFromCache(dimid, levelname);
+            var $dldiv = $("<div class='filteritemdiv' style='float:left;max-height:88px;overflow:auto;'></div>");
+            $dldiv.css("width", document.body.clientWidth - 190);
+            $dldiv.data("dimid", dimid);
+            $dldiv.data("levelname", levelname);
+            var btnMulti = $("<input type='button' class='button' style='margin:2px;' value='+ 多选'/>");
+            $dldiv.append($dl);
+            $div.append($dldiv).append(btnMulti);
+            $("#divDimFilter").append($div);
+            $(data.rows).each(function () {
+                $dl.append("<dd class='filteritem'>" + this.col0 + "</dd>");
+            });
+            btnMulti.click(function () {
+                multiBtnClick(this);
+            });
+            $dl.find("dd").click(function () {
+                var $thisdd = $(this);
+                var dim = { DimensionID: dimid, LevelName: levelname, ValType: 1, ValList: [$(this).text()] };
+                filterItemClick($thisdd, $dl, dim);
+            });
+        }
+
+
+        function multiBtnClick(obj) {
+            var $btn = $(obj);
+            var $dldiv = $btn.prev("div");
+            var $div = $btn.parent();
+            var $multiDiv = $("<div style='padding:3px;float:left; max-height:100px;overflow:auto'></div>");
+            $multiDiv.css("width", document.body.clientWidth - 150);
+            $div.find("dd").each(function () {
+                $multiDiv.append("<input type='checkbox' value='" + $(this).text() + "'/><span>" + $(this).text() + "  </span>");
+            });
+            var $btnOK = $("<input type='button' class='button' value='确定'/>")
+            $btnOK.prop("disabled", true);
+            $btnOK.click(function () {
+                var vallist = [];
+                $multiDiv.find(":checkbox:checked").each(function () { vallist.push($(this).val()); });
+                var dim = { DimensionID: $dldiv.data("dimid"), LevelName: $dldiv.data("levelname"), ValType: 1, ValList: vallist };
+                addSelectCond(dim); $multiDiv.remove();
+                $btn.show();
+                $dldiv.show();
+                $div.hide();
+            });
+            var $btnCansel = $("<input type='button' class='button' value='取消'/>")
+            $btnCansel.click(function () {
+                $multiDiv.remove();
+                $btn.show();
+                $dldiv.show();
+            });
+            $("<div style='text-align:center;'></div>").append($btnOK).append("&nbsp;").append($btnCansel).appendTo($multiDiv);
+            $multiDiv.find(":checkbox").click(function () {
+                if ($div.find(":checkbox:checked").length > 0) {
+                    $btnOK.prop("disabled", false);
+                }
+                else {
+                    $btnOK.prop("disabled", true);
+                }
+            });
+            $div.append($multiDiv);
+            $btn.hide(); $dldiv.hide();
+        }
+
+
+        function filterItemClick($thisdd,$thisdl,dim) {
+            addSelectCond(dim);
+            $thisdd.parent().children().removeClass("selecteditem");
+            $thisdd.addClass("selecteditem");
+            $thisdl.parent().parent().hide();
+            $thisdl.parent().parent().siblings("div").each(function () {
+                var $dldiv = $(this).find("div.filteritemdiv");
+                if ($dldiv.data("dimid") == dim.DimensionID) {
+                    var index = indexOfStrInArr(dim.LevelName, getDimDataFromCache(dim.DimensionID, $dldiv.data("levelname")).colnames);
+                    var lvlnam = $dldiv.data("levelname");
+                    if (index > -1) {
+                        var $thatdl = $dldiv.find("dl");
+                        $thatdl.find("dd").remove();
+                        $(getDimDataFromCache($dldiv.data("dimid"), $dldiv.data("levelname")).rows).each(function () {
+                            if (this["col" + index] == $thisdd.text()) {
+                                $thatdl.append("<dd class='filteritem'>" + this.col0 + "</dd>");
+                            }
+                        });
+                        $thatdl.find("dd").click(function () {
+                            var dimension = { DimensionID: dim.DimensionID, LevelName: lvlnam, ValType: 1, ValList: [$(this).text()] };
+                            filterItemClick($(this), $thatdl, dimension);
+                        });
+                    }
+                }
+            });
+        }
+    
+
+        function addSelectCond(dim) {
+            var text = dim.ValList.join(',');
+            var title = text;
+            if (text.length > 10) {
+                text = text.substr(0, 10)+"...";
+            }
+            var $dd = $("<dd class='conditem' title='" + title + "'>" + text + "</dd>");
+            $dd.data("dimobj", dim);
+            $dd.click(function () {
+                $(this).remove();
+                $("#divDimFilter").find(">div").each(function () {
+                    if ($(">div.filtertitle", $(this)).text() == dim.LevelName + "："){
+                        $(this).find("dd").removeClass("selecteditem");
+                        $(this).show();
+                    }
+                });
+            });
+            //$("#dlCond").find("dd").remove();
+            $("#dlCond").append($dd);
+        }
+    </script>
+</head>
+<body>
+    <div id="sitemap"></div>
+    <div id="divCond">
+        <dl id="dlCond" class="cond"><dt class="filtertitle">已选条件：</dt></dl>
+    </div>
+    <div id="divDimFilter" style="clear:both;">
+    </div>
+    <div style="clear: both; border-top: 1px solid #eeeeee; padding-top: 3px">
+        <dl>
+            <dt class="filtertitle">时间：</dt>
+            <dd style="float:left;padding:2px; border:0;"><input type="text" style="width:102px; margin:1px;" id="txtDate" /></dd>
+            <dd style="float:left;padding:2px; border:0;"><input type="button" class="button" value="查询" id="btnQuery" /></dd>
+        </dl>
+    </div>
+    <div style="clear:both;" id="divGrid"></div>
+</body>
+</html>

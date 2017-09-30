@@ -1,0 +1,281 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <link href="../../../Themes/lightblue/jqueryui/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/jqgrid/ui.jqgrid.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/page/page.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/ca/db/dashboard.css" rel="stylesheet" />
+    <link href="../../../javascript/ztree/css/zTreeStyle/zTreeStyle.css" rel="stylesheet" />
+    <script src="../../../Javascript/core/jquery-1.9.1.min.js" type="text/javascript"></script>
+    <script src="../../../javascript/core/jquery-ui-1.10.3.custom.min.js"></script>
+
+    <script src="../../../javascript/common/tools.js" type="text/javascript"></script>
+    <script src="../../../javascript/common/pagetools.js" type="text/javascript"></script>
+    <script src="../../../Javascript/JSControl/Condition/comselect.js" type="text/javascript"></script>
+    <script src="../../../javascript/JSControl/Condition/controlmanagernew.js"></script>
+    <script src="../../../javascript/JSControl/Common/toolbar.js"></script>
+    <script src="../../../javascript/JSControl/Condition/timepicker.js"></script>
+
+    <script src="../../../javascript/JSControl/SmartGrid/JqGrid/grid.locale-cn.js"></script>
+    <script src="../../../javascript/JSControl/SmartGrid/JqGrid/jquery.jqGrid.min.js"></script>
+    <script src="../../../javascript/JSControl/SmartGrid/JqGrid/SmartGrid.js"></script>
+    <script src="../../../javascript/JSControl/SampleChart/Scripts/SampleChart.js"></script>
+
+    <script type="text/javascript">
+        var param = {
+            time: "2016年03月07日",
+            timeType: null,
+            region: "",
+            ec: "",
+            app: "",
+            subApp: ""
+        };
+
+        $(function () {
+            method.init();
+            method.getData1();
+            method.getData2();
+            method.getData3();
+        });
+
+        var method = {
+            init: function () {
+                dss.pageheader("m");
+
+                var timeOpt = {
+                    showTypeDay: true,
+                    showTypeMonth: false,
+                    defaultDateStr: param.time,
+                    isTile: true
+                };
+
+                $("#txtTime").timepicker(timeOpt);
+
+                var p = [];
+                p.push({
+                    labelname: '网元',
+                    width: 80,
+                    defaultShow: '省',
+                    type: 'dropdown',
+                    items: [
+                        {
+                            dimid: "-100279154",
+                            levelname: '省',
+                            selectmode: "single",
+                            filterValue: ['未知'],
+                            hascheckall: true,
+                            checkallValues: [{ "id": "全部", "name": "全部" }],
+                            initValues: [{ "name": "全部" }],
+                            child: [1],
+                            initClass: "commdata"//commdata bigdata   treedata
+                        }
+                    ]
+                });
+                p.push({
+                    labelname: '网元',
+                    width: 80,
+                    defaultShow: '地区',
+                    type: 'dropdown',
+                    items: [
+                        {
+                            dimid: "-100279154",
+                            levelname: '地区',
+                            selectmode: "single",
+                            filterValue: ['未知'],
+                            hascheckall: true,
+                            checkallValues: [{ "id": "全部", "name": "全部" }],
+                            initClass: "commdata"//commdata bigdata   treedata
+                        }
+                    ]
+                });
+                //p.push({
+                //    labelname: '网元',
+                //    width: 80,
+                //    defaultShow: '小区',
+                //    type: 'dropdown',
+                //    items: [
+                //        {
+                //            dimid: "-100279154",
+                //            levelname: '小区',
+                //            selectmode: "single",
+                //            filterValue: ['未知'],
+                //            hascheckall: true,
+                //            checkallValues: [{ "id": "全部", "name": "全部" }],
+                //            initClass: "commdata"//commdata bigdata   treedata
+                //        }
+                //    ]
+                //});
+                //p.push({
+                //    labelname: '网元',
+                //    width: 80,
+                //    defaultShow: '一级业务',
+                //    type: 'dropdown',
+                //    items: [
+                //        {
+                //            dimid: "1356977237",
+                //            levelname: '一级业务',
+                //            selectmode: "single",
+                //            filterValue: ["未知"],//过滤值
+                //            hascheckall: true,
+                //            checkallValues: [{ "id": "全部", "name": "全部" }],
+                //            child: [3],
+                //            initClass: "commdata"//commdata bigdata   treedata
+                //        }
+                //    ]
+                //});
+                //p.push({
+                //    labelname: '网元',
+                //    width: 80,
+                //    defaultShow: '二级业务',
+                //    type: 'dropdown',
+                //    items: [
+                //        {
+                //            dimid: "1356977237",
+                //            levelname: '二级业务',
+                //            selectmode: "single",
+                //            filterValue: ["未知"],//过滤值
+                //            initClass: "commdata"//commdata bigdata   treedata
+                //        }
+                //    ]
+                //});
+
+                $("#divFilter").controlmanager(p);
+
+                method.getParam();
+
+                $("#btnQuery").click(function () {
+                    method.getParam();
+                    method.getData1();
+                    method.getData2();
+                    method.getData3();
+                });
+            },
+            getParam: function () {
+                param.time = $("#txtTime").timepicker("getDateStr");
+                var con = $("#divFilter").controlmanager("getSelResults");
+                param.region = con[1].value.join(",");
+                //param.ec = con[1].value.join(",");
+                //param.app = con[2].value.join(",");
+                //param.subApp = con[3].value.join(",");
+            },
+            getData1: function () {
+                var strSql = "select ELEMENT_NAME 地区名称,STAT_TIME 统计时间,UP_SERVICE_BYTES_NUM 空口上行业务字节数,DOWN_SERVICE_BYTES_NUM 空口下行业务字节数,AVER_UP_PRB_RATE 上行PRB平均利用率,AVER_DOWN_PRB_RATE 下行PRB平均利用率,AVER_UP_CHA_PRB_RATE 上行业务信道PRB平均利用率,AVER_DOWN_CHA_PRB_RATE 下行业务信道PRB平均利用率,WIRE_UTIL_RATE 无线利用率,UP_SERVICE_THR_PUT_RATE 上行每PRB平均吞吐率,DOWN_SERVICE_THR_PUT_RATE 下行每PRB平均吞吐率 from O_RE_ST_XDR_PS_NMS where 1=1 ";
+                
+                param.time = "2016年03月07日";
+                if (!isNullProperty(param.time)) {
+                    var date = Date.parse(param.time);
+                    var start = date.format("yyyy-MM-dd");
+                    var end = date.addDays(1).format("yyyy-MM-dd");
+                    strSql += " and (STAT_TIME >= to_date('" + start + "','yyyy-mm-dd') and STAT_TIME <= to_date('" + end + "','yyyy-mm-dd'))";
+                }
+                if (!isNullProperty(param.region)) {
+                    strSql += " and ELEMENT_NAME like '%" + param.region + "%'";
+                }
+
+                method.bindGrid("divGrid1", {
+                    captionName: "网管",
+                    ajax: {
+                        sqlstr: strSql
+                    }
+                });
+            },
+            getData2: function () {
+                var strSql = "select ALARM_TITLE 告警标题ID,ALARM_TITLE_TEXT 告警标题,EVENT_TIME 告警产生时间,ORG_SEVERITY 原始告警级别,VENDOR_SEVERITY 厂家告警级别,ORG_TYPE 原始告警类别,VENDOR_TYPE 厂家告警类别,ACTIVE_STATUS 告警活动状态,CANCEL_TIME 告警清除时间,PROBABLE_CAUSE_TXT 可能原因正文,LOCATE_INFO 定位信息,VENDOR_ID 厂家ID,VENDOR_NAME 厂家名称,NE_LABEL 网元名称,NE_LOCATION 网元定位信息,PROVINCE_NAME 省名称,REGION_NAME 地区名称,CITY_NAME 城市名称,NETWORK_TYPE 网络类型 from OP_RE_ST_TFA_ALARM where 1=1 ";
+
+                param.time = "2016年03月07日";
+                if (!isNullProperty(param.time)) {
+                    var date = Date.parse(param.time);
+                    var start = date.format("yyyy-MM-dd");
+                    var end = date.addDays(1).format("yyyy-MM-dd");
+                    strSql += " and (EVENT_TIME >= to_date('" + start + "','yyyy-mm-dd') and EVENT_TIME <= to_date('" + end + "','yyyy-mm-dd'))";
+                }
+                if (!isNullProperty(param.region)) {
+                    strSql += " and REGION_NAME like '%" + param.region + "%'";
+                }
+
+                method.bindGrid("divGrid2", {
+                    captionName: "告警",
+                    ajax: {
+                        sqlstr: strSql
+                    }
+                });
+            },
+            getData3: function () {
+                var strSql = "SELECT DAY_ID '{日}', REGION_DESC '{地区名称}',EC_DESC '{小区}',APP_DESC '{一级业务}',SUBAPP_DESC '{二级业务}',UL_DATA '{上行流量}',DL_DATA '{下行流量}' FROM DW_A_XDR_HTTP_ECSV_D where 1=1 ";
+
+                param.time = "2015年11月16日";
+                if (!isNullProperty(param.time)) {
+                    strSql += " and DAY_ID=" + param.time.replace("年", "").replace("月", "").replace("日", "");
+                }
+                if (!isNullProperty(param.region)) {
+                    strSql += " and REGION_DESC like '%" + param.region + "%'";
+                }
+                if (!isNullProperty(param.ec)) {
+                    strSql += " and EC_DESC='" + param.ec + "'";
+                }
+                if (!isNullProperty(param.app)) {
+                    strSql += " and APP_DESC='" + param.app + "'";
+                }
+                if (!isNullProperty(param.subApp)) {
+                    strSql += " and SUBAPP_DESC='" + param.subApp + "'";
+                }
+
+                method.bindGrid("divGrid3", {
+                    captionName: "信令",
+                    ajax: {
+                        connstr: "dxtest_db",
+                        sqlstr: strSql
+                    }
+                });
+            },
+            bindGrid: function (div, option) {
+                var strConn = "SQL_ConnDm";
+                var dataPath = "../../../javascript/JSControl/SmartGrid/Handler/JqGridData.ashx";
+
+                var opt = $.extend(true, {
+                    ajax: {
+                        path: dataPath,
+                        connstr: strConn,
+                        //分页属性
+                        paging: {
+                            rowNum: 20,
+                            rowList: [20, 40, 60]
+                        }
+                    }
+                }, option);
+
+                $("#" + div).smartgrid(opt);
+            }
+        };
+
+        //判断值是否为空
+        function isNullProperty(p) {
+            if (p == undefined || p == null || (typeof (p) == "string" && (p == "" || p == "全部"))) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+    </script>
+</head>
+<body>
+    <div id="m"></div>
+    <div class="toolbar">
+        <ul>
+            <li class="item"><span class="tag"></span>
+                <input style="width: 100px;" id="txtTime" type="text" /></li>
+            <li class="item">
+                <div id="divFilter"></div>
+            </li>
+            <li class="item">
+                <input class="button" id="btnQuery" value="查询" type="button" /></li>
+        </ul>
+    </div>
+    <div id="divGrid1"></div>
+    <div id="divGrid2"></div>
+    <div id="divGrid3"></div>
+</body>
+</html>

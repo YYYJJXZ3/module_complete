@@ -1,0 +1,159 @@
+﻿<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <title></title>
+  <script src="http://gildas-lormeau.github.io/zip.js/demos/zip.js"></script>
+  <script src="http://gildas-lormeau.github.io/zip.js/demos/mime-types.js"></script>
+  <script src="http://apps.bdimg.com/libs/jquery/1.9.0/jquery.js"></script>
+  <style>
+    code{
+      display: block;
+      padding: 10px;
+      background: #eee;
+    }
+  </style>
+</head>
+<body>
+  <div>
+    <h1>
+      兼容性
+    </h1>
+    <div>
+      <p>
+        zip.js可以在所有的chrome浏览器和firefox浏览器中运行， 可以在safari6和IE10，以及IE10以上运行;
+      </p>
+      <p>
+        如果要在IE9和safari中运行需要两个设置：
+      </p>
+      <code>
+        1：zip.useWebWorkers == false
+      </code>
+      <code>
+        2：并引用这个JS:https://bitbucket.org/lindenlab/llsd/raw/7d2646cd3f9b/js/typedarray.js
+      </code>
+    </div>
+  </div>
+<script>
+    zip.workerScriptsPath = "http://localhost:4675/web/javascript/zip/js/";
+    /**
+     * @desc 压缩文件;
+     * @event onprogress, onend, onerror;
+     * */
+    var ZipArchive = function () {
+        function noop() { };
+        this.name = "未命名文件";
+        this.zippedBlob = {};
+        var _this = this;
+        this.length = 0;
+        this.onend = noop;
+        this.onerror = noop;
+        this.onprogress = noop;
+        //创建一个延迟对象;
+        var def = this.defer = new $.Deferred();
+        zip.createWriter(new zip.BlobWriter("application/zip"), function (zipWriter) {
+            _this.zipWriter = zipWriter;
+            //继续执行队列;
+            def.resolve();
+        }, this.error);
+    };
+
+    ZipArchive.blob = function (filename, content) {
+        return new Blob([content], {
+            type: zip.getMimeType(filename)
+        });
+    };
+
+    $.extend(ZipArchive.prototype, {
+        /**
+         * @desc 添加文件
+         * @param String filename为文件的名字;
+         * @param String content;
+         * @param Object options 传参
+         *   例如：{ level : 0} 压缩的等级，0 到 9；
+         *   例如：{ comment : "提示文字" }
+         *   例如：{ lastModDate : "最后编辑时间" }
+         * */
+        "addFile": function (filename, content, options) {
+            var _this = this;
+            blob = ZipArchive.blob(filename, content);
+            //为了产生链式的效果， 必须把deferrer赋值给新的defer
+            this.defer = this.defer.then(function () {
+                var def = $.Deferred();
+
+                _this.zipWriter.add(filename, new zip.BlobReader(blob)
+                    , function () { // reader
+                        console.log("addFile success!!");
+                        def.resolve();
+                        //zipWriter.close(callback);
+                    }, function (size, total) { //onend
+                        _this.onend(filename, blob, total);
+                        _this.length += total;
+                    }, function () { //onprogress
+                        _this.onprogress(filename, blob, total);
+                    }, options || {
+                        //options
+                    });
+
+                return def;
+            });
+        },
+
+        /**
+         * @desc 添加文件夹, 我发现这个文件无法创建;
+         * @desc 创建文件夹功能不好用, 需要创建文件夹你通过 zipWriter.addFile("directory/filename.txt", blob())创建文件夹和对应文件;;
+         * */
+        "_addFolder": function (foldername, options) {
+            //创建文件夹功能目前不能用;
+            //创建文件夹功能不好用, 直接通过 zipWriter.addFile("directory/filename.txt", blob())创建文件夹和文件
+            return this;
+        },
+
+        "size": function () {
+            return this.length;
+        },
+
+        /**
+         * @desc 获取blob文件
+         * */
+        "get": function () {
+            return this.zippedBlob;
+        },
+
+        /**
+         * @desc 导出为zip文件
+         * */
+        "export": function (name) {
+            name = name || this.name;
+            var _this = this;
+            this.defer.then(function () {
+                _this.zipWriter.close(function (zippedBlob) {
+                    if (typeof name === "string" || typeof name === "number") {
+                        var downloadButton = document.createElement("a"),
+                            URL = window.webkitURL || window.mozURL || window.URL;
+                        downloadButton.href = URL.createObjectURL(zippedBlob);
+                        downloadButton.download = name + ".zip";
+                        downloadButton.click();
+                    } else {
+                        name(zippedBlob);
+                    };
+                });
+            });
+        },
+
+        "error": function () {
+            this.onerror(this);
+            throw new Error("压缩文件创建失败");
+        }
+    });
+
+</script>
+<script>
+    var z = new ZipArchive;
+    z.addFile("a.txt", "aaaaaaacontent");
+    z.export("nono");
+
+    //window.location.href = "../../../temp/report/网络运行日报 7.6.zip";
+</script>
+</body>
+</html>

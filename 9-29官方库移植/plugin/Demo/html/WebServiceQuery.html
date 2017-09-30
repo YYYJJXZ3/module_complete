@@ -1,0 +1,185 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <link href="../../../Themes/lightblue/jqueryui/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/jqgrid/ui.jqgrid.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/page/page.css" rel="stylesheet" />
+
+    <script src="../../../Javascript/core/jquery-1.9.1.min.js" type="text/javascript"></script>
+    <script src="../../../javascript/core/jquery-ui-1.10.3.custom.min.js"></script>
+
+    <script src="../../../javascript/common/tools.js" type="text/javascript"></script>
+    <script src="../../../javascript/common/pagetools.js" type="text/javascript"></script>
+
+    <script src="../../../Javascript/JSControl/Condition/comselect.js" type="text/javascript"></script>
+
+    <script src="../../../javascript/JSControl/Condition/controlmanagernew.js"></script>
+
+    <script src="../../../javascript/JSControl/Common/toolbar.js"></script>
+    <script src="../../../javascript/JSControl/Condition/timepicker.js"></script>
+
+    <script src="../../../javascript/JSControl/SmartGrid/JqGrid/grid.locale-cn.js"></script>
+    <script src="../../../javascript/JSControl/SmartGrid/JqGrid/jquery.jqGrid.min.js"></script>
+    <script src="../../../javascript/JSControl/SmartGrid/JqGrid/SmartGrid.js"></script>
+
+    <script src="../../Common/js/CommonHelp.js"></script>
+    <script type="text/javascript">
+        var param = {
+            startTime: "",
+            endTime: "",
+            MSISDN: "",
+            interfaceType: ""//接口类型
+        };
+
+        $(function () {
+            method.init();
+
+        });
+
+        var method = {
+            init: function () {
+                dss.pageheader("m");//显示页面导航、查询页面帮助、查询页面sql按钮
+                method.getRequest();//获取别的页面传来的参数
+                method.initTime();//初始化时间控件
+                method.initQueryCtrl();//初始化除时间之外的其他查询条件
+                method.getParam();//获取查询条件
+
+                //绑定“查询”按钮的click事件
+                $("#btnQuery").click(function () {
+                    method.getParam();
+                    method.bindGrid();
+                });
+
+                //绑定“导出”按钮的click事件
+                $("#btnExport").click(function () {
+
+                });
+            },
+            //初始化时间控件
+            initTime: function () {
+                var opt = {
+                    showTypeMonth: false,
+                    showTypeDay: false,
+                    showTypeMinute: true,
+                    defaultTimeType: "Minute",
+                    defaultDateStr: "",
+                    range: true,
+                    isTile: true
+                };
+                $("#txtTime").timepicker(opt);
+            },
+            //初始化除时间之外的其他查询条件
+            initQueryCtrl: function () {
+                var p = [
+                    {
+                        labelname: '用户号码',
+                        width: 100,
+                        defaultShow: 'MSISDN',
+                        type: 'text',
+                        items: [
+                            {
+                                levelname: 'MSISDN'
+                            }
+                        ]
+                    },
+                    {
+                        labelname: '接口类型',
+                        width: 50,
+                        defaultShow: '接口类型',
+                        type: 'dropdown',
+                        items: [
+                            {
+                                levelname: '接口类型',
+                                selectmode: "single",
+                                datasource: [{ "name": "Gm" }, { "name": "Mw" }, { "name": "Mg" }, { "name": "Mi" }],
+                                initValues: [{ "name": "Gm" }],
+                                initClass: "commdata"//commdata bigdata   treedata
+                            }
+                        ]
+                    }
+                ];
+
+                $("#divFilter").controlmanager(p);
+            },
+            getRequest: function () {
+
+            },
+            //获取查询条件
+            getParam: function () {
+                var day = $("#txtTime").timepicker("getDateStr").split(":");
+                var hour = $("#txtTime").timepicker("getHourStr").split(":");
+                var minute = $("#txtTime").timepicker("getMinuteStr").split(":");
+                param.startTime = dssHelp.formatDate(day[0] + hour[0] + minute[0], "yyyy-MM-dd hh24:mi") + ":00";
+                param.endTime = dssHelp.formatDate(day[1] + hour[1] + minute[1], "yyyy-MM-dd hh24:mi") + ":59";
+
+                var con = $("#divFilter").controlmanager("getSelResults");
+                param.MSISDN = con[0].value.join(',');
+                param.interfaceType = con[1].value.join(',');
+            },
+            bindGrid: function () {
+                var con = {
+                    startTime: param.startTime,
+                    endTime: param.endTime,
+                    MSISDN: param.MSISDN,
+                    interfaceType: param.interfaceType
+                }
+
+                var opts = {
+                    captionName: "XDR详情",
+                    //数据来源
+                    ajax: {
+                        sqlstr: con,
+                        path: dss.rootPath + "plugin/Demo/ashx/WebServiceQuery.ashx"
+                    },
+                    //分页属性
+                    paging: {
+                        rowNum: 10,
+                        rowList: [10, 20, 30]
+                    },
+                    //默认排序
+                    sort: {},
+                    //单元格属性
+                    toolbar: {
+                        notShow: ["isexport"]
+                    },
+                    col: {
+                        poperty: [//{ datafrom: "user", colindex: 0, name: "", width: 50, adddom: "aaa" },
+                        ]
+                    }
+                };
+
+                $("#divGrid").smartgrid(opts);
+            },
+            drill: function (type, value) {
+                var url = "plugin/VoLTE/html/RegistAnalysis.html?dashboardId=165648282&listtype=List&listid=-1003880075";
+                url += "&initvalues=" + dss.jsonToString(initvalues);//下钻到dashboard的页面需要用此参数传参
+
+                url = encodeURI(url);
+
+                dss.openPageInTab("终端分析", url);
+            }
+        }
+    </script>
+</head>
+<body>
+    <div style="width: 99%; margin: auto; margin-bottom: 8px;">
+        <div id="m"></div>
+        <div class="toolbar">
+            <ul>
+                <li class="item">
+                    <input style="width: 100px;" id="txtTime" type="text" /></li>
+                <li class="item">
+                    <div id="divFilter"></div>
+                </li>
+                <li class="item">
+                    <input class="button" id="btnQuery" value="查询" type="button" /></li>
+                <li class="item">
+                    <input class="button" id="btnExport" value="导出" type="button" /></li>
+            </ul>
+        </div>
+        <div id="divGrid"></div>
+    </div>
+</body>
+</html>

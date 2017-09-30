@@ -1,0 +1,31 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+    <script src="../../../javascript/core/jquery-1.9.1.min.js"></script>
+    <script src="../js/tasksender.js"></script>
+    <script src="../../../javascript/common/tools.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            var a = new Object();
+            a["title"] = "[无线]吉林省长春地区CCCC_北湖春天_HLH_F23_22015/10/8 11:15:59发生附着成功率异常";
+            a["content"] = "";
+            a["networktype"] = "核心网";
+            a["eventTime"] = "2015/10/8 11:13:10";
+            a["interfaceType"] = "核心网";
+            a["neType"] = "";
+            a["neLabel"] = "";
+            a["region"] = "";
+            work.sendTask(a, function (data) {
+                alert(data);
+            });
+            
+        });
+
+    </script>
+</head>
+<body>
+
+</body>
+</html>

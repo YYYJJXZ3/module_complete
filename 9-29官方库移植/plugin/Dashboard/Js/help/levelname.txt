@@ -1,0 +1,8 @@
+﻿<div class="tab-content" style="width:260px;height:80px;border:0px;">  
+        <dl>
+            <dt>层次名称</dt>
+            <dd>
+                <input type="text" class="input" value="" id="txtLevelName" style="width:150px"/>
+            </dd>
+        </dl>
+    </div>

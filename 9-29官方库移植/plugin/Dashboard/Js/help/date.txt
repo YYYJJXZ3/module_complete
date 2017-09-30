@@ -1,0 +1,29 @@
+﻿<div class="tab-content" style="width: 400px; height: 140px;border:0px;">
+        <dl>
+            <dt>默认类型</dt>
+            <dd>
+                <div id="tableDate">
+                </div>
+            </dd>
+        </dl>
+        <dl id="datedltime">
+            <dt>默认时间</dt>
+            <dd>
+                <input type="text" class="input" value="" id="txtTime" />
+            </dd>
+        </dl>
+        <div id="timeRang" style="display: none">
+            <dl>
+                <dt>开始时间</dt>
+                <dd>
+                    <input type="text" class="input" value="" id="txtStart" />
+                </dd>
+            </dl>
+            <dl>
+                <dt>结束时间</dt>
+                <dd>
+                    <input type="text" class="input" value="" id="txtEnd" />
+                </dd>
+            </dl>
+        </div>
+    </div>

@@ -1,0 +1,204 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>单指标分析</title>
+    <link href="../../../themes/lightblue/page/page.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/jqueryui/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/jqgrid/ui.jqgrid.css" rel="stylesheet" />
+    <script src="../../../javascript/core/jquery-1.9.1.min.js"></script>
+    <script src="../../../javascript/core/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="../../../javascript/JSControl/Common/pageheader.js"></script>
+    <script src="../../../javascript/common/tools.js"></script>
+    <script src="../../../javascript/common/pagetools.js"></script>
+    <script src="../../../javascript/JSControl/SmartGrid/JqGrid/jquery.jqGrid.min.js"></script>
+    <script src="../../../javascript/JSControl/SmartGrid/JqGrid/grid.locale-cn.js"></script>
+    <script src="../../../javascript/JSControl/SmartGrid/JqGrid/SmartGrid.js"></script>
+    <script src="../../../javascript/JSControl/Common/toolbar.js"></script>
+    <script src="../../../javascript/JSControl/Condition/timepicker.js"></script>
+    <script src="../../../javascript/JSControl/SampleChart/Scripts/SampleChart.js"></script>
+    <script type="text/javascript">
+        var curAna = null;
+
+        $(document).ready(function () {
+            initAnalyzerSetting();
+            $("#btnQuery").click(function () {
+                bindGrid();
+            })
+        });
+
+        function initTime(datelvls) {
+            var defaultDate = null;
+            var hasMonth = false;
+            if (indexOfStrInArr("月", datelvls) > -1) {
+                hasMonth = true;
+            }
+            var hasDay = false;
+            if (indexOfStrInArr("日", datelvls) > -1) {
+                hasDay = true;
+                var date = new Date();// dss.request("time");
+                var endDate = date.addDays(-1).format("yyyy年MM月dd日");
+                var beginDate = date.addDays(-8).format("yyyy年MM月dd日");
+                defaultDate = beginDate + ":" + endDate;
+            }
+            var hasHour = false;
+            if (indexOfStrInArr("小时", datelvls) > -1) {
+                hasHour = true;
+            }
+            $("#txtDate").timepicker({
+                showTypeMonth: hasMonth,
+                showTypeWeek: hasDay,
+                showTypeHour: hasHour,
+                showTypeDay: hasDay,
+                isMultipleHour: true,
+                isTile: true,
+                range: true,
+                defaultDateStr: defaultDate
+            });
+        }
+
+        function initAnalyzerSetting() {
+            dss.ajax({
+                url: "../ashx/MeasureAnalysis.ashx?qtype=trend",
+                data: {
+                    meaid: dss.request("meaid"),
+                    cachekey: dss.request("cachekey")
+                },
+                type: "post",
+                success: function (data) {
+                    initTime(data.DateLevels);
+                    curAna = data.Ana;
+                    bindGrid();
+                }
+            });
+        }
+
+        function bindGrid() {
+            var ana = {};
+            $.extend(true, ana, curAna);
+            var timeType = $("#txtDate").timepicker("getTimeType");
+            ana.RowDimList[0].LevelName = timeType == "Month" ? "月" : (timeType == "Week" ? "周" : (timeType == "Hour" ? "小时" : "日"));
+            if (timeType != "Hour") {
+                ana.RowDimList[0].ValType = 3;
+                ana.RowDimList[0].ValList = $("#txtDate").timepicker("getDateStr").split(":");
+            }
+            $("#divGrid").smartgrid({
+                showrownum: true,
+                analyzer: ana,
+                captionName: ana.MeasureList[0].DisplayName + "趋势分析",
+                paging: {
+                    rowNum: 50,
+                    rowList: [10, 15, 20, 30, 50]
+                },
+                analyzercontextmenu: {
+                    show: false,
+                    showRelatedAnalysis: false,
+                    showDrill: false,
+                    showDimStatistics: false,
+                    showCalcCol: false
+                },
+                errorfun: function (msg) {
+                    alertDialog("error", msg);
+                },
+                callback: {
+                    gridComplete: function (grid, opts) {
+                        BindChart(ana);
+                    }
+                }
+            });
+        }
+
+        function BindChart(ana) {
+            var charttype = "Line";
+            var legendpos = "BOTTOM";
+            var src = getChartSrc(ana);
+            var chartoptions = {
+                DataSource: src,
+                Height: "260",
+                YFormatType: "1000",
+                ChartType: charttype,
+                LegendPosition: legendpos,
+                SubChartType: [],
+                Y2DataColIndex: "",
+                Y2FormatType: "1000",
+                YTitle: "",
+                IsAutoLimits: true,
+                Is2D: true
+            };
+            $("#divChart").SampleChart(chartoptions);
+        }
+
+
+        function getChartSrc(ana) {
+            var src = '{"colnames":[';
+            src += '"' + ana.RowDimList[0].LevelName + '",';
+            src += '"' + ana.MeasureList[0].DisplayName + (ana.MeasureList[0].Unit != "" && ana.MeasureList[0].Unit != null ? ("（" + ana.MeasureList[0].Unit + "）") : "") + '"';
+            src += '],"rows":[';
+            $("#divGriddb tr:gt(0)").each(function (n) {
+                src += '{';
+                src += '"col0":"' + $("td:eq(1)", $(this)).text().substr(5) + '",';
+                src += '"col1":"' + $("td:eq(2)", $(this)).text() + '"';
+                src += '},';
+            });
+            src = removeLastComma(src);
+            src += ']}';
+            return $.parseJSON(src);
+        }
+
+        function removeLastComma(str) {
+            if (str.lastIndexOf(',') == str.length - 1) {
+                str = str.substring(0, str.length - 1);
+            }
+            return str;
+        }
+
+        function indexOfStrInArr(str, arr) {
+            var index = -1;
+            for (var i = 0; i < arr.length; i++) {
+                if (arr[i] == str) {
+                    index = i;
+                }
+            }
+            return index;
+        }
+
+        Date.prototype.format = function (format) {
+            var o = {
+                "M+": this.getMonth() + 1,                    //月份 
+                "d+": this.getDate(),                         //日
+                "h+": this.getHours(),                        //小时 
+                "m+": this.getMinutes(),                      //分 
+                "s+": this.getSeconds(),                      //秒 
+                "q+": Math.floor((this.getMonth() + 3) / 3),  //季度 
+                "S": this.getMilliseconds(),                  //毫秒 
+                "b": "00:00:00",                              //当天最早时间
+                "e": "23:59:59"                                //当天最晚时间
+            };
+            if (/(y+)/.test(format)) {
+                format = format.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+            }
+            for (var k in o) {
+                if (new RegExp("(" + k + ")").test(format)) {
+                    format = format.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+                }
+            }
+            return format;
+        }
+
+    </script>
+</head>
+<body>
+    <div>
+        <table cellpadding="2" cellspacing="0" border="0">
+            <tr>
+                <td>
+                    <input type="text" style="width: 102px; margin: 1px;" id="txtDate" /></td>
+                <td>
+                    <input type="button" class="button" value="查询" id="btnQuery" /></td>
+            </tr>
+        </table>
+        <div id="divChart" style="height: 260px;"></div>
+        <div id="divGrid"></div>
+    </div>
+</body>
+</html>

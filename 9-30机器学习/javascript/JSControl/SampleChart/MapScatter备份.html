@@ -1,0 +1,242 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>联通4G用户密度</title>
+    <link href="../../../themes/lightblue/p.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/page/page.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/jqgrid/ui.jqgrid.css" rel="stylesheet" />
+    <link href="Css/RunNumber.css" rel="stylesheet" />
+
+    <script src="../../core/jquery-1.9.1.min.js"></script>
+    <script src="../../core/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="../../common/tools.js"></script>
+    <script src="../../common/pagetools.js"></script>
+    <script src="Scripts/SampleChart.js"></script>
+    <script src="Data/YDataPoint.js"></script>
+    <!--<script src="Data/MapScatter.js"></script>-->
+    <!--<script src="Data/RegionList.js"></script>-->
+    <script>
+        $(function () {
+            init(getNumber(4));//初始化数字
+            getMapScatter();//打点地图（中国）
+        });
+
+        function getMapScatter() {
+            //模拟的大规模数据，应用时参照上面的“样例数据”即可
+            var data = {
+                "colnames": ["小区ID", "小区名称", "经度", "纬度", "用户数"],
+                "rows": [
+                ]
+            };
+
+            var yDataPoint = Data_YDataPoint;
+
+            var data1 = {
+                "colnames": ["小区ID", "小区名称", "经度", "纬度", "用户数"],
+                "rows": [
+                ]
+            };
+
+            //var regionList = Data_RegionList;
+            
+            bindChart("MapScatter", {
+                DataSource: data,
+                ColorArr: ["#41F2F5"],//, "#258BF8"
+                XDataColIndex: "0,1,2,3",
+                YDataColIndex: "4",
+                MapType: ['china'],
+                IsShowLegend: false,
+                ChartType: "MapScatter",
+                //BgColor: "#1b1b1b",
+                Map: {
+                    areaColor: "rgba(0,0,0,0)",
+                    roam: true
+                },
+                Theme: "cmcc_dark",
+                Original: {//调用echarts的原生属性，个别场景用到，非通用，不设置则按默认，不会报错
+                    series: {
+                        markPoint: {
+                            symbolSize: 0.5,
+                            data:yDataPoint
+                        }
+                    }
+                }
+                //,
+                //callback: {
+                //    autoAddData: function (myChart) {
+                //        var delPoint = [];
+                //        var n=0;
+
+                //        setInterval(function () {
+                //        n++;
+                //        if(n<100){
+
+                //            data1.rows = [];
+
+                //            len = 200;
+                //            while (len--) {
+                //                geoCoord = regionList[len % regionList.length].geoCoord;
+                //                data1.rows.push({
+                //                    "col0": 1,
+                //                    "col1": regionList[len % regionList.length].name + len,
+                //                    //"col2": geoCoord[0] + Math.random() * 5 - 2.5,
+                //                    //"col3": geoCoord[1] + Math.random() * 3 - 1.5,
+                //                    "col2": geoCoord[0] + Math.random() * 0.5 - 0.25,
+                //                    "col3": geoCoord[1] + Math.random() * 0.3 - 0.15,
+                //                    "col4": 1
+                //                });
+                //            }
+
+                //            var yDataPoint = [];
+
+                //            for (var r = 0; r < data1.rows.length; r++) {
+                //                yDataPoint.push({
+                //                    name: data1.rows[r]['col2'].toString() + data1.rows[r]['col3'].toString(),
+                //                    value: data1.rows[r]['col4'],
+                //                    geoCoord: [data1.rows[r]['col2'], data1.rows[r]['col3']]
+                //                });
+                //            }
+
+                //            //for (var i = 0; i < delPoint.length; i++) {
+                //            //    myChart.delMarkPoint(
+                //            //        0,
+                //            //        delPoint[i].name);
+                //            //}
+
+                //            myChart.addMarkPoint(
+                //                0,        // 系列索引
+                //                {
+                //                    symbolSize: 1,
+                //                    large: true,
+                //                    effect: {
+                //                        show: true,
+                //                        period: 15
+                //                    },
+                //                    data: yDataPoint
+                //                });
+
+                //            }
+                //        }, 2000);
+                //    }
+                //}
+            });
+
+            $("body").css("background-image","url(Images/MapScatter/bg.png)");
+        }
+
+        function bindChart(div, option) {
+            var opts = $.extend(true, {
+                YFormatType: "1000",
+                ChartType: "map"
+            }, option);
+
+            $("#" + div).SampleChart(opts);
+        }
+
+        //#region 滚动数字
+        //生成随机数
+        function getNumber(num) {
+            var retValue = "1526";
+
+            var num = num ? num : 4;
+            for (var j = 0; j < num; j++) {
+                retValue += '' + parseInt(10 * Math.random());
+            }
+            return retValue;
+        }
+        function numRun(numStrs, oldNumStrs) {
+            var m = true;
+            var len = numStrs.length, oldLen = oldNumStrs.length;
+            if (len != oldLen) {
+                init(numStrs);
+                oldNumStrs = numStrs;
+            }
+
+            for (var indexx = 0; indexx < len; indexx++) {
+                var num = parseInt(numStrs.charAt(indexx)), oldNum = parseInt(oldNumStrs.charAt(indexx)), val = 0;
+                if (num !== oldNum) {
+                    m = false;
+                }
+                if (!m)
+                    numIRun($(".numrun span i").eq(indexx), oldNum, num, indexx);
+            }
+            oldNumber = numStrs;
+            timer = setTimeout(function () {
+                numRun(getNumber(4), oldNumber);
+            }, 5000);
+        }
+        function numIRun(obj, index, max, indexx) {
+            var text = max + "" + index, text2 = index + "" + max;
+            obj.text(text2);
+            obj.animate({ "top": "-60" }, 400, function () {
+                obj.text(text).css("top", "0px");
+            }
+            )
+        }
+        function init(num) {
+            window.oldNumber = num;
+            var str = "", len = oldNumber.length;
+            function getStr(i) {
+                var num = parseInt(oldNumber.charAt(i));
+                var dot = len % 3;
+                if (i + 1 == len)
+                    return "<i>" + num + "</i>";
+                if (i + 1 == dot)
+                    return "<i>" + num + "</i><b>,</b>";
+                if ((len - i - 1) % 3 == 0)
+                    return "<i>" + num + "</i><b>,</b>";
+                return "<i>" + num + "</i>";
+            }
+
+            for (var i = 0; i < len; i++) {
+                str += getStr(i);
+            }
+            $(".numrun span").html(str);
+        }
+
+        var timer = setTimeout(function () {
+            numRun(getNumber(4), oldNumber);
+        }, 5000);
+
+        setInterval(function () {
+            $(".time").html(time());
+        }, 1000);
+
+        //生成时间
+        function time() {
+            var date = new Date();
+            var hh = date.getHours() < 10 ? ('0' + '' + date.getHours()) : date.getHours();
+            var mi = date.getMinutes() < 10 ? ('0' + '' + date.getMinutes()) : date.getMinutes();
+            var ss = date.getSeconds() < 10 ? ('0' + '' + date.getSeconds()) : date.getSeconds();
+            return hh + ":" + mi + ":" + ss;
+        }
+
+        //#endregion 
+    </script>
+    <style>
+        body {
+            background-color: #1b1b1b;
+            /*background-image: url(Images/MapScatter/bg.png);*/
+        }
+    </style>
+</head>
+<body>
+    <div style="position: relative; width: 1920px; height: 1080px;">
+        <div id="MapScatter" style="position: absolute; width: 1920px; height: 980px; top: 100px;"></div>
+        <div style="background-image: url(Images/MapScatter/logo.png); width: 283px; height: 82px; float: left; position: absolute; left: 0px; top: 0px;">
+        </div>
+        <div style="background-image: url(Images/MapScatter/measure.png); width: 511px; height: 84px; float: right; position: absolute; left: 1409px; top: 0px;">
+        </div>
+        <div class="main" style="position: absolute; left: 800px; top: 150px;">
+            <div class="numrun">
+                <span></span>
+            </div>
+            <div class="title">
+                <span class="time">09:19:36</span>
+                <span>联通使用4G业务用户数</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

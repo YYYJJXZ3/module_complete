@@ -1,0 +1,83 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>散点图</title>
+    <link href="../../../themes/lightblue/p.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/page/page.css" rel="stylesheet" />
+
+    <script src="../../core/jquery-1.9.1.min.js"></script>
+    <script src="../../core/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="../../common/tools.js"></script>
+    <script src="../../common/pagetools.js"></script>
+    <script src="Scripts/SampleChart.js"></script>
+    <script>
+        $(function () {
+            getScatter();
+            getBubble();
+        });
+
+        function getScatter() {
+            var data = '{"colnames":["性别","身高","体重"],"rows":[{"col0":"男性","col1":"170","col2":"60"},{"col0":"女性","col1":"158","col2":"45"},{"col0":"男性","col1":"175","col2":"65"},{"col0":"女性","col1":"160","col2":"50"},{"col0":"男性","col1":"180","col2":"70"},{"col0":"女性","col1":"165","col2":"55"},{"col0":"男性","col1":"185","col2":"75"},{"col0":"女性","col1":"170","col2":"50"},{"col0":"男性","col1":"172","col2":"80"},{"col0":"女性","col1":"155","col2":"60"},{"col0":"男性","col1":"182","col2":"70"},{"col0":"女性","col1":"157","col2":"65"}]}';
+            //var data = '{"colnames":["维护人员","包机权重","网络质量得分"],"rows":[{"col0":"艾亚琪","col1":"2986","col2":"50"},{"col0":"白建波","col1":"2061","col2":"68.45"},{"col0":"蔡方良","col1":"2329","col2":"71.77"},{"col0":"曹国峰","col1":"2033","col2":"68.66"},{"col0":"曹明","col1":"2326","col2":"69.8"},{"col0":"巢翼","col1":"1987","col2":"69.23"},{"col0":"陈昌生","col1":"2159","col2":"65.23"},{"col0":"陈良贤","col1":"1966","col2":"68.82"},{"col0":"陈亮","col1":"2220","col2":"50"},{"col0":"陈龙","col1":"2055","col2":"68.53"},{"col0":"陈龙斌","col1":"2276","col2":"72.38"},{"col0":"陈业代","col1":"2190","col2":"63.04"},{"col0":"陈玮","col1":"2137","col2":"66.26"},{"col0":"邓若君","col1":"2168","col2":"70.13"},{"col0":"邓涛","col1":"2122","col2":"71.55"},{"col0":"邓志辉","col1":"2251","col2":"72.73"},{"col0":"冯呈峰","col1":"2814","col2":"50"},{"col0":"付学新","col1":"2272","col2":"69.58"},{"col0":"高丰明","col1":"2054","col2":"64.17"},{"col0":"龚沪光","col1":"2066","col2":"69"},{"col0":"龚凯","col1":"2989","col2":"50"},{"col0":"郭伟","col1":"2280","col2":"67.02"},{"col0":"过建勇","col1":"1838","col2":"70.31"},{"col0":"何居森","col1":"2021","col2":"70.67"},{"col0":"何寅","col1":"2777","col2":"72.29"},{"col0":"贺立志","col1":"2120","col2":"68.92"},{"col0":"胡宁","col1":"2063","col2":"66.61"},{"col0":"胡忠洪","col1":"2316","col2":"69.43"},{"col0":"黄坚_上饶","col1":"2130","col2":"67.5"},{"col0":"黄威","col1":"1959","col2":"72.58"},{"col0":"黄文峰","col1":"2361","col2":"50"},{"col0":"黄有金","col1":"1959","col2":"70.59"},{"col0":"江亲龙","col1":"2200","col2":"67.4"},{"col0":"江舟","col1":"3045","col2":"50"},{"col0":"江韬","col1":"2334","col2":"73.39"},{"col0":"蒋国荣","col1":"2333","col2":"72.35"},{"col0":"金见","col1":"2111","col2":"71.67"},{"col0":"黎坚","col1":"2945","col2":"50"},{"col0":"李超龙","col1":"2211","col2":"69.73"},{"col0":"李军","col1":"2159","col2":"68.94"},{"col0":"李清","col1":"2229","col2":"70.75"},{"col0":"李振","col1":"1967","col2":"68.85"},{"col0":"梁程","col1":"2163","col2":"66.46"},{"col0":"刘聪","col1":"2202","col2":"50"},{"col0":"刘定福","col1":"2052","col2":"71.52"},{"col0":"刘刚_南昌","col1":"2127","col2":"50"},{"col0":"刘江","col1":"1993","col2":"64.46"},{"col0":"刘军","col1":"1895","col2":"65.54"},{"col0":"刘礼萍","col1":"2324","col2":"50"},{"col0":"刘历君","col1":"2090","col2":"67.84"},{"col0":"刘凌飞","col1":"2755","col2":"50"},{"col0":"刘庆","col1":"2313","col2":"68.21"},{"col0":"刘上宾","col1":"2179","col2":"67.59"},{"col0":"刘小仁","col1":"2522","col2":"70.35"},{"col0":"刘园峰","col1":"2223","col2":"68.54"},{"col0":"龙文军","col1":"2334","col2":"69.22"},{"col0":"罗龙根","col1":"2415","col2":"50"},{"col0":"罗鑫","col1":"2232","col2":"74.17"},{"col0":"倪辉","col1":"2482","col2":"71.31"},{"col0":"宁茂辉","col1":"2141","col2":"73.28"},{"col0":"欧阳枫","col1":"2315","col2":"50"},{"col0":"欧阳天宝","col1":"2293","col2":"66.5"},{"col0":"彭斌","col1":"2207","col2":"69.21"},{"col0":"齐泽宏","col1":"2773","col2":"50"},{"col0":"钱军伟","col1":"2197","col2":"67.82"},{"col0":"沈祥军","col1":"2257","col2":"50"},{"col0":"谭育军","col1":"2892","col2":"50"},{"col0":"汤文丰","col1":"2771","col2":"74.94"},{"col0":"唐朝政","col1":"2550","col2":"70.12"},{"col0":"涂文辉","col1":"3030","col2":"69.29"},{"col0":"涂源平","col1":"2317","col2":"50"},{"col0":"王海涛","col1":"2231","col2":"69.76"},{"col0":"王伟","col1":"2107","col2":"73.89"},{"col0":"吴绍平","col1":"2126","col2":"70.51"},{"col0":"肖天斌","col1":"2232","col2":"74.56"},{"col0":"熊聪宇","col1":"2217","col2":"73.11"},{"col0":"熊俊","col1":"2278","col2":"68.68"},{"col0":"熊炜","col1":"2205","col2":"73.22"},{"col0":"徐春林","col1":"2275","col2":"66.03"},{"col0":"徐鲁斌","col1":"2484","col2":"50"},{"col0":"徐智琳","col1":"2279","col2":"69.44"},{"col0":"杨良","col1":"2228","col2":"66.5"},{"col0":"易金勇","col1":"2223","col2":"64.07"},{"col0":"尹天平","col1":"2135","col2":"70.74"},{"col0":"应飞","col1":"1873","col2":"67.68"},{"col0":"张永平","col1":"2222","col2":"69.35"},{"col0":"张占根","col1":"2051","col2":"65.48"},{"col0":"周琦","col1":"2794","col2":"50"},{"col0":"朱乐坤","col1":"2962","col2":"50"},{"col0":"朱小勇","col1":"2084","col2":"68.13"},{"col0":"邹金良","col1":"2239","col2":"70.88"}]}';
+            data = eval("(" + data + ")");
+            bindChart("divScatter", {
+                DataSource: data,
+                XDataColIndex: "0",
+                YDataColIndex: "1,2",
+                //也可用下面的方式，YDataColIndex用于X轴，Y2DataColIndex用于Y轴，如此可对X、Y轴分别设置属性
+                //YDataColIndex: "1",
+                //Y2DataColIndex: "2",
+                YTitle: "体重（Kg）",
+                XTitle: "身高（cm）",
+                IsAutoLimits: true,
+                ChartType: "scatter",
+                Theme: "lightblue"
+            });
+        }
+
+        function getBubble() {
+            var data = '{"colnames":["性别","身高","体重","收入"],"rows":[{"col0":"男性","col1":"170","col2":"60","col3":"16000"},{"col0":"女性","col1":"158","col2":"45","col3":"8000"},{"col0":"男性","col1":"175","col2":"65","col3":"10000"},{"col0":"女性","col1":"160","col2":"50","col3":"20000"},{"col0":"男性","col1":"180","col2":"70","col3":"20000"},{"col0":"女性","col1":"165","col2":"55","col3":"18000"},{"col0":"男性","col1":"185","col2":"75","col3":"30000"},{"col0":"女性","col1":"170","col2":"50","col3":"15000"},{"col0":"男性","col1":"172","col2":"80","col3":"13000"},{"col0":"女性","col1":"157","col2":"60","col3":"15000"},{"col0":"男性","col1":"182","col2":"70","col3":"28000"},{"col0":"女性","col1":"155","col2":"65","col3":"25000"}]}';
+            data = eval("(" + data + ")");
+            bindChart("divBubble", {
+                DataSource: data,
+                XDataColIndex: "0",
+                YDataColIndex: "1,2,3",
+                IsAutoLimits: true,
+                IsShowValue: true,
+                ChartType: "Bubble",
+                ColorArr: ["#9ACD45", "#F26664", "#0082B4"],
+                YTitle: "体重（Kg）",
+                XTitle: "身高（cm）",
+                ClickEvent: [{ colindex: 1, click: clickEvent }],
+                //IsShowY: false,
+                //IsShowX:false,
+                Theme: "lightblue"
+            });
+        }
+
+        function bindChart(div, option) {
+            var opts = $.extend(true, {
+                YFormatType: "1000",
+                YDecimals: '2'
+            }, option);
+
+            $("#" + div).SampleChart(opts);
+        }
+
+        function clickEvent(xValue, yName, value) {
+            alert(yName + "：" + value);
+        }
+    </script>
+</head>
+<body>
+    <div class="captionWithoutIcon">
+        散点图（男性和女性的“身高、体重”分布）
+    </div>
+    <div id="divScatter" style="width: 100%; height: 400px;"></div>
+    <div class="captionWithoutIcon">
+        气泡图（男性和女性的“身高、体重、收入”对比）
+    </div>
+    <div id="divBubble" style="width: 100%; height: 400px;"></div>
+</body>
+</html>

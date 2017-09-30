@@ -1,0 +1,17 @@
+﻿<?xml version="1.0"?>
+<ConfigList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Lists>
+    <ListInfo ListKey="ContextMenu" ListDesc="右键菜单">
+      <Items>
+        <ItemInfo value="10" name="新建文件夹" Property1="/App_Themes/Default/images/customAnalysis/folder.gif" Property2=""/>
+        <ItemInfo value="1" name="新建报表" Property1="/App_Themes/Default/images/customAnalysis/btn_certificates_bg.gif" Property2=""/>
+        <ItemInfo value="2" name="编辑报表" Property1="/App_Themes/Default/images/customAnalysis/modi1.bmp" Property2=""/>
+        <ItemInfo value="3" name="删除" Property1="/App_Themes/Default/images/customAnalysis/DeleteHS.jpg" Property2=""/>
+        <ItemInfo value="4" name="重命名" Property1="/App_Themes/Default/images/customAnalysis/rename.bmp" Property2=""/>
+        <ItemInfo value="5" name="共享" Property1="/App_Themes/Default/images/customAnalysis/share.gif" Property2=""/>
+        <ItemInfo value="6" name="取消共享" Property1="/App_Themes/Default/images/customAnalysis/share.gif" Property2=""/>
+        <ItemInfo value="7" name="发布" Property1="/App_Themes/Default/images/customAnalysis/publish.bmp" Property2=""/>
+      </Items>
+    </ListInfo>
+  </Lists>
+</ConfigList>

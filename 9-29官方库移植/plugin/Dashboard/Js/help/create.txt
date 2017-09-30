@@ -1,0 +1,8 @@
+﻿<div class="tab-content" style="width:290px;height:60px;border:0px;">  
+		<dl>
+            <dt>名称:</dt>
+            <dd>
+                <input id="txtFileName" class="input" style="width: 180px;" />
+            </dd>
+        </dl>
+    </div>

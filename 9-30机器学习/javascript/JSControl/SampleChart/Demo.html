@@ -1,0 +1,240 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>测试图</title>
+    <link href="../../../themes/lightblue/p.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/page/page.css" rel="stylesheet" />
+
+    <script src="../../core/jquery-1.9.1.min.js"></script>
+    <script src="../../core/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="../../common/tools.js"></script>
+    <script src="../../common/pagetools.js"></script>
+    <script src="Scripts/SampleChart.js"></script>
+    <script>
+        $(function () {
+            getChart1();
+            getChart2();
+            getChart3();
+            getChart4();
+            getPieOne1();
+            getPieOne2();
+            getPie();
+            getBar();
+
+            getRadar();
+        });
+
+        function getChart1() {
+            var data = { "colnames": ["月", "流量（GB）", "时延"], "rows": [{ "col0": "01月", "col1": "22", "col2": "15" }, { "col0": "02月", "col1": "12", "col2": "7" }, { "col0": "03月", "col1": "10", "col2": "" }, { "col0": "04月", "col1": "6", "col2": "11" }, { "col0": "05月", "col1": "4", "col2": "16" }, { "col0": "06月", "col1": "8", "col2": "4" }, { "col0": "07月", "col1": "4", "col2": "10" }, { "col0": "08月", "col1": "12", "col2": "18" }, { "col0": "09月", "col1": "8", "col2": "16" }] };
+            //var data = { "colnames": ["月", "流量（GB）", "时延"], "rows": [] };
+            bindChart("Chart1", {
+                //DataSource: data,
+                //ChartType: "Line",
+                //YDataColIndex: '1',
+                //Y2DataColIndex: '2',
+                //IsShowMaxMin: true,
+                IsScroll: true,
+                ScrollNum: 8,
+                //LegendPosition: "TOP",
+                //PaddingTop: 30,
+                //ClickEvent: [{ colindex: 1, click: click }, { colindex: 2, click: click }],
+                Line: [{ colindex: 1, type: 'custom', name: '“流量”阈值', value: 13 }, { colindex: 2, type: 'custom', name: '“时延”阈值', value: 14 }],
+                //Toolbox: {
+                //    show: false
+                //}
+                DataSource: data,
+                ChartType: "Line",
+                XDataColIndex: '0',
+                YDataColIndex: '1'
+            });
+        }
+
+        //ChartRadar
+        function getRadar() {
+            var data = { "colnames": ["月", "流量（GB）", "时延"], "rows": [0.8, 0.9, 0.7, 0.5, 0.4, 0.9, 0.6] };
+            //var data = { "colnames": ["月", "流量（GB）", "时延"], "rows": [{ "col0": "01月", "col1": "22", "col2": "15" }, { "col0": "02月", "col1": "12", "col2": "7" }, { "col0": "03月", "col1": "10", "col2": "" }, { "col0": "04月", "col1": "6", "col2": "11" }, { "col0": "05月", "col1": "4", "col2": "16" }, { "col0": "06月", "col1": "8", "col2": "4" }, { "col0": "07月", "col1": "4", "col2": "10" }, { "col0": "08月", "col1": "12", "col2": "18" }, { "col0": "09月", "col1": "8", "col2": "16" }] };
+            bindChart("ChartRadar", {
+                DataSource: data,
+                ChartType: "Radar",
+                XDataColIndex: '0',
+                YDataColIndex: '1',
+                XLabelStyle:"Wrap"
+            });
+
+        }
+
+        function getChart2() {
+            var data = { "colnames": ["月", "上行流量", "下行流量", "上行时延", "下行时延", "上行速率", "下行速率"], "rows": [{ "col0": "01月", "col1": "22", "col2": "15", "col3": "28", "col4": "18", "col5": "21", "col6": "14" }, { "col0": "02月", "col1": "12", "col2": "7", "col3": "28", "col4": "18", "col5": "18", "col6": "8" }, { "col0": "03月", "col1": "21", "col2": "35", "col3": "22", "col4": "11", "col5": "28", "col6": "12" }, { "col0": "04月", "col1": "20", "col2": "15", "col3": "28", "col4": "13", "col5": "13", "col6": "25" }, { "col0": "05月", "col1": "9", "col2": "17", "col3": "20", "col4": "18", "col5": "19", "col6": "18" }] };
+            bindChart("Chart2", {
+                DataSource: data,
+                ChartType: "Column",
+                Stack: [{ colindex: [1, 2], name: '堆叠分组1' }, { colindex: [3, 4], name: '堆叠分组2' }, { colindex: [5, 6], name: '堆叠分组3' }],
+                YDataColIndex: '1,2,3,4,5,6',
+                //LegendSelected: "4,6",
+                //LegendNotSelected: "3,5",
+                PaddingTop: 27,
+                Toolbox: {
+                    show: false
+                }
+            });
+        }
+
+        function getChart3() {
+            var data = { "colnames": ["月", "上行流量", "下行流量", "上行时延", "下行时延"], "rows": [{ "col0": "01月", "col1": "22", "col2": "15", "col3": "28", "col4": "18" }, { "col0": "02月", "col1": "12", "col2": "7", "col3": "28", "col4": "18" }, { "col0": "03月", "col1": "21", "col2": "35", "col3": "22", "col4": "11" }, { "col0": "04月", "col1": "20", "col2": "15", "col3": "28", "col4": "13" }, { "col0": "05月", "col1": "9", "col2": "17", "col3": "20", "col4": "18" }] };
+            bindChart("Chart3", {
+                DataSource: data,
+                ChartType: "Combi1Y",
+                Stack: [{ colindex: [1, 2], name: '堆叠分组1' }, { colindex: [3, 4], name: '堆叠分组2' }],
+                SubChartType: [{ colindex: 3, type: 'bar' }, { colindex: 4, type: 'bar' }],
+                YDataColIndex: '1,2',
+                Y2DataColIndex: '3,4',
+                PaddingTop: 27,
+                Toolbox: {
+                    show: false
+                }
+            });
+        }
+
+        function getChart4() {
+            var data = { "colnames": ["月", "质量", "时延"], "rows": [{ "col0": "01月", "col1": "-22", "col2": "15" }, { "col0": "02月", "col1": "-12", "col2": "7" }, { "col0": "03月", "col1": "-10", "col2": "" }, { "col0": "04月", "col1": "-6", "col2": "11" }, { "col0": "05月", "col1": "-4", "col2": "16" }, { "col0": "06月", "col1": "-8", "col2": "4" }, { "col0": "07月", "col1": "-4", "col2": "10" }, { "col0": "08月", "col1": "-12", "col2": "18" }, { "col0": "09月", "col1": "-8", "col2": "16" }] };
+            bindChart("Chart4", {
+                DataSource: data,
+                ChartType: "Column",
+                YDataColIndex: '1',
+                PaddingTop: 40,
+                OriginalOption: {
+                    xAxis: [{ position: 'top', axisLine: { onZero: true } }]
+                }
+            });
+        }
+
+        function getPieOne1() {
+            var data = { "colnames": ["响应成功率"], "rows": [{ "col0": "60" }] };
+
+            bindChart("PieOne1", {
+                DataSource: data,
+                ChartType: "PieOne",
+                YDataColIndex: '0',
+                Pieces: [
+                    { min: null, max: 20, color: '#FF7F50' },
+                    { min: 20, max: 50, color: '#87CEFA' },
+                    { min: 50, max: 80, color: '#DA70D6' },
+                    { min: 80, max: null, color: '#32CD32' }
+                ],
+                ImgName: "images/img02.png"
+            });
+        }
+
+        function getPieOne2() {
+            bindChart("PieOne2", {
+                CommonValue: [
+                    {
+                        k: "成功率",
+                        v: 80
+                    }
+                ],
+                Pie: {
+                    radius: ['55%', '70%']//指定圆环的大小
+                },
+                ChartType: "PieOne",
+                YDataColIndex: '1',
+                ColorArr: ["#FE534A"],
+                ImgName: "images/img02.png"
+            });
+        }
+
+        function getPie() {
+            var data = { "colnames": ["月", "流量（GB）"], "rows": [{ "col0": "01月", "col1": "24" }, { "col0": "02月", "col1": "12" }, { "col0": "03月", "col1": "8" }, { "col0": "04月", "col1": "6" }, { "col0": "05月", "col1": "4" }, { "col0": "06月", "col1": "8" }, { "col0": "07月", "col1": "4" }, { "col0": "08月", "col1": "12" }, { "col0": "09月", "col1": "8" }] };
+
+            bindChart("Pie", {
+                DataSource: data,
+                ChartType: "pie",
+                YDataColIndex: '1',
+                IsShowLabel: false,
+                ClickEvent: [{ colindex: 1, click: click }],
+                YUnit: 'MB',
+                Pie: {
+                    radius: '68%',//半径
+                    center: ['50%', '45%']//中心位置
+                }
+            });
+        }
+
+        function getBar() {
+            var data = { "colnames": ["月", "2G流量", "3G流量", "4G流量"], "rows": [{ "col0": "01月", "col1": 12, "col2": 23, "col3": 8 }, { "col0": "02月", "col1": 8, "col2": 12, "col3": 16 }, { "col0": "03月", "col1": 16, "col2": 12, "col3": 24 }] };
+
+            bindChart("Bar", {
+                DataSource: data,
+                ChartType: "StackedBar",
+                IsAlign: true,
+                PaddingBottom: 80,
+                YDataColIndex: "1,2,3"
+            });
+        }
+
+        function bindChart(div, option) {
+            var opts = $.extend(true, {
+                YFormatType: "1000",
+                YDecimals: '2'
+            }, option);
+
+            $("#" + div).SampleChart(opts);
+        }
+
+        //点击事件
+        function click(xValue, yValue, value) {
+            alert(xValue + "：" + value);
+        }
+    </script>
+</head>
+<body>
+    <div class="toolbar">
+        <ul>
+            <li class="item">
+                <input class="button" id="btnExport" value="导出" type="button" /></li>
+        </ul>
+    </div>
+    <div class="captionWithoutIcon">
+        阈值线和均线等：
+    </div>
+    <div id="Chart1" style="height: 350px;"></div>
+
+        <div class="captionWithoutIcon">
+        雷达图：
+    </div>
+    <div id="ChartRadar" style="height: 350px;"></div>
+
+
+    <div class="captionWithoutIcon">
+        单Y轴多组堆叠图：
+    </div>
+    <div id="Chart2" style="height: 350px;"></div>
+    <div class="captionWithoutIcon">
+        双Y轴多组堆叠图：
+    </div>
+    <div id="Chart3" style="height: 350px;"></div>
+    <div class="captionWithoutIcon">
+        向下的柱图：
+    </div>
+    <div id="Chart4" style="height: 350px;"></div>
+    <div class="captionWithoutIcon">
+        单指标圆环图（以DataSource作为数据源）：
+    </div>
+    <div id="PieOne1" style="height: 300px;"></div>
+    <div class="captionWithoutIcon">
+        单指标圆环图（以名称和值作为数据源）：
+    </div>
+    <div id="PieOne2" style="height: 300px;"></div>
+    <div class="captionWithoutIcon">
+        饼图：
+    </div>
+    <div id="Pie" style="height: 350px;"></div>
+    <div class="captionWithoutIcon">
+        多维长条图：
+    </div>
+    <div id="Bar" style="height: 350px;"></div>
+
+      <div id="Radar" style="height: 350px;"></div>
+</body>
+</html>

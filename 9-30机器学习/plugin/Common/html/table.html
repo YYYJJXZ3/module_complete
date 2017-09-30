@@ -1,0 +1,534 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>表配置</title>
+    <link href="../../../themes/lightblue/page/page.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/jqgrid/ui.jqgrid.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/jqueryui/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" />
+    <script src="../../../javascript/core/jquery-1.9.1.min.js"></script>
+    <script src="../../../javascript/core/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="../../../javascript/common/tools.js"></script>
+    <script src="../../../javascript/JSControl/Common/pageheader.js"></script>
+    <script src="../../../javascript/common/pagetools.js"></script>
+    <script src="../../../javascript/JSControl/Condition/timepicker.js"></script>
+    <script src="../../../javascript/JSControl/SmartGrid/JqGrid/grid.locale-cn.js"></script>
+    <script src="../../../javascript/JSControl/SmartGrid/JqGrid/jquery.jqGrid.min.js"></script>
+    <script src="../../../javascript/JSControl/SmartGrid/JqGrid/SmartGrid.js"></script>
+    <script src="../../../javascript/JSControl/AjaxFileUploader/ajaxfileupload.js"></script>
+    <script src="../js/jquery.form.js"></script>
+    <script type="text/javascript">
+        var tableSetting = null;
+        var tableName = "city";
+        $(document).ready(function () {
+            tableName = dss.request("tname");
+            $("#m").pageheader();
+            dss.ajax({
+                url: "../ashx/TableHandler.ashx?qtype=init",
+                type: "post",
+                dataType: "json",
+                data: {
+                    nam: tableName
+                },
+                success: function (o) {
+                    tableSetting = o.data;
+                    initCond();
+                    queryBind();
+                }
+            });
+            $("#btnQuery").click(function () {
+                queryBind();
+            });
+            $("#btnAdd").click(function () {
+                showDialogAdd();
+            });
+            $("#btnDel").click(function () {
+                dss.confirm("确认删除?", deleteRows, $.noop);
+            });
+            $("#btnUpload").click(function () {
+                importDialog();
+            });
+            $("#btnExport").click(function () {
+                exportTable();
+            });
+        });
+
+        function importDialog() {
+            $("#dialogImport").dialog({
+                modal: true,
+                title: '导入',
+                height: 140,
+                width: 380,
+                buttons: {
+                    "导入": function () {
+                        fileUpload();
+                    },
+                    "模板": function () {
+                        downloadTemplate();
+                    }
+                }
+            });
+        }
+
+        function downloadTemplate() {
+            $.ajax({
+                url: dss.rootPath + "plugin/Common/ashx/TableHandler.ashx?qtype=template&nam=" + tableName,
+                type: 'post',
+                dataType: 'json',
+                success: function (data, status) {
+                    if (data.status == 0) {
+                        var url = data.data.msg;
+                        var iframe = document.createElement('iframe');
+                        iframe.src = dss.rootPath + "javascript/JSControl/DownloadManager/Handler/FileDownLoad.ashx?name=" + url;
+                        iframe.style.display = "None";
+                        document.body.appendChild(iframe);
+                    }
+                },
+                error: function (a) {
+                }
+            });
+        }
+
+        function fileUpload() {
+            if ($("#filepath").val().length <= 0) {
+                dss.alert("请上传excel格式文档");
+                return;;
+            }
+            var filepath = $("#filepath").val();
+            var extStart = filepath.lastIndexOf(".");
+            var ext = filepath.substring(extStart, filepath.length).toUpperCase();
+            if (ext !== ".XLSX" && ext !== ".XLS" && ext !== ".XLSM") {
+                dss.alert("请上传excel格式文档");
+                return;
+            }
+
+            $.ajaxFileUpload({
+                url: dss.rootPath + "plugin/Common/ashx/TableHandler.ashx?qtype=import&nam=" + tableName,
+                type: 'post',
+                secureuri: false, //是否需要安全协议，一般设置为false
+                fileElementId: 'filepath',
+                dataType: 'json',
+                success: function (data, status) {
+                    if (data.status == 0) {
+                        dss.alert(data.data.msg, function () {
+                            if (data.data.msg.indexOf('导入成功') > -1) {
+                                $("#dialogImport").dialog("close");
+                                queryBind();
+                            }
+                            else {
+                                return false;
+                            }
+                        });
+                    }
+                }
+            });
+        }
+
+        function initCond() {
+            var $trCond = $("#trCond");
+            $trCond.empty();
+            var scnl = tableSetting.SearchColNameList;
+            if (scnl != null && scnl.length > 0) {
+                for (var i = 0; i < scnl.length; i++) {
+                    for (var j = 0; j < tableSetting.TableColList.length; j++) {
+                        if (scnl[i] == tableSetting.TableColList[j].ColName) {
+                            $trCond.append("<td style='padding-left:2px;'>" + tableSetting.TableColList[j].ColDesc + "：</td>");
+                            var $tdCond = $("<td></td>");
+                            var isDdl = false;
+                            for (var n = 0; n < tableSetting.ValueOptionList.length; n++) {
+                                var vo = tableSetting.ValueOptionList[n];
+                                if (vo.DisplayColName == scnl[i]) {
+                                    isDdl = true;
+                                    var $ddl = $("<select id='ddlCond" + vo.DisplayColName + "'></select>");
+                                    appendValueOption($ddl, vo, tableSetting.TableColList[j].ColDesc);
+                                    $tdCond.append($ddl);
+                                    break;
+                                }
+                            }
+                            if (isDdl == false) {
+                                $tdCond.append("<input type='text' id='txtCond" + scnl[i] + "' style='width:110px;'/>");
+                            }
+                            $trCond.append($tdCond);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        function isColNameInDropdownList(colName, valueOptionList) {
+            for (var n = 0; n < valueOptionList.length; n++) {
+                var vo = tableSetting.ValueOptionList[n];
+                for (var m = 0; m < vo.ColNameList.length; m++) {
+                    if (vo.ColNameList[m] == colName) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        function appendValueOption($ddl, vo, colDesc, selectedValue) {
+            $ddl.append("<option value=''>--选择" + colDesc + "--</option>");
+            var disIdx = indexOfArr(vo.DisplayColName, vo.ColNameList);
+            for (var r = 0; r < vo.RowList.length; r++) {
+                $ddl.append("<option value='" + vo.RowList[r].ValList.join('◎') + "' " + (vo.RowList[r].ValList[disIdx] == selectedValue ? "selected='selected'" : "") + ">" + vo.RowList[r].ValList[disIdx] + "</option>");
+            }
+        }
+
+        function indexOfArr(str, strArr) {
+            for (var i = 0; i < strArr.length; i++) {
+                if (str === strArr[i]) {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        function queryBind() {
+            if (tableSetting != null) {
+                var data = {};
+                for (var i = 0; i < tableSetting.SearchColNameList.length; i++) {
+                    var isDdl = false;
+                    var searchColName = tableSetting.SearchColNameList[i];
+                    for (var j = 0; j < tableSetting.ValueOptionList.length; j++) {
+                        if (searchColName == tableSetting.ValueOptionList[j].DisplayColName) {
+                            isDdl = true;
+                            break;
+                        }
+                    }
+                    if (isDdl) {
+                        if ($("#ddlCond" + searchColName).val() != "") {
+                            data[searchColName] = $("#ddlCond" + searchColName).find("option:selected").text();
+                        }
+                    }
+                    else {
+                        data[searchColName] = $("#txtCond" + searchColName).val();
+                    }
+                }
+                $("#divGrid").smartgrid({
+                    analyzer: data,
+                    analyzerpath: dss.rootPath + "plugin/Common/ashx/TableHandler.ashx?qtype=query&nam=" + tableName,
+                    mulCheck: {
+                        ismulCheck: true
+                    },
+                    paging: {
+                        rowNum: 15,
+                        rowList: [10, 15, 20, 30, 50]
+                    },
+                    callback: {
+                        gridComplete: function (grid) {//呈现的表格是一个table元素，grid参数为此table对象
+                            $.each(grid.find("tr"), function (i, val) {
+                                if (i > 0) {//第0行为表格的标题行
+                                    var tds = $(this).find("td");
+                                    tds.eq(tds.length - 1).html("<a style='cursor:pointer;color:blue;' onclick='showDialogUpdate(this)'>编辑</a>");
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+        }
+
+        function showDialogAdd() {
+            var $divAdd = $("<div id='dialogAdd'></div>");
+            var $tableAdd = $("<table id='tableAdd'></table>");
+            $tableAdd.empty();
+            for (var i = 0; i < tableSetting.TableColList.length; i++) {
+                var tableCol = tableSetting.TableColList[i];
+
+                var isDdl = false;
+                for (var n = 0; n < tableSetting.ValueOptionList.length; n++) {
+                    var vo = tableSetting.ValueOptionList[n];
+                    if (vo.DisplayColName == tableCol.ColName) {
+                        isDdl = true;
+                        var $trAdd = $("<tr></tr>");
+                        $trAdd.append("<td style='text-align:right'>" + tableCol.ColDesc + "：</td>");
+                        var $td = $("<td></td>");
+                        var $ddl = $("<select id='ddlAdd" + vo.DisplayColName + "'></select>").appendTo($td);
+                        appendValueOption($ddl, vo, tableCol.ColDesc);
+                        $trAdd.append($td);
+                        $tableAdd.append($trAdd);
+                        break;
+                    }
+                }
+                isDdl = isColNameInDropdownList(tableCol.ColName, tableSetting.ValueOptionList);
+                if (isDdl == false) {
+                    var $trAdd = $("<tr></tr>");
+                    $trAdd.append("<td style='text-align:right'>" + tableCol.ColDesc + "：</td>");
+                    $trAdd.append("<td><input type='text' id='txtAdd" + tableCol.ColName + "'/></td>");
+                    $tableAdd.append($trAdd);
+                }
+            }
+            $divAdd.append($tableAdd);
+            dss.dialog({
+                content: $divAdd,
+                width: 400,
+                heigth: 400,
+                title: '增加一条记录',
+                buttons: {
+                    "保存": function () {
+                        saveRowToAdd();
+                    },
+                    "关闭": function () {
+                    }
+                }
+            });
+        }
+
+        function saveRowToAdd() {
+            var data = { nam: tableName };
+            $("input[id^='txtAdd'").each(function () {
+                var key = $(this).attr("id").replace("txtAdd", "");
+                var val = $(this).val();
+                data[key] = val;
+            });
+            $("select[id^='ddlAdd'").each(function () {
+                var selVal = $(this).val();
+                var disColName = $(this).attr("id").replace("ddlAdd", "");
+                for (var i = 0; i < tableSetting.ValueOptionList.length; i++) {
+                    var vo = tableSetting.ValueOptionList[i];
+                    if (vo.DisplayColName == disColName) {
+                        var valArr = selVal.split('◎');
+                        if (vo.ColNameList.length == valArr.length) {
+                            for (var j = 0; j < vo.ColNameList.length; j++) {
+                                data[vo.ColNameList[j]] = valArr[j];
+                            }
+                        }
+                        break;
+                    }
+                }
+            });
+            dss.ajax({
+                url: "../ashx/TableHandler.ashx?qtype=add",
+                type: "post",
+                dataType: "json",
+                data: data,
+                success: function (o) {
+                    if (o.data.code == 0) {
+                        queryBind();
+                    }
+                    else {
+                        dss.alert(o.msg);
+                    }
+                }
+            });
+        }
+
+        function showDialogUpdate(curTd) {
+            var curTr = $(curTd).parent().parent();
+            var $divUpdate = $("<div id='dialogUpdate'></div>");
+            var $tableUpdate = $("<table id='tableUpdate'></table>");
+            $tableUpdate.empty();
+            for (var i = 0; i < tableSetting.TableColList.length; i++) {
+                var tableCol = tableSetting.TableColList[i];
+
+                var isDdl = false;
+                for (var n = 0; n < tableSetting.ValueOptionList.length; n++) {
+                    var vo = tableSetting.ValueOptionList[n];
+                    if (vo.DisplayColName == tableCol.ColName) {
+                        isDdl = true;
+                        var $trUpdate = $("<tr></tr>");
+                        $trUpdate.append("<td style='text-align:right'>" + tableCol.ColDesc + "：</td>");
+                        var $td = $("<td></td>");
+                        var $ddl = $("<select id='ddlUpdate" + vo.DisplayColName + "'></select>").appendTo($td);
+                        appendValueOption($ddl, vo, tableCol.ColDesc, curTr.find("td").eq(i + 1).text());
+                        $trUpdate.append($td);
+                        $tableUpdate.append($trUpdate);
+                        break;
+                    }
+                }
+                isDdl = isColNameInDropdownList(tableCol.ColName, tableSetting.ValueOptionList);
+                if (isDdl == false) {
+                    var $trUpdate = $("<tr></tr>");
+                    $trUpdate.append("<td style='text-align:right'>" + tableCol.ColDesc + "：</td>");
+                    $trUpdate.append("<td><input type='text' id='txtUpdate" + tableCol.ColName + "' " + (tableCol.IsPK ? "disabled=disabled" : "") + " value='" + curTr.find("td").eq(i + 1).text() + "'/></td>");
+                    $tableUpdate.append($trUpdate);
+                }
+            }
+            $divUpdate.append($tableUpdate);
+            dss.dialog({
+                content: $divUpdate,
+                width: 400,
+                heigth: 400,
+                title: '编辑',
+                buttons: {
+                    "保存": function () {
+                        saveRowToUpdate();
+                    },
+                    "关闭": function () {
+                    }
+                }
+            });
+        }
+
+        function saveRowToUpdate() {
+            var data = { nam: tableName };
+            $("input[id^='txtUpdate'").each(function () {
+                var key = $(this).attr("id").replace("txtUpdate", "");
+                var val = $(this).val();
+                data[key] = val;
+            });
+            $("select[id^='ddlUpdate'").each(function () {
+                var selVal = $(this).val();
+                var disColName = $(this).attr("id").replace("ddlUpdate", "");
+                for (var i = 0; i < tableSetting.ValueOptionList.length; i++) {
+                    var vo = tableSetting.ValueOptionList[i];
+                    if (vo.DisplayColName == disColName) {
+                        var valArr = selVal.split('◎');
+                        if (vo.ColNameList.length == valArr.length) {
+                            for (var j = 0; j < vo.ColNameList.length; j++) {
+                                data[vo.ColNameList[j]] = valArr[j];
+                            }
+                        }
+                        break;
+                    }
+                }
+            });
+            dss.ajax({
+                url: "../ashx/TableHandler.ashx?qtype=update",
+                type: "post",
+                dataType: "json",
+                data: data,
+                success: function (o) {
+                    if (o.data.code == 0) {
+                        queryBind();
+                    }
+                    else {
+                        dss.alert(o.msg);
+                    }
+                }
+            });
+        }
+
+        function deleteRows() {
+            var pkCol = "";
+            $("td>:checkbox").each(function () {
+                if ($(this).prop("checked")) {
+                    for (var i = 0; i < tableSetting.TableColList.length; i++) {
+                        if (tableSetting.TableColList[i].IsPK) {
+                            pkCol = pkCol + $.trim($(this).parent().parent().find("td:eq(" + (i + 1) + ")").text()) + "$";
+                        }
+                    }
+                    if (pkCol.length > 0) {
+                        pkCol = pkCol.substr(0, pkCol.length - 1);
+                    }
+                    pkCol = pkCol + "|";
+                }
+            });
+            if (pkCol.length > 0) {
+                pkCol = pkCol.substr(0, pkCol.length - 1);
+                var data = { nam: tableName, pkcol: pkCol };
+                dss.ajax({
+                    url: "../ashx/TableHandler.ashx?qtype=delete",
+                    type: "post",
+                    dataType: "json",
+                    data: data,
+                    success: function (o) {
+                        if (o.data.code == 0) {
+                            queryBind();
+                        }
+                        else {
+                            dss.alert(o.msg);
+                        }
+                    }
+                });
+            }
+            else {
+                dss.alert("请先选中行。");
+            }
+        }
+
+        function exportTable() {
+            if (tableSetting != null) {
+                var data = {};
+                for (var i = 0; i < tableSetting.SearchColNameList.length; i++) {
+                    var isDdl = false;
+                    var searchColName = tableSetting.SearchColNameList[i];
+                    for (var j = 0; j < tableSetting.ValueOptionList.length; j++) {
+                        if (searchColName == tableSetting.ValueOptionList[j].DisplayColName) {
+                            isDdl = true;
+                            break;
+                        }
+                    }
+                    if (isDdl) {
+                        if ($("#ddlCond" + searchColName).val() != "") {
+                            data[searchColName] = $("#ddlCond" + searchColName).find("option:selected").text();
+                        }
+                    }
+                    else {
+                        data[searchColName] = $("#txtCond" + searchColName).val();
+                    }
+                }
+                data["nam"] = tableName;
+                dss.ajax({
+                    url: "../ashx/TableHandler.ashx?qtype=export",
+                    type: "post",
+                    dataType: "json",
+                    data: data,
+                    success: function (o) {
+                        var iframe = document.createElement('iframe');
+                        iframe.src = dss.rootPath + "javascript/JSControl/DownloadManager/Handler/FileDownLoad.ashx?name=" + o.data.msg;
+                        iframe.style.display = "None";
+                        document.body.appendChild(iframe);
+                    }
+                });
+            }
+        }
+    </script>
+</head>
+<body>
+    <div id="m"></div>
+    <div style="text-align: center; padding-left: 3px; width: 99%;">
+        <div class="toolbar">
+            <ul id="toolbarQuery">
+                <li class="item">
+                    <table>
+                        <tr id="trCond"></tr>
+                    </table>
+                </li>
+                <li class="item">
+                    <input type="button" id="btnQuery" value="查询" class="button" />
+                </li>
+                <li class="item">
+                    <input type="button" id="btnUpload" class="button" value="导入" />
+                </li>
+                <li class="item">
+                    <input type="button" id="btnExport" value="导出" class="button" />
+                </li>
+            </ul>
+        </div>
+        <div id="divGrid">
+        </div>
+        <!--增加，查看，修改生成的动态表-->
+        <div id="divSet" class="table" style="display: none;">
+            <div id="div_table"></div>
+        </div>
+        <!--文件导入表-->
+        <div id="dialogImport" style="display: none;">
+            <table style="margin-top: 10px;">
+                <tr>
+                    <td>上传路径：</td>
+                    <td>
+                        <input type="file" id="filepath" name="filepath" />
+                    </td>
+                </tr>
+            </table>
+            <div id="divScan"></div>
+        </div>
+        <div class="toolbar">
+            <ul>
+                <li class="item">
+                    <input class="button" id="btnAdd" value="新增" type="button" />
+                </li>
+                <li class="item">
+                    <input type="button" value="批量删除" id="btnDel" class="button" />
+                </li>
+                <li class="item">
+                    <label id="lbl_Tip" style="display: none; color: red; line-height: 25px;"></label>
+                </li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

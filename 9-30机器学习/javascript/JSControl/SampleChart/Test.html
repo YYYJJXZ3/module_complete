@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <link href="../../../themes/lightblue/p.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/page/page.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/jqgrid/ui.jqgrid.css" rel="stylesheet" />
+
+    <script src="../../core/jquery-1.9.1.min.js"></script>
+    <script src="../../core/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="../../common/tools.js"></script>
+    <script src="../../common/pagetools.js"></script>
+    <script>
+        var cPrm = {
+            geoCoord: {}
+        };
+
+        $(function () {
+            getGeoCoord("world");
+            getGeoCoord("china");
+            if (!cPrm.geoCoord["china"]) {
+                getGeoCoord("china");
+            }
+        })
+
+        //得到地区的经纬度
+        function getGeoCoord(mapType) {
+            if (mapType != "world") {
+                mapType = "china";
+            }
+
+            if (!cPrm.geoCoord[mapType]) {
+                $.ajax({
+                    async: false,
+                    url: dss.rootPath + "javascript/JSControl/SampleChart/Scripts/echarts/data/" + mapType + ".json",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (data) {
+                        cPrm.geoCoord[mapType] = data;
+                    },
+                    error: function (err) {
+                        alert(err);
+                    }
+                });
+            }
+        }
+    </script>
+</head>
+<body>
+</body>
+</html>

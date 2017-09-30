@@ -1,0 +1,194 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>自定义报表--大数据插件测试</title>
+    <!--  <link href="develop.css" rel="stylesheet" />-->
+    <link href="../../../../Themes/lightblue/jqueryui/jquery-ui-1.10.3.custom.css" rel="stylesheet" />
+    <script src="../../../core/jquery-1.9.1.min.js"></script>
+    <script src="../../../core/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="../../../JSControl/Condition/comselect.js"></script>
+
+    <link href="../../../../Themes/lightblue/jqgrid/ui.jqgrid.css" rel="stylesheet" />
+    <script src="../../../JSControl/SmartGrid/JqGrid/grid.locale-cn.js"></script>
+    <script src="../../../JSControl/SmartGrid/JqGrid/jquery.jqGrid.src.js"></script>
+    <script src="../../../JSControl/SmartGrid/JqGrid/SmartGrid.js"></script>
+
+    <script src="../bigdataSelect.js"></script>
+    <script type="text/javascript">
+        var selSet = {
+            commsf: {
+                themename: "a",
+                dimname: "哈哈",
+                levelname: '是否',
+                selectmode: "single",   //single    multiple
+                hascheckall: false,     //是否有全选控件
+                initClass: "commdata",   //commdata  bigdata
+                datasource: [{ id: -1120, name: '是', state: false }, { id: 1, name: '否' }]
+            },
+            commzt: {
+                themename: "a",
+                dimname: "哈哈",
+                levelname: '状态',
+                selectmode: "multiple",   //single    multiple
+                initClass: "commdata",   //commdata  bigdata
+                datasource: [{ id: 1, name: '未使用', state: false }, { id: 1, name: '已使用' }, { id: 2, name: '已过期' }, { id: 3, name: '作废' }]
+            },
+            commDQ: {
+                themename: "a",
+                dimname: "小区维",
+                levelname: '地区',
+                selectmode: "single",   //single    multiple
+                datasource: [],
+                initClass: "commdata",   //commdata  bigdata
+                initValues: [{ id: -1120, name: '和平地区', state: false }, { id: 1, name: '新兴', state: true }]
+            },
+            commLAC: {
+                themename: "a",
+                dimid: "220324136",
+                dimname: "地理维",
+                levelname: '地区',
+                selectmode: "multiple",   //single  multiple
+                initClass: "commdata",    //commdata bigdata
+                datasource: []
+            },
+            bigDQ: {
+                dimid: "220324136",
+                dimname: "地理维",
+                levelname: '地区',
+                selectmode: "multiple",   //single  multiple
+                initClass: "commdata",    //commdata bigdata  
+                hascheckall: false,
+                initValues: [],
+                callback: {
+                    changed: function () {
+                        $("#txtbglac").commonSelect(selSet.bigLAC);
+                    }
+                }
+            },
+            bigLAC: {
+                dimid: "-1360524026",
+                dimname: "小区维",
+                levelname: 'BSCRNC',
+                selectmode: "single",   //single  multiple
+                initClass: "bigdata",
+                initValues: []
+            }
+        }
+
+        //@拖拽树形操作 end
+        $(document).ready(function () {
+            $("#txtsf").commonSelect(selSet.commsf);
+            $("#txtzt").commonSelect(selSet.commzt);
+            $("#txtdq").commonSelect(selSet.commDQ);
+            $("#txtlac").commonSelect(selSet.commLAC);
+            $("#txtbgdq").commonSelect(selSet.bigDQ);
+
+            $("#btnQuerybglac").data(selSet.bigLAC);
+            bindEvent.init();
+        });
+
+        var bindEvent = {
+            init: function () {
+                //$("#btnQuerysf").bind("click", function () {
+                //    var a = $("#txtsf").commonSelect("getSelIds");
+                //    alert(a);
+                //});
+                //$("#btnQueryzt").bind("click", function () {
+                //    var a = $("#txtzt").commonSelect("getSelNames");
+                //    alert(a);
+                //});
+                //$("#btnQuerydq").bind("click", function () {
+                //    var a = $("#txtdq").commonSelect("getSelIds");
+                //    alert(a);
+                //});
+                //$("#btnQuerylac").bind("click", function () {
+                //    var b = $("#txtlac").commonSelect("getSelNames");
+                //    alert(b);
+                //});
+                $("#btnQuerybgdq").bind("click", function () {
+                    var a = $("#txtbgdq").commonSelect("getSelIds");
+                    alert(a);
+                });
+                $("#btnQuerybglac").bind("click", function () {
+                    var b = $("#txtbglac").commonSelect("getSelNames");
+                    alert(b);
+                });
+                // $("#").hover(
+            }
+        };
+    </script>
+</head>
+<body>
+    <div class='p-all' style="height: 800px">
+        <div class='p-header'>
+            <div class='ph-left'>
+
+                <ul class='ph-query'>
+                    <li class='cond'><span>是否：</span>
+                        <input id='txtsf' style='width: 120px;' type="text" /></li>
+                    <li>
+                        <input type='button' id='btnQuerysf' value='查询zd' class='btn_01' /></li>
+                    <li class='cond'><span>状态：</span>
+                        <input id='txtzt' style='width: 120px;' type="text" /></li>
+                    <li>
+                        <input type='button' id='btnQueryzt' value='查询zt' class='btn_01' /></li>
+                </ul>
+
+                <hr />
+                <ul class='ph-query'>
+                    <li class='cond'><span>地区：</span>
+                        <input id='txtdq' style='width: 120px;' type="text" /></li>
+                    <li>
+                        <input type='button' id='btnQuerydq' value='查询dq' class='btn_01' /></li>
+                    <li class='cond'><span>LAC：</span>
+                        <input id='txtlac' style='width: 120px;' type="text" /></li>
+                    <li>
+                        <input type='button' id='btnQuerylac' value='查询lac' class='btn_01' /></li>
+                </ul>
+                <hr />
+                <ul class='ph-query'>
+                    <li class='cond'><span>大数据地区：</span>
+                        <input id='txtbgdq' style='width: 120px;' type="text" /></li>
+                    <li>
+                        <input type='button' id='btnQuerybgdq' value='据查询dq' class='btn_01' /></li>
+                    <li class='cond'><span>大数据LAC：</span>
+                        <input id='txtbglac' style='width: 120px;' type="text" /></li>
+                    <li>
+                        <input type='button' id='btnQuerybglac' value='查询lac' class='btn_01' /></li>
+
+                </ul>
+            </div>
+            <div class='ph-right'></div>
+        </div>
+        <div class='p-body'>
+        </div>
+    </div>
+
+    <div class="div_inputclick ui-widget-content ui-corner-all" id="ui-bigdata-div" style="left: 147.98px; top: 328.3px; width: 400px; height: 320px; position: absolute; z-index: 999;" curlevel="|小区维|-1360524026|BSCRNC">
+        <div class="ui-accordion-header ui-helper-reset ui-state-default ui-corner-all ui-accordion-icons" id="searchbigdata" style="height: 28px; margin-top: 0px;">
+            <span id="lblbigdata" style="padding-left: 10px;">BSCRNC:</span>
+            <input class="ui-widget" id="txtbigdata" style="margin: 3px 5px 0px 0px; width: 120px; height: 16px;" type="text"><input class="ui-state-default ui-corner-all" id="btnbigdata" style="padding: 0.1em 1em 0px;" type="button" value="查询">
+        </div>
+        <div id="showbigdata" style="width: 403px; height: 235px;">
+            <div id="bigdatagrid">
+            </div>
+        </div>
+        <div class="ui-widget-content ui-corner-bottom" style="height: 53px; -ms-overflow-x: hidden; -ms-overflow-y: auto;">
+            <ul style="width: 100%; list-style-type: none; margin-left: 5px; display: table; margin-top: 5px; padding: 0px;">
+                <li style="float: left; width: 100px; white-space: nowrap; padding-right: 10px; overflow: hidden; margin-left: 0px; line-height: 15px;" title="ZYBSC1018160">
+                    <input name="rdobigData" type="radio" checked="checked">ZYBSC1018160
+                </li>
+                <li style="float: left; width: 100px; white-space: nowrap; padding-right: 10px; overflow: hidden;">
+                    <input name="rdobigData" type="radio" checked="checked">ZYBSC1018160
+                </li>
+                <li style="float: left; width: 100px; white-space: nowrap; padding-right: 10px; overflow: hidden;">
+                    <input name="rdobigData" type="radio" checked="checked">ZYBSC1018160
+                </li>
+                <li style="float: left; width: 100px; white-space: nowrap; padding-right: 10px; overflow: hidden;">
+                    <input name="rdobigData" type="radio" checked="checked">ZYBSC1018160
+                </li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

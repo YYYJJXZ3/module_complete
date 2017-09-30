@@ -1,0 +1,189 @@
+﻿<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title></title>
+    <link type="text/css" rel="stylesheet" href="../style/jsmind.css" />
+    <link href="../../../themes/lightblue/jqueryui/jquery-ui-1.10.3.custom.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/page/page.css" rel="stylesheet" />
+    <style type="text/css">
+        #jsmind_container {
+            width: 100%;
+            height: 650px;
+            border: solid 1px #ccc;
+            background: #f4f4f4;
+        }
+    </style>
+</head>
+<body>
+    <div id="jsmind_container"></div>
+
+    <script src="../../../core/jquery-1.9.1.min.js"></script>
+    <script src="../../../core/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="../../../common/tools.js"></script>
+    <script type="text/javascript" src="../js/jsmind.js"></script>
+    <script type="text/javascript" src="../js/jsmind.draggable.js"></script>
+    <script type="text/javascript" src="../features/jsmind.shell.js"></script>
+    <script type="text/javascript">
+        var param = {
+            data: {
+                province: {
+                    dataSource: {
+                        colnames: ["PROVINCE_ID", "PROVINCE_DESC", "PROVINCE_VALUE"],
+                        rows: [
+                            { col0: 1, col1: "黑龙江", col2: 1000 }
+                        ]
+                    }
+                },
+                region: {
+                    initedItem: "",//已经初始化过的项，用逗号隔开，已初始化过的就不用再生成
+                    dataSource: {
+                        colnames: ["PROVINCE_ID", "REGION_ID", "REGION_DESC", "REGION_VALUE"],
+                        rows: [
+                            { col0: 1, col1: 101, col2: "哈尔滨市", col3: 150 },
+                            { col0: 1, col1: 102, col2: "齐齐哈尔市", col3: 100 },
+                            { col0: 1, col1: 103, col2: "佳木斯市", col3: 80 },
+                            { col0: 1, col1: 104, col2: "双鸭山市", col3: 60 },
+                            { col0: 1, col1: 105, col2: "大庆市", col3: 90 },
+                            { col0: 1, col1: 106, col2: "牡丹江市", col3: 80 },
+                            { col0: 1, col1: 107, col2: "鸡西市", col3: 80 },
+                            { col0: 1, col1: 108, col2: "伊春市", col3: 60 },
+                            { col0: 1, col1: 109, col2: "七台河市", col3: 30 },
+                            { col0: 1, col1: 110, col2: "鹤岗市", col3: 90 },
+                            { col0: 1, col1: 111, col2: "黑河市", col3: 60 },
+                            { col0: 1, col1: 112, col2: "绥化市", col3: 80 },
+                            { col0: 1, col1: 113, col2: "和大兴安岭地区", col3: 40 }
+                        ]
+                    }
+                },
+                city: {
+                    initedItem: "",//已经初始化过的项，用逗号隔开，已初始化过的就不用再生成
+                    dataSource: {
+                        colnames: ["REGION_ID", "CITY_ID", "CITY_DESC", "CITY_VALUE"],
+                        rows: [
+                            { col0: 101, col1: 10101, col2: "道里区", col3: 10 },
+                            { col0: 101, col1: 10102, col2: "道外区", col3: 10 },
+                            { col0: 101, col1: 10103, col2: "南岗区", col3: 10 },
+                            { col0: 101, col1: 10104, col2: "香坊区", col3: 10 },
+                            { col0: 101, col1: 10105, col2: "平房区", col3: 10 },
+                            { col0: 101, col1: 10106, col2: "松北区", col3: 10 },
+                            { col0: 101, col1: 10107, col2: "呼兰区", col3: 10 },
+                            { col0: 101, col1: 10108, col2: "阿城区", col3: 10 },
+                            { col0: 101, col1: 10109, col2: "双城区", col3: 10 },
+                            { col0: 101, col1: 10110, col2: "巴彦县", col3: 10 },
+                            { col0: 101, col1: 10111, col2: "宾县", col3: 10 },
+                            { col0: 101, col1: 10112, col2: "依兰县", col3: 10 },
+                            { col0: 101, col1: 10113, col2: "延寿县", col3: 10 },
+                            { col0: 101, col1: 10114, col2: "木兰县", col3: 10 },
+                            { col0: 101, col1: 10115, col2: "通河县", col3: 10 },
+                            { col0: 101, col1: 10116, col2: "方正县", col3: 10 },
+                            { col0: 101, col1: 10117, col2: "五常市", col3: 10 },
+                            { col0: 101, col1: 10118, col2: "尚志市", col3: 10 },
+                            { col0: 105, col1: 10501, col2: "大庆市", col3: 10 },
+                            { col0: 105, col1: 10502, col2: "萨尔图区", col3: 10 },
+                            { col0: 105, col1: 10503, col2: "龙凤区", col3: 10 },
+                            { col0: 105, col1: 10504, col2: "让胡路区", col3: 10 },
+                            { col0: 105, col1: 10505, col2: "红岗区", col3: 10 },
+                            { col0: 105, col1: 10506, col2: "大同区", col3: 10 },
+                            { col0: 105, col1: 10507, col2: "肇州县", col3: 10 },
+                            { col0: 105, col1: 10508, col2: "肇源县", col3: 10 },
+                            { col0: 105, col1: 10509, col2: "林甸县", col3: 10 },
+                            { col0: 105, col1: 10510, col2: "杜尔伯特", col3: 10 }
+                        ]
+                    }
+                },
+                tac: {
+                    initedItem: "",//已经初始化过的项，用逗号隔开，已初始化过的就不用再生成
+                    dataSource: {
+                        colnames: ["CITY_ID", "TAC_ID", "TAC_DESC", "TAC_VALUE", "SUCCESS", "DELAY", "DOWNLOAD"],
+                        rows: [
+                            { col0: 10106, col1: 1010601, col2: "1010601", col3: 1, col4: 90, col5: 50, col6: 230 },
+                            { col0: 10106, col1: 1010602, col2: "1010602", col3: 1, col4: 90, col5: 50, col6: 230 },
+                            { col0: 10106, col1: 1010603, col2: "1010603", col3: 1, col4: 90, col5: 50, col6: 230 },
+                            { col0: 10106, col1: 1010604, col2: "1010604", col3: 1, col4: 90, col5: 50, col6: 230 },
+                            { col0: 10106, col1: 1010605, col2: "1010605", col3: 1, col4: 90, col5: 50, col6: 230 },
+                            { col0: 10106, col1: 1010606, col2: "1010606", col3: 1, col4: 90, col5: 50, col6: 230 },
+                            { col0: 10106, col1: 1010607, col2: "1010607", col3: 1, col4: 90, col5: 50, col6: 230 },
+                            { col0: 10106, col1: 1010608, col2: "1010608", col3: 1, col4: 90, col5: 50, col6: 230 },
+                            { col0: 10106, col1: 1010609, col2: "1010609", col3: 1, col4: 90, col5: 50, col6: 230 },
+                            { col0: 10106, col1: 1010610, col2: "1010610", col3: 1, col4: 90, col5: 50, col6: 230 },
+                            { col0: 10106, col1: 1010611, col2: "1010611", col3: 1, col4: 90, col5: 50, col6: 230 },
+                            { col0: 10106, col1: 1010612, col2: "1010612", col3: 1, col4: 90, col5: 50, col6: 230 },
+                            { col0: 10106, col1: 1010613, col2: "1010613", col3: 1, col4: 90, col5: 50, col6: 230 },
+                            { col0: 10106, col1: 1010614, col2: "1010614", col3: 1, col4: 90, col5: 50, col6: 230 },
+                            { col0: 10106, col1: 1010615, col2: "1010615", col3: 1, col4: 90, col5: 50, col6: 230 },
+                            { col0: 10106, col1: 1010616, col2: "1010616", col3: 1, col4: 90, col5: 50, col6: 230 },
+                            { col0: 10106, col1: 1010617, col2: "1010617", col3: 1, col4: 90, col5: 50, col6: 230 },
+                            { col0: 10106, col1: 1010618, col2: "1010618", col3: 1, col4: 90, col5: 50, col6: 230 },
+                            { col0: 10106, col1: 1010619, col2: "1010619", col3: 1, col4: 90, col5: 50, col6: 230 },
+                            { col0: 10106, col1: 1010620, col2: "1010620", col3: 1, col4: 90, col5: 50, col6: 230 }
+                        ]
+                    }
+                }
+            }
+        };
+
+        var _jm = null;
+        function load_jsmind() {
+            var mind = {
+                meta: {
+                    version: '0.2'
+                },
+                format: 'node_array',
+                data: [
+                    //{ "id": "root", "isroot": true, "topic": "jsMind" },
+
+                    //{ "id": "sub1", "parentid": "root", expanded: true, "topic": "<img onclick='addChild(\"sub1\")' style='width:18px;height:18px;' src='http://www.viastreaming.com/images/apple_logo2.png'/>河北：123", "data": 123 },
+
+                    //{ "id": "sub2", "parentid": "root", "topic": "sub2" },
+
+                    //{ "id": "1", "parentid": "root", "topic": "<span onclick='addChild(\"1\",\"region\")'>sub3</span>" }
+                ]
+            };
+
+
+            mind.data.push({ "id": param.data.province.dataSource.rows[0].col0.toString(), "isroot": true, "topic": "<span onclick='addChild(\"" + param.data.province.dataSource.rows[0].col0 + "\",\"region\")'>" + param.data.province.dataSource.rows[0].col1 + "：" + param.data.province.dataSource.rows[0].col2 + "</span>" });
+
+            var options = {
+                container: 'jsmind_container',
+                editable: true,
+                theme: 'greensea'
+            }
+            _jm = jsMind.show(options, mind);
+        }
+
+        function addChild(parentID, level) {
+            if (level == "region" && param.data.region.initedItem.indexOf(parentID) < 0) {
+                $.each(param.data.region.dataSource.rows, function (i, item) {
+                    if (item.col0 == parentID) {
+                        _jm.add_node(parentID, item.col1, "<span onclick='addChild(\"" + item.col1 + "\",\"city\")'>" + item.col2 + "：" + item.col3 + "</span>");
+                    }
+                });
+                param.data.region.initedItem += ("," + parentID);
+            }
+            else if (level == "city" && param.data.city.initedItem.indexOf(parentID) < 0) {
+                $.each(param.data.city.dataSource.rows, function (i, item) {
+                    if (item.col0 == parentID) {
+                        _jm.add_node(parentID, item.col1, "<span onclick='addChild(\"" + item.col1 + "\",\"tac\")'>" + item.col2 + "：" + item.col3 + "</span>");
+                    }
+                });
+                param.data.city.initedItem += ("," + parentID);
+            }
+            else if (level == "tac" && param.data.tac.initedItem.indexOf(parentID) < 0) {
+                $.each(param.data.tac.dataSource.rows, function (i, item) {
+                    if (item.col0 == parentID) {
+                        _jm.add_node(parentID, item.col1, "<span title='成功率：" + item.col4 + "\n时延：" + item.col5 + "\n下载速率：" + item.col6 + "' onclick='addChild(\"" + item.col1 + "\",\"cell\")'>" + item.col2 + "：" + item.col3 + "</span>");
+                    }
+                });
+                param.data.tac.initedItem += ("," + parentID);
+            }
+        }
+
+        load_jsmind();
+
+
+        //$("#jsmind_container").tooltip();
+</script>
+</body>
+</html>

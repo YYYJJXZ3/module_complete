@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>异常点分析</title>
+    <link rel="stylesheet" href="css/jquery-ui-1.10.3.custom.min.css">
+    <link rel="stylesheet" href="css/page.css">
+    <link rel="stylesheet" href="css/selfPage.css">
+    <link rel="stylesheet" href="themes/page/page.css">
+    <script src="javascript/core/jquery-1.9.1.min.js" type="text/javascript"></script>
+    <script src="javascript/core/jquery-ui-1.10.3.custom.js" type="text/javascript"></script>
+    <script src="javascript/JSControl/Condition/timepicker.js" type="text/javascript"></script>
+    <script src="javascript/common/tools.js"></script>
+    <script src="javascript/common/pagetools.js"></script>
+    <script src="Scripts/SampleChart.js"></script>
+
+</head>
+<body>
+<div class="mainPage">
+
+    <div class="outlierToolbar">
+
+        <div id="u1" class="ax_default _下拉列表框">
+            <span>按月：</span>
+            <select id="s1" class="text_sketch">
+                <option selected value="2017年1月">2017年1月</option>
+                <option value="2017年2月">2017年2月</option>
+                <option value="2017年3月">2017年3月</option>
+                <option value="其他月份">其他月份</option>
+            </select>
+
+            <span>---</span>
+
+            <select id="s2" class="text_sketch">
+                <option selected value="2017年1月">2017年1月</option>
+                <option value="2017年2月">2017年2月</option>
+                <option value="2017年3月">2017年3月</option>
+                <option value="其他月份">其他月份</option>
+            </select>
+        </div>
+
+
+        <div id="u3" class="ax_default _下拉列表框">
+            <span>省份：</span>
+            <select id="s3" class="text_sketch">
+                <option selected value="北京">北京</option>
+                <option value="天津">天津</option>
+                <option value="河北">河北</option>
+            </select>
+        </div>
+
+
+        <div id="u4" class="ax_default _下拉列表框">
+            <span>地市：</span>
+            <select id="s4" class="text_sketch">
+                <option value=""></option>
+                <option value="">对应省份下地市</option>
+            </select>
+        </div>
+
+        <div id="u5" class="ax_default _下拉列表框">
+            <span>小区：</span>
+            <select id="s5" class="text_sketch">
+                <option value=""></option>
+                <option value="">对应地市小区</option>
+            </select>
+        </div>
+
+        <div id="u6" class="ax_default _下拉列表框">
+            <span>指标：</span>
+            <select id="s6">
+                <option value="">平均激活用户数</option>
+                <option value="">上行激活用户数</option>
+                <option value="">下行激活用户数</option>
+                <option value="">RRC连接用户数</option>
+                <option value="">4G忙时载扇流量负荷比</option>
+                <option value="">4G忙时载扇理想用户负荷比</option>
+                <option value="">4G下行PRB平均占用率</option>
+                <option value="">4G上行PRB平均占用率</option>
+                <option value="">小区PDCCH信道CCE占用率</option>
+                <option value="">PRACH信道占用率</option>
+                <option value="">寻呼信道占用率</option>
+            </select>
+        </div>
+
+        <div id="u7" class="ax_default _下拉列表框">
+            <span>分析方法：</span>
+            <select id="s7">
+                <option value="">八分位</option>
+                <option value="">差分</option>
+            </select>
+        </div>
+
+        <div id="u8" class="ax_default _下拉列表框">
+            <span>分析时间：</span>
+            <select id="s8">
+                <option value="">星期一</option>
+                <option value="">星期二</option>
+                <option value="">星期三</option>
+                <option value="">星期四</option>
+                <option value="">星期五</option>
+                <option value="">星期六</option>
+                <option value="">星期日</option>
+                <option value="">非工作日</option>
+            </select>
+        </div>
+
+
+        <input type="button" value="查询" class="ax_default" id="btn1">
+        <!--<input type="button" value="导出" class="ax_default" id="btn2">-->
+
+    </div>
+
+    <div class="dataZone">
+    <div class="echartLine" id="main1"></div>
+    </div>
+
+    <div class="eight">
+        <div class="btn"><input type="button" value="相关分析" id="btn3"></div>
+        <div style="clear:both;"></div>
+
+        <div class="echartEight" id="main"></div>
+
+        <div class="tableEight">
+            <h2 style="color: #5e8bc9">日八分位异常点详情</h2>
+            <table width="100%" class="table" style="border-collapse: collapse" border="1">
+                <thead class="th">
+                <tr>
+                    <th>BUSY_DATE</th>
+                    <th>week</th>
+                    <th>weekday</th>
+                    <th>平均激活用户数</th>
+                </tr>
+                </thead>
+
+                <tbody id="jsonTip">
+                <tr>
+                    <td>2017/1/12</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td></td>
+                </tr>
+
+                <tr>
+                    <td>2017/3/6</td>
+                    <td>12</td>
+                    <td>1</td>
+                    <td></td>
+                </tr>
+                </tbody>
+
+
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<script>
+
+    $(function () {
+        getChart1();
+        getChart2();
+    });
+
+    function getChart1() {
+        var data = {
+            "colnames": ["月", "高铁1", "高铁2"],
+            "rows": [
+                {
+                    "col0": "01月20日",
+                    "col1": "22",
+                    "col2": "15"
+                },
+                {
+                    "col0": "02月20日",
+                    "col1": "12",
+                    "col2": "7"
+                },
+                {
+                    "col0": "03月20日",
+                    "col1": "10",
+                    "col2": "66"
+                },
+                {
+                    "col0": "04月20日",
+                    "col1": "6",
+                    "col2": "11"
+                },
+                {
+                    "col0": "05月20日",
+                    "col1": "45",
+                    "col2": "16"
+                },
+                {
+                    "col0": "06月20日",
+                    "col1": "8",
+                    "col2": "4"
+                },
+                {
+                    "col0": "07月20日",
+                    "col1": "23",
+                    "col2": "33"
+                },
+                {
+                    "col0": "08月20日",
+                    "col1": "12",
+                    "col2": "18"
+                },
+                {
+                    "col0": "09月20日",
+                    "col1": "89",
+                    "col2": "77"
+                }]
+        };
+        bindChart("main1", {
+            DataSource: data,
+            ChartType: "Line",
+            Title: "平均激活激活用户数",
+//            IsScroll: true,
+//            ScrollNum: 6,
+            XDataColIndex: '0',
+            YDataColIndex: '1,2',
+            LegendPosition: "RIGHTTOP"
+        });
+    }
+
+    var string = "平均激活用户数";
+
+    function getChart2() {
+        var data = {
+            "colnames": ["月", string, "高铁2"],
+            "rows": [
+                {
+                    "col0": "01月",
+                    "col1": "22",
+                    "col2": "15"
+                },
+                {
+                    "col0": "02月",
+                    "col1": "12",
+                    "col2": "7"
+                },
+                {
+                    "col0": "03月",
+                    "col1": "10",
+                    "col2": "66"
+                },
+                {
+                    "col0": "04月",
+                    "col1": "6",
+                    "col2": "11"
+                },
+                {
+                    "col0": "05月",
+                    "col1": "45",
+                    "col2": "16"
+                },
+                {
+                    "col0": "06月",
+                    "col1": "8",
+                    "col2": "4"
+                },
+                {
+                    "col0": "07月",
+                    "col1": "23",
+                    "col2": "33"
+                },
+                {
+                    "col0": "08月",
+                    "col1": "12",
+                    "col2": "18"
+                },
+                {
+                    "col0": "09月",
+                    "col1": "89",
+                    "col2": "77"
+                }]
+        };
+        bindChart("main", {
+            DataSource: data,
+            ChartType: "Line",
+            Title: "平均激活激活用户数",
+//            IsScroll: true,
+//            ScrollNum: 6,
+            XDataColIndex: '0',
+            Line: [
+                { colindex: 1, type: 'max', name: '最大值'}, { colindex: 1, type: 'min', name: '最小值'}
+                ],
+            YDataColIndex: '1',
+            LegendPosition: "RIGHTTOP"
+        });
+    }
+
+    function bindChart(div, option) {
+        var opts = $.extend(true, {
+            YFormatType: "1000",
+            YDecimals: '2'
+        }, option);
+
+        $("#" + div).SampleChart(opts);
+    }
+</script>
+</body>
+</html>

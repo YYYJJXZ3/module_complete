@@ -1,0 +1,324 @@
+﻿* {
+    padding: 0;
+    margin: 0;
+    font-size: 12px;
+}
+
+.ss_box {
+    margin-top: 20px;
+    width: 99.2%;
+}
+
+ul, li {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.ss_kuang {
+    width: auto;
+    height: 35px;
+    overflow: hidden;
+    margin-left: 15px;
+}
+
+    .ss_kuang ul {
+        width: 100px;
+        height: 32px;
+        float: left;
+        display: inline;
+    }
+
+        .ss_kuang ul li {
+            width: 45px;
+            height: 26px;
+            margin-right: 5px;
+            float: left;
+            display: inline;
+            line-height: 26px;
+            text-align: center;
+            background-color: #dfdfdf;
+            cursor: pointer;
+        }
+
+            .ss_kuang ul li:hover {
+                background-color: #0084CF;
+                color: #FFF;
+                font-weight: bold;
+            }
+
+            .ss_kuang ul li.ss_kuang_li {
+                background-color: #0084CF;
+                color: #FFF;
+                font-weight: bold;
+            }
+
+    .ss_kuang input {
+        float: left;
+        display: inline;
+    }
+
+.ss_cont {
+    width: auto;
+    min-height: 500px;
+    background-image: url(../images/ss_bg.png);
+    background-repeat: no-repeat;
+    background-position: left bottom;
+}
+
+.ss_btn {
+    background-color: transparent;
+    border: none 0;
+    background-image: url(../images/ss.jpg);
+    width: 80px;
+    height: 26px;
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+    .ss_btn:hover {
+        background-image: url(../images/ss_a.jpg);
+    }
+
+.ss_Subscribe {
+    background-color: transparent;
+    border: none 0;
+    background-image: url(../images/dy.jpg);
+    width: 80px;
+    height: 26px;
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+    .ss_Subscribe:hover {
+        background-image: url(../images/dy_a.jpg);
+    }
+
+.ss_text {
+    width: 400px;
+    height: 24px;
+    line-height: 20px;
+    padding-left: 5px;
+    border-left: 1px solid #9c9c9c;
+    border-top: 1px solid #9c9c9c;
+    border-bottom: 1px solid #cbcbcb;
+    border-right: 1px solid #cbcbcb;
+}
+
+.ss_tip {
+    clear: both;
+    margin-left: 100px;
+    margin-top: 15px;
+    color: #999;
+}
+
+.ss_result {
+    clear: both;
+    margin-left: 100px;
+    margin-top: 15px;
+    color: #333333;
+}
+
+    .ss_result ul {
+        margin-top: 15px;
+    }
+
+        .ss_result ul li {
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+
+            .ss_result ul li a {
+                font-size: 12px;
+                color: #0000cc;
+                cursor: pointer;
+            }
+
+                .ss_result ul li a label {
+                    color: #cc0000;
+                    font-size: 12px;
+                }
+
+.title h6 {
+    background-color: pink;
+    width: 300px;
+    color: #0000cc;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+    .title h6 a {
+        font-size: 16px;
+        font-weight: 400;
+        color: #0000cc;
+    }
+
+        .title h6 a label {
+            font-size: 16px;
+            font-weight: 400;
+            cursor: pointer;
+        }
+
+.tag {
+    margin: 10px 0 0 0;
+    padding: 0px;
+    display: table;
+}
+
+    .tag ul {
+        font-size: 13px;
+        color: #333333;
+        margin: 0px;
+        padding: 0;
+    }
+
+        .tag ul li {
+            float: left;
+            line-height: 22px;
+            height: 24px;
+            width: 230px;
+            margin: 0px;
+            font-size: 13px;
+            color: #333333;
+            padding: 0;
+            /*text-overflow: ellipsis;*/
+            /*overflow: hidden;*/
+            margin-right: 10px;
+            white-space: nowrap;
+        }
+
+.algorithm {
+    margin: 20px 0 0 0;
+    clear: both;
+    display: table;
+}
+
+    .algorithm h5 {
+        color: green;
+        font-weight: 400;
+        font-size: 12px;
+        padding: 0px;
+        margin: 0px;
+    }
+
+    .algorithm ul {
+        margin: 0 0 0 60px;
+        padding: 0px;
+    }
+
+        .algorithm ul li {
+            padding: 0px;
+            margin: 0px;
+            line-height: 24px;
+        }
+
+            .algorithm ul li a {
+                color: #0000cc;
+            }
+
+.one {
+    margin-bottom: 40px;
+    display: table;
+}
+
+    .one label {
+        color: #cc0000;
+    }
+
+.ss_more {
+    clear: both;
+    margin-left: 100px;
+    margin-top: 15px;
+    color: #999;
+    font-size: 16px;
+    cursor: pointer;
+    margin-bottom: 15px;
+    display: none;
+}
+
+/*.load {
+    text-align: center;
+    padding-top: 200px;
+    color: Red;
+    font-size: larger;
+}*/
+
+/*.load .img {
+        background-image: url('../../../themes/lightblue/images/loading.gif');
+        background-repeat: no-repeat;
+        width: 100%;
+        background-position: center top;
+        padding-top: 20px;
+    }*/
+
+
+.ss_dataset {
+    clear: both;
+    height: auto;
+    width: 100%;
+    margin-right: 3px;
+    padding: 2px;
+}
+
+    .ss_dataset ul {
+        display: block;
+        margin-top: 5px;
+        overflow: hidden;
+    }
+
+        .ss_dataset ul li {
+            margin-bottom: 5px;
+            float: left;
+            height: auto;
+            min-height: 100px;
+            width: 24%;
+            background-color: #D9ECFF;
+            border: 1px solid #666;
+            margin-left: 2px;
+            padding: 2px;
+        }
+
+    .ss_dataset .dt {
+        font-weight: bold;
+        border-bottom: 1px dashed #666;
+        padding: 2px;
+        word-wrap: break-word;
+        text-align: center;
+    }
+
+    .ss_dataset .dd {
+        padding-top: 2px;
+        margin-bottom: 2px;
+        word-wrap: break-word;
+        text-align: left;
+    }
+    .ss_dataset .liOverColor {
+        border: 1px solid red;
+    }
+
+    .ss_dataset .redColor {
+        color: red;
+        border-bottom: 1px dashed red;
+    }
+
+
+    .ss_dataset .liOverColor2 {
+        border: 1px solid red;
+    }
+
+    .ss_dataset .redColor2 {
+        color: red;
+        border-bottom: 1px dashed red;
+    }
+
+.cal {
+    padding-top: 10px;
+}
+
+    .cal ul li {
+        font-size: 13px;
+        color: #333333;
+        margin: 0px;
+        padding: 0;
+        margin-bottom: 5px;
+    }

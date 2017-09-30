@@ -1,0 +1,64 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Image ArcGIS MapServer</title>
+    <link rel="stylesheet" href="https://openlayers.org/en/v4.1.0/css/ol.css" type="text/css">
+    <!-- The line below is only needed for old environments like Internet Explorer and Android 4.x -->
+    <script src="../../../core/jquery-1.9.1.min.js"></script>
+    <!--<script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>-->
+    <script src="https://openlayers.org/en/v4.1.0/build/ol.js"></script>
+    <script>
+        $(function () {
+            //var url = 'http://10.12.3.53/ArcGIS/rest/services/wangge/MapServer';
+            //var url = 'http://10.12.3.53/ArcGIS/rest/services/jiangsu2016/MapServer';
+            //var url = 'http://10.12.3.53/ArcGIS/rest/services/ningxiaprov/MapServer';
+            var url = 'http://10.12.3.53/ArcGIS/rest/services/thiessen/MapServer';
+
+            var layers = [
+              new ol.layer.Tile({
+                  source: new ol.source.TileArcGISRest({
+                      url: 'http://42.99.16.96:53088/BaseMap/rest/services/China_Community_BaseMap/MapServer'
+                  })
+              }),
+              new ol.layer.Tile({
+                  source: new ol.source.TileArcGISRest({
+                      ratio: 1,
+                      params: {},
+                      url: url
+                  })
+              })
+            ];
+            var map = new ol.Map({
+                layers: layers,
+                target: 'map',
+                view: new ol.View({
+                    center: ol.proj.fromLonLat([117.3788997083, 39.3957590939]),
+                    zoom: 8.5
+                })
+            });
+
+
+            var highlight;
+            var displayFeatureInfo = function (pixel) {
+
+                //var feature = map.forEachFeatureAtPixel(pixel, function (feature) {
+                //    return feature;
+                //});
+            };
+
+            map.on('click', function (evt) {
+                displayFeatureInfo(evt.pixel);
+            });
+
+        });
+    </script>
+</head>
+<body>
+    <div id="map" class="map"></div>
+    <div id="label" style="display: none;">
+        <div id="marker" class="marker" title="marker">
+            <a class="address" id="address" target="_blank" href="https://www.baidu.com">标注点</a>
+        </div>
+    </div>
+</body>
+</html>

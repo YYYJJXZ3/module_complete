@@ -1,0 +1,170 @@
+﻿<%@ WebHandler Language="C#" Class="WorkOrder" %>
+
+using System;
+using System.Web;
+using System.Data;
+using System.Collections.Generic;
+using System.Web.Script.Serialization;
+using System.Data;
+
+public class WorkOrder : IHttpHandler,System.Web.SessionState.IReadOnlySessionState
+{
+
+    static string connDWStr = System.Configuration.ConfigurationManager.ConnectionStrings["SQL_ConnStr"].ConnectionString;
+
+    public void ProcessRequest(HttpContext context)
+    {
+        context.Response.ContentType = "text/plain";
+        JavaScriptSerializer jss = new JavaScriptSerializer();
+        string action = context.Request.QueryString["action"];
+
+        /// <summary>
+        /// 下拉框地区
+        /// </summary>
+        /// <returns>
+        ///  List<Region> regionList
+        /// </returns>
+        if (action == "getRegionAll")
+        {
+            string json = "";
+            Region region;
+            List<Region> regionList = new List<Region>();
+            DataTable dtRegion = GetPublicInfoMethods.getRegionAll();
+            foreach (DataRow dRow in dtRegion.Rows)
+            {
+                if (dRow["region_desc"].ToString() == "未知地区")
+                {
+                }
+                else
+                {
+                    region = new Region();
+                    region.region_id = dRow["region_id"].ToString();
+                    region.region_desc = dRow["region_desc"].ToString();
+                    regionList.Add(region);
+                } 
+            }
+            json = jss.Serialize(regionList);
+            context.Response.Write(json);
+        }
+        /// <summary>
+        ///专题名
+        /// </summary>
+        /// <returns>
+        ///  List<Subject>  subjectList
+        /// </returns>
+        if (action == "getSubject")
+        {
+            string json = "";
+            List<Subject> subjectList = getSubject(context);
+            json = jss.Serialize(subjectList);
+            context.Response.Write(json);
+            return;
+        }
+    }
+    public List<Subject> getSubject(HttpContext context)
+    {
+        string start = context.Request["start"];
+        string end = context.Request["end"];
+        string region = context.Request["region"];
+        string isComplain = context.Request["isComplain"];
+        List<Subject> subjectList = new List<Subject>();
+        string sql = "select s.name,sum(decode(w.task_status, null,0,0,0, 1)) 总条数,";
+        sql += "sum(decode(w.task_status, 2, 1, 0)) 待处理,sum(decode(w.task_status, 3, 1, 0)) 处理中,";
+        sql += "sum(decode(w.task_status,4, 1, 0)) 已处理,s.key, ";
+        sql += @"case sum(decode(w.task_status, 0, 0, 1)) when 0 then 0 else 
+       round(sum(decode(w.task_status, 0, 0, 5,0, 1)) /
+                sum(decode(w.task_status, 0, 0, 1)) * 100,2)
+       end  派单准确率,";
+        sql += " round(sum(case when w.actual_complete_time>w.plan_complete_time then decode(w.task_status,0,0,1) else 0 end)/sum(decode(w.task_status,0,0,1)),2)  超时工单占比,s.orderby"; 
+        sql += " from sys_ip_systemname  s  ";
+        sql += "left join sys_ip_workorder w on s.key=w.system_name";
+        sql += " and w.create_time between to_date('" + start + "','yyyy-mm-dd hh24:mi:ss') and  to_date('" + end + "','yyyy-mm-dd hh24:mi:ss') ";
+        if (!string.IsNullOrEmpty(region))
+        {
+            if (region == "全选")
+            {
+            }
+            else
+            {
+                sql += " and w.REGION='" + region + "'";
+            }
+        }
+        if (!string.IsNullOrEmpty(isComplain))
+        {
+            if (isComplain == "全部")
+            { 
+            }
+            else if(isComplain=="是")
+            { 
+                sql += " and w.iscomplain=" + 0;
+            }
+            else if (isComplain == "不是")
+            {
+                sql += " and w.iscomplain=" + 1;
+            }
+        }
+        sql += " group by s.name,s.key,s.orderby order by orderby asc";
+        DataTable dtSubject = Boco.BLLEngine.CommonQuery.GetDataBySql(connDWStr, sql);
+        foreach (DataRow dRow in dtSubject.Rows)
+        {
+            Subject subject = new Subject();
+            subject.name = dRow["name"].ToString();
+            subject.orderNum = dRow[1].ToString();
+            subject.preNum = dRow[2].ToString();
+            subject.inNum = dRow[3].ToString();
+            subject.outNum = dRow[4].ToString();
+            subject.key = dRow[5].ToString();
+            subject.isCorrect = dRow[6].ToString();
+            subject.ISOUTTIME = dRow[7].ToString();
+            subjectList.Add(subject);
+        }
+        return subjectList;
+    }
+    /// <summary>DataTable序列化
+    /// </summary>
+    /// <param name="dt"></param>
+    /// <returns></returns>
+    public string SerializeDataTable(DataTable dt)
+    {
+        var str = Boco.CommonToolLibrary.Table.TableHelper.CreateJsonParameters(dt).TrimStart(new char[] { '{' });
+        return string.Format("{0}\"page\":{1},\"records\":{2},{3}", "{", 1, dt.Rows.Count, str);
+    }
+    /// <summary>
+    /// sql跟专题表
+    /// </summary>
+    public class Query
+    {
+        public string sqltable;//查询sql
+        public string subjectable;//专题表
+    }
+    /// <summary>
+    /// 下拉框（地区类）
+    /// </summary>
+    public class Region
+    {
+        public string region_id;//地区id
+        public string region_desc;//地区名称
+    }
+    /// <summary>
+    /// 专题类
+    /// </summary>
+    public class Subject
+    {
+        public string key;
+        public string name;
+        public string orderNum;//派单数
+        public string preNum;//待处理
+        public string inNum;//处理中
+        public string outNum;//已归档
+        public string isCorrect;//是否准确
+        public string ISOUTTIME;//是否超时
+    }                 
+    public bool IsReusable
+    {
+        get
+        {
+            return false;
+        }
+    }
+
+}

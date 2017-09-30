@@ -1,0 +1,87 @@
+﻿
+
+.ca_menu {
+    position: absolute;
+    visibility: hidden;
+    top: 0;
+    background-color: #f8f8f8;
+    text-align: left;
+    border: gray 1px solid;
+    z-index: 9999;
+    width: 95px;
+}
+
+    .ca_menu ul {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        outline: 0;
+        font-weight: inherit;
+        font-style: inherit;
+        font-size: 100%;
+        font-family: inherit;
+        vertical-align: baseline;
+    }
+
+    .ca_menu li {
+        margin: 1px 0;
+        cursor: pointer;
+        list-style: none outside none;
+        font-size: 12px;
+        padding: 3px;
+        color: #2e6e9e;
+        background: #dfeffc repeat-x 50% 50%;
+        border: #c5dbec 1px solid;
+    }
+
+        .ca_menu li:hover {
+            background-color: #befefe;
+        }
+
+.ca_menu_folder {
+    width: 16px;
+    height: 16px;
+    border-width: 0px;
+    background: url(images/ztree.png) no-repeat;
+    background-position: -110px 0px;
+}
+
+.ca_menu_rpt {
+    width: 16px;
+    height: 16px;
+    border-width: 0px;
+    background: url(images/ztree.png) no-repeat;
+    background-position: -110px -32px;
+}
+
+.ca_menu_modify {
+    width: 16px;
+    height: 16px;
+    border-width: 0px;
+    background: url(images/ztree.png) no-repeat;
+    background-position: -110px -48px;
+}
+
+.ca_menu_del {
+    width: 16px;
+    height: 16px;
+    border-width: 0px;
+    background: url(images/ztree.png) no-repeat;
+    background-position: -110px -64px;
+}
+
+.ca_menu_rename {
+    width: 16px;
+    height: 16px;
+    border-width: 0px;
+    background: url(images/ztree.png) no-repeat;
+    background-position: -126px -32px;
+}
+
+.ca_menu_pub {
+    width: 16px;
+    height: 16px;
+    border-width: 0px;
+    background: url(images/ztree.png) no-repeat;
+    background-position: -126px -48px;
+}

@@ -1,0 +1,178 @@
+﻿@charset "utf-8";
+/* CSS Document */
+* {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 15px;
+	margin: 0;
+	padding: 0;
+}
+
+@media screen and (max-width: 480px) {
+	.login_box {
+		width: 319px;
+		height: 350px;
+		margin: 10% auto 0 auto;
+	}
+	.login_cont_shop {
+		width: 316px;
+		height: 220px;
+		border: 1px solid #d2d2d2;
+		margin: 20px 20px 0 0;
+	}
+	.login_logo {
+		width: 210px;
+		margin: 10% auto 0 auto;
+		height: 30px;
+		background: url(../images/frame/title.png) no-repeat -168px 0px;
+	}
+}
+
+@media screen and (min-width: 481px) {
+	.login_box {
+		width: 483px;
+		height: 350px;
+		margin: 10% auto 0 auto;
+	}
+	.login_cont_shop {
+		width: 480px;
+		height: 220px;
+		border: 1px solid #d2d2d2;
+		margin: 20px 20px 0 0;
+	}
+	.login_logo {
+		width: 400px;
+        margin: 10% auto 0 auto;
+        height: 30px;
+        background: url(../images/frame/title.png) no-repeat;
+	}
+}
+
+.login_cont_msg {
+	float: left;
+	width: 320px;
+	padding: 40px;
+}
+
+.login_cont {
+	margin-top: 10px;
+	height: 303px;
+	/*     background-image: url(../images/frame/login_cont_bj.png); */
+	background-repeat: no-repeat;
+}
+
+.msg_tit {
+	width: auto;
+	height: 24px;
+	padding-left: 30px;
+	background-image: url(../images/frame/msg.png);
+	background-repeat: no-repeat;
+	line-height: 24px;
+	color: #0085d0;
+	font-weight: bold;
+}
+
+.msg_cont {
+	padding: 10px 0 0 30px;
+	color: #666;
+	line-height: 20px;
+	letter-spacing: 2px;
+}
+
+.msg_cont a {
+	color: #0085d0;
+}
+
+.msg_cont a:hover {
+	color: #F90;
+}
+
+.login_tit {
+	width: auto;
+	height: 30px;
+	border-bottom: 1px solid #d2d2d2;
+	text-align: center;
+	line-height: 32px;
+	color: #666;
+	font-weight: bold;
+	letter-spacing: 1px;
+	font-size: 17px;
+	background-color: #fff;
+}
+
+.loginbar {
+	display: block;
+	list-style: none;
+	width: 300px;
+	margin: 24px auto 0 auto;
+}
+
+.loginbar li {
+	line-height: 25px;
+	color: #666;
+	width: 300px;
+	height: 22px;
+	padding-bottom: 10px;
+}
+
+.loginbar li span {
+	height: 25px;
+	text-align: right;
+	float: left;
+	padding-right: 5px;
+}
+
+.loginbar li input {
+	float: left;
+	width: 195px;
+	height: 22px;
+	border: 1px solid #2FB3FF;
+	padding: 3px 0 0 5px;
+}
+
+.loginbar li a {
+	margin-left: 65px;
+	color: #0085d0;
+}
+
+.loginbar li a:hover {
+	color: #F90;
+}
+
+.login_input {
+	width: 235px;
+	margin: 0px auto 0 auto;
+	padding-left: 65px;
+	padding-top: 10px;
+	list-style: none;
+}
+
+#resetButton, #confirmButton {
+	background-color: #e8e8e8;
+	color: #666;
+	border: none;
+	font-weight: bold;
+	width: 80px;
+	height: 30px;
+	margin-right: 10px;
+	letter-spacing: 2px;
+	float: left;
+	cursor: pointer;
+}
+
+#confirmButton {
+	background-color: #2FB3FF;
+	color: #FFF;
+	width: 110px;
+}
+
+#resetButton:hover, #confirmButton:hover {
+	background-color: #8ec31f;
+}
+
+.loginMessage {
+	clear: both;
+	text-align: center;
+	text-indent: 2em;
+	color: red;
+	padding: 2px;
+}

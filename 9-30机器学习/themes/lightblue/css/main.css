@@ -1,0 +1,194 @@
+﻿html, body, div, ul, li {
+    margin: 0;
+    padding: 0;
+    font-family: "Microsoft YaHei", Verdana, Arial, Helvetica, AppleGothic, sans-serif;
+    font-size: 12px;
+}
+
+body {
+    color: #fff;
+    -ms-overflow-style: none;
+    overflow: hidden;
+}
+
+.body0 {
+    background-color: #adacfb;
+}
+
+.body1 {
+    background-color: #45afc4;
+}
+
+.body2 {
+    background-color: #133951;
+}
+
+.currentTheme {
+    border: 1px solid #fff;
+}
+
+.root {
+    position: absolute;
+    top: 50%;
+    left: 25px;
+    right: 25px;
+    height: 500px;
+    margin: -250px 0 0 0;
+    min-height: 500px;
+    background: url('../images/main/logo_sy_2.png') 95px 0px no-repeat;
+}
+
+    .root .userPart {
+        position: absolute;
+        margin: 5px 0 0 0;
+        padding: 5px 5px 5px 7px;
+        min-width:70px;
+        right: 140px;
+        font-size: 13px;
+        margin: 1px;
+        text-align: right;
+    }
+        .root .userPart span{
+            display:block;
+            background-color:pink;
+            padding-right:20px;
+            background: url('../images/main/sy_User_jiantou.png') right 2px no-repeat;
+        }
+        
+        .root .userPart ul {
+            margin: 3px 0 0 0;
+            padding: 0;
+            width: 100%;
+            list-style: none;
+            z-index: 9999;
+            overflow: hidden;
+        }
+
+        .root .userPart li {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            height: 15px;
+            margin: 0 0 1px 0;
+            padding: 7px 0 0 10px;
+            font-size: 13px;
+        }
+
+        .root .userPart a {
+            text-decoration: none;
+            color: #fff;
+        }
+        .root .userPart a:hover {
+            text-decoration:underline;
+        }
+    .root div.userPart:hover {
+        margin: 0;
+        border: 1px solid #fff;
+    }
+
+    .root .hover ul {
+        display: block;
+    }
+
+    .root .themeSelector {
+        position: absolute;
+        right: 30px;
+        list-style: none;
+        display: table;
+        margin: 0;
+        padding: 0;
+    }
+
+        .root .themeSelector li {
+            margin: 0 2px 0 2px;
+            padding: 0;
+            display: inline-block;
+            float: left;
+            width: 25px;
+            height: 25px;
+            cursor:pointer;
+        }
+
+.toLeft, .toRight, .metroPart {
+    margin: 80px 10px 0 0;
+    height: 400px;
+    float: left;
+    min-width: 85px;
+}
+
+.toLeft {
+    margin-left: 5px;
+}
+
+    .toLeft:hover {
+        background: url('../images/main/sy_zuo_jiantou_a.png') center center no-repeat;
+    }
+
+.toRight {
+    float: right;
+    margin-right: 5px;
+}
+
+    .toRight:hover {
+        background: url('../images/main/sy_you_jiantou_a.png') center center no-repeat;
+    }
+
+.metroPart {
+    position: absolute;
+    left: 95px;
+    right: 85px;
+    overflow: hidden;
+}
+
+    .metroPart .metroGroup {
+        float: left;
+        margin: 10px 20px 0 2px;
+    }
+
+.metroGroup .metroCategory {
+    display: block;
+    padding: 3px 0 5px 0;
+    font-size: 14px;
+    font-weight: bold;
+    width: 316px;
+}
+
+.metroGroup .container {
+    margin: 10px 15px 0 0;
+    padding: 0;
+    list-style: none;
+    display: inline-block;
+    float: left;
+    max-width: 330px;
+    height: 330px;
+}
+
+.metroGroup .item {
+    list-style: none;
+    display: block;
+    width: 100px;
+    height: 100px;
+    margin: 0 8px 8px 0;
+    cursor:pointer;
+    float: left;
+}
+
+.metroGroup .small {
+    width: 100px;
+}
+
+.metroGroup .big {
+    width: 208px;
+}
+
+.metroGroup .item .label {
+    position: relative;
+    display: block;
+    left: 0;
+    right: 0;
+    margin: 76px 0 0 0px;
+    text-align: center;
+    text-wrap: none;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}

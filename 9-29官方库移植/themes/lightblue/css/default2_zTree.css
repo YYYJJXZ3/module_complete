@@ -1,0 +1,127 @@
+﻿/*-------------------------------------
+zTree Style
+version:    3.4
+author:        Hunter.z
+email:        hunter.z@263.net
+website:    http://code.google.com/p/jquerytree/
+-------------------------------------*/
+
+.ztree * {
+    padding: 0px;
+    margin: 0;
+    font-size: 12px;
+    font-family: 'Microsoft YaHei' 'Segoe UI';
+    float: none;
+}
+
+.ztree {
+    margin: 5px 0 0 15px;
+    padding: 5px 0px 0px 0px;
+    color: #333;
+    float: none;
+    width: 235px;
+}
+
+    .ztree li {
+        padding: 0px;
+        margin: 0px;
+        list-style: none;
+        line-height: 14px;
+        text-align: left;
+        white-space: nowrap;
+        outline: 0;
+    }
+
+        .ztree li ul {
+            margin: 0 0 0 15px;
+            padding: 0px 0px 0px 10px;
+        }
+
+        .ztree li a {
+            margin: 2px 0 2px 0;
+            cursor: pointer;
+            height: 18px;
+            overflow: hidden;
+            text-decoration: none;
+            vertical-align: top;
+            display: inline-block;
+        }
+
+            .ztree li a:hover {
+                text-decoration: none;
+            }
+
+            .ztree li a.curSelectedNode {
+                color: #ffff00;
+                background: url('../images/frame2/ty_xuanzhongtubiao.png') 0 1px no-repeat;
+            }
+
+        .ztree li span {
+            line-height: 16px;
+            margin-right: 2px;
+        }
+
+            .ztree li span.button {
+                display: none;
+            }
+
+a.level0, a.level1 {
+    margin: 2px 0 2px 0;
+    cursor: pointer;
+    height: 18px;
+    overflow: hidden;
+    text-decoration: none;
+    vertical-align: top;
+    display: inline-block;
+}
+
+a.level0 {
+    color: #fff;
+    padding: 3px 0px 1px 25px;
+    background: url('../images/frame2/ty_erjitubiao.png') 0 0 no-repeat;
+}
+
+    a.level0:hover {
+        font-weight: bold;
+        color: #ffff00;
+        background: url('../images/frame2/ty_erjitubiao_a.png') 0 0 no-repeat;
+    }
+
+a.level1 {
+    margin-left: 20px;
+    color: #fff;
+    padding: 1px 0px 1px 20px;
+    background: url('../images/frame2/ty_sanjitubiao.png') 0 1px no-repeat;
+}
+
+    a.level1:hover {
+        font-weight: bold;
+        color: #ffff00;
+        background: url('../images/frame2/ty_sanjitubiao_a.png') 0 1px no-repeat;
+    }
+
+a.level2 {
+    margin-left: 20px;
+    color: #fff;
+    padding: 1px 0px 1px 20px;
+    background: url('../images/frame2/ty_sanjitubiao.png') 0 1px no-repeat;
+}
+
+    a.level2:hover {
+        font-weight: bold;
+        color: #ffff00;
+        background: url('../images/frame2/ty_sanjitubiao_a.png') 0 1px no-repeat;
+    }
+
+a.level3 {
+    margin-left: 20px;
+    color: #fff;
+    padding: 1px 0px 1px 20px;
+    background: url('../images/frame2/ty_sanjitubiao.png') 0 1px no-repeat;
+}
+
+    a.level3:hover {
+        font-weight: bold;
+        color: #ffff00;
+        background: url('../images/frame2/ty_sanjitubiao_a.png') 0 1px no-repeat;
+    }

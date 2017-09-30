@@ -1,0 +1,220 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <!--[if lt IE 9]>
+<?import namespace="v" implementation="#default#VML" ?>
+<![endif]-->
+    <link href="../../../themes/lightblue/p.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/jqueryui/jquery-ui-1.10.3.custom.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/jqgrid/ui.jqgrid.css" rel="stylesheet" />
+    <link href="codebase/GooFlow.css" rel="stylesheet" />
+    <link href="codebase/gf_show.css" rel="stylesheet" />
+
+    <script type="text/javascript" src="../../../Javascript/core/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="../../../Javascript/GooFlow/GooFunc.js"></script>
+    <script type="text/javascript" src="js/GooFlow.js"></script>
+    <script type="text/javascript" src="js/gf_Show.js"></script>
+
+
+
+
+
+    <script src="../../../javascript/JSControl/SmartGrid/JqGrid/grid.locale-cn.js"></script>
+    <script src="../../../javascript/JSControl/SmartGrid/JqGrid/jquery.jqGrid.src.js"></script>
+    <script src="../../../javascript/JSControl/SmartGrid/JqGrid/SmartGrid.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+            //var UrlParameter = {
+            //    ReportId: "-1900463244",
+            //    Version_Desc: "123456",//版本名称
+            //    DateType: "月",//时间类型
+            //    Date: "2013年05月",//2014年12月12日
+            //    NeType: "地区",//
+            //    NeStr: "",
+            //    Hour: "",
+            //    UserId: "1394",
+            //    isResult: "0",// 0 代表 false 1 true
+            //    IsCache: "1", // 为空是使用缓存
+            //    isPassval: "0"//
+            //};
+            var UrlParameter = {
+                ReportId: "1938238655",//注意：其实流程的id 不是报表的id
+                Version_Desc: "流程2.0",//默认版本名称
+                DateType: "月",//时间类型
+                Date: "2015年07月",//2014年12月12日
+                NeType: "地区",//
+                NeStr: "",
+                Hour: "",
+                UserId: "1394",
+                isResult: "0",// 0 代表 false 1 true
+                IsCache: "1", // 为空是使用缓存
+                isPassval: "0"//
+            };
+            $show.Init(UrlParameter);
+        });
+
+    </script>
+
+</head>
+<body>
+    <!-- <div class="gl_box" id="gl_box">
+        <div class="gl_close" title="关闭当前窗口">
+            <a href="#">
+                <img src="codebase/img/gl_close.jpg" width="16" height="16" alt="" /></a>
+        </div>
+        <div class="gl_tit" id="gl_tit">节点详情页面和配置界面</div>
+        <div class="gl_cont">
+            <div class="nTab">
+                <div class="TabTitle">
+                    <ul id="myTab1">
+                        <li class="active" onclick="nTabs(this,0);">节点详情</li>
+                        <li class="normal" onclick="nTabs(this,1);">阈值配置</li>
+                    </ul>
+                </div>
+                <div class="TabContent">
+                    <div id="myTab1_Content0">
+                        <div class="oper_top">
+                            <input type="button" id="btnExport" value="导出Excel" />
+                            <input type="button" id="btnAnalysis" value="自定义分析" />
+                        </div>
+                        <div id="grid"></div>
+                    </div>
+                    <div id="myTab1_Content1" class="none">
+                        <div id="threValueSet">
+                            <ul>
+                                <li id="liMeas">
+                                    <fieldset>
+                                        <legend><span class="roundSpan">指标条件阈值设置</span></legend>
+                                        <div>
+                                            <table>
+                                                <tr>
+                                                    <td id="exprId_111">2g语音业务量><input type="text" value="123" disabled="disabled" /></td>
+                                                    <td>
+                                                        <input type="button" value="修改" />
+                                                        <input style="display: none;" type="button" value="取消" />
+                                                        <input style="display: none;" type="button" value="确定" />
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td id="exprId_222">wlan流量><input type="text" value="123" disabled="disabled" />
+                                                        and wlan流量<<input type="text" value="200" disabled="disabled" /></td>
+                                                    <td>
+                                                        <input type="button" value="修改" />
+                                                        <input style="display: none;" type="button" value="取消" />
+                                                        <input style="display: none;" type="button" value="确定" />
+                                                    </td>
+
+                                                </tr>
+                                                <tr>
+                                                    <td id="exprId_333">td语音流量>
+                                                        <input type="text" value="123" disabled="disabled" /></td>
+                                                    <td>
+                                                        <input type="button" value="修改" />
+                                                        <input style="display: none;" type="button" value="取消" />
+                                                        <input style="display: none;" type="button" value="确定" />
+                                                    </td>
+
+                                                </tr>
+                                                <tr>
+                                                    <td id="Td1">td语音流量>
+                                                        <input type="text" value="123" disabled="disabled" /></td>
+                                                    <td>
+                                                        <input type="button" value="修改" />
+                                                        <input style="display: none;" type="button" value="取消" />
+                                                        <input style="display: none;" type="button" value="确定" />
+                                                    </td>
+
+                                                </tr>
+                                                <tr>
+                                                    <td id="Td2">td语音流量>
+                                                        <input type="text" value="123" disabled="disabled" /></td>
+                                                    <td>
+                                                        <input type="button" value="修改" />
+                                                        <input style="display: none;" type="button" value="取消" />
+                                                        <input style="display: none;" type="button" value="确定" />
+                                                    </td>
+
+                                                </tr>
+                                                <tr>
+                                                    <td id="Td3">td语音流量>
+                                                        <input type="text" value="123" disabled="disabled" /></td>
+                                                    <td>
+                                                        <input type="button" value="修改" />
+                                                        <input style="display: none;" type="button" value="取消" />
+                                                        <input style="display: none;" type="button" value="确定" />
+                                                    </td>
+
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </fieldset>
+                                </li>
+                                <li id="liDims">
+                                    <fieldset>
+                                        <legend><span class="roundSpan">维度过滤阈值设置</span></legend>
+                                        <div>
+                                            <table>
+                                                <tr>
+                                                    <td id="dimID_1111">地理维.地区.<input type="text" value="北京市" disabled="disabled" /></td>
+                                                    <td>
+                                                        <input type="button" value="修改" />
+                                                        <input style="display: none;" type="button" value="取消" />
+                                                        <input style="display: none;" type="button" value="确定" />
+                                                    </td>
+
+                                                </tr>
+                                                <tr>
+                                                    <td id="dimID_2222">地理维.省份.<input type="text" value="河南省" disabled="disabled" /></td>
+                                                    <td>
+                                                        <input type="button" value="修改" />
+                                                        <input style="display: none;" type="button" value="取消" />
+                                                        <input style="display: none;" type="button" value="确定" />
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td id="Td4">地理维.省份.<input type="text" value="河南省" disabled="disabled" /></td>
+                                                    <td>
+                                                        <input type="button" value="修改" />
+                                                        <input style="display: none;" type="button" value="取消" />
+                                                        <input style="display: none;" type="button" value="确定" />
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td id="Td5">地理维.省份.<input type="text" value="河南省" disabled="disabled" /></td>
+                                                    <td>
+                                                        <input type="button" value="修改" />
+                                                        <input style="display: none;" type="button" value="取消" />
+                                                        <input style="display: none;" type="button" value="确定" />
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td id="Td6">地理维.省份.<input type="text" value="河南省" disabled="disabled" /></td>
+                                                    <td>
+                                                        <input type="button" value="修改" />
+                                                        <input style="display: none;" type="button" value="取消" />
+                                                        <input style="display: none;" type="button" value="确定" />
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </fieldset>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="clear">&nbsp;</div>
+        </div>
+    </div>-->
+    <div id="flow"></div>
+    <div id="divLoadingStatus" style="display: none; text-align: center; padding-top: 100px; color: Red; font-size: larger;" class="ui-widget-overlay">
+        <img alt="" style="display: inline;" src="codebase/img/loading.gif" />
+        <div>&nbsp;&nbsp;&nbsp;请稍等,数据加载中.....</div>
+    </div>
+</body>
+</html>

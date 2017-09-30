@@ -1,0 +1,113 @@
+修改记录
+[+]新增 [-]删除 [^]升级 [#]修复
+
+v2.3.0
+2017-07-25
+1、[+] 实现一个页面多个图形都能自适应的功能
+
+v2.3.0
+2017-07-11
+1、[+] 为公共变量cPrm增加frameType属性（框架类型，.net或java），因为两种框架的analyzer取数方式不同
+
+v2.3.0
+2017-05-22
+1、[+] 增加OriginalOption:{}//调用插件的原生属性，个别场景用到，非通用，不设置则按默认，不会报错；与Original不同之处在于，直接和最终的option融合
+
+v2.3.0
+2017-03-03
+1、[+] 增加属性，LegendSelected: ""//需要显示的图例索引，优先级高于LegendNotSelected，为防止指标过多的情况
+
+v2.3.0
+2017-01-23
+1、[+] 增加Stack属性,用于实现多组堆叠，可参考Demo.html文件，例如：Stack:[{colindex:[1,2,3],name:'堆叠分组1'},{colindex:[4,5],name:'堆叠分组2'}]
+2、[+] x轴某项的值为空时，数据断开，如折线不再连续
+3、[^] 用IsScroll属性就可以使直角坐标轴支持滚动条，不再仅限于ScrollColumn、ScrollLine、ScrollArea、ScrollStackedColumn
+
+v2.3.0
+2016-12-29
+1、[^] Echarts2时，图形种类按需加载，减少不必要的加载
+
+v2.3.0
+2016-12-07
+1、[^] Echarts2和Echarts3都支持，但同一个页面只能用同一个版本，因为同时加载Echarts2和Echarts3会有冲突；
+用哪个版本有三种方式指定：
+1）统一切换，将SampleChart.js头部的chartParams.chartPlugin设置为"echarts2"或"echarts3"
+2）前台指定：设置前台option的ChartPlugin属性为"echarts2"或"echarts3"
+3）根据图形类型切换：将SampleChart.js头部的chartParams.chartPlugin设置为"ByChartType"即可，就会按getChartType()中指定的
+
+2、[+] 增加“PieOne（单指标圆环图）”，可参考Demo.html，可用Pieces属性进行颜色区间的设置
+
+3、[+] 增加Pieces属性，通用属性，用于设置区间
+
+4、[+] 增加属性CommonValue:[]//通用的属性，小众的属性就不再增加，直接用这个通用的，样例：[{k:"业务成功率",v:98},{k:"响应成功率",v:90}]
+
+5、[+] 增加属性：
+Map:{
+   zoom:1,//放大倍数
+   center:[]//中心点的经纬度
+}
+
+6、[^] 调整tooltip的位置，防止与点击事件冲突
+
+7、[^] Echarts升级到 3.3.2
+
+v2.2.0
+2016-10-24（程序员节）
+1、[+] 封装“气泡图”
+
+v2.2.0
+2016-10-22
+1、[^] 文件头增加：UpdateTime 2016-10-20
+
+2、[^] 可以通过$.fn.SampleChart.defaults引出相应的属性，便于大家拼写
+
+3、[^] 输入参数的“健壮性”处理
+
+4、[^] 有时间(月、日、周、时)的折线图会自动修改XLabelStep，有间隔的点也会显示圆圈，也可以有点击事件
+
+5、[^] 柱图、折线图点击之后支持自动高亮，不再用设置HighLight，不用再重新渲染图形
+
+6、[^] 饼图点击之后不再高亮显示，而是分离出去
+
+7、[^] YFormatType:'1024'时，Byte时显示单位“B”
+
+8、[+] 增加阈值线：
+Line: [],//线，如：最大值、最小值、均值、阈值等，格式：[{colindex:1,type:'custom',name:'阈值',value:60},{colindex:2,type:'average',name:'均值'}]
+
+9、[^] 地图鼠标滑过的效果修改：由原来的区域变色，改成边界高亮，在主题中设置
+
+10、[^] 修改地图的属性：
+MapRangeColor、MapColor改用下面
+Map: {//将地图专用的属性尽量都放到这里
+    roam: false,//是否支持漫游，即缩放和拖动
+    rangeColor: ['#026FDD', '#DEFEFF'],//范围图例的颜色，从大到小，可以是多个，比如：['#ff3333', 'orange', 'yellow', 'lime', 'aqua']，接替上面的MapRangeColor属性
+    borderColor: "rgba(100,149,237,1)",//地区分界线的颜色
+    areaColor: "auto"//地图本身的颜色，接替上面的MapColor属性
+}
+
+11、[^] 优化最大最小值算法
+
+12、[^] 优化流出、流入地图圆圈大小的算法
+
+13、[^] 类似“10月05日”如果有折行，要保持整齐
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,474 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>报表定制</title>
+    <link href="css/dashboard.css" rel="stylesheet" type="text/css" />
+    <link href="../JSControl/Sample/Css/jquery-ui-1.10.3.custom.css" rel="stylesheet" type="text/css" />
+    <script src="../../Themes/JS/jquery-1.9.1.min.js" type="text/javascript"></script>
+    <script src="../../javascript/core/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
+
+    <link href="Js/ztree/css/zTreeStyle/zTreeStyle.css" rel="stylesheet" type="text/css" />
+    <script src="Js/ztree/js/jquery.ztree.core-3.5.js" type="text/javascript"></script>
+    <script src="Js/ztree/js/jquery.ztree.exedit-3.5.js" type="text/javascript"></script>
+
+    <script src="../JSControl/SmartGrid/Js/JqMenu/smartMenu.float.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        var MoveTest = {
+            errorMsg: "放错了...请选择正确的类别！",
+            curTarget: null,
+            curTmpTarget: null,
+            noSel: function () {
+                try {
+                    window.getSelection ? window.getSelection().removeAllRanges() : document.selection.empty();
+                } catch (e) { }
+            },
+            dragTree2Dom: function (treeId, treeNodes) {
+                return !treeNodes[0].isParent;
+            },
+            prevTree: function (treeId, treeNodes, targetNode) {
+                return !targetNode.isParent && targetNode.parentTId == treeNodes[0].parentTId;
+            },
+            nextTree: function (treeId, treeNodes, targetNode) {
+                return !targetNode.isParent && targetNode.parentTId == treeNodes[0].parentTId;
+            },
+            innerTree: function (treeId, treeNodes, targetNode) {
+                return targetNode != null && targetNode.isParent && targetNode.tId == treeNodes[0].parentTId;
+            },
+            dropTree2Dom: function (e, treeId, treeNodes, targetNode, moveType) {
+                var domId = "report_" + treeNodes[0].getParentNode().id;
+                var obj = $(e.target);
+                if (moveType == null && obj.attr("isreport") == "true") {
+                    var oldDom = obj.find("span[domId=" + treeNodes[0].id + "]");
+                    if (oldDom.length > 0) {
+                        alert("已经存在的报表信息！");
+                    } else {
+                        //var zTree = $.fn.zTree.getZTreeObj("treeReport");
+                        //zTree.removeNode(treeNodes[0]);
+                        var newDom = $("span[domId=" + treeNodes[0].id + "]");
+                        if (newDom.length > 0) {
+                            newDom.removeClass("domBtn_Disabled");
+                            newDom.addClass("domBtn");
+                        } else {
+                            obj.html("<span class='domBtn' parentid='" + treeNodes[0].pId + "' domId='" + treeNodes[0].id + "'>" + treeNodes[0].name + "</span>");
+
+                        }
+                    }
+                    MoveTest.updateType();
+                } else if ($(e.target).parents(".pb-modeldata").length > 0) {
+                    alert(MoveTest.errorMsg);
+                }
+            },
+            dom2Tree: function (e, treeId, treeNode) {
+                var target = MoveTest.curTarget, tmpTarget = MoveTest.curTmpTarget;
+                if (!target) return;
+                var zTree = $.fn.zTree.getZTreeObj("treeReport"), parentNode;
+                if (treeNode != null && treeNode.isParent && treeNode.id == target.attr("parentid")) {
+                    parentNode = treeNode;
+                } else if (treeNode != null && !treeNode.isParent && treeNode.id == target.attr("parentid")) {
+                    parentNode = treeNode.getParentNode();
+                }
+
+                if (tmpTarget) tmpTarget.remove();
+                //var nodes = zTree.addNodes(parentNode, { id: target.attr("domId"), name: target.text() });
+                //zTree.selectNode(nodes[0]);
+                target.remove();
+
+                //if (!!parentNode) {
+                //    var nodes = zTree.addNodes(parentNode, { id: target.attr("domId"), name: target.text() });
+                //    zTree.selectNode(nodes[0]);
+                //    target.remove();
+                //} else {
+                //    target.removeClass("domBtn_Disabled");
+                //    target.addClass("domBtn");
+                //    alert("被拖放的节点不属于此父节点！");
+                //}
+                //MoveTest.updateType();
+                MoveTest.curTarget = null;
+                MoveTest.curTmpTarget = null;
+            },
+            updateType: function () {
+                var zTree = $.fn.zTree.getZTreeObj("treeReport"),
+                nodes = zTree.getNodes();
+                for (var i = 0, l = nodes.length; i < l; i++) {
+                    var num = nodes[i].children ? nodes[i].children.length : 0;
+                    nodes[i].name = nodes[i].name.replace(/ \(.*\)/gi, "") + " (" + num + ")";
+                    zTree.updateNode(nodes[i]);
+                }
+            },
+            bindDom: function () {
+                $(".pb-modeldata").bind("mousedown", MoveTest.bindMouseDown);
+                $(".pb-modeldata").bind("oncontextmenu", function () {
+                    alert("aaa");
+                });
+            },
+            bindMouseDown: function (e) {
+                var target = e.target;
+                if (target != null && target.className == "domBtn") {
+                    var doc = $(document), target = $(target),
+                    docScrollTop = doc.scrollTop(),
+                    docScrollLeft = doc.scrollLeft();
+                    target.addClass("domBtn_Disabled");
+                    target.removeClass("domBtn");
+                    curDom = $("<span class='dom_tmp domBtn'>" + target.text() + "</span>");
+                    curDom.appendTo("body");
+
+                    curDom.css({
+                        "top": (e.clientY + docScrollTop + 3) + "px",
+                        "left": (e.clientX + docScrollLeft + 3) + "px"
+                    });
+                    MoveTest.curTarget = target;
+                    MoveTest.curTmpTarget = curDom;
+
+                    doc.bind("mousemove", MoveTest.bindMouseMove);
+                    doc.bind("mouseup", MoveTest.bindMouseUp);
+                    doc.bind("selectstart", MoveTest.docSelect);
+                }
+                if (e.preventDefault) {
+                    e.preventDefault();
+                }
+            },
+            bindContextmenu: function (e) {
+                alert("");
+            },
+            bindMouseMove: function (e) {
+                MoveTest.noSel();
+                var doc = $(document),
+                docScrollTop = doc.scrollTop(),
+                docScrollLeft = doc.scrollLeft(),
+                tmpTarget = MoveTest.curTmpTarget;
+                if (tmpTarget) {
+                    tmpTarget.css({
+                        "top": (e.clientY + docScrollTop + 3) + "px",
+                        "left": (e.clientX + docScrollLeft + 3) + "px"
+                    });
+                }
+                return false;
+            },
+            bindMouseUp: function (e) {
+                var doc = $(document);
+                doc.unbind("mousemove", MoveTest.bindMouseMove);
+                doc.unbind("mouseup", MoveTest.bindMouseUp);
+                doc.unbind("selectstart", MoveTest.docSelect);
+
+                var target = MoveTest.curTarget, tmpTarget = MoveTest.curTmpTarget;
+                if (tmpTarget) tmpTarget.remove();
+
+                if ($(e.target).parents("#treeReport").length == 0) {
+                    if (target) {
+                        target.removeClass("domBtn_Disabled");
+                        target.addClass("domBtn");
+                    }
+                    MoveTest.curTarget = null;
+                    MoveTest.curTmpTarget = null;
+                }
+            },
+            bindSelect: function () {
+                return false;
+            }
+        };
+
+        var zNodesReport = [
+            { id: 1, pId: 0, name: "植物", isParent: true, open: true },
+            { id: 2, pId: 0, name: "动物", isParent: true, open: true },
+            { id: 20, pId: 2, name: "大象" },
+            { id: 29, pId: 2, name: "鲨鱼" },
+            { id: 10, pId: 1, name: "蔬菜" },
+            { id: 101, pId: 10, name: "大白菜" },
+            { id: 102, pId: 10, name: "西红柿" },
+            { id: 19, pId: 1, name: "水果" },
+            { id: 191, pId: 19, name: "香蕉" },
+            { id: 192, pId: 19, name: "苹果" }
+        ];
+
+    </script>
+    <script type="text/javascript">
+        var actRecords = {
+            name: "",
+            modename: "",
+            dimension: {},
+            report: { id: 1, modelid: 1, width: 800, height: 600 }
+        };
+
+
+        var zNodes = [
+           
+        ];
+
+        $(document).ready(function () {
+            // 模板选择树
+            var setting = {
+                view: {
+                    dblClickExpand: false
+                },
+                data: {
+                    simpleData: {
+                        enable: true
+                    }
+                },
+                callback: {
+                    beforeClick: beforeClick,
+                    onClick: onClick
+                }
+            };
+            $.fn.zTree.init($("#treeModel"), setting, zNodes);
+
+            //报表选择树
+            var settingReport = {
+                edit: {
+                    enable: true,
+                    showRemoveBtn: false,
+                    showRenameBtn: false,
+                    drag: {
+                        prev: MoveTest.prevTree,
+                        next: MoveTest.nextTree,
+                        inner: MoveTest.innerTree
+                    }
+                },
+                data: {
+                    keep: {
+                        parent: true,
+                        leaf: true
+                    },
+                    simpleData: {
+                        enable: true
+                    }
+                },
+                callback: {
+                    beforeDrag: MoveTest.dragTree2Dom,
+                    onDrop: MoveTest.dropTree2Dom,
+                    onMouseUp: MoveTest.dom2Tree
+                },
+                view: {
+                    selectedMulti: false
+                }
+            };
+            $.fn.zTree.init($("#treeReport"), settingReport, zNodesReport);
+            MoveTest.updateType();
+           
+
+            $("#btnCheckModel").bind("click", function () {
+                var name = $("#txtDBName").val();
+                var mpath = $("#texModelName").val();
+                if (name == "" || mpath == "") {
+                    //alert("信息不完整");
+                    //return false;
+                }
+
+                $.ajax({
+                    cache: true,
+                    type: "POST",
+                    url: "design.ashx",
+                    beforeSend: function () { },
+                    complete: function () { },
+                    data: { act: "getmodel", name: "T" },
+                    datatype: "json",
+                    success: function (datasource) {
+                        if (typeof datasource == "object") {
+                            var tip = eval("(" + datasource + ")");
+                            alert(tip.message);
+                        } else {
+                            $("#rightModel").html(datasource);
+                            MoveTest.bindDom();
+                        }
+                        printAacRecord();
+                    },
+                    error: function () {
+                        alert("请求数据出错！");
+                    }
+                });
+            })
+
+            $("#texModelName").bind("click", function () {
+                showMenu();
+                return false;
+            });
+        });
+        //@树形操作 begin
+        function beforeClick(treeId, treeNode) {
+            var check = (treeNode && !treeNode.isParent);
+            if (!check) alert("操作必须指定到特定的某个模型...");
+            return check;
+        }
+        function onClick(e, treeId, treeNode) {
+            var zTree = $.fn.zTree.getZTreeObj("treeModel"),
+            nodes = zTree.getSelectedNodes(),
+            v = "";
+            nodes.sort(function compare(a, b) { return a.id - b.id; });
+            for (var i = 0, l = nodes.length; i < l; i++) {
+                v += nodes[i].name + ",";
+            }
+            if (v.length > 0) v = v.substring(0, v.length - 1);
+            var cityObj = $("#texModelName");
+            cityObj.attr("value", v);
+        }
+        function showMenu() {
+            var cityObj = $("#texModelName");
+            var cityOffset = $("#texModelName").offset();
+            $("#menuContent").css({ left: cityOffset.left + "px", top: cityOffset.top + cityObj.outerHeight() + "px" }).slideDown("fast");
+
+            $("body").bind("mousedown", onBodyDown);
+        }
+        function hideMenu() {
+            $("#menuContent").fadeOut("fast");
+            $("body").unbind("mousedown", onBodyDown);
+        }
+        function onBodyDown(event) {
+            if (!(event.target.id == "menuBtn" || event.target.id == "menuContent" || $(event.target).parents("#menuContent").length > 0)) {
+                hideMenu();
+            }
+        }
+        //@树形操作 end
+
+        function printAacRecord() {
+            var hh = "\n";
+            var str = "{";
+            str += hh
+            str += "name:" + actRecords.name;
+            str += "," + hh
+            str += "modename:" + actRecords.modename;
+            str += "," + hh
+            str += "dimension:" + actRecords.dimension;
+            str += "," + hh
+            str += "report:" + actRecords.report;
+            str += hh
+            str += "}";
+            $("#actRecord").html(str);
+        }
+    </script>
+    <script type="text/javascript">
+        function SetContextMenuEvent(id) {
+            var obj = $("#div_ContextMenu");
+            var para = obj.attr("params");
+            alert("右键菜单窗口触发了事件" + id + ";参数：" + para);
+        }
+        function SetContextMenu(name) {
+            return {
+                popid: "div_ContextMenu",
+                params: name,
+                menuList: [
+                        { menuName: "设置", clickEvent: "SetModelReport()" },
+                        { menuName: "删除", clickEvent: "DeleteModelReport()" }
+                ]
+            };
+        }
+
+        var uname = $("#uname"),
+password = $("#upass"),
+email = $("#email"),
+birth = $("#birth"),
+fields = $([]).add(uname).add(password).add(email),
+tips = $(".validateTips");
+        $("#register-form").dialog({
+            //打开对话框的时候移除表单域的样式并设置错误信息显示文本为默认值
+            open: function () {
+                tips.removeClass().text("所有的表单域都为必填项.");
+                fields.removeClass("ui-state-error");
+                fields.val("");
+            },
+            modal: true,//弹出带有遮罩的模式窗体
+            autoOpen: false,//不自动打开
+            buttons: {
+                提交: function () {
+                    //点击提交按钮时执行的事件
+                    var chk = true;
+                    //验证字段长度是否符合要求
+                    chk = chk && checkLength(uname, "username", 2, 15);
+                    chk = chk && checkLength(password, "password", 6, 20);
+                    chk = chk && checkLength(email, "email", 6, 40);
+                    chk = chk && checkLength(birth, "birthday", 8, 10);
+                    //正则表达式验证用户名和email是否合法
+                    chk = chk && checkReg(name, /^([\u4E00-\uFA29]|[\uE7C7-\uE7F3]|[a-zA-Z])|_\w*$/, "用户名必须以字母、下划线或者汉字开头,请修改后提交");
+                    chk = chk && checkReg(email, /\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/, "请输入正确的email格式,格式如下:admin@yahoo.com");
+
+                    //判断字段长度是否符合要求的方法,四个参数分别为：o被检测的对象,msg被检测对象显示名称
+                    //min允许的最小长度,max允许的最大长度
+                    function checkLength(o, msg, min, max) {
+                        if (o.val().length > max || o.val().length < min) {
+                            o.addClass("ui-state-error");//为当前的错误域添加CSS样式
+                            updateTip(msg + "的长度必须在" + min + "到" + max + "之间");//更新提示区域的信息
+                            return false;
+                        } else {
+                            //如果验证通过则移除当前对象的CSS错误样式
+                            o.removeClass("ui-state-error");
+                            return true;
+                        }
+                    }
+
+                    //通过正则表达式验证内容的方法,o为表单域对象,reg为正则表达式,n为错误提示信息
+                    function checkReg(o, reg, n) {
+                        if (!reg.test(o.val())) {
+                            o.addClass("ui-state-error");
+                            updateTip(n);
+                            return false;
+                        } else {
+                            o.removeClass("ui-state-error");
+                            return true;
+                        }
+                    }
+
+                    //更新提示信息的方法，传递的参数t为显示的错误信息，然后为显示信息的标签添加高亮
+                    function updateTip(t) {
+                        tips.text(t).addClass("ui-state-highlight");
+                    }
+
+                    if (chk) {
+                        //验证通过后移除提示处的样式和错误消息
+                        tips.removeClass().text("");
+                        //序列化表单
+                        var user = $("#reg-form").formSerialize();
+                        //发起ajax请求
+                        $.ajax({
+                            type: 'post',
+                            url: '${path}/UserAction?method=register',
+                            data: user,
+                            success: function (msg) {
+                                if (msg == "success") {
+                                    $("#register-form").dialog("close");
+                                } else {
+                                    alert("服务器异常,请稍后再试");
+                                }
+                            },
+                            error: function () {
+                                alert("ajax请求失败");
+                            }
+                        });
+                    }
+                }
+            }
+        });
+    </script>
+</head>
+<body>
+    <div class="p-all">
+        <div class="p-header">
+            <ul class="ph-query">
+                <li><span>报表名称：</span><input type="text" id="txtDBName" class="ui-button-text" /></li>
+                <li>
+                    <div style="display: inline"><span>模&nbsp;型：</span><input id="texModelName" type="text" value="" readonly="readonly" />&nbsp;<!--<a id="menuBtn" href="#" onclick="showMenu(); return false;">选择</a>--></div>
+                </li>
+                <li>
+                    <input type="button" id="btnCheckModel" value="确定" class="btn_search" /></li>
+            </ul>
+        </div>
+        <div class="split-gap" style="height: 5px"></div>
+        <div id="p-body">
+            <div class="pb-left">
+                <div class="pbl-top">
+                    <ul id="treeReport" class="ztree ztreeReport"></ul>
+                </div>
+                <div class="split-line"></div>
+                <div class="pbl-bottom">
+                    <span>操作记录：</span>
+                    <textarea id="actRecord" readonly="readonly" style="height: 300px"></textarea>
+                </div>
+            </div>
+            <div class="pb-right">
+                <div id="rightModel"></div>
+            </div>
+        </div>
+    </div>
+    <div id="menuContent" class="menuContent" style="display: none; position: absolute;">
+        <ul id="treeModel" class="ztree" style="margin-top: 0; width: 160px;"></ul>
+    </div>
+</body>
+</html>

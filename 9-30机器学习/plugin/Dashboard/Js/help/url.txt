@@ -1,0 +1,15 @@
+﻿<div class="dashboard-data" style="min-height:100px;max-height:220px;">
+        <table id="tableJump" class="table" >
+			<thead>
+				<tr>
+                    <th style="width: 100px;">列名</th>
+                    <th style="width: 60px;">操作方式</th>
+                    <th style="width: 80px;">跳转页面</th>
+                    <th style="width: 60px;">打开方式</th>
+                    <th style="width: 300px;">跳转参数</th>
+                </tr>
+			</thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>

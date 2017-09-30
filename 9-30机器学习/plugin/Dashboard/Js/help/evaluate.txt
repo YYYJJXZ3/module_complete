@@ -1,0 +1,14 @@
+﻿<div class="tab-content" style="width:400px;height:80px;border:0px;">  
+		<dl  style="display:none">
+            <dt>默认类型</dt>
+            <dd>
+                <div id="five"></div>
+            </dd>
+        </dl>
+		 <dl>
+            <dt>默认值</dt>
+            <dd>
+                <input type="text" class="input" value="" id="txtDimDefault" />
+            </dd>
+        </dl>
+    </div>

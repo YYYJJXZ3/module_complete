@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <link href="../OpenLayers/ol3/ol.css" rel="stylesheet" />
+    <title>OpenLayers 3 example</title>
+    <script src="../../../core/jquery-1.9.1.min.js"></script>
+    <script src="../OpenLayers/ol3/ol.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var map = new ol.Map({
+                interactions: ol.interaction.defaults().extend([
+                    new ol.interaction.Select({
+                        style: new ol.style.Style({
+                            image: new ol.style.Circle({
+                                radius: 5,
+                                fill: new ol.style.Fill({
+                                    color: '#FF0000'
+                                }),
+                                stroke: new ol.style.Stroke({
+                                    color: '#000000'
+                                })
+                            })
+                        })
+                    })
+                ]),
+                target: 'map',
+                layers: [
+                    new ol.layer.Tile({
+                        title: "Global Imagery",
+                        source: new ol.source.OSM()
+                    })
+                ],
+                view: new ol.View({
+                    //projection: ol.proj.get("EPSG:4326"),
+                    center: ol.proj.transform([-93.27, 44.98], 'EPSG:4326', 'EPSG:3857'),
+                    zoom: 0,
+                    maxResolution: 0.703125
+                }),
+                controls: ol.control.defaults().extend([
+                    new ol.control.ScaleLine({
+                        className: 'ol-scale-line',
+                        target: document.getElementById('scale-line')
+                    })
+                ])
+            });
+        });
+    </script>
+    <style>
+        #map {
+            height: 456px;
+            width: 50%;
+        }
+
+        .ol-attribution a {
+            color: black;
+        }
+
+        .scale-line {
+            position: absolute;
+            top: 430px;
+        }
+
+        .ol-scale-line {
+            position: relative;
+            bottom: 0px;
+            left: 0px;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div id="scale-line" class="scale-line"></div>
+</body>
+</html>

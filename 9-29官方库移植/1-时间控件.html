@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="themes/lightblue/p.css">
+    <link rel="stylesheet" href="themes/page/page.css">
+    <script src="javascript/core/jquery-1.9.1.min.js" type="text/javascript"></script>
+    <script src="javascript/core/jquery-ui-1.10.3.custom.js" type="text/javascript"></script>
+    <script src="javascript/JSControl/Condition/timepicker.js" type="text/javascript"></script>
+
+</head>
+<body>
+<div id="txtDate"></div>
+<script>
+    var $txtDate = $("#txtDate");
+    $txtDate.timepicker({ showTypeWeek: false, showTypeMonth: true, showTypeHour: false, showTypeWeek: true });
+    $("#btnQuery").click(function () {
+        $("#lblMsg").text("时间：" + $txtDate.timepicker("getDateStr") + "   时间类型：" + $txtDate.timepicker("getTimeType"));
+    });
+
+
+</script>
+</body>
+</html>

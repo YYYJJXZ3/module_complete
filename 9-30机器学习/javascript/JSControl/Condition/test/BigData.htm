@@ -1,0 +1,77 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>自定义报表--大数据插件测试</title>
+    <link href="develop.css" rel="stylesheet" />
+    <link href="../../../../Themes/lightblue/jqueryui/jquery-ui-1.10.3.custom.css" rel="stylesheet" />
+    <script src="../../../core/jquery-1.9.1.min.js"></script>
+    <script src="../../../core/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="../../../JSControl/Condition/timepicker.js" type="text/javascript"></script>
+    <script src="../../../JSControl/Condition/bigdataSelect.js"></script>
+
+    <link href="../../../../Themes/lightblue/jqgrid/ui.jqgrid.css" rel="stylesheet" />
+    <script src="../../../JSControl/SmartGrid/JqGrid/grid.locale-cn.js"></script>
+    <script src="../../../JSControl/SmartGrid/JqGrid/jquery.jqGrid.src.js"></script>
+    <script src="../../../JSControl/SmartGrid/JqGrid/SmartGrid.js"></script>
+
+    <script type="text/javascript">
+        var lacsetting = {
+            themename: "GSM无线主题",
+            dimname: "小区维",
+            levelname: '小区',
+            initValues: [{ id: "457602", name: "52GH133", state: true }, { id: "457603", name: "DFVTZJ1", state: false }]
+        };
+        var xiansetting = {
+            themename: "GSM无线主题",
+            dimname: "小区维",
+            levelname: '覆盖场景'
+        };
+
+
+        //@拖拽树形操作 end
+        $(document).ready(function () {
+            $("body").bind("mousedown", function () {
+                document.title = "aaaaaaaa" + new Date().getSeconds() + new Date().getMilliseconds();
+                return true;
+            });
+            var defaultDate = new Date(2013, 8, 26);
+            $('#txt757961127-1').timepicker({ showTypeHour: false, showTypeDay: true, showTypeWeek: true, showTypeMonth: true, defaultDate: defaultDate });
+
+            lacsetting = $("#txt-165921684-0").bigdataSelect(lacsetting);
+
+            xiansetting = $("#txt-165921684-1").bigdataSelect(xiansetting);
+            $("#btnQuery").bind("click", function () {
+                var a = $("#txt-165921684-0").bigdataSelect("getSelNames");
+                alert(a);
+            });
+
+            $("#btnQuery1").bind("click", function () {
+                var a = $("#txt-165921684-1").bigdataSelect("getSelNames");
+                alert(a);
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class='p-all'>
+        <div class='p-header'>
+            <div class='ph-left'>
+                <ul class='ph-query'>
+                    <li class='cond'><span valtype='0' dimid='757961127' dimtype='0' dimname='日期维' levelname='日期维' ismultiple="false" dimgroup='月|周|日'>时间：</span><input id='txt757961127-1' value='' type='text' style='width: 105px;' /></li>
+                    <li class='cond'><span valtype='0' dimid='-165921684' dimtype='3' dimname='小区维' levelname='县市' ismultiple="false" dimgroup='小区'>覆盖场景：</span>
+                        <input id='txt-165921684-1' style='width: 80px;' type="text" /></li>
+                    <li>
+                        <input type='button' id='btnQuery' value='查询覆盖场景' class='btn_01' /></li>
+                    <li class='cond'><span valtype='0' dimid='-165921684' dimtype='3' dimname='小区维' levelname='小区' ismultiple="false" dimgroup='小区'>小区：</span>
+                        <input id='txt-165921684-0' style='width: 80px;' type="text" /></li>
+                    <li>
+                        <input type='button' id='btnQuery1' value='查询小区' class='btn_01' /></li>
+                </ul>
+            </div>
+            <div class='ph-right'></div>
+        </div>
+        <div class='p-body'>
+        </div>
+    </div>
+</body>
+</html>

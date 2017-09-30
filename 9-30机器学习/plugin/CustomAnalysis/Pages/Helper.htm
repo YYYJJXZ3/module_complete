@@ -1,0 +1,267 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>自定义分析帮助</title>
+    <style type="text/css">
+        h4
+        {
+            font-size: 13pt;
+        }
+        h5
+        {
+            font-size: 12pt;
+        }
+        h6
+        {
+            font-size: 10pt;
+        }
+        
+        body
+        {
+            font-size: 10pt;
+            line-height: 150%;
+            border-width: 0px;
+            margin: 0px;
+            padding: 0px;
+            color: #282828;
+            background-color: #fff;
+            font-family: "Lucida Grande" ,Verdana,Lucida, Arial, Helvetica, 宋体,sans-serif;
+        }
+        img
+        {
+            border: 1px solid #dddddd;
+            margin-left:2em;
+        }
+        p 
+        {
+            text-indent: 2em;
+        }
+    </style>
+</head>
+<body>
+    <h4>导航</h4>
+    <a href="#summary">总览</a><br />
+    <a href="#illustrate">使用说明</a><br />
+    <span style="padding-left:2em;"></span><a href="#toolbar">工具栏说明</a><br />
+    <span style="padding-left:2em;"></span><a href="#newreport">新建报表</a><br />
+    <span style="padding-left:2em;"></span><a href="#reportsetting">报表设置</a><br />
+    <span style="padding-left:2em;"></span><span style="padding-left:2em;"></span><a href="#selcube">选择数据集</a><br />
+    <span style="padding-left:2em;"></span><span style="padding-left:2em;"></span><a href="#dragmea">拖拽指标</a><br />
+    <span style="padding-left:2em;"></span><span style="padding-left:2em;"></span><a href="#dragdim">拖拽维度</a><br />
+    <span style="padding-left:2em;"></span><span style="padding-left:2em;"></span><a href="#dimfilter">维度属性过滤</a><br />
+    <span style="padding-left:2em;"></span><span style="padding-left:2em;"></span><a href="#meafilter">指标值过滤设置</a><br />
+    <span style="padding-left:2em;"></span><span style="padding-left:2em;"></span><a href="#computecol">添加计算列</a><br />
+    <span style="padding-left:2em;"></span><span style="padding-left:2em;"></span><a href="#thbmea">同环比指标</a><br />
+    <span style="padding-left:2em;"></span><span style="padding-left:2em;"></span><a href="#setting">高级设置</a><br />
+    <span style="padding-left:2em;"></span><a href="#showreport">报表呈现</a><br />
+    <span style="padding-left:2em;"></span><span style="padding-left:2em;"></span><a href="#dimdrill">维度钻取</a><br />
+    <a href="#reportshare">报表共享</a><br />
+    <a href="#anaexample">分析方式示例</a><br />
+    <span style="padding-left:2em;"></span><span style="padding-left:2em;"></span><a href="#trendana">趋势分析（图表结合）</a><br />
+    <span style="padding-left:2em;"></span><span style="padding-left:2em;"></span><a href="#thbana">同环比分析</a><br />
+ <!-- 
+   <span style="padding-left:2em;"></span><a href="#thbana">同环比分析</a><br />
+    //<span style="padding-left:2em;"></span><a href="#filterana">带指标值过滤条件的查询</a><br /><br /> 
+ -->
+    <h4>
+        1.1 <a name="summary">总览</a></h4>
+    <p>
+        打开自定义分析，默认页面如下：<br />
+        <img src="../images/help/home.png" alt="默认页面" width="420" height="240" /></p>
+    <p>
+        最左边为用户自定义的报表、目录列表及其他用户共享的报表，中间为指标、维度区域；右方为将要定制报表的维度、指标等设置区域，上方为工具栏。</p>
+    <h4>
+        1.2 <a name="illustrate">使用说明</a></h4>
+    <h5>
+        1.2.1 <a name="toolbar">工具栏说明</a></h5>
+    <img src="../images/help/toolsbar.png" alt="默认页面" />
+    <p>
+        上图14个图标作用依次如下：<br />
+        <span style="padding-left:2em;">（1） <img src="../images/help/save.png" />保存报表；</span><br />
+        <span style="padding-left:2em;"></span>（2） <img src="../images/help/saveas.png" />将当前报表另存，点击后会弹出输入框提示输入新的报表名称；<br />
+        <span style="padding-left:2em;"></span>（3） <img src="../images/help/template.png" />显示或隐藏报表及文件夹区域；<br />
+        <span style="padding-left:2em;"></span>（4） <img src="../images/help/condition.png" />显示或隐藏指标维度列表区域；<br />
+        <span style="padding-left:2em;"></span>（5） <img src="../images/help/run.png" />运行报表，设置好指标和维度后，点击此图标可看到查询结果；<br />
+        <span style="padding-left:2em;"></span>（6） <img src="../images/help/showsql.png" />查看报表的查询语句（SQL/MDX）；<br />
+        <span style="padding-left:2em;"></span>（7） <img src="../images/help/tempchangedata.png" />报表查询结果和维度、指标设置区相互切换；<br />
+        <span style="padding-left:2em;"></span>（8） <img src="../images/help/chart.png" />显示或隐藏查询结果的图表；<br />
+        <span style="padding-left:2em;"></span>（9） <img src="../images/help/table.png" />显示或隐藏查询结果的表格；<br />
+        <span style="padding-left:2em;"></span>（10）<img src="../images/help/export.png" />将查询结果导出到Excel中；<br />
+        <span style="padding-left:2em;"></span>（11）<img src="../images/help/subscribe.png" />报表结果订阅；<br />
+        <span style="padding-left:2em;"></span>（12）<img src="../images/help/setting.png" />报表模板高级设置；<br />
+        <span style="padding-left:2em;"></span>（13）<img src="../images/help/publish.png" />报表发布；<br />
+        <span style="padding-left:2em;"></span>（14）<img src="../images/help/help.png" />点击查看自定义分析帮助页面。
+    </p>
+    <h5>
+       1.2.2 <a name="newreport">新建报表</a></h5>
+    <p>
+        刚开始打开自定义分析，默认即为新建报表状态，也可以通过在报表列表的文件夹上点击右键，再点击“新建报表”，如下图：<br />
+        <img src="../images/help/newreport.png" alt="新建报表" /></p>
+    <h5>
+        1.2.3 <a name="reportsetting">报表设置</a>
+    </h5>
+    <h6>
+        1.2.3.1 <a name="selcube">选择数据集</a>
+    </h6>
+    <p>
+        通过指标维度列表上方的下拉列表选择数据集，每次切换数据集，模板设置区的指标和维度均会清空。</p>
+    <h6>
+        1.2.3.2 <a name="dragmea">拖拽指标</a>
+    </h6>
+    <p>
+        选择指标、维度列表中的指标拖到指标放置区或指标条件过滤区，可通过右键菜单删除。</p>
+    <h6>
+        1.2.3.3 <a name="dragdim">拖拽维度</a>
+    </h6>
+    <p>
+        将维度下的属性层次结构或层次下的级别拖至维度放置区，有3个区域可放置，分别如下图中所标的三个区域：
+        <br />
+        <img src="../images/help/dim.png" alt="拖拽维度" width="480" height="360" /><br />
+        <span style="padding-left:2em;"></span>A区域：该维度属性将会在报表运行结果的表格中作为行显示；<br />
+        <span style="padding-left:2em;"></span>B区域：该维度属性将会在报表运行结果的表格的列头中显示，和指标一起形成表格的多行列头；<br />
+        <span style="padding-left:2em;"></span>C区域：该维度属性仅作为过滤条件使用，不在查询结果中显示。
+    </p>
+    <h6>
+        1.2.3.4  <a name="dimfilter">维度属性过滤</a>
+    </h6>
+    <p>
+        将维度属性拖拽至A区域或B区域后，如果只想查看某一个或多个属性值（默认为全部），可右键点击拖过来的属性，再点击菜单中的“过滤”，如下图，即可设置过滤项。
+        <br />
+        <img src="../images/help/dimfilter.png" alt="维度属性过滤" width="420" height="240" /></p>
+    <h6>
+        1.2.3.5 <a name="meafilter">指标值过滤设置</a>
+    </h6>
+    <p>
+       如果需要添加指标值过滤条件，如“指标值>0”、“掉话率>0.6”以及“指标1>阈值1且指标2>阈值2”等，则须将指标拖拽至指标过滤条件下的左框中，通过右键菜单编辑或删除，可添加多个指标条件，默认多个条件间是“与”的关系，如果是“或”及其他组合关系，则需点击右框右框中的“条件关系配置”按钮，设置复杂的条件关系组合。以“GPRS流量>10000 或 EDGE流量>10000”为例：
+    </p>
+    <p>
+        1）右键点击“GPRS流量”，再点击过滤，如下图：</p>
+    <img src="../images/help/meafilter1.png" alt="指标值过滤设置" width="480" height="300" /><br />
+    <p>
+        2）弹出指标过滤条件框，选择过滤方式和过滤值，如下图：</p>
+    <img src="../images/help/meafilter2.png" alt="指标值过滤设置" width="480" height="240" /><br />
+      <p>  
+        3）	以同样方式选择EDGE流量过滤条件，达到下图效果：</p>
+        <img src="../images/help/meafilter3.png" alt="指标值过滤设置" width="480" height="240" />
+    <p>2个指标条件默认是“与”的关系，即“GPRS流量>1000 且 EDGE流量>10000”，要改为“或”的关系，则点击“条件关系设置按钮”，弹出下图所示框，将关系设为“<1> Or <2>”，然后点击确定即可。</p>
+        <img src="../images/help/meafilter4.png" alt="指标值过滤设置" width="480" height="240" /><br />
+    <h6>
+        1.2.3.6 <a name="computecol">添加计算列</a>
+    </h6>
+    <p>
+        将指标拖拽至指标区域后，可在已有指标基础上添加计算列。在指标区域空白处点击右键菜单，再点击“添加计算列”，如下图：</p>
+        
+        <img src="../images/help/computemea1.png" alt="" width="420" height="240" />
+    <p>
+        弹出如下图所示框：</p> 
+        <img src="../images/help/computemea2.png" alt="" width="420" height="280" />
+        <p>设置好指标名称和计算公式后，如下图所示，点击确定，及添加了一个名称为“2G流量”的计算列。</p>
+        <img src="../images/help/computemea3.png" alt="" width="480" height="320" />
+    <p>
+        添加后的效果如下图所示，鼠标浮在上面是会显示其计算公式。
+       <br />
+        <img src="../images/help/computemea4.png" alt="" width="480" height="200" /></p>
+    <h6>
+        1.2.3.7  <a name="thbmea">同环比指标</a>
+    </h6>
+    <p>
+        右键点击指标，出现的菜单中含有同环比相关选项，可添加同环比指标如下图： 
+        <br />
+        <img src="../images/help/thb1.png" alt="高级设置" width="480" height="180" /></p>
+    <p> 
+        如添加同比增幅后有如下效果：</p>
+        <img src="../images/help/thb2.png" alt="高级设置" width="480" height="140" />
+     <h6>
+        1.2.3.8  <a name="setting">高级设置</a>
+    </h6>
+    <p>
+        点击工具栏中的“高级选项”，会弹出如下窗口：<br/>
+        <img src="../images/help/setting1.png" alt="高级设置" width="420" height="340" /></p>
+    
+    <h6>
+        1.2.3.8.1 <a name="setting">默认排序列、TopN</a>
+    </h6>
+    <p>
+        在高级属性中，可设置2个默认排序列，当第一拍序列值有相同时，按第二排序列排序。
+        <br />
+        若设置了TopN选项，则呈现按设置排序方式的前TopN条数据。<br />
+        如按下图中设置将呈现按GPRS流量、EDGE流量降序排列的前10条数据：</p>
+        <img src="../images/help/setting2.png" alt="高级设置" width="420" height="120" />
+    <h6>
+        1.2.3.8.2 <a name="setting">表格设置</a>
+    </h6>
+    <p>
+        表格属性中可设置表格的每页记录数、是否在指标列表头显示指标单位，还可以设置锁定列，当表格列数较多时，表格会出现横向滚动条，可通过锁定维度列让维度列固定不动，方便查看数据。</p>
+    <h6>
+        1.2.3.8.3 <a name="setting">图形设置</a>
+    </h6>
+    <p>
+        点击图形或表格图形后，可设置图形相关属性：</p>
+        <img src="../images/help/setting3.png" alt="高级设置" width="420" height="320" /><br />
+    <p>
+        选择表格图形是将按上图下表方式呈现查询结果，图形设置中可设置图形的X轴、Y轴，Y轴可选择多条。如选择如下图图形设置：</p>
+         <img src="../images/help/setting4.png" alt="高级设置" width="420" height="140" /><br />
+    <p>
+        呈现的结果如下：</p>
+        <img src="../images/help/setting5.png" alt="高级设置" width="420" height="160" /><br />
+    <p>
+        选择多个Y轴需要注意的是：<br />
+        <span style="padding-left:2em;"></span>一.饼图、圆环图、帕累托图只能选择一个指标；<br />
+        <span style="padding-left:2em;"></span>二.条状图为不可与其他图混合存在。</p>
+    <h6>
+        1.2.3.8.4 <a name="setting">维度汇总</a>
+    </h6>
+    <p>
+        维度汇总的作用是按维度统计其中部分维度组合的数量、最大值、总值、平均数等。<br />
+        例如，现有如下维度、指标设置：</p>
+        <img src="../images/help/setting6.png" alt="高级设置" width="400" height="110" /><br />
+    <p>
+        按下图设置时，将呈现每个地区每天的小区数：<br />
+         <img src="../images/help/setting7.png" alt="高级设置" width="400" height="110" /></p>
+    <p>按下图设置，将呈现每个地区最大的小区GPRS流量：<br />
+         <img src="../images/help/setting8.png" alt="高级设置" width="400" height="110" /></p>
+
+    <h5>
+        1.2.4 <a name="showreport">报表呈现</a>
+    </h5>
+    <p>
+        点击工具栏中的运行报表图标后，将看到查询结果，报表按上图下表方式呈现。<br />
+        右键点击表格单元格可上钻下钻，点击表格列头可排序，点击“设置X轴”可选择用作X轴的字段，点击“设置Y轴”可选择一个或多个指标作Y轴。</p>
+    <h6>
+        1.2.4.1 <a name="dimdrill">维度钻取</a>
+    </h6>
+    <p>
+       右键点击表格的维度列，可上钻、下钻查看数据，如下图，下钻查看佛山市的小区GPRS流量：</p>
+       <img src="../images/help/dimdrill.png" alt="" width="300" height="240" />
+    
+    <h5>
+        1.2.5 <a name="reportshare">报表共享</a>
+    </h5>
+    <p>
+       报表共享后才能被系统中的其他用户查看。共享方法如下：右键点击报表，出现下图所示菜单，点击“共享”，将弹出报表共享框，输入共享名称，即可共享报表。
+    </p>
+       <img src="../images/help/reportshare.png" alt="" width="200" height="240"  />
+    <h4>
+        1.3 <a name="anaexample">分析方式示例</a>
+    </h4>
+     <h5>
+        1.3.1 <a name="trendana">趋势分析（图表结合）</a>
+    </h5>
+    <p>
+        查看广州市最近一个月的GPRS流量，图形和表格一起显示：</p>
+        <img src="../images/help/trend1.png" alt="" width="480" height="160"/><br />
+     <p>   
+        右键点击“日”进行日期选择：</p>
+        <img src="../images/help/trend2.png" alt="" width="240" height="140"/><br />
+        <img src="../images/help/trend3.png" alt="" width="420" height="240"/><br />
+    <p> 
+        之后在“高级设置”中设置图形属性：<br />
+        <img src="../images/help/trend4.png" alt="" width="480" height="480" /></p>
+    <h5>
+        1.3.2 <a name="thbana">同环比分析</a>
+    </h5>
+    <p>
+        如要查看小区昨天、前天、上月同一天的掉话率值以及增幅：</p>
+        <img src="../images/help/thbana.png" alt="" width="480" height="100" />
+</body>
+</html> 

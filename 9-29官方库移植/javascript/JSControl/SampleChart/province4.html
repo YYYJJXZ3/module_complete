@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>覆盖深度分析</title>
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/map.css">
+    <link rel="stylesheet" href="css/jsonTable.css">
+    <link rel="stylesheet" href="css/dropShowHide.css">
+    <link rel="stylesheet" href="css/jquery-ui-1.10.3.custom.min.css">
+    <link rel="stylesheet" href="css/page.css">
+    <script src="js/jquery-1.9.1.min.js"></script>
+    <script src="js/radio.js"></script>
+    <script src="js/echarts.js"></script>
+    <script src="js/china.js"></script>
+    <script src="js/all-province.js"></script>
+    <!--<script src="js/change-map.js"></script>-->
+    <!--<script src="js/onloadProvince.js"></script>-->
+    <script src="js/dropShowHide.js"></script>
+    <script src="js/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="js/pagetools.js"></script>
+    <script src="js/timepicker.js"></script>
+    <script src="js/tools.js"></script>
+    <script src="Scripts/SampleChart.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#txtDate").timepicker({
+                showTypeDay: true,
+                showTypeMonth: false
+            });
+
+            window.onload = function () {
+                appendD1();
+            };
+
+            getChart2();
+
+            function getChart2() {
+                if (dss.request("province")) {
+                    var province = dss.request("province");
+                }
+                else {
+                    var province = "江苏";
+                }
+                $(".destination").html(province);
+                var data = '{"colnames":["地区","得分"],"rows":[{"col0":"那曲地区","col1":"15"},{"col0":"阿里地区","col1":"30"},{"col0":"日喀则地区","col1":"45"},{"col0":"林芝地区","col1":"60"},{"col0":"昌都地区","col1":"75"},{"col0":"山南地区","col1":"90"},{"col0":"拉萨市","col1":"100"}]}';
+                data = eval("(" + data + ")");
+                bindChart("map", {
+                    DataSource: data,
+                    YDataColIndex: "1",
+                    IsShowPercentValue: true,
+                    LegendPosition: "LEFTBOTTOM",
+                    MapType: [province],
+                    MapRangeOrLegend: "legend",
+                    //ClickEvent: [{ click: getChart2 }],
+                    /*MapLegend: [
+                     { name: '<=20%', min: null, max: 20, color: '#FF7F50' },
+                     { name: '20%-40%', min: 20, max: 40, color: '#87CEFA' },
+                     { name: '40%-60%', min: 40, max: 60, color: '#DA70D6' },
+                     { name: '60%-80%', min: 60, max: 80, color: '#32CD32' },
+                     { name: '>80%', min: 80, max: null, color: '#6495ED' }
+                     ]*/
+                    MapLegend: [
+                        { name: '<=70%', min: null, max: 70, color: '#CC0033' },
+                        { name: '70%-90%', min: 70, max: 90, color: '#FFFF00' },
+                        { name: '>90%', min: 90, max: null, color: '#00CC33' }
+                    ]
+                });
+            }
+
+
+            function bindChart(div, option) {
+                var opts = $.extend(true, {
+                    YFormatType: "1000",
+                    BgColor: '#e2eefc',
+                    BorderColor: '#7D7DFF',
+                    ClickEvent: [{ click: mapClick }],
+                    ChartType: "map",
+                    callback: {
+                        complete: function (myChart) {
+                            //window.onresize = myChart.resize;
+                        }//
+                    }
+                }, option);
+
+                $("#" + div).SampleChart(opts);
+            }
+
+            function mapClick(xValue, yValue, value) {
+                alert(xValue + "：" + value);//样例：“那曲地区：15”
+
+            }
+
+            // 排序
+            function sortByKey(array, key) {
+                return array.sort(function (a, b) {
+                    var x = a[key];
+                    var y = b[key];
+                    return ((x > y) ? -1 : ((x < y) ? 1 : 0));
+                });
+            }
+
+
+            function appendD1() {
+                $.getJSON("js/provinceData2.json", function (data) {
+                    var $jsontip = $("#jsonTip1");
+
+                    var newdata = $.extend({}, data.data);
+                    newdata.rows = [];
+
+                    $.each(data.data.rows, function (i, r) {
+                        var item = {};
+                        $.each(r.cells, function (j, c) {
+                            item["col" + j] = c;
+                        })
+                        newdata.rows.push(item);
+                    })
+
+                    newdata = sortByKey(newdata.rows, 'col1');
+
+
+                    // 绘制
+                    var strHtml = "";//存储数据的变量
+                    $jsontip.empty();//清空内容
+                    $.each(newdata, function (infoIndex, info) {
+                        strHtml += '<tr><td><b class="roleNum">' + (infoIndex + 1) + '</b></td><td>' + info.col0 + '</td><td>' + info.col1 + '</td></tr>';
+                    })
+                    $jsontip.html(strHtml);//显示处理后的数据
+
+
+                    // 前十个tr中，第一个td中的b，设置背景样式。
+                    $.each($('#div1 tr').slice(1, 11), function (i, item) {
+                        $(item).children('td').eq(0).children('b').css("background-color", "#3590de");
+                    });
+
+                    $.each($('#div1 tr').slice(1, 7), function (i, item) {
+                        $(item).children('td').eq(1).css("color", "#0002c0");
+                    });
+                })
+            }
+
+
+        });
+    </script>
+</head>
+<body>
+<div id="m"></div>
+<div class="toolbar">
+    <ul>
+        <li class="item"><span class="back">日期</span>
+            <input type="text"
+                   style="width: 100px" id="txtDate" /></li>
+        <li class="item">
+            <input type="button" class="button"
+                   id="btnQuery" value="查询" /></li>
+    </ul>
+</div>
+
+<div class="mainZone">
+
+    <div class="rListZone">
+
+        <div id="div1">
+            <div class="divframe">
+                <table width="100%" class="table">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th>区域</th>
+                        <th>质量覆盖率</th>
+                    </tr>
+                    </thead>
+
+                    <tbody id="jsonTip1"></tbody>
+
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="lComplexZone">
+
+        <div class="cmapZone">
+            <div class="showHide">
+                <!--<p class="pPage"><input type="button" id="hide" value="&nbsp;全国感知优良率 "><b>98%</b></p>-->
+                <p class="pPage"><input type="button" id="hide"/><span class="destination" style="font-size:18px"></span>省质量覆盖率<b>98%</b></p>
+
+                <input id="show" type="button">
+            </div>
+
+
+            <div class="echart-map">
+                <div class="map" id="map"></div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

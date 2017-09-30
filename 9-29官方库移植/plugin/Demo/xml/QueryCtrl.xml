@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ConfigList>
+  <Lists>
+    <ListInfo ListKey="分类一" ListDesc="">
+      <Items>
+        <!--说明：“name”为指标ID，“Property1”为指标名称-->
+        <ItemInfo name="419595933" Property1="总流量 " value="">
+        </ItemInfo>
+        <ItemInfo name="-457760848" Property1="终端数" value="">
+        </ItemInfo>
+      </Items>
+    </ListInfo>
+    <ListInfo ListKey="分类二" ListDesc="">
+      <Items>
+        <ItemInfo name="447250813" Property1="用户数 " value="">
+        </ItemInfo>
+        <ItemInfo name="131296591" Property1="CPE用户数 " value="">
+        </ItemInfo>
+      </Items>
+    </ListInfo>
+  </Lists >
+</ConfigList >

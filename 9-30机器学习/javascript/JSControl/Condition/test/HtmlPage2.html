@@ -1,0 +1,128 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <link href="../../../../themes/lightblue/p.css" rel="stylesheet" />
+    <link href="../../../../Themes/lightblue/jqueryui/jquery-ui-1.10.3.custom.css" rel="stylesheet" />
+    <link href="../../../../Themes/lightblue/jqgrid/ui.jqgrid.css" rel="stylesheet" />
+    <link href="../zTreeStyle/zTreeStyle.css" rel="stylesheet" />
+    <script src="../../../core/jquery-1.9.1.min.js"></script>
+
+    <script src="../../../core/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="../../../common/tools.js"></script>
+    <script src="../../../common/pagetools.js"></script>
+    <script src="../comselect.js"></script>
+    <!--    <script src="../../../ztree/js/jquery.ztree.core-3.5.js"></script>
+    <script src="../../../ztree/js/jquery.ztree.excheck-3.5.js"></script>-->
+    <script src="../../../ztree/js/jquery.ztree.all-3.5.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#btnQueryzt").click(function () {
+                var source = $("#txtsf").commonSelect("getSelResults");
+                if (source == undefined) {
+                    source = [];
+                };
+                $.each(source, function (i, item) {
+                    alert(item.levelname);
+                });
+
+            });
+            var data = {
+                dimid: '1734712590',
+                dimname: "",
+                hierarchiename: '小区',
+                displayname: '指标',
+                selectmode: "single",   //single  multiple
+                //initValues: [{ name: '1BY_23治-1' }]
+                initClass: "treedata"//commdata bigdata   treedata
+
+            };
+            $("#txtsf").commonSelect(data);
+            // ajax();
+        });
+        function ajax() {
+            $.ajax({
+                url: '../Hander/treedata.ashx',
+                dataType: 'json',
+                data: {
+                    dimid: "1734712590",
+                    hirename: '小区',
+                    filterValue: "未知",
+                    keyword: ''
+                },
+                success: function (data) {
+                    bindTree(data);
+                }
+            })
+        }
+        function bindTree(data, keyword) {
+            var option = { selectmode: "single" };
+            var setting = {
+                check: {
+                    enable: true,
+                    chkStyle: "radio",
+                    radioType: 'all',
+                    chkboxType: { "Y": "ps", "N": "ps" }
+
+                },
+                async: {
+                    enable: true,//启用异步加载
+                    url: "../Hander/treedata.ashx", //异步请求地址
+                    autoParam: ["name", "levelname", "dimid", "hirename", "name"], //需要传递的参数,为你在ztree中定义的参数名称
+                    otherParam: { "chk": "chk" }
+                },
+                data: {
+                    simpleData: {
+                        enable: true
+                    }
+                },
+                callback: {
+                    onCheck: function (event, treeid, treeNode) {
+                        alert(treeNode.name);
+                    }
+                }
+            };
+            var objtree = $.fn.zTree.init($("#treeNode"), setting, data);
+            if (keyword != null && keyword.length > 0) {
+                objtree.expandAll(true);
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class='p-all' style="height: 800px">
+        <div class='p-header'>
+            <div class='ph-left'>
+
+                <ul class='ph-query'>
+                    <li class='cond'><span>是否：</span>
+                        <input id='txtsf' style='width: 180px;' type="text" /></li>
+                    <li>
+                        <input type='button' id='btnQuerysf' value='查询zd' class='btn_01' /></li>
+                    <li class='cond'><span>状态：</span>
+                        <input id='txtzt' style='width: 120px;' type="text" /></li>
+                    <li>
+                        <input type='button' id='btnQueryzt' value='查询zt' class='btn_01' /></li>
+                </ul>
+
+
+            </div>
+            <div class='ph-right'></div>
+        </div>
+        <div class='p-body'>
+            <ul class="ztree" style="height: 400px;"></ul>
+            <div style="left: 92px; top: 0px; display: block; position: relative; z-index: 12; width: 120px;" class="div_inputclick ui-widget-content">
+                <div>
+                    <input type="text" style="width: 88px; height: 20px;" /><input type="button" class="search" value="" />
+                </div>
+                <div style="overflow-x: scroll; overflow-y: auto; background-color: rgb(255, 255, 255);">
+
+                    <ul style="list-style: none; margin: 0px; padding: 0px; border-bottom-width: 0px;" class="ztree" id="treeNode">
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

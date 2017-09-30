@@ -1,0 +1,104 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <link href="../../../Themes/lightblue/p.css" rel="stylesheet" type="text/css" />
+    <link href="../../../themes/lightblue/page/page.css" rel="stylesheet" />
+    <link href="../../../Themes/lightblue/jqueryui/jquery-ui-1.10.3.custom.min.css" rel="stylesheet"
+        type="text/css" />
+    <script src="../../core/jquery-1.9.1.min.js" type="text/javascript"></script>
+    <script src="../../core/jquery-ui-1.10.3.custom.js" type="text/javascript"></script>
+    <script src="../Condition/timepicker.js" type="text/javascript"></script>
+    <script src="../Common/pageheader.js" type="text/javascript"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $("#pageTop").pageheader({ sitemap: "客户感知》语音业务分析专题》掉话率" });
+            //$("#pageTop").pageheader();
+
+            $("#divOuter").click(function () {
+                alert("outer");
+            });
+
+            $("#divInner").click(function (e) {
+                alert("inner"); e.stopPropagation();
+            });
+
+            var $txtDate = $("#txtDate");
+            $txtDate.timepicker({
+                showTypeWeek: true, range: false, showTypeMonth: true, showTypeQuarter: true,showTypeHalfYear:true,showTypeYear:true,isTile:true,
+                showTypeHour: true, showTypeMinute: true, isMultipleHour: true, defaultTimeType: "Minute", //defaultHourStr: "02时,03时",
+                showTypeDay: true, defaultDateStr: "2012年12周", timeTypeSelectedChange: function () {
+
+                }
+            });
+            $("#btnQuery").click(function () {
+                //    alert($txtDate.timepicker("getMinuteStr")); 
+                
+                alert($txtDate.timepicker("getDateStr"));
+
+                $("#lblMsg").text("时间：" + $txtDate.timepicker("getDateStr") + "   时间类型：" +
+                $txtDate.timepicker("getTimeType") + ($txtDate.timepicker("getTimeType") == "Hour" ? "小时：" + $txtDate.timepicker("getHourStr") : ""));
+            });
+            $("#selType").change(function () {
+                var showMonth = false;
+                var showDay = false; var showHour = false;
+                if ($("#selType").val() == "Day") {
+                    showDay = true;
+                }
+                else if ($("#selType").val() == "Hour") {
+                    showHour = true;
+                }
+                else {
+                    showMonth = true;
+                }
+                $("#txtDate").timepicker({ showTypeWeek: false, range: false, showTypeMonth: showMonth, showTypeHour: showHour,
+                    showTypeDay: showDay, defaultDateStr: "2012年12周", timeTypeSelectedChange: function () { alert($txtDate.timepicker("getTimeType")); }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <div>
+        <div id="pageTop">
+        </div>
+        <table cellpadding="2" cellspacing="1" border="0">
+            <tr>
+                <td>
+                    <input type="text" id="txtDate" class="ui-button-text" style="width: 110px;" />
+                </td>
+                <td>
+                    <input type="button" value="查询" id="btnQuery" />
+                </td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td>
+                    <span id="lblMsg"></span>
+                </td>
+            </tr>
+        </table>
+        <br />
+        <table>
+            <tr>
+                <td>
+                    <select id="selType">
+                        <option value="Day">Day</option>
+                        <option value="Month">Month</option>
+                        <option value="Hour">Hour</option>
+                    </select>
+                </td>
+                <td>
+                    <input type="text" id="txtDate2" class="ui-button-text" style="width: 100px;" />
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div style="width: 100px; height: 100px; background-color:Orange;" id="divOuter">
+        <div style="width: 50px; height: 50px; background-color:Red;" id="divInner">
+        </div>
+    </div>
+</body>
+</html>

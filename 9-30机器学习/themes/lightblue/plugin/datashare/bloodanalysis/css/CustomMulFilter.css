@@ -1,0 +1,82 @@
+﻿.dss_mulFilter {
+    clear: both;
+    padding: 0;
+}
+
+dl.cond {
+    list-style: none;
+	border-top:1px solid #eee;
+}
+
+dd.conditem {
+    font-size: 12px;
+    border: solid 1px blue;
+    color: white;
+    background-color: #0cbdfa;
+    float: left;
+    padding: 3px;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin: 5px;
+    cursor: pointer;
+}
+
+    dd.conditem:hover {
+        background-color: #0084cf;
+        color: white;
+    }
+
+dl.filter {
+    list-style: none;
+}
+
+dd.filteritem {
+    font-size: 12px;
+    border: solid 1px #ccc;
+    float: left;
+    padding: 3px;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin: 5px;
+    cursor: pointer;
+    color: #666666;
+    display: list-item;
+}
+
+    dd.filteritem:hover {
+        border-color: #ff6a00;
+    }
+
+dd.selecteditem {
+    background-color: #0026ff;
+    color: white;
+}
+
+.filtertitle {
+    font-size: 12px;
+    float: left;
+    font-weight: 600;
+    padding: 3px;
+    padding-left:10px;
+    /*margin: 3px;*/
+    /*width: 100px;*/
+    /*border:1px solid red;*/
+    min-width:65px;
+    text-align: right;
+    color:#666;
+}
+
+.filteritemdiv {
+}
+
+.checkbox {
+    float: left;
+}
+
+.checkboxtext {
+    display: block;
+    float: left;
+    margin-top: 3px;
+    padding-right: 10px;
+    color: #666666;
+}

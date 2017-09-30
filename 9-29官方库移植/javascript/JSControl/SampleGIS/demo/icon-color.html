@@ -1,0 +1,101 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Icon Colors</title>
+    <!--<link rel="stylesheet" href="https://openlayers.org/en/v4.1.0/css/ol.css" type="text/css">
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
+    <script src="https://openlayers.org/en/v4.1.0/build/ol.js"></script>-->
+    <link href="../OpenLayers/ol/ol.css" rel="stylesheet" />
+    <script type="text/javascript" src="../OpenLayers/ol/ol.js"></script>
+    <script type="text/javascript" src="../../../core/jquery-1.9.1.min.js"></script>
+    <style>
+        #map {
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+    <div id="map" class="map"></div>
+    <script>
+        var rome = new ol.Feature({
+            geometry: new ol.geom.Point(ol.proj.fromLonLat([12.5, 41.9]))
+        });
+
+        var london = new ol.Feature({
+            geometry: new ol.geom.Point(ol.proj.fromLonLat([-0.12755, 51.507222]))
+        });
+
+        var madrid = new ol.Feature({
+            geometry: new ol.geom.Point(ol.proj.fromLonLat([-3.683333, 40.4]))
+        });
+
+        rome.setStyle(new ol.style.Style({
+            image: new ol.style.Icon(/** @type {olx.style.IconOptions} */({
+                color: '#FF0000',
+                crossOrigin: 'anonymous',
+                src: '../images/cell.png'
+            }))
+        }));
+
+        london.setStyle(new ol.style.Style({
+            image: new ol.style.Icon(/** @type {olx.style.IconOptions} */({
+                color: '#4271AE',
+                crossOrigin: 'anonymous',
+                src: '../images/cell.png'
+            }))
+        }));
+
+        madrid.setStyle(new ol.style.Style({
+            image: new ol.style.Icon(/** @type {olx.style.IconOptions} */({
+                color: [113, 140, 0],
+                crossOrigin: 'anonymous',
+                src: '../images/cell.png'
+            }))
+        }));
+
+        var features = [];
+
+        for (var i = 0; i < 500; i++) {
+            var rome2 = new ol.Feature({
+                geometry: new ol.geom.Point(ol.proj.fromLonLat([102 + 10 * Math.random() * 0.1, 32+ 10 * Math.random() * 0.1]))
+            });
+
+            rome2.setStyle(new ol.style.Style({
+                image: new ol.style.Icon(/** @type {olx.style.IconOptions} */({
+                    color: '#FF0000',
+                    crossOrigin: 'anonymous',
+                    src: '../images/cell.png',
+                    rotation: 90,
+                }))
+            }));
+
+            features.push(rome2);
+        }
+        //features.push(london);
+        //features.push(madrid);
+
+        var vectorSource = new ol.source.Vector({
+            features: features
+        });
+
+        var vectorLayer = new ol.layer.Vector({
+            source: vectorSource
+        });
+
+        var rasterLayer = new ol.layer.Tile({
+            source: new ol.source.TileArcGISRest({
+                url: 'http://42.99.16.96:53088/BaseMap/rest/services/China_Community_BaseMap/MapServer'
+            })
+        });
+
+        var map = new ol.Map({
+            layers: [rasterLayer, vectorLayer],
+            target: document.getElementById('map'),
+            view: new ol.View({
+                center: ol.proj.fromLonLat([102.896372, 32.60240]),
+                zoom: 3
+            })
+        });
+    </script>
+</body>
+</html>

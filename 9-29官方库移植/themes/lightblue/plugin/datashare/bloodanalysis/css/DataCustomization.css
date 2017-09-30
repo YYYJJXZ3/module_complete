@@ -1,0 +1,73 @@
+﻿.menu {
+    width: 70px;
+    /*border: 2px solid #D14826;*/
+    float: right;
+    position: fixed;
+    right: 17px;
+    bottom: 180px;
+    border-radius: 3px;
+    padding: 0;
+}
+
+    .menu dt {
+        text-align: center;
+        background-color: #3385FF;
+        color: #fff;
+        height: 25px;
+        cursor: default;
+        line-height: 25px;
+        padding: 0px;
+    }
+
+    .menu dd {
+        text-align: center;
+        background-color: #D14826;
+        color: #fff;
+        height: 50px;
+        cursor: pointer;
+        line-height: 50px;
+        padding: 0px;
+    }
+
+        .menu dd:hover {
+            background-color: #F77F37;
+        }
+
+
+ul, li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.divTitle {
+    width: 99%;
+    padding: 2px;
+    background-color: #0CBDFA;
+    text-align: center;
+    overflow: hidden;
+    color: #FFF;
+    font-weight: bolder;
+    margin: 2px auto;
+    margin-top: 1px;
+}
+
+    .divTitle ul {
+        float: left;
+        position: relative;
+        left: 45%;
+        padding: 10px;
+    }
+
+        .divTitle ul li {
+            float: left;
+            margin-right: 10px;
+            padding: 0 2px;
+            position: relative;
+            right: 45%;
+        }
+
+            .divTitle ul li b {
+                padding-left: 2px;
+                color: #FFF;
+            }

@@ -1,0 +1,34 @@
+﻿
+.div_PopWindowsMenu {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 80px;
+    z-index: 1000;
+    border-top: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+}
+
+    .div_PopWindowsMenu ul li {
+        list-style-type: none;
+        font-weight: normal;
+        background: #f6f6f6;
+        color: #000;
+        border-bottom: 1px solid #ccc;
+    }
+
+        .div_PopWindowsMenu ul li a {
+            background: none repeat scroll 0 0 #EEEEEE !important;
+            display: block;
+            color: #222222;
+            padding: 2px 8px;
+            position: relative;
+            z-index: 2000;
+        }
+
+            .div_PopWindowsMenu ul li a.hover {
+                display: block;
+                background: #F3D673 !important;
+            }

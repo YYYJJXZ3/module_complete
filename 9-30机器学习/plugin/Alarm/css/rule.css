@@ -1,0 +1,147 @@
+﻿.r_content {
+    margin: 10px;
+    width: 96%;
+}
+
+    .r_content dl {
+        height: 40px;
+        line-height: 40px;
+        vertical-align: middle;
+        margin-bottom: 10px;
+    }
+
+        .r_content dl dt {
+            margin-left: 30px;
+            width: 80px;
+            float: left;
+            text-align: right;
+            line-height: 30px;
+            vertical-align: middle;
+        }
+
+        .r_content dl dd {
+            margin-left: 115px;
+            line-height: 30px;
+            vertical-align: middle;
+            text-align: left;
+        }
+
+            .r_content dl dd input {
+                height: 24px;
+            }
+
+            .r_content dl dd textarea {
+                border: solid 1px #d4d4d4;
+                height: 190px;
+                width: 500px;
+            }
+
+            .r_content dl dd ul li {
+                width: 85px;
+                border: 1px solid #ddd;
+                cursor: pointer;
+                margin-right: 10px;
+                float: left;
+                margin-bottom: 10px;
+                text-align: center;
+            }
+
+                .r_content dl dd ul li.selected {
+                    border: 1px solid blue;
+                    background-color: blue;
+                    color: #fff;
+                }
+
+                .r_content dl dd ul li.one {
+                    border: 1px solid red;
+                    background-color: red;
+                    color: #fff;
+                }
+
+                .r_content dl dd ul li.two {
+                    border: 1px solid orange;
+                    background-color: orange;
+                    color: #fff;
+                }
+
+                .r_content dl dd ul li.three {
+                    border: 1px solid yellow;
+                    background-color: yellow;
+                    color: #fff;
+                }
+
+                .r_content dl dd ul li.four {
+                    border: 1px solid blue;
+                    background-color: blue;
+                    color: #fff;
+                }
+
+.dss_rule_table {
+    width: 700px;
+    background-color: #ddd;
+    border-collapse: separate;
+    border-spacing: 1px;
+    margin-left: 1px;
+}
+
+    .dss_rule_table tr {
+        background-color: #fff;
+    }
+
+        .dss_rule_table tr th {
+            text-align: center;
+        }
+
+        .dss_rule_table tr td {
+            padding: 0px 5px;
+        }
+
+            .dss_rule_table tr td input[type=text] {
+                width: 60px;
+                height: 20px;
+                line-height: 20px;
+            }
+
+select {
+    border: solid 1px #d4d4d4;
+}
+
+.dss_button {
+    padding: 5px 15px !important;
+    color: #fff;
+    font-size: 12px;
+    text-align: center;
+    line-height: 24px;
+    padding: 5px 30px 5px 30px !important;
+    padding: 5px 18px 5px 18px;
+    overflow: visible;
+    border: 0px;
+    cursor: pointer;
+    background-color: #0084CF;
+    height: auto;
+    height: auto !important;
+    margin-right: 10px;
+}
+
+    .dss_button:hover {
+        background-color: #00A2F9;
+    }
+
+
+
+.dss_filter{width:500px;height:270px;margin:0px}
+.dss_filter .measure{height:210px;width:100%}
+.dss_filter .measure .left{width:150px;border:1px solid #ccc;height:190px;margin-top:10px;margin-left:10px;float:left}
+.dss_filter .measure .left ul{height:180px;overflow-y:auto;overflow-x:hidden;color:#333;padding:3px;background-color:#fff;width:143px}
+.dss_filter .measure .left ul li{line-height:20px;text-overflow:ellipsis;overflow:hidden;white-space:nowrap;width:142px;cursor:pointer;font-size:12px;margin-left:5px;}
+.dss_filter .measure .right{height:190px;margin-top:10px;margin-right:10px;width:315px;float:right}
+.dss_filter .measure .right .but{height:30px}
+.dss_filter .measure .right .txt{height:160px;width:315px;float:right;border:0px solid #ccc}
+.dss_filter .measure .right .txt textarea{height:160px;width:300px;border:1px solid #ccc;line-height:20px;white-space:pre-wrap;text-wrap:normal;}
+.dss_filter_con{background-color:#ebeded;width:400px;height:150px;position:absolute;top:350px;left:600px}
+.dss_filter_con .title{height:50px;font-family:'Microsoft YaHei';font-size:14px;color:#fff;vertical-align:middle;background-color:#03c4a2;text-align:center;line-height:25px;padding:0px 3px}
+.dss_filter_con .context{height:24px;margin-top:20px;padding:0px 0px 0px 30px}
+.dss_filter_con .context select{width:85px;border:1px solid #ddd;height:26px;font-family:'Microsoft YaHei';color:#585858}
+.dss_filter_con .context input{width:80px;border:1px solid #ddd;height:24px}
+.dss_filter_con .btn{height:24px;margin-top:20px;padding:0px 0px 0px 270px;}
+.dss_filter .desc{height:50px;width:100%;padding:10px;}

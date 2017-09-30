@@ -1,0 +1,461 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <link href="../../../themes/lightblue/page/page.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/jqgrid/ui.jqgrid.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/jqueryui/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" />
+    <script src="../../../javascript/core/jquery-1.9.1.min.js"></script>
+    <script src="../../../javascript/core/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="../../../javascript/JSControl/Common/pageheader.js"></script>
+    <script src="../../../javascript/common/tools.js"></script>
+    <script src="../../../javascript/common/pagetools.js"></script>
+    <script src="../../../javascript/JSControl/Condition/timepicker.js"></script>
+    <script src="../../../javascript/JSControl/Condition/comselect.js"></script>
+    <script src="../../../javascript/JSControl/SmartGrid/JqGrid/grid.locale-cn.js"></script>
+    <script src="../../../javascript/JSControl/SmartGrid/JqGrid/jquery.jqGrid.min.js"></script>
+    <script src="../../../javascript/JSControl/SmartGrid/JqGrid/SmartGrid.js"></script>
+    <script src="../js/controlmanagernew.js"></script>
+    <script type="text/javascript">
+        var param = {};
+        function myfunction() {
+            var defaultShow = dss.request('iscomplain');
+            if (defaultShow) {
+                defaultShow = decodeURI(defaultShow);
+            }
+            else {
+                defaultShow = '全部'
+            }
+            var p1 = [];
+            var curLevel2 = {
+                labelname: '是否是投诉派单',
+                width: 120,
+                defaultShow: defaultShow,
+                type: 'dropdown',
+                hideDimid: true,
+                items: [
+                    {
+                        levelname: '全部'
+                    },
+                    {
+                        levelname: '是'
+                    },
+                    {
+                        levelname: '不是'
+                    }
+                ]
+            };
+            p1.push(curLevel2);
+
+            $("#divFilter1").controlmanager(p1);
+        }
+        function getParam() {
+            $.ajax({
+                type: "POST",
+                async: false,
+                url: "../ashx/WorkOrder.ashx?sid=" + Math.random() + "&action=getRegionAll",
+                dataType: "json",
+                success: function (data) {
+                    param.region = data;
+                    var $option = "";
+                    $.each(param.region, function (idx, obj) {
+                        $option = "<option value='" + obj.region_id + "'>" + obj.region_desc + "</option>";
+                        $("#region").append($option);
+                    });
+                }
+            });
+
+        }
+        function getSubject() {
+            var region = $('#region option:selected').text()//选中的文本;
+            var time = $("#txtTime").timepicker("getDateStr");
+            var temptime = time.split(":");
+            var start = Date.parse(temptime[0]).format("yyyy-MM-dd hh:mm:ss");
+            var end = Date.parse(temptime[1]).format("yyyy-MM-dd") + " 23:59:59";
+            var isComplain = $("#divFilter1").controlmanager("getSelResults")[0].levelName;
+            $.ajax({
+                type: "POST",
+                async: false,
+                url: "../ashx/WorkOrder.ashx?sid=" + Math.random() + "&action=getSubject",
+                data: {
+                    start: start,
+                    end: end,
+                    region: region,
+                    isComplain: isComplain
+                },
+                dataType: "json",
+                success: function (data) {
+                    $("#subjectBar").html("");
+                    var $ul = $("<ul></ul>");
+                    $.each(data, function (i, item) {
+                        var $html = "<li class='item c" + i + "'>";
+                        $html += "<div class='inset" + i + "'>"
+                        $html += "<div class='div_left img" + i + "'><h2>" + item.name + "</h2></div>";
+                        $html += "<div class='div_right'>";
+                        $html += "<label class='lblcount'>派单数:&nbsp;&nbsp;<a href='#' onclick='BindQuery(\"" + item.key + "\",\"\")'   >" + item.orderNum + "</a>&nbsp;&nbsp;个;</label>";
+                        $html += "<label class='lblcount'>工单流转数:&nbsp;&nbsp;<a href='#' onclick='BindQuery(\"" + item.key + "\",3)'  >" + item.inNum + "</a>&nbsp;&nbsp;个;</label>";
+                        $html += "<label class='lblcount'>已处理工单数:&nbsp;&nbsp;<a href='#' onclick='BindQuery(\"" + item.key + "\",4  )'  >" + item.outNum + "</a>&nbsp;&nbsp;个;</label>";
+                        $html += "<label class='lblcount'>未处理工单数:&nbsp;&nbsp;<a href='#' onclick='BindQuery(\"" + item.key + "\",2 )'  >" + item.preNum + "</a>&nbsp;&nbsp;个;</label>";
+                        $html += "<label class='lblcount'>派单准确率:&nbsp;&nbsp;<a href='#' onclick='BindQuery(\"" + item.key + "\",\"iscorrect\"  )'  >" + item.isCorrect + "</a>&nbsp;&nbsp;%;</label>";
+                        $html += "<label class='lblcountC'>超时工单占比:&nbsp;&nbsp;<a href='#' onclick='BindQuery(\"" + item.key + "\",\"ISOUTTIME\" )'  >" + item.ISOUTTIME + "</a>&nbsp;&nbsp;%;</label>";
+                        $html += "</div></div></li>";
+                        $ul.append($html);
+                    });
+                    $("#subjectBar").append($ul);
+                },
+                complete: function () {
+                    BindQuery("", "");
+                }
+            });
+        }
+        $(function () {
+            initToolBar();//初始化时间
+            dss.pageheader("m");
+            // BindRegion();//区域下拉框
+            getParam();//区域下拉框
+            myfunction();
+            getSubject();
+            $("#btnQuery").click(function () {
+                getSubject();
+                // BindQuery("","");
+            });
+            $("#btnExport").click(function () {
+                dss.download({
+                    fileName: '工单统计'
+                });
+            });
+        });
+        function BindQuery(type, statue) {
+            var time = $("#txtTime").timepicker("getDateStr");
+            var region = $('#region option:selected').text();//选中的文本 
+            var isComplain = $("#divFilter1").controlmanager("getSelResults")[0].levelName;
+            var strSql = getSql(type, statue, region, time, isComplain);
+            var opts = {
+                showrownum: true,
+                pagingId: "pager",
+                //数据来源
+                ajax: {
+                    sqlstr: strSql,
+                    connstr: "SQL_ConnStr"
+                },
+                col: {
+                    property: [{ colindex: 1, width: 100 }, { colindex: 2, width: 150 }, { colindex: 3, width: 60 }, { colindex: 4, width: 90 }, { colindex: 5, width: 240 },
+                        { colindex: 6, width: 240 }, { colindex: 11, width: 100 }, { colindex: 12, width: 100 }]
+                },
+                //分页属性
+                paging: {
+                    rowNum: 10,
+                    rowList: [10, 20, 30]
+                },
+                callback: {
+                    gridComplete: gridComplete
+                }
+            };
+            $("#divGrid").smartgrid(opts);
+        }
+        function getSql(type, statue, region, time, isComplain) {
+            var temptime = time.split(":"); 
+            var start = Date.parse(temptime[0]).format("yyyy-MM-dd hh:mm:ss");
+            var end = Date.parse(temptime[1]).format("yyyy-MM-dd") + " 23:59:59";
+            var sql = "select  to_char(w.create_time,'mm-dd hh24:mi:ss') 生成时间,w.emos_id 工单号,decode(w.task_status,2,'已派单',3,'处理中',4,'已处理',5,'已撤单',6,'已归档',1,'草稿','未派单') 工单状态,";
+            sql += "s.name 专题名 ,w.task_title 标题,w.task_content_1||w.task_content_2||w.task_content_3 内容,w.levels 级别 ,";
+            sql += "w.NE_TYPE 网元类型,w.ne_label 网元名称,w.REGION 地区 ,to_char(plan_complete_time,'mm-dd hh24:mi:ss') 处理时限,to_char(actual_complete_time,'mm-dd hh24:mi:ss') 处理完成时间 ";
+            sql += "from sys_ip_systemname s join sys_ip_workorder w on s.key=w.system_name ";
+            sql += "and w.EVENT_TIME between to_date('" + start + "','yyyy-mm-dd hh24:mi:ss') and  to_date('" + end + "','yyyy-mm-dd hh24:mi:ss') ";
+            if (region != undefined && region.length > 0) {
+                if (region == "全选") {
+                }
+                else {
+                    sql += " and w.REGION='" + region + "'";
+                }
+            }
+            //switch (isComplain) {
+            //    case "全部":
+            //        sql += " and iscomplain in (0,1)";
+            //        break;
+            //    case "是":
+            //        sql += " and iscomplain=0";
+            //        break;
+            //    case "不是":
+            //        sql += " and iscomplain=1";
+            //        break;
+            //    default: break;
+            //}
+            //钻取
+            if ((statue == 1) || (statue == 2) || (statue == 3) || (statue == 4)) {
+                sql += " and w.TASK_STATUS=" + statue;
+            }
+            else if (statue == "") {
+                sql += " and w.TASK_STATUS>0";
+            }
+            else if (statue == "iscorrect") {
+                sql += " and iscorrect=0";
+            }
+            else if (statue == "ISOUTTIME") {
+                sql += " and ISOUTTIME=0";
+            }
+            if (type != undefined && type.length > 0) {
+                sql += " and s.key='" + type + "'";
+            }
+
+            return sql;
+        }
+        function initToolBar() {
+            var stime = dss.request("stime");
+            var etime = dss.request("etime");
+            if (stime && etime) {
+                stime = decodeURI(stime);
+                etime = decodeURI(etime);
+                defaultDateStr = stime + ":" + etime;
+            }
+            else {
+                defaultDateStr = new Date().addMonths(-1).format("yyyy年MM月dd日") + ":" + new Date().format("yyyy年MM月dd日");
+            }
+            //alert(defaultDateStr);
+            var opt = {
+                showTypeHour: false,
+                showTypeDay: true,
+                showTypeMonth: false,
+                defaultDateStr:defaultDateStr,
+                showTypeWeek: false,
+                isTile: true,//展开
+                range: true,
+                datePickerOptions: {
+                    maxDate: "+0M +1D"
+                }
+            }
+            $("#txtTime").timepicker(opt);
+        }
+
+        function gridComplete(obj, opts) {
+            if (obj.find("tr").length > 0) {
+                obj.find("tr").each(function (i, item) {
+                    if (i > 0) {
+                        $(this).find("td").eq(2).click(function () {
+                            var s = $(this).text();
+                            var url = "http://10.30.244.103/sheet/commontask/commontask.do?method=showMainDetailPageBySheetId&type=interface&interface=interface&userName=dongbin&sheetId=" + s;
+                            dss.openPageInTab("工单详情", url);
+                        }).css("color", "blue").css("cursor", "pointer");
+                        $(this).find("td:eq(6)").click(function () {
+                            var text = $(this).text();
+                            dss.dialog({
+                                title: "工单内容",
+                                width: 480,
+                                height: 260,
+                                content: "<div style='white-space: pre-wrap; word-spacing: 3px;overflow:auto;height:260px;'>" + text + "</div>",
+                                cancelValue: '取消',
+                                cancelDisplay: 0,
+                                buttons: {
+                                    '确定': function () {
+
+                                    }
+                                }
+                            });
+                        }).css("cursor", "pointer").attr("title", "点击查看全部内容");
+                        //var txt = $(this).find("td:eq(6)").text();
+                        //if (txt.length > 50) {
+                        //    $(this).find("td:eq(6)").text(txt.substr(0, 50));
+                        //    $(this).find("td:eq(6)").tooltip();
+                        //}
+                    }
+                })
+            }
+        }
+    </script>
+    <style type="text/css">
+        #div_content {
+            margin-top: 10px;
+            margin-left: 10px;
+            height: 100px;
+        }
+
+        #subjectBar {
+            margin-top: 5px;
+            margin-bottom: 15px;
+            margin-left: 0px;
+            margin-right: 0px;
+            padding: 0px;
+            width: 98%;
+            height: 136px;
+        }
+
+        .alarmcontent {
+            white-space: nowrap;
+            overflow: hidden;
+            word-break: break-all;
+        }
+
+        .c0, .c2, .c1, .c3 {
+            width: 23.8%;
+            height: 138px;
+            position: relative;
+        }
+
+        .c0 {
+            border: 1px solid #B67A03;
+        }
+
+        .c1 {
+            border: 1px solid #739A00;
+        }
+
+        .c2 {
+            border: 1px solid #129B5E;
+        }
+
+        .c3 {
+            border: 1px solid #741588;
+        }
+
+        .inset0, .inset2 {
+            position: absolute;
+            left: 0.3%;
+            top: 1%;
+            width: 99%;
+            height: 136px;
+        }
+
+        .inset1, .inset3 {
+            position: absolute;
+            left: 0.3%;
+            top: 1%;
+            width: 99.4%;
+            height: 136px;
+        }
+
+        .inset0 {
+            background-color: #D69007;
+        }
+
+        .inset1 {
+            background-color: #8DBD00;
+        }
+
+        .inset2 {
+            background-color: #28B878;
+        }
+
+        .inset3 {
+            background-color: #842C97;
+        }
+
+        .div_left, .div_right {
+            float: left;
+        }
+
+        .div_left {
+            width: 32%;
+            height: 46px;
+            padding-top: 25px;
+            padding-bottom: 25px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        h2 {
+            position: absolute;
+            left: 20px;
+            bottom: 25px;
+            color: white;
+        }
+
+        .div_right {
+            width: 50%;
+            height: 76px;
+            padding-right: -20px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+
+        .lblcount {
+            float: right;
+            display: block;
+            font-family: "Microsoft YaHei";
+            font-size: 12px;
+            color: white;
+        }
+
+            .lblcount a {
+                font-family: "Microsoft YaHei";
+                font-size: 14px;
+                color: white;
+                font-weight: bold;
+                text-decoration: none;
+            }
+
+        .lblcountC {
+            float: right;
+            display: block;
+            font-family: "Microsoft YaHei";
+            font-size: 12px;
+            color: white;
+            width: 150px;
+            text-align: right;
+        }
+
+            .lblcountC a {
+                font-family: "Microsoft YaHei";
+                font-size: 14px;
+                color: white;
+                font-weight: bold;
+                text-decoration: none;
+            }
+
+        .img0 {
+            background-image: url(../images/workorder/06.png);
+        }
+
+        .img1 {
+            background-image: url(../images/workorder/02.png);
+        }
+
+        .img2 {
+            background-image: url(../images/workorder/03.png);
+        }
+
+        .img3 {
+            background-image: url(../images/workorder/04.png);
+        }
+
+        .img0, .img1, .img2, .img3 {
+            background-position-x: 40px;
+            background-position-y: 20px;
+            background-repeat: no-repeat;
+        }
+    </style>
+</head>
+<body>
+    <div id="m"></div>
+    <div id="div_content">
+        <div class="toolbar">
+            <ul>
+                <li class="item">
+                    <input type="text" id="txtTime" style="width:110px;" />
+                </li>
+                <li class="item">
+                    <label>地市:</label>
+                    <!-- <div id="pagecondition"></div>-->
+                    <select id="region">
+                        <option value="">全选</option>
+                    </select>
+                </li>
+                <li style="display:none" class="item">
+                    <label style="line-height: 24px;">是否是投诉派单:</label>&nbsp;&nbsp;<span id="divFilter1" style="float: right;"></span>
+
+                </li>
+                <li class="item">
+                    <input class="button" type="button" id="btnQuery" value="查询" />
+                </li>
+                <li class="item">
+                    <input class="button" type="button" id="btnExport" value="导出" />
+                </li>
+            </ul>
+        </div>
+        <div class="toolbar" id="subjectBar">
+        </div>
+        <div id="divGrid">
+        </div>
+    </div>
+</body>
+</html>

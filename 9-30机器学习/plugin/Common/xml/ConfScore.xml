@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ConfigList>
+  <Lists>
+    <ListInfo ListKey="指标得分权重配置" ListDesc="">
+      <Items>
+        <!--说明：“name”为专题标识（在配置的url中以flag参数传入），“value”为专题名，“Property1”为配置表所在库连接串，“Property2”为数据库类型（oracle、gp），
+        “Property3”为sql的参数，为json串，TablePre元素为表名前缀（记得带上“.”），NowFun元素为“当前时间”函数，“Property4”为事实所在的数据源-->
+        <ItemInfo name="demo" value="Demo专题" Property1="SQL_ConnStr" Property2="oracle" Property3="{NowFun:'sysdate'}" Property4="DW_Demo">
+        </ItemInfo>
+      </Items>
+    </ListInfo>
+  </Lists >
+</ConfigList >

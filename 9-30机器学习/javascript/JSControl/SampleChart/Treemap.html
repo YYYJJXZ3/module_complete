@@ -1,0 +1,103 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>矩形树图</title>
+    <link href="../../../themes/lightblue/p.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/jqgrid/ui.jqgrid.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/jqueryui/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" />
+
+    <script src="../../core/jquery-1.9.1.min.js"></script>
+    <script src="../../core/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="../../common/tools.js"></script>
+    <script src="../../common/pagetools.js"></script>
+    <script src="Scripts/SampleChart.js"></script>
+    <script>
+        var param = {
+            name: "苹果"
+        };
+        $(function () {
+            getChart();
+        });
+
+        function getChart() {
+            var data = '{"colnames":["手机品牌","占比"],"rows":[{"col0":"苹果","col1":3},{"col0":"三星","col1":2},{"col0":"联想","col1":1},{"col0":"华为","col1":2},{"col0":"小米","col1":2}]}';
+            data = eval("(" + data + ")");
+            $("#Chart").data("getDatasource", data);
+            bindChart("Chart", {
+                XDataColIndex: "0",
+                YDataColIndex: "1",
+                IsAutoLimits: true,
+                IsShowValue: true,
+                IsShowPercentValue: true,
+                ClickEvent: [{ click: chartClick, colindex: 1 }],
+                HighLight: [{ colindex: 1, highvales: [param.name] }],
+                ChartType: "treemap"
+            });
+            getSubChart();
+        }
+
+        function getSubChart() {
+            var dataApple = '{"colnames":["手机品牌","手机型号","占比"],"rows":[{"col0":"苹果","col1":"iphone3","col2":1},{"col0":"苹果","col1":"iphone4","col2":1},{"col0":"苹果","col1":"iphone5","col2":2},{"col0":"苹果","col1":"iphone5s","col2":3},{"col0":"苹果","col1":"iphone6","col2":2},{"col0":"苹果","col1":"iphone6 plus","col2":3}]}';
+            var dataMI = '{"colnames":["手机品牌","手机型号","占比"],"rows":[{"col0":"小米","col1":"红米1","col2":3},{"col0":"小米","col1":"红米note","col2":2},{"col0":"小米","col1":"小米2","col2":1},{"col0":"小米","col1":"小米3","col2":1},{"col0":"小米","col1":"小米4","col2":2}]}';
+
+            if (param.name == "苹果") {
+                data = dataApple;
+            }
+            else if (param.name == "小米") {
+                data = dataMI;
+            }
+            else {
+                data = '{"colnames":["手机品牌","手机型号","占比"],"rows":[]}';
+            }
+
+            data = eval("(" + data + ")");
+            $("#SubChart").data("getDatasource", data);
+            bindChart("SubChart", {
+                XDataColIndex: "1",
+                YDataColIndex: "2",
+                IsAutoLimits: true,
+                IsShowValue: true,
+                IsShowPercentValue: true,
+                ChartType: "treemap"
+            });
+        }
+
+        function bindChart(div, option) {
+            var opts = $.extend(true, {
+                DataSource: $("#" + div).data("getDatasource"),
+                YFormatType: "1000",
+                YDecimals: '2',
+                BgColor: '#e2eefc',
+                BorderColor: '#7D7DFF',
+                ClickEvent: []
+            }, option);
+
+            //dss.samplechart(div, opts);
+            $("#" + div).SampleChart(opts);
+        }
+
+        function chartClick(xvalue, yvalue, value, xdataindex, ycolindex) {
+            param.name = xvalue;
+            bindChart("Chart", {
+                XDataColIndex: "0",
+                YDataColIndex: "1",
+                IsAutoLimits: true,
+                IsShowValue: true,
+                IsShowPercentValue: true,
+                ClickEvent: [{ click: chartClick, colindex: 1 }],
+                HighLight: [{ colindex: 1, highvales: [param.name] }],
+                ChartType: "treemap"
+            });
+            getSubChart();
+        }
+    </script>
+</head>
+<body>
+    <div class="captionWithoutIcon">
+        矩形树图
+    </div>
+    <div id="Chart" style="width: 100%; height: 450px;"></div>
+    <div id="SubChart" style="width: 100%; height: 450px; margin-top: 10px;"></div>
+</body>
+</html>

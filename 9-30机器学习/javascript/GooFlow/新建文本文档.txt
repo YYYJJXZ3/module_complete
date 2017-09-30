@@ -1,0 +1,12 @@
+有必要做UNDO/REDO的操作：
+1、增加 OK
+2、删除 OK
+3、SETNAME OK
+4、移动 OK
+5、RESIZE（包括线的）OK
+6、线的样式转换 OK
+7、标注 OK
+8、自定义设定 OK
+
+
+设计一个REDO栈和一个UNDO栈，UNDO时，把“取消UNDO效果”的操作PUSH到REDO栈中。

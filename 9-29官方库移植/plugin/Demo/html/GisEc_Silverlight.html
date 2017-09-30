@@ -1,0 +1,254 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="Generator" content="dashboard" />
+    <title></title>
+    <link href="../../../Themes/lightblue/jqueryui/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/jqgrid/ui.jqgrid.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/page/page.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/ca/db/dashboard.css" rel="stylesheet" />
+
+    <script src="../../../Javascript/core/jquery-1.9.1.min.js" type="text/javascript"></script>
+    <script src="../../../javascript/core/jquery-ui-1.10.3.custom.min.js"></script>
+
+    <script src="../../../javascript/common/tools.js" type="text/javascript"></script>
+    <script src="../../../javascript/common/pagetools.js" type="text/javascript"></script>
+
+    <script src="../../../Javascript/JSControl/Condition/comselect.js" type="text/javascript"></script>
+
+    <script src="../../../javascript/JSControl/Condition/controlmanagernew.js"></script>
+
+    <script src="../../../javascript/JSControl/Common/toolbar.js"></script>
+    <script src="../../../javascript/JSControl/Condition/timepicker.js"></script>
+
+    <script src="../../../javascript/JSControl/SmartGrid/JqGrid/grid.locale-cn.js"></script>
+    <script src="../../../javascript/JSControl/SmartGrid/JqGrid/jquery.jqGrid.min.js"></script>
+    <script src="../../../javascript/JSControl/SmartGrid/JqGrid/SmartGrid.js"></script>
+
+    <script src="../../../javascript/JSControl/SampleChart/Scripts/SampleChart.js"></script>
+
+    <script src="../../Dashboard/Js/View.js"></script>
+    <script src="../../Common/js/CommonHelp.js"></script>
+    <script type="text/javascript">
+        var param = {
+            dashboardId: "-1770176233",
+            geoLevel: "省",//当前的空间粒度，省||地区||小区
+            day: "",
+            province: "",
+            region: "",
+            cell: "",
+            isGisLoad: false,//GIS地图是否加载过
+            keyParams: ""//查询条件的拼接字符串，用于缓存GIS数据
+        };
+
+        $(function () {
+            $.dashboard.init({
+                dashboardId: param.dashboardId,
+                isLayout: false,
+                condition: [],
+                layoutSettings: [
+                    {
+                        divId: "report_0",
+                        autoBind: false,
+                        beforeBind: function (id, opts) {
+                            dssHelp.getDataByAnalyzer(opts.analyzer, function (data) {
+                                createMapData(data);
+
+                                $("#report_0").hide();
+                                $("#mapContainer").show();
+
+                                if (param.isGisLoad) {
+                                    silverlightLoaded();
+                                }
+                            });
+
+                            return false;
+                        }
+                    },
+                    {
+                        divId: "report_1",
+                        autoBind: false,
+                        beforeBind: function (id, opts) {
+                            opts.XLabelStyle = "Rotate";
+
+                            return opts;
+                        }
+                    },
+                    {
+                        divId: "report_2",
+                        autoBind: false
+                    }
+                ],
+                callback: {
+                    beforeQuery: function () {
+                        //处理查询事件
+                        getParam();
+                        $.dashboard.update("report_0");
+                        $.dashboard.update("report_1");
+                        $.dashboard.update("report_2");
+                    },
+                    exportClick: null
+                }
+            });
+        });
+
+        //#region ===========GIS相关的方法===========
+
+        //首次加载GIS
+        function silverlightLoaded() {
+            param.isGisLoad = true;
+            if (param.isGisLoad) {
+                loadCell($("#map").data("mapdata" + param.keyParams));
+            }
+        }
+
+        //渲染GIS地图的小区
+        function loadCell(data) {
+            var control = document.getElementById("objSilverlight");
+            var manager = control.Content.js;
+            manager.ShowCell(dss.jsonToString(data));
+        }
+
+        //转换成GIS地图的数据
+        function createMapData(data) {
+            var mapData = { CellPointList: [], ThresholdList: [{ StartVal: 0, EndVal: 70, ThresholdValueType: 2 }, { StartVal: 70, EndVal: 85, ThresholdValueType: 1 }, { StartVal: 85, EndVal: 101, ThresholdValueType: 0 }], PointClickFunctionName: "clickCell" };
+
+            $.each(data.rows, function (i, r) {
+                var c = { X: 0, Y: 0, ID: 0, Name: "CellDesc", Val: 0, Angle: 0, CellType: 2, IsIndoor: false, NeInfoList: [{ Name: "小区名", Val: "CellDesc" }, { Name: "指标名", Val: 0 }] };
+
+                if (r.col2 && r.col3 && r.col1 && r.col4) {
+                    c.X = r.col2; c.Y = r.col3; c.ID = r.col0; c.Name = r.col1; c.Val = r.col5; c.Angle = (r.col4 || 0);
+                    c.NeInfoList[0].Val = r.col1; c.NeInfoList[1].Name = data.colnames[5]; c.NeInfoList[1].Val = r.col5;
+                    mapData.CellPointList.push(c);
+                }
+            });
+
+            $("#map").data("mapdata" + param.keyParams, mapData)
+
+            return mapData;
+        }
+
+        //点击GIS地图中的小区
+        function clickCell(cellName, cellId) {
+            var p = $.dashboard.getParams();
+
+            var hasCell = false;
+            for (var i = 0; i < p.length; i++) {
+                if (p[i].levelname == "小区") {
+                    hasCell = true;
+                    p[i].value = cellName;
+                    break;
+                }
+            }
+
+            if (!hasCell) {
+                p.push({
+                    levelname: "小区",
+                    value: cellName
+                });
+            }
+
+            $.dashboard.update("report_1", p);
+            $.dashboard.update("report_2", p);
+        }
+
+        //#endregion ===========GIS相关的方法===========
+
+        //获取页面的全局参数，避免重复获取
+        function getParam() {
+            var p = $.dashboard.getParams();
+            for (var i = 0; i < p.length; i++) {
+                switch (p[i].levelname) {
+                    case "日": param.day = p[i].value; break;
+                    case "省": param.province = p[i].value; break;
+                    case "地区": param.region = p[i].value; break;
+                    case "小区": param.cell = p[i].value; break;
+                    default: break;
+                }
+            }
+
+            param.keyParams = param.day + param.province + param.region + param.cell;
+        }
+    </script>
+</head>
+<body>
+    <div id="m"></div>
+    <div class="dss_db_view">
+        <div id="dashboard-query" class="dss_db_view_query">
+            <ul class="toolbar">
+                <li class='item'>
+                    <input type="text" id="txtTime" style='width: 105px;' /></li>
+                <li class='item'>
+                    <div id='queryControl'></div>
+                </li>
+                <li class='item'>
+                    <input type='button' id='btnQuery' value='查询' class='button' /></li>
+                <li class='item'>
+                    <input type='button' id='btnExport' value='导出' class='button' /></li>
+            </ul>
+        </div>
+        <div class="dss_db_view_layout" id="dashboard-layout">
+            <style>
+                #report_0 {
+                    width: 100%;
+                    height: inherit;
+                    height: 49%;
+                    border: 1px solid #cccccc;
+                }
+
+                #mapContainer {
+                    width: 59.4%;
+                    height: 430px;
+                    float: left;
+                    border: 1px solid #cccccc;
+                }
+
+                #report_1 {
+                    width: 39.7%;
+                    height: 430px;
+                    float: right;
+                    border: 1px solid #cccccc;
+                }
+
+                #report_2 {
+                    width: 100%;
+                    height: 30%;
+                    float: left;
+                    margin-top: 5px;
+                    border: 1px solid #cccccc;
+                }
+            </style>
+            <!--css-->
+            <div id="report_0" reportdivid="0" class="report" isreport="true"></div>
+
+            <div id="mapContainer" style="display: none;">
+                <div class="dss_db_chart_title">
+                    <div class="left">小区分布</div>
+                </div>
+                <div id="map" style="width: 100%; height: 400px;">
+                    <div id="silverlightControlHost" style="height: 100%;">
+                        <object id="objSilverlight" data="data:application/x-silverlight-2," type="application/x-silverlight-2" width="100%" height="100%">
+                            <param name="source" value="../../../ClientBin/Boco.Dss.Silverlight.CommonGis.xap" />
+                            <param name="onError" value="onSilverlightError" />
+                            <param name="InitParams" value="initpage=CellDisplay" />
+                            <param name="onLoad" value="silverlightLoaded" />
+                            <param name="windowless" value="true" />
+                            <param name="background" value="white" />
+                            <param name="minRuntimeVersion" value="5.0.61118.0" />
+                            <param name="autoUpgrade" value="true" />
+                            <a href="../../../doc/installer/Silverlight_Developer.rar" style="text-decoration: none">
+                                <img src="../../../themes/lightblue/images/SLMedallion_CHS.png" alt="获取 Microsoft Silverlight" style="border-style: none" />
+                            </a>
+                        </object>
+                        <iframe id="_sl_historyFrame" style="visibility: hidden; height: 0px; width: 0px; border: 0px"></iframe>
+                    </div>
+                </div>
+            </div>
+
+            <div id="report_1" reportdivid="1" class="report" isreport="true"></div>
+            <div id="report_2" reportdivid="2" class="report" isreport="true"></div>
+        </div>
+    </div>
+</body>
+</html>

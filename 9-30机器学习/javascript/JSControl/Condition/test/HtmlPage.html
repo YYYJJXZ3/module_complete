@@ -1,0 +1,98 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <link href="../../../../themes/lightblue/page/page.css" rel="stylesheet" />
+    <link href="../../../../themes/lightblue/jqueryui/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" />
+    <link href="../../../../Themes/lightblue/jqgrid/ui.jqgrid.css" rel="stylesheet" />
+    <script src="../../../core/jquery-1.9.1.min.js"></script>
+    <script src="../../../common/tools.js"></script>
+    <script src="../../../JSControl/SmartGrid/JqGrid/grid.locale-cn.js"></script>
+    <script src="../../../JSControl/SmartGrid/JqGrid/jquery.jqGrid.src.js"></script>
+    <script src="../../../JSControl/SmartGrid/JqGrid/SmartGrid.js"></script>
+    <script src="../comselect.js" type="text/javascript"></script>
+    <script src="../controlmanagernew.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            method.set();
+        });
+        var method = {
+            set: function () {
+                var result = {
+                    conditions: [],
+                    callback: {
+                        completed: function (option) {
+                            var s = option;
+                        }
+                    }
+                };
+                result.conditions.push({
+                    labelname: "地区",
+                    width: 80,
+                    defaultShow: "地区",
+                    type: 'dropdown',
+                    items: [{
+                        dimid: "-471379319",
+                        levelname: "地区",
+                        selectmode: "single",
+                        initClass: "commdata",
+                        child: [1],
+                        hascheckall: true
+                    }]
+                });
+
+                result.conditions.push({
+                    labelname: "区县",
+                    width: 80,
+                    defaultShow: "区县",
+                    type: 'dropdown',
+
+                    items: [{
+                        dimid: "-471379319",
+                        levelname: "区县",
+                        selectmode: "single",
+                        //initValues: [{name:'昌北区'}],
+                        initClass: "commdata",
+                        hascheckall: true,
+                        selectmode: "multiple"
+                    }]
+                });
+                result.conditions.push({
+                    labelname: "地区",
+                    width: 80,
+                    defaultShow: "地区",
+                    type: 'none',
+                    items: [{
+                        dimid: "-471379319",
+                        levelname: "MSC",
+                        selectmode: "single",
+                        initValues: [],
+                        initClass: "commdata"
+                    },
+                    {
+                        dimid: "-471379319",
+                        levelname: "TAC",
+                        selectmode: "single",
+                        initValues: [],
+                        initClass: "commdata"
+                    }
+                    ]
+                });
+
+                $("#queryCondition").controlmanager(result);
+            }
+        };
+    </script>
+
+</head>
+<body>
+    <div class="toolbar">
+        <ul>
+            <li class="item">
+                <div id="queryCondition"></div>
+            </li>
+        </ul>
+    </div>
+</body>
+</html>

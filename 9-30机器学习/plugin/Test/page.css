@@ -1,0 +1,215 @@
+﻿.timeControl {
+            border: 1px solid #dddddd;
+            padding: 5px 10px;
+            width: 497px;
+            background-color: #fff;
+            z-index: 999;
+            overflow: auto;
+            position: absolute;
+        }
+
+            .timeControl .title {
+                height: 25px;
+            }
+
+                .timeControl .title .y {
+                    padding: 2px 1px 5px 11px;
+                    cursor: pointer;
+                    float: left;
+                    display: block;
+                    margin-left: 40px;
+                }
+
+                .timeControl .title .yl {
+                    padding: 2px 1px 5px 11px;
+                    cursor: pointer;
+                    float: left;
+                    display: block;
+                    margin-left: 55px;
+                }
+
+                .timeControl .title .m {
+                    padding: 2px 12px 5px 1px;
+                    cursor: pointer;
+                    float: left;
+                    display: block;
+                }
+
+                .timeControl .title .left {
+                    background-image: url('untitled.png');
+                    padding: 5px 12px 5px 11px;
+                    background-repeat: no-repeat;
+                    cursor: pointer;
+                    float: left;
+                    display: block;
+                    height: 15px;
+                }
+
+                    .timeControl .title .left:hover {
+                        background-position-x: -46px;
+                    }
+
+                .timeControl .title .right {
+                    background-image: url('untitled.png');
+                    padding: 5px 12px 5px 11px;
+                    background-repeat: no-repeat;
+                    background-position-x: -23px;
+                    cursor: pointer;
+                    float: right;
+                    display: block;
+                    height: 15px;
+                }
+
+                    .timeControl .title .right:hover {
+                        background-position-x: -69px;
+                    }
+
+            .timeControl ol {
+                border: 1px solid #e1e1e1;
+                background-color: rgb(247, 248, 250);
+                height: 26px;
+            }
+
+                .timeControl ol li {
+                    float: left;
+                    padding: 5px 10px;
+                    width: 12px;
+                }
+
+            .timeControl ul.day {
+                display: block;
+            }
+
+                .timeControl ul.day li {
+                    float: left;
+                    padding: 5px 10px;
+                    width: 12px;
+                    color: #bbb;
+                }
+
+                    .timeControl ul.day li.t {
+                        cursor: pointer;
+                        color: #4f5155;
+                    }
+
+
+            .timeControl ul.mon {
+                display: block;
+            }
+
+                .timeControl ul.mon li {
+                    float: left;
+                    padding: 5px 25px;
+                    width: 25px;
+                    color: #bbb;
+                }
+
+                    .timeControl ul.mon li.t {
+                        cursor: pointer;
+                        color: #4f5155;
+                    }
+
+            .timeControl ul.uw {
+                display: block;
+            }
+
+                .timeControl ul.uw li {
+                    float: left;
+                    padding: 5px 2px 5px 3px;
+                    width: 27px;
+                    color: #bbb;
+                }
+
+                    .timeControl ul.uw li.t {
+                        cursor: pointer;
+                        color: #4f5155;
+                    }
+
+            .timeControl uq.uw {
+                display: block;
+            }
+
+            .timeControl ul.uq li {
+                float: left;
+                padding: 15px 25px 15px 30px;
+                width: 50px;
+                color: #bbb;
+            }
+
+                .timeControl ul.uq li.t {
+                    cursor: pointer;
+                    color: #4f5155;
+                }
+
+            .timeControl .bottom {
+                height: 20px;
+                border-top: 1px solid #e1e1e1;
+                padding-top: 10px;
+            }
+
+                .timeControl .bottom span {
+                    border: 1px solid #dddddd;
+                    padding: 3px 5px;
+                    cursor: pointer;
+                }
+
+                    .timeControl .bottom span.t {
+                        border: 0px;
+                        cursor: default;
+                    }
+
+                    .timeControl .bottom span.s {
+                        border: 0px;
+                        cursor: default;
+                        color: #fff;
+                    }
+
+                    .timeControl .bottom span.btn {
+                        border-top-left-radius: 5px;
+                        border-top-right-radius: 5px;
+                        border-bottom-left-radius: 5px;
+                        border-bottom-right-radius: 5px;
+                        background-color: rgb(0, 161, 203);
+                        color: #fff;
+                        margin-left: 5px;
+                    }
+
+        .clear {
+            clear: both;
+        }
+
+        .month {
+            width: 73px;
+            position: absolute;
+            z-index: 1000;
+            background-color: #fff;
+        }
+
+            .month ul {
+                border: 1px solid #dddddd;
+                height: 134px;
+            }
+
+                .month ul li {
+                    float: left;
+                    padding: 3px 5px;
+                    cursor: pointer;
+                }
+
+        .year {
+            width: 80px;
+            position: absolute;
+            z-index: 1000;
+            background-color: #fff;
+        }
+
+            .year ul {
+                border: 1px solid #dddddd;
+                height: 134px;
+            }
+
+                .year ul li {
+                    float: left;
+                    padding: 3px 5px;
+                    cursor: pointer;
+                }

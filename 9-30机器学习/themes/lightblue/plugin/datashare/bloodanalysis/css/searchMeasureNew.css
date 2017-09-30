@@ -1,0 +1,240 @@
+﻿body {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.dss_cond {
+    display: inline-table;
+    width: 99.5%;
+    clear: both;
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+
+    .dss_cond .logo {
+        margin-left: 10px;
+        float: left;
+        display: none;
+        /*border: 1px solid #1EAFE1;*/
+        height: 32px;
+        width: 92px;
+        background: url('../images/yinqing.png') left top no-repeat;
+    }
+
+    .dss_cond .searchBox {
+        margin-left: 110px; /*==等于左边栏宽度==*/
+        height: auto;
+        text-align: center;
+    }
+    /*提示*/
+    .dss_cond .tip {
+        color: #888;
+        padding-left: 2px;
+    }
+
+    .dss_cond dl {
+        padding: 0px;
+        margin: 2px 2px 10px 10px;
+        float: left;
+        padding-bottom: 5px;
+        position: absolute;
+        left: 26%;
+        width: 72%;
+    }
+
+        .dss_cond dl dd {
+            float: left;
+            vertical-align: middle;
+            display: inline-table;
+        }
+
+    .dss_cond .searchText {
+        background-color: #45B2F0;
+        color: #fff;
+        padding: 5px 7px 5px 7px;
+        font-family: 微软雅黑;
+        font-size: 11.5px;
+        border-radius: 3px;
+        margin-top: 2px;
+        margin-right: 2px;
+        cursor: default;
+        width: 50px;
+    }
+
+    .dss_cond .hiddenElement {
+        background-color: #fff;
+        color: #fff;
+    }
+
+    .dss_cond .ddrefresh {
+        height: 30px;
+        /*position: fixed;*/
+        right: 0;
+        padding-top: 9px;
+        /*padding-left: 230px;*/
+        padding-right: 10px;
+        float: right;
+        /* background-color: #ccc;*/
+    }
+
+.ddrefresh a {
+    /*position: fixed;*/
+    right: 5px;
+    font-size: 12px;
+    color: blue;
+    padding-top: 10px;
+}
+
+    .ddrefresh a:hover {
+        color: blue;
+    }
+
+
+/*文本框*/
+#txtSearch {
+    width: 350px;
+    height: 25px;
+    border-left: 1px solid #9c9c9c;
+    border-top: 1px solid #9c9c9c;
+    border-bottom: 1px solid #cbcbcb;
+    border-right: 1px solid #cbcbcb;
+}
+
+/*搜索按钮*/
+.ss_btn {
+    padding-top: 2px;
+    font-family: 微软雅黑;
+    font-size: 15px;
+    width: 70px;
+    text-align: center;
+    padding: 0;
+    height: 29px;
+    line-height: 29px;
+    padding-left: 5px;
+    padding-right: 5px;
+    background-color: #0084CF;
+    color: white;
+}
+
+    .ss_btn:hover {
+        cursor: pointer;
+        background-color: #00A2F9;
+    }
+
+.dss_box {
+    padding: 0;
+    margin: 0;
+    width: 99.5%;
+    padding-right: 2px;
+    display: inline-table;
+    clear: both;
+}
+
+.dss_content {
+    width: 99%;
+    margin: 0 0 5px 10px;
+    display: block;
+    padding: 0;
+    /*background-color: #fdfeed;*/
+    border: 1px solid #ccc;
+}
+
+.dss_left {
+    width: 49.75%;
+    float: left;
+    padding: 0;
+    margin: 0;
+    border-right: 1px solid #ccc;
+}
+
+.dss_right {
+    width: 49.75%;
+    float: right;
+    padding: 0;
+    margin: 0;
+    border-left: 1px solid #ccc;
+}
+
+.dss_center {
+    width: 99.5%;
+    clear: both;
+}
+
+    .dss_left dt, .dss_right dt, .dss_center dt {
+        clear: both;
+        display: inline-table;
+        width: 100%;
+        height: 24px;
+        line-height: 24px;
+        color: #0084cf;
+        font-size: 13px;
+        font-weight: bold;
+        background-color: #eee;
+    }
+
+    .dss_left dd, .dss_right dd, .dss_center dd {
+        padding: 0;
+        margin: 0;
+        margin-top: 3px;
+        padding-left: 2px;
+    }
+
+    .dss_left dt strong, .dss_right dt strong, .dss_center dt strong {
+        clear: both;
+        display: inline-table;
+        width: 100%;
+        margin-left: 10px;
+        height: 24px;
+        line-height: 24px;
+        color: #666;
+        font-size: 10px;
+        /*font-weight: bold;*/
+    }
+
+/*居右的条件*/
+.alignRight {
+    float: right;
+}
+
+.alignLeft {
+    float: left;
+}
+
+.dss_cond table tr td {
+    padding: 3px;
+}
+
+.resultDesc {
+    border: 1px solid #27BEF3;
+    width: 554px;
+    margin: 0 auto;
+    border-radius: 5px;
+    border-bottom: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background-color: #F9FBFD;
+}
+
+    .resultDesc table {
+        width: 550px;
+        margin: auto;
+    }
+
+        .resultDesc table td.first {
+            text-align: center;
+            padding-bottom: 5px;
+            padding-top: 6px;
+            border-bottom: 1px solid #27BEF3;
+        }
+
+        .resultDesc table td {
+            text-align: center;
+            width: 49%;
+            padding: 2px;
+            border-bottom: 1px solid #27BEF3;
+        }
+
+            .resultDesc table td.borderRight {
+                border-right: 1px solid #27BEF3;
+            }

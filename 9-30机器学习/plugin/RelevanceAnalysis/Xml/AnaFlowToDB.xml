@@ -1,0 +1,26 @@
+﻿<?xml version="1.0"?>
+<ConfigList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Lists>
+    <ListInfo  ListKey="-354597598" ListDesc="USER">
+      <Items>
+        <ItemInfo name="" value="Nodeaa33abf0-13e9-4518-b170-b6861a4f5d24,Nodedcdf108b-0226-47a3-9a21-ed74254e7213,Nodea7583d98-894e-4985-9a1f-4ca806d4aeb9,Nodefeb126d1-881c-4b1c-9bc5-d9992746950c,Node587617cf-7d3c-403c-bb7d-94c93faa30b7,Node94ace72f-d7c1-434c-9c6b-f99305bb2829"/>
+      </Items>
+    </ListInfo>
+    <ListInfo  ListKey="1149756629" ListDesc="无TD\WLAN">
+      <Items>
+        <ItemInfo name="" value="Nodeb86afc39-2e8e-4153-a138-70ff0963f46f,Node59bb1c55-c99f-46ea-a30c-128738c3cd72,Nodedeac751a-ed54-40c6-ba53-69079d43d419"/>
+      </Items>
+    </ListInfo>
+    <ListInfo  ListKey="1207879776" ListDesc="WLAN">
+      <Items>
+        <ItemInfo name="" value="Node518c34ea-0b3c-4fed-a418-ba013883bdbd,Nodee27528a4-679f-42bd-88be-4d0330c32356,Nodeb42e39c4-37c1-4577-9781-05e8d33f4767,Node0ee0dbc4-21e5-474f-8863-f7e6dd641ee5"/>
+      </Items>
+    </ListInfo>
+    <ListInfo  ListKey="466455057" ListDesc="TD">
+      <Items>
+        <ItemInfo name="" value="Node38cd7f25-900c-4c73-8271-57b79fa81e65,Nodec64bb478-6919-420a-b53b-d69d615c548f,Node622481f9-acb9-47b1-969d-af7e84eee46c,Nodeeea7a1e2-2156-4b9e-89e5-30c2d514adf4"/>
+      </Items>
+    </ListInfo>
+  </Lists>
+</ConfigList>
+

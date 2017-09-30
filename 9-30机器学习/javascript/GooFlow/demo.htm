@@ -1,0 +1,78 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>流程图DEMO</title>
+    <!--[if lt IE 9]>
+<?import namespace="v" implementation="#default#VML" ?>
+<![endif]-->
+    <link rel="stylesheet" type="text/css" href="codebase/GooFlow.css" />
+    <script type="text/javascript" src="../core/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="GooFunc.js"></script>
+    <link rel="stylesheet" type="text/css" href="default.css" />
+    <script type="text/javascript" src="codebase/GooFlow.js"></script>
+    <script type="text/javascript">
+        var property = {
+            width: 700,
+            height: 380,
+            //toolBtns:["start","end","task","node","chat","state","plug","join","fork","complex"],
+            haveHead: false,
+            headBtns: ["new", "open", "save", "undo", "redo", "reload"], //如果haveHead=true，则定义HEAD区的按钮
+            haveTool: true,
+            haveGroup: true,
+            useOperStack: true
+        };
+        var remark = {
+            cursor: "选择指针",
+            direct: "转换连线",
+            start: "开始结点",
+            end: "结束结点",
+            task: "任务结点",
+            node: "自动结点",
+            chat: "决策结点",
+            state: "状态结点",
+            plug: "附加插件",
+            fork: "分支结点",
+            "join": "联合结点",
+            complex: "复合结点",
+            group: "组织划分框编辑开关"
+        };
+        var demo;
+        $(document).ready(function () {
+            demo = $.createGooFlow($("#demo"), property);
+            demo.setNodeRemarks(remark);
+            demo.onItemDel = function (id, type) {
+                return confirm("确定要删除该单元吗?");
+            }
+            jsondata = {
+                title: "aaa",
+                nodes: {
+                    demo_node_1: { name: "<table><tr><td>日：cm_d_time_day</td></tr><tr><td>day_id</td></tr><tr><td>day_desc</td></tr><tr><td>month_id</td></tr></table>",
+                        left: 67, top: 69, type: "task", width: 180, height: 200
+                    },
+                    demo_node_2: { name: "<table><tr><td>月：cm_d_time_month</td></tr><tr><td>month_id</td></tr><tr><td>month_desc</td></tr></table>",
+                        left: 319, top: 71, type: "task", width: 180, height: 200
+                    },
+                    demo_node_5: { name: "<table><tr><td>周：cm_d_time_week</td></tr><tr><td>week_id</td></tr><tr><td>week_desc</td></tr></table>", left: 580, top: 371, type: "fork", width: 180, height: 200 }
+                },
+                lines: {
+                    demo_line_3: { type: "sl", from: "demo_node_1", to: "demo_node_2", name: "month_id", marked: true },
+                    demo_line_6: { type: "sl", from: "demo_node_1", to: "demo_node_5", name: "", marked: false },
+                    demo_line_7: { type: "sl", from: "demo_node_2", to: "demo_node_5", name: "", marked: false }
+                }
+                //                },
+                //                areas: {
+                //                    demo_area_8: { name: "area_8", left: 35, top: 39, color: "red", width: 472, height: 114 }
+                //                }
+            };
+            demo.$max = 9;
+            demo.loadData(jsondata);
+        });
+    </script>
+</head>
+<body>
+    <div id="demo">
+    </div>
+    <input value="reinitSize" onclick="demo.reinitSize(900,500)" type="button" />
+</body>
+</html>

@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>测试图</title>
+    <link href="../../../themes/lightblue/jqueryui/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/page/page.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/jqgrid/ui.jqgrid.css" rel="stylesheet" />
+
+    <script src="../../core/jquery-1.9.1.min.js"></script>
+    <script src="../../core/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="../../common/tools.js"></script>
+    <script src="../../common/pagetools.js"></script>
+    <script src="Scripts/SampleChart.js"></script>
+    <script>
+        $(function () {
+            getChart();
+        });
+
+        function getChart() {
+            var data = { "colnames": ["地区", "指标"], "rows": [] };
+
+            for (var i = 1; i <= 200; i++) {
+                data.rows.push({ "col0": "地区地区地区" + i, "col1": Math.random() * 100 });
+            }
+
+            bindChart("Chart", {
+                DataSource: data,
+                IsAutoLimits: true,
+                ChartType: "ScrollColumn",
+                PaddingTop: 50,
+                PaddingRight: 50,
+                XLabelStyle: "Wrap",
+                LegendPosition:"TOP",
+                ScrollNum: 10,
+                Theme: "lightblue"//修改主题，图例的颜色在主题中设置，主题文件在“javascript\JSControl\SampleChart\Scripts\echarts\theme”下
+            });
+        }
+
+        function bindChart(div, option) {
+            var opts = $.extend(true, {
+                YFormatType: "1000",
+                YDecimals: '2',
+                BorderColor: '#7D7DFF',
+                ClickEvent: []
+            }, option);
+
+            $("#" + div).SampleChart(opts);
+        }
+    </script>
+</head>
+<body>
+    <div class="captionWithoutIcon">
+        测试图
+    </div>
+    <div id="Chart" style="height: 350px;"></div>
+</body>
+</html>

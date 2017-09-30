@@ -1,0 +1,206 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <link href="../../../themes/lightblue/jqueryui/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/jqgrid/ui.jqgrid.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/page/page.css" rel="stylesheet" />
+
+    <script src="../../../javascript/core/jquery-1.9.1.min.js"></script>
+    <script src="../../../javascript/core/jquery-ui-1.10.3.custom.min.js"></script>
+
+    <script src="../../../javascript/common/tools.js"></script>
+    <script src="../../../javascript/common/pagetools.js"></script>
+
+    <script src="../../../javascript/JSControl/Condition/timepicker.js"></script>
+    <script src="../../../Javascript/JSControl/Condition/comselect.js"></script>
+    <script src="../../../javascript/JSControl/Condition/controlmanagernew.js"></script>
+    <script src="../../../javascript/JSControl/SmartGrid/JqGrid/grid.locale-cn.js"></script>
+    <script src="../../../javascript/JSControl/SmartGrid/JqGrid/jquery.jqGrid.min.js"></script>
+    <script src="../../../javascript/JSControl/SmartGrid/JqGrid/SmartGrid.js"></script>
+    <script src="../../../javascript/JSControl/Common/toolbar.js"></script>
+
+    <script src="../../Common/js/CommonHelp.js"></script>
+    <script type="text/javascript">
+        var param = {
+            type: "",
+            str: ""
+        };
+
+        $(function () {
+            method.init();
+            //method.findInObjArr();
+        });
+
+        var method = {
+            init: function () {
+                //method.initTime();
+                method.initQueryCtrl();
+
+                $("#btnQuery").click(function () {
+                    method.getParam();
+                    if (param.type == "CRC32") {
+                        dssHelp.getCRC32(param.str);
+                    }
+                    else if (param.type == "加密") {
+                        method.getEncrypt(param.str);
+                    }
+                    else if (param.type == "解密") {
+                        method.getDecrypt(param.str);
+                    }
+                });
+            },
+            getParam: function () {
+                var con = $("#divFilter").controlmanager("getSelResults");
+                param.type = con[0].value.join(',');
+                param.str = con[1].value.join(',');
+            },
+            initTime: function () {
+                var opt = {
+                    showTypeDay: true,
+                    showTypeMonth: false,
+                    defaultTimeType: null,
+                    defaultDateStr: null,
+                    isTile: true
+                };
+                $("#txtTime").timepicker(opt);
+            },
+            initQueryCtrl: function () {
+                var p = [];
+
+                p.push({
+                    width: 70,
+                    defaultShow: '操作类型',
+                    type: 'dropdown',
+                    items: [{
+                        levelname: '操作类型',
+                        datasource: [{ "name": "CRC32" }, { "name": "加密" }, { "name": "解密" }]
+                    }]
+                });
+
+                p.push({
+                    width: 200,
+                    defaultShow: '字符串',
+                    type: 'text',
+                    items: [{
+                        levelname: '字符串'
+                    }]
+                });
+
+                $("#divFilter").controlmanager(p);
+            },
+            getEncrypt: function (str) {
+                var url = dss.rootPath + "plugin/Common/ashx/ComHandler.ashx";
+                var opt = {
+                    Type: "encrypt",
+                    Property1: str
+                };
+                $.ajax({
+                    url: url,
+                    data: {
+                        strCon: dss.jsonToString(opt)
+                    },
+                    dataType: "text",
+                    cache: false,
+                    success: function (data) {
+                        dss.alert("密文：" + data, function () {
+                        }, "加密", 1);
+                    }
+                });
+            },
+            getDecrypt: function (str) {
+                var url = dss.rootPath + "plugin/Common/ashx/ComHandler.ashx";
+                var opt = {
+                    Type: "decrypt",
+                    Property1: str
+                };
+                $.ajax({
+                    url: url,
+                    data: {
+                        strCon: dss.jsonToString(opt)
+                    },
+                    dataType: "text",
+                    cache: false,
+                    success: function (data) {
+                        dss.alert("明文：" + data, function () {
+                        }, "解密", 1);
+                    }
+                });
+            },
+            findInObjArr: function () {
+                var arr = [
+                    { name: "省", idx: "0" },
+                    { name: "地区", idx: "1" },
+                    { name: "区县", idx: "2" },
+                ];
+
+                var a = dssHelp.findInObjArr(arr, "name", "地区");
+            },
+            getGrid: function () {
+                var opt = {
+                    Flag: "GroupUsers",
+                    GridChart: "SqlGrid",
+                    ConnStr: "SQL_ConnStr",
+                    Property1: $("#ddlGroup option:selected").text()
+                };
+                $.ajax({
+                    url: '../handler/VipCommon.ashx',
+                    data: {
+                        strCon: dss.jsonToString(opt)
+                    },
+                    dataType: "json",
+                    cache: false,
+                    success: function (data) {
+                        var opt = {
+                            captionName: "用户信息",
+                            showrownum: true,
+                            islocaldata: true,
+                            localdata: data,
+                            paging: {
+                                rowNum: 10,
+                                rowList: [10, 20, 40, 60]
+                            },
+                            col: {
+                                property: [
+                                    { colindex: 0, align: 'center' },
+                                    { colindex: 1, align: 'center' },
+                                    { colindex: 2, align: 'center' }
+                                ]
+                            }
+                        };
+
+                        method.bindGrid("divGrid", opt);
+                    }
+                });
+            },
+            bindGrid: function (div, option) {
+                var opts = $.extend(true, {
+                    analyzer: null,
+                    height: 306,
+                    titleName: "",
+                    formatFlowValue: '1'
+                }, option);
+
+                $("#" + div).smartgrid(opts);//绑定表格
+            }
+        };
+    </script>
+</head>
+<body>
+    <div id="m"></div>
+    <div class="toolbar">
+        <ul>
+            <!--<li class="item">
+                <input style="width: 100px;" id="txtTime" type="text" /></li>-->
+            <li class="item">
+                <div id="divFilter"></div>
+            </li>
+            <li class="item">
+                <input class="button" id="btnQuery" value="查询" type="button" /></li>
+            <li class="item">
+                <input class="button" id="btnExport" value="导出" type="button" /></li>
+        </ul>
+    </div>
+</body>
+</html>

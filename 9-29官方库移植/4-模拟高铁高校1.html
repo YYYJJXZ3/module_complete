@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--<link rel="stylesheet" href="themes/lightblue/p.css">-->
+    <link rel="stylesheet" href="themes/page/page.css">
+    <script src="javascript/core/jquery-1.9.1.min.js" type="text/javascript"></script>
+    <script src="javascript/core/jquery-ui-1.10.3.custom.js" type="text/javascript"></script>
+    <script src="javascript/JSControl/Condition/timepicker.js" type="text/javascript"></script>
+    <script src="javascript/common/tools.js"></script>
+    <script src="javascript/common/pagetools.js"></script>
+    <script src="Scripts/SampleChart.js"></script>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+
+        #map{
+            width: 450px;
+            height: 250px;
+        }
+
+    </style>
+</head>
+<body>
+<div id="map"></div>
+
+
+<script>
+    $(function () {
+        getChart1();
+    });
+
+
+    function getChart1() {
+        var data = {
+            "colnames":[
+                "高铁高校",
+                "高铁1",
+                "高铁2"
+            ],
+            "rows":[
+                {col0:"平均激活用户数",
+                    col1:"88",
+                    col2:"56"
+                },
+                {
+                    col0:"平均RRC连接用户数",
+                    col1:"56",
+                    col2:"66"
+                },
+                {
+                    col0:"上行激活用户数",
+                    col1:"68",
+                    col2:"90"
+                },
+                {
+                    col0:"上行激活数",
+                    col1:"78",
+                    col2:"99"
+                }
+
+            ]
+        };
+        bindChart("map", {
+            DataSource: data,
+            ChartType: "Radar",
+            IsShowLegend:"false",
+            XDataColIndex: '0',
+            YDataColIndex: '1,2',
+            LegendPosition:"RIGHTTOP",
+            XLabelStep:'1',
+            XLabelStyle:"Wrap"
+
+        });
+    }
+
+    function bindChart(div, option) {
+        var opts = $.extend(true, {
+            YFormatType: "1000",
+            YDecimals: '2'
+        }, option);
+
+        $("#" + div).SampleChart(opts);
+    }
+
+
+</script>
+</body>
+</html>

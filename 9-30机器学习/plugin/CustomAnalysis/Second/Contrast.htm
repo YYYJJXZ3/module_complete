@@ -1,0 +1,123 @@
+﻿<!DOCTYPE>
+<html>
+<head>
+    <title>趋势分析</title>
+    <link href="../../../themes/lightblue/p.css" rel="stylesheet" type="text/css" />
+    <link href="../../../Themes/lightblue/jqueryui/jquery-ui-1.10.3.custom.css" rel="stylesheet" />
+    <link href="../../../Themes/lightblue/jqgrid/ui.jqgrid.css" rel="stylesheet" />
+    <script src="../../../Javascript/core/jquery-1.9.1.min.js"></script>
+    <script src="../../../Javascript/core/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="../../../javascript/JSControl/Condition/timepicker.js" type="text/javascript"></script>
+    <script src="../../../Javascript/JSControl/extensioncontrol/conditionManager.js" type="text/javascript"></script>
+    <script src="../../../Javascript/JSControl/Condition/comselect.js" type="text/javascript"></script>
+    <script src="../../../javascript/common/tools.js" type="text/javascript"></script>
+    <script src="../../../javascript/common/pagetools.js" type="text/javascript"></script>
+    <script src="JS/common.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function () {
+            dss.pageheader("m");
+            init.init(function (levelname) {
+                method.init(levelname);
+            });
+            $("#btnQuery").click(function () {
+                init.getDimension();
+                method.init();
+            });
+            $("#btnExport").click(function () {
+                dss.download({
+                    fileName: '对比分析'
+                });
+            })
+        });
+        var queryCondition = {
+            conditionManager: null
+        };
+
+        var method = {
+            init: function (levelname) {
+                var $time = $("#txtTime");
+                dss.ajax({
+                    url: 'ashx/Contrast.ashx',
+                    type: 'post',
+                    data: {
+                        meaList: $("#txtMeasure").commonSelect("getSelIds").join(","),
+                        Condition: dss.jsonToString($("#btnQuery").data("dataCondition")),
+                        getTimeStr: $time.timepicker("getDateStr"),
+                        getHourStr: $time.timepicker("getHourStr"),
+                        getTimeType: $time.timepicker("getTimeType"),
+                        levelname: levelname
+                    },
+                    success: function (data) {
+                        init.bindGrid(data, "list", function (obj, opts) {
+                            method.bindChart(obj, opts);
+                        });
+                    }
+                });
+            },
+            bindChart: function (obj, opts) {
+                var datasource = $("#list").smartgrid("getDatasource");
+                var y = "";
+                if (datasource.colnames.indexOf("小时") > -1) {
+                    datasource.colnames[0] = datasource.colnames[0] + "-小时";
+                    for (var i = 2; i < datasource.colnames.length; i++) {
+                        datasource.colnames[i] = opts.orgData.colNames[i].replace("|||", "-");
+                        y += i + ",";
+                    }
+                }
+                else {
+                    for (var i = 1; i < datasource.colnames.length; i++) {
+                        datasource.colnames[i] = opts.orgData.colNames[i].replace("|||", "-");
+                        y += i + ",";
+                    }
+                }
+                if (y.length > 0) {
+                    y = y.substr(0, y.length - 1);
+                }
+                if (datasource.colnames)
+                    var options5 = {
+                        Width: '100%',
+                        Height: '300',
+                        DataSource: datasource,
+                        Title: "",
+                        ChartType: 'Line',
+                        XLabelStyle: 'Stagger',
+                        YFormatType: '1000',
+                        XDataColIndex: '0',
+                        YDataColIndex: y,
+                        IsAutoLimits: true
+                    };
+                dss.samplechart("chart", options5);
+            }
+        };
+    </script>
+</head>
+<body>
+    <div id="m"></div>
+    <div class="ph-left">
+        <ul>
+            <li style="display: table;">
+                <span>时间:</span>
+                <input type="text" id="txtTime" style="width: 80px;" /></li>
+            <li>
+                <div id="multipleSelectControl">
+                </div>
+            </li>
+            <li>指标:
+                <input type="text" id="txtMeasure" style="width: 60px;" />
+            </li>
+            <li>
+                <input type="button" id="btnQuery" value="查询" class="button" /></li>
+            <li>
+                <input type="button" id="btnExport" value="导出" class="button" /></li>
+        </ul>
+    </div>
+    <div class="captionWithoutIcon">
+        对比分析图形展示
+    </div>
+    <div id="chart" style="height: 300px;"></div>
+    <div class="captionWithoutIcon">
+        对比分析详细信息
+    </div>
+    <div id="list" style="height: 220px;"></div>
+</body>
+</html>

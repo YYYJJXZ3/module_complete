@@ -1,0 +1,367 @@
+body, html, div, ul, li, span {
+    margin: 0;
+    padding: 0;
+    font-family: 'Microsoft YaHei', Verdana, Arial, Helvetica, AppleGothic, sans-serif;
+    font-size: 12px;
+}
+
+html {
+    overflow: hidden;
+    min-height: 600px;
+    min-width: 1024px;
+}
+
+#logo {
+    position: absolute;
+    width: 180px;
+    height: 37px;
+    top: 0;
+    left: 0;
+    background: url('../images/frame2/yonghudenglu.png') 35px 10px no-repeat;
+    background-color: #143752;
+    padding: 18px 0 0 80px;
+    color: #fff;
+    float: left;
+}
+
+    #logo span {
+        cursor: pointer;
+    }
+
+        #logo span:hover {
+            text-decoration: underline;
+        }
+
+#head {
+    position: absolute;
+    top: 0;
+    left: 260px;
+    height: 50px;
+    right: 0;
+    background-color: #0084cf;
+    padding: 5px 0 0 15px;
+    border-bottom: 3px solid #143752;
+    color: #fff;
+    min-width: 720px;
+}
+
+#operationZone {
+    position: absolute;
+    top: 20px;
+    right: 10px;
+    height: 33px;
+    width: 400px;
+}
+
+ul.menu {
+    float: right;
+    padding: 0;
+    list-style: none;
+}
+
+    ul.menu li {
+        margin: 0 9px 0 0;
+        padding: 0;
+        width: 25px;
+        height: 22px;
+        display: block;
+        list-style: none;
+        float: left;
+        background: url('../images/frame2/xttb.png');
+        background-repeat: no-repeat;
+        cursor: pointer;
+    }
+
+        ul.menu li:hover {
+            background: url('../images/frame2/xttb_a.png');
+        }
+
+#head li.home {
+    background-position: -0px 0px;
+}
+
+#head li.settings {
+    background-position: -34px 0px;
+}
+
+#head li.news {
+    background-position: -67px 0px;
+    text-align: right;
+    vertical-align: top;
+}
+
+    #head li.news span {
+        color: #fff;
+        position: relative;
+        top: -6px;
+        right: -2px;
+        background-image: url('../images/frame2/msgtip.png');
+        padding: 0px 4px;
+        background-repeat: no-repeat;
+        font-size: 9px;
+        text-align: center;
+        vertical-align: middle;
+        font-weight: 400;
+        font-family: 'Microsoft JhengHei';
+    }
+
+#head li.logoff {
+    background-position: -100px 0px;
+}
+
+#searchPane {
+    width: 278px;
+    height: 25px;
+    position: absolute;
+    padding: 0;
+    top: 0px;
+    right: 155px;
+    color: #fff;
+    font-size: 12px;
+}
+
+    #searchPane ul {
+        height: 25px;
+        line-height: 100%;
+        display: block;
+        margin: 0px 0 0 0;
+        float: left;
+    }
+
+    #searchPane li {
+        display: block;
+        margin: 0 5px 0 0;
+        height: 17px;
+        padding: 5px 10px 0 10px;
+        float: left;
+        border: 1px solid #fff;
+    }
+
+        #searchPane li:hover {
+            cursor: pointer;
+            color: #fff;
+            background-color: #91c322;
+        }
+
+    #searchPane .activeSearchCategory {
+        color: #fff;
+        background-color: #45b2f0;
+    }
+
+    #searchPane .inputPanel {
+        height: 22px;
+        overflow: hidden;
+        border: 1px solid #fff;
+    }
+
+        #searchPane .inputPanel:hover {
+            background-color: #4bb2f0;
+        }
+
+    #searchPane input[type="text"] {
+        clear: both;
+        margin: 0;
+        padding: 0 0 0 5px;
+        *padding-top: 6px; /*IE 7*/
+        width: 139px;
+        height: 22px;
+        color: #fff;
+        font-size: 12px;
+        line-height: 100%;
+        border: none;
+        background-color: transparent;
+    }
+
+    #searchPane input[type="button"] {
+        clear: both;
+        margin: 0;
+        padding: 0;
+        border: none;
+        width: 30px;
+        height: 24px;
+        color: #fff;
+        font-size: 12px;
+        border: none;
+        background: url('../images/frame2/ty_ss.png') 6px 1px no-repeat;
+        background-color: transparent;
+    }
+
+        #searchPane input[type="button"]:hover {
+            /*background:url('../images/frame2/ty_ss_a.png') 6px 1px no-repeat;*/
+            background-color: #91c322;
+        }
+
+#productSubName {
+    margin-top: 3px;
+    font-weight: bold;
+    font-size: 17px;
+}
+
+#functionBar {
+    position: absolute;
+    width: 248px;
+    top: 55px;
+    bottom: 0px;
+    left: 0;
+    padding: 4px 6px 0 6px;
+    background-color: #143752;
+}
+
+    #functionBar ul.tiles {
+        list-style: none;
+        display: block;
+        max-height: 340px;
+        overflow-x: hidden;
+        overflow-y: auto;
+        -ms-overflow-style: none;
+        /*������IE��Ч��*/
+        scrollbar-arrow-color: #143752; /*���Ǽ�ͷ����ɫ*/
+        scrollbar-face-color: #143752; /*�������������ɫ*/
+        scrollbar-3dlight-color: #143752; /*������������ߵ���ɫ*/
+        scrollbar-highlight-color: #143752; /*�������հײ��ֵ���ɫ*/
+        scrollbar-shadow-color: #143752; /*�����������Ӱ����ɫ*/
+        scrollbar-darkshadow-color: #143752; /*���������ǿ��Ӱ����ɫ*/
+        scrollbar-track-color: #143752; /*���������������ɫ*/
+        scrollbar-base-color: #143752; /*�������Ļ�����ɫ*/
+    }
+
+::-webkit-scrollbar-track-piece {
+    background-color: #143752;
+}
+
+::-webkit-scrollbar {
+    width: 0px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #143752;
+}
+
+#functionBar ul.tiles li {
+    list-style: none;
+    height: 70px;
+    color: #fff;
+    background-position: center 10px;
+    background-repeat: no-repeat;
+    margin: 0 0 6px 0;
+    float: left;
+}
+
+#functionBar ul.tiles .t1 {
+    width: 90px;
+    background-color: #0072c6;
+    margin-right: 8px;
+}
+
+#functionBar ul.tiles .t2 {
+    width: 150px;
+    background: url('../images/frame2/ty_yewu.png') center 10px no-repeat;
+    background-color: #0b94c1;
+}
+
+#functionBar ul.tiles .t3 {
+    width: 248px;
+    background-color: #008299;
+}
+
+#functionBar ul.tiles .t4 {
+    width: 115px;
+    background-color: #5133ab;
+    margin-right: 8px;
+}
+
+#functionBar ul.tiles .t5 {
+    background-color: #ac193d;
+    width: 125px;
+}
+
+#functionBar ul.tiles .t6 {
+    width: 248px;
+    background-color: #1d802f;
+}
+
+#functionBar ul.tiles .active, #functionBar ul .t1:hover, #functionBar ul .t2:hover, #functionBar ul .t3:hover, #functionBar ul .t4:hover, #functionBar ul .t5:hover, #functionBar ul .t6:hover {
+    background-color: #0cbdfa;
+    cursor: pointer;
+}
+
+#functionBar ul.tiles li span {
+    display: inline-block;
+    margin: 47px 0 0 10px;
+    width: 80%;
+    text-wrap: none;
+    text-overflow: ellipsis;
+}
+
+#functionBar ul.tiles .activeMenu {
+    background-color: #0cbdfa;
+}
+
+#functionBar .menuTree {
+    min-height: 30px;
+    margin: 3px 0 0 0;
+    padding: 0 0 10px 0;
+    display: none;
+    overflow: hidden;
+    overflow-y: auto;
+    padding-bottom: 30px;
+    background-color: #0cbdfa;
+    scrollbar-arrow-color: #37cafc; /*���Ǽ�ͷ����ɫ*/
+    scrollbar-face-color: #37cafc; /*�������������ɫ*/
+    scrollbar-3dlight-color: #0cbdfa; /*������������ߵ���ɫ*/
+    scrollbar-highlight-color: #0cbdfa; /*�������հײ��ֵ���ɫ*/
+    scrollbar-shadow-color: #0cbdfa; /*�����������Ӱ����ɫ*/
+    scrollbar-darkshadow-color: #0cbdfa; /*���������ǿ��Ӱ����ɫ*/
+    scrollbar-track-color: #0cbdfa; /*���������������ɫ*/
+    scrollbar-base-color: #0cbdfa; /*�������Ļ�����ɫ*/
+}
+
+#functionBar .hideFunctionBar {
+    position: absolute;
+    right: 5px;
+    bottom: 1px;
+    width: 40px;
+    height: 41px;
+    background-image: url('../images/frame2/caidan_shouqi.png');
+}
+
+    #functionBar .hideFunctionBar:hover {
+        background-image: url('../images/frame2/caidan_shouqi_a.png');
+    }
+
+#main .showFunctionBar {
+    display: none;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 40px;
+    height: 41px;
+    background-image: url('../images/frame2/caidan_zhankai.png');
+}
+
+    #main .showFunctionBar:hover {
+        background-image: url('../images/frame2/caidan_zhankai_a.png');
+    }
+
+#main {
+    position: absolute;
+    top: 58px;
+    left: 260px;
+    right: 0;
+    bottom: 0;
+    border-top: 1px solid #0084cf;
+    background-color: #fff;
+    min-width: 720px;
+}
+
+#mainPane {
+    padding: 0;
+    height: 100%;
+}
+
+#welcome {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    background: url('../images/welcome_pic.jpg') center center no-repeat;
+}

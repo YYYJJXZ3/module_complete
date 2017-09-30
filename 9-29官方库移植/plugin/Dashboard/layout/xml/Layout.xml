@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ConfigList>
+  <Lists>
+    <ListInfo ListKey="List">
+      <Items>
+        <ItemInfo name="15分型" value="layout/img/15.png" Property1="layout/15.htm" Property2="100020"></ItemInfo>
+        <ItemInfo name="14分型" value="layout/img/14.png" Property1="layout/14.htm" Property2="100019"></ItemInfo>
+        <ItemInfo name="13分型" value="layout/img/13.png" Property1="layout/13.htm" Property2="100018"></ItemInfo>
+        <ItemInfo name="12分型" value="layout/img/12.png" Property1="layout/12.htm" Property2="100017"></ItemInfo>
+        <ItemInfo name="11分型" value="layout/img/11.png" Property1="layout/11.htm" Property2="100016"></ItemInfo>
+        <ItemInfo name="10分型" value="layout/img/10.png" Property1="layout/10.htm" Property2="100015"></ItemInfo>
+        <ItemInfo name="9分型" value="layout/img/9.png" Property1="layout/9.htm" Property2="100014"></ItemInfo>
+        <ItemInfo name="8分型" value="layout/img/8.png" Property1="layout/8.htm" Property2="100013"></ItemInfo>
+        <ItemInfo name="7分型" value="layout/img/7.png" Property1="layout/7.htm" Property2="100012"></ItemInfo>
+        <ItemInfo name="6分型" value="layout/img/6.png" Property1="layout/6.htm" Property2="100011"></ItemInfo>
+        <ItemInfo name="5分型" value="layout/img/5.png" Property1="layout/5.htm" Property2="100010"></ItemInfo>
+        <ItemInfo name="4分型" value="layout/img/4.png" Property1="layout/4.htm" Property2="100009"></ItemInfo>
+        <ItemInfo name="3分型" value="layout/img/3.png" Property1="layout/3.htm" Property2="100008"></ItemInfo>
+        <ItemInfo name="3分品型-上" value="layout/img/3u.png" Property1="layout/3u.htm" Property2="100007"></ItemInfo>
+        <ItemInfo name="3分品型" value="layout/img/3t.png" Property1="layout/3t.htm" Property2="100006"></ItemInfo>
+        <ItemInfo name="2分型-左" value="layout/img/2l.png" Property1="layout/2l.htm" Property2="100005"></ItemInfo>
+        <ItemInfo name="2分型-右" value="layout/img/2r.png" Property1="layout/2r.htm" Property2="100004"></ItemInfo>
+        <ItemInfo name="2分型-上下" value="layout/img/2u.png" Property1="layout/2u.htm" Property2="100003"></ItemInfo>
+        <ItemInfo name="2分型" value="layout/img/2.png" Property1="layout/2.htm" Property2="100002"></ItemInfo>
+        <ItemInfo name="1分型" value="layout/img/1.png" Property1="layout/1.htm" Property2="100001"></ItemInfo>
+      </Items>
+    </ListInfo>
+  </Lists >
+</ConfigList >

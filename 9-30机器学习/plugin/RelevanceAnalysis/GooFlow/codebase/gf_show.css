@@ -1,0 +1,53 @@
+﻿ ul, li{list-style:none;margin:0;padding:0;}
+img{border:none;}
+.clear{clear:both;height:0;} 
+body{background-color:#EFEFEF;}
+.lingxing_top{border-bottom:13px solid #FC8F3C;border-left:40px solid Transparent;border-right:40px solid Transparent;height:0px;margin:auto;width:0px;}
+.lingxing_bottom{border-left:40px solid Transparent;border-right:40px solid Transparent;border-top:13px solid #FC8F3C;height:0px;margin:auto;width:0px;}
+
+#flow{margin-left:5px;margin-top:5px;clear:both}
+.mask{background-color:#777;filter:alpha(opacity=60);left:0px;margin:0;moz-opacity:0.5;opacity:0.5;padding:0;position:absolute;top:0px;z-index:10;}
+.gl_box { background-color:#b8dcfb;border:1px solid #0085ba;display:block;height:400px;margin:0 auto;position:absolute;width:615px;z-index:20;margin-left:100px; }
+.gl_close{position:absolute;right:5px;top:5px;}
+.gl_tit{background-image:url(img/gl_tit_bg.jpg);background-repeat:repeat-x;color:#FFF;font-size:13px;font-weight:bold;height:27px;line-height:27px;padding-left:5px;width:auto;}
+.gl_cont{background-color:#FFF;height:360px;margin:1px 5px;width:602px;}
+.roundSpan{background-color:#0769c6;border:1px solid blue;color:#fff;margin:2px;padding:2px;border-radius:3px;moz-border-radius:3px;webkit-border-radius:3px;}
+
+
+.nTab{width:602px;height:363px;margin:0px auto;background:white;border:2px solid white;overflow:hidden; border-radius:2px; border-top:0;}
+.none {display:none;}
+.nTab .TabTitle li{float:left;cursor:pointer;height:26px;line-height:22px;font-weight:bold;text-align:center;width:124px; margin-right:2px; border-radius:3px;}
+.nTab .TabTitle li a{text-decoration:none;}
+.nTab .TabTitle .normal{color:#336699;background:#ccc url(img/tabbg.png) no-repeat 0 -24px;  }
+.nTab .TabTitle .active{color:#fff;background:#096FD3  url(img/tabbg.png) no-repeat 0px -53px;}
+.nTab .TabContent{clear:both;background:#fff; padding:0px;display:block; overflow:hidden;}
+.nTab .TabContent #myTab1_Content0{overflow:auto; margin:0 auto; width:600px; height:335px;border:0px solid red;}
+.nTab .TabContent #myTab1_Content1{overflow:auto; margin:0 auto;width:600px; height:335px;border:0px solid blue;}
+/*标题菜单*/
+#myTab1_Content0 .oper_top{background-color:#ccc; border:0px solid blue;margin-top:1px;margin-bottom:1px;clear:both;height:30px; line-height:30px;text-align:right;}
+ #myTab1_Content0 .oper_top input{ display:inline;cursor:pointer;background-color:#0769c6;border:none;color:#FFF;margin-left:5px;padding:3px;border-radius:3px;moz-border-radius:3px;webkit-border-radius:3px; }
+#myTab1_Content0 .oper_top input:hover{ background-color:green;border:1px solid green;}
+/*指标阈值设置*/
+#threValueSet ul #liMeas{border:0px solid red;height:175px; margin-top:5px;}
+#threValueSet ul #liMeas ul li{margin-top:3px; font-size:13px; margin-left:5px;}
+
+#threValueSet ul #liMeas  fieldset{border: 2px solid #ccc; -webkit-border-radius: 2px; -moz-border-radius: 2px; border-radius: 2px;}
+#threValueSet ul #liMeas div{border:0px solid red;height:150px;width:590px;overflow:auto;margin-top:5px; }
+#liMeas table{border:0px solid red; margin:0 15px 0px;}
+#liMeas table tr td:nth-child(2n+1) { text-align:right;}
+#liMeas table tr td input[type='text']{width:50px; height:18px;}
+#liMeas table tr td  input[type='button']{background-color:#0769c6;border:none;color:#FFF;height:20px; width:50px; margin-left:5px;}
+#liMeas table tr td  input[type='button']:hover{background-color:green;color:#FFF;}
+
+/*维度阈值设置*/
+#threValueSet ul #liDims{border:0px solid red;height:140px; margin-top:5px;}
+#threValueSet ul #liDims ul li{margin-top:3px; font-size:13px; margin-left:5px;}
+
+#threValueSet ul #liDims fieldset{border: 2px solid #ccc; -webkit-border-radius: 2px; -moz-border-radius: 2px; border-radius: 2px;}
+#threValueSet ul #liDims div{border:0px solid red;height:125px;width:590px;overflow:auto; margin-top:5px;}
+#liDims table{border:0px solid red; margin:0 15px 0px;}
+#liDims table tr td:nth-child(2n+1) { text-align:right;}
+#liDims table tr td input[type='text']{width:50px; height:18px;/*background-color:#FFFFCC;*/}
+#liDims table tr td  input[type='button']{background-color:#0769c6;border:none;color:#FFF;height:20px; width:50px; margin-left:5px;}
+#liDims table tr td  input[type='button']:hover{background-color:green;color:#FFF;}
+

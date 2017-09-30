@@ -1,0 +1,97 @@
+﻿/*分页样式开始*/
+.dsstable .dss_table_page{margin:0;padding:0;font-family:"Microsoft YaHei",Verdana;font-size:12px;height:30px;line-height:30px;width:100%;user-select: none;-ms-user-select: none;vertical-align:middle;border-top:solid 1px #ccc;margin-top:-1px;}
+.dsstable .dss_table_page div.dss_table_page_oper{width:320px;float:left;margin-left:10px;margin-top:3px;padding:0px;}
+.dsstable .dss_table_page div.dss_table_page_oper span{display:inline-block;margin:0 5px 0 0;padding:0px 6px;line-height:20px;height:20px;border:1px solid #e1e1e1;background:#fff;color:#333;text-decoration:none;cursor:pointer}
+.dsstable .dss_table_page div.dss_table_page_oper span.first{background-image:url('images/left1_a.png');background-repeat:no-repeat;background-position:center center}
+.dsstable .dss_table_page div.dss_table_page_oper span.first_1{background-image:url('images/left1.png');background-repeat:no-repeat;background-position:center center}
+.dsstable .dss_table_page div.dss_table_page_oper span.prev{background-image:url('images/left2_a.png');background-repeat:no-repeat;background-position:center center}
+.dsstable .dss_table_page div.dss_table_page_oper span.prev_1{background-image:url('images/left2.png');background-repeat:no-repeat;background-position:center center}
+.dsstable .dss_table_page div.dss_table_page_oper span.next{background-image:url('images/right2_a.png');background-repeat:no-repeat;background-position:center center}
+.dsstable .dss_table_page div.dss_table_page_oper span.next_1{background-image:url('images/right2.png');background-repeat:no-repeat;background-position:center center}
+.dsstable .dss_table_page div.dss_table_page_oper span.last{background-image:url('images/right1_a.png');background-repeat:no-repeat;background-position:center center}
+.dsstable .dss_table_page div.dss_table_page_oper span.last_1{background-image:url('images/right1.png');background-repeat:no-repeat;background-position:center center}
+.dsstable .dss_table_page div.dss_table_page_oper span input{width:25px;height:17px;border:1px solid #e1e1e1;line-height:16px;margin-top:1px;}
+.dsstable .dss_table_page div.dss_table_page_oper span select{width:50px;height:22px;border:1px solid #e1e1e1;line-height:22px}
+.dsstable .dss_table_page div.dss_table_page_oper span.none{border:0px}
+.dsstable .dss_table_page span.sum{float:right;margin-right:10px}
+/*分页样式结束*/
+
+/*指标选择开始*/
+.dss_sel_mea{width: 500px;/*height: 300px;*/margin-right: 20px;}
+.dss_sel_mea .top{height: 26px;width: 210px;border: 1px solid #ddd;}
+.dss_sel_mea .top input[type=text]{height: 24px;line-height: 24px;vertical-align: middle;width: 180px;border: 0px;float: left;}
+.dss_sel_mea .top input[type=button]{background-image: url('images/u14.png');background-position: left center;background-repeat: no-repeat;height: 24px;line-height: 24px;vertical-align: middle;width: 20px;border: 0px;float: left;cursor: pointer;background-color: transparent;}
+.dss_sel_mea .clear{clear: both;}
+.dss_sel_mea .bottom{height: 220px;margin-top: 10px;width: 100%;position: relative;}
+.dss_sel_mea .bottom .sel{width: 100%;height: 100%;border: 1px solid #ddd;position: relative;overflow-y: auto;}
+.dss_sel_mea .bottom .sel ul{width: 100%;height: 100%;}
+.dss_sel_mea .bottom .sel ul li{float: left;border: 1px solid #ddd;margin-left: 10px;padding: 3px 5px 3px 5px;width: 97px;margin-top: 10px;position: relative;overflow: hidden;display: inline-block;white-space: nowrap;cursor: move;webkit-user-select:none;-moz-user-select:none; -ms-user-select:none; user-select:none;list-style:none;}
+.dss_sel_mea .bottom .sel ul li i{background-image: url('images/close.png');position: absolute;width: 12px;height: 12px;background-repeat: no-repeat;right: 3px;top: 5px;cursor: pointer;display: none;z-index:99999}
+.dss_sel_mea .left{position: absolute;right: -17px;top: 100px;width: 15px;height: 25px;border: 0px;background-color: #0084CF;cursor: pointer;background-image: url('images/r.png');background-repeat: no-repeat;background-position: center center;z-index: 9999;}
+.dss_sel_mea .bottom .tbshow{height: 280px;position: absolute;right: -20px;top: -50px;width: 495px;z-index: 10000;background-color: #fff;display: none;border: 1px solid #ddd;}
+.dss_sel_mea .bottom .tbshow .right{position: absolute;top: 160px;left: 0px;width: 15px;height: 25px;border: 0px;background-color: #0084CF;cursor: pointer;background-image: url('images/l.png');background-repeat: no-repeat;background-position: center center;}
+.dss_sel_mea .bottom .tbshow .dashboard-data{width: 455px;overflow-y: auto;max-height: 220px;margin-left: 25px;margin-top: 10px;}
+.dss_sel_mea .bottom .tbshow .dashboard-data .table{background-color: #999;border-collapse: separate;border-spacing: 1px;color: #fff;margin-top: 10px;border: 0px;}
+.dss_sel_mea .bottom .tbshow .dashboard-data .table th{height: 25px;padding-left: 7px;font-weight: normal;border: 0px;}
+.dss_sel_mea .bottom .tbshow .dashboard-data .table td{color: #666;height: 20px;padding: 1px;padding-right: 3px;padding-left: 3px;background-color: #fff;border: 0px;}
+.dss_sel_mea .bottom .tbshow .dashboard-data .table td input{border: 0;height: auto;}
+/*指标选择结束*/
+
+
+/*过滤规则设置样式开始*/
+.dss_filter{border:1px solid #ddd;width:500px;height:240px;margin:0px}
+.dss_filter ul{height:30px;line-height:30px;background-color:#e1e1e1;padding-left:10px}
+.dss_filter ul li{float:left;padding-left:8px;padding-right:8px;font-size:14px;vertical-align:middle;line-height:30px;margin-left:10px;cursor:pointer}
+.dss_filter ul li.select{background-color:#fff;cursor:default}
+.dss_filter .measure{height:210px;width:100%}
+.dss_filter .measure .left{width:150px;border:1px solid #ccc;height:190px;margin-top:10px;margin-left:10px;float:left}
+.dss_filter .measure .left ul{height:180px;overflow-y:auto;overflow-x:hidden;color:#333;padding:3px;background-color:#fff;width:143px}
+.dss_filter .measure .left ul li{line-height:20px;text-overflow:ellipsis;overflow:hidden;white-space:nowrap;width:142px;cursor:pointer;font-size:12px;margin-left:5px;}
+.dss_filter .measure .right{height:190px;margin-top:10px;margin-right:10px;width:315px;float:right}
+.dss_filter .measure .right .but{height:30px}
+.dss_filter .measure .right .txt{height:160px;width:315px;float:right;border:0px solid #ccc}
+.dss_filter .measure .right .txt textarea{height:160px;width:300px;border:1px solid #ccc;line-height:20px;white-space:pre-wrap;text-wrap:normal;}
+.dss_filter .attr{height:210px;width:100%;display:none}
+.dss_filter .attr .arshow{height:120px;overflow-y:auto}
+.dss_filter .attr .arshow dl{line-height:30px;height:30px;margin-top:10px}
+.dss_filter .attr .arshow dl dt{margin-left:10px;float:left;width:70px;text-align:right}
+.dss_filter .attr .arshow dl dd{margin-left:85px}
+.dss_filter .attr .arshow dl select{width:85px;border:1px solid #ddd;height:26px;font-family:'Microsoft YaHei';color:#585858}
+.dss_filter .attr .arshow dl input{width:215px;border:1px solid #ddd;height:24px}
+.dss_filter .attr .arshow dl dt input{width:60px;border:1px solid #ddd;height:24px;text-align:right}
+.dss_filter .attr .bottom{height:20px;padding-top:10px;padding-left:10px}
+.dss_filter_con{background-color:#ebeded;width:250px;height:150px;position:absolute;top:350px;left:600px}
+.dss_filter_con .title{height:50px;font-family:'Microsoft YaHei';font-size:14px;color:#fff;vertical-align:middle;background-color:#03c4a2;text-align:center;line-height:25px;padding:0px 3px}
+.dss_filter_con .context{height:24px;margin-top:20px;padding:0px 0px 0px 30px}
+.dss_filter_con .context select{width:85px;border:1px solid #ddd;height:26px;font-family:'Microsoft YaHei';color:#585858}
+.dss_filter_con .context input{width:100px;border:1px solid #ddd;height:24px}
+.dss_filter_con .btn{height:24px;margin-top:20px;padding:0px 0px 0px 120px;}
+/*过滤规则设置样式结束*/
+
+.dsstable{margin:0 auto;border:1px solid #ddd;overflow:hidden;box-sizing:-webkit-box-sizing:border-box; -moz-box-sizing:border-box; -ms-box-sizing:border-box; box-sizing:border-box;}
+.dsstable .tbpage{border: 0px;overflow-y: auto;overflow-x: hidden;padding:0px;}
+.dsstable table{border-collapse:separate;border-spacing:1px;padding:0px;margin:0px -1px;background-color:#ddd;color:#666666;table-layout:fixed;box-sizing:-webkit-box-sizing:border-box; -moz-box-sizing:border-box; -ms-box-sizing:border-box; box-sizing:border-box;}
+.dsstable table thead tr{color:#666;font-weight:400;font-size:12px;background-color:#e7f5ff;padding:5px 0px;height:24px;line-height:14px;user-select:none;-ms-user-select:none;}
+.dsstable table thead tr th span{cursor:pointer}
+.dsstable table thead tr th span i.up{background-image:url('images/p_s_a.png');background-repeat:no-repeat;background-position:center right;padding:2px 1px 2px 5px}
+.dsstable table thead tr th span i.down{background-image:url('images/p_x_a.png');background-repeat:no-repeat;background-position:center right;padding:2px 1px 2px 5px}
+.dsstable table tbody tr td{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dsstable table tbody tr.a{background-color:#fff;height:24px;line-height:24px}
+.dsstable table tbody tr.b{background-color:#f6f6f6;height:24px;line-height:24px}
+.dsstable table tbody tr:hover{background-color:#e7f5ff;height:24px;line-height:24px}
+.dsstable table tbody tr td{padding:0px 5px}
+.dsstable .drag{height:100%;position:relative;cursor:col-resize;margin-right:0px;width:1px;float:right;padding:0px;border:0px}
+.dsstable .drag_d{background-color:#0084CF;z-index:10;position:absolute;padding:0px;border:0px;border:1px;width:2px}
+.dsstable .dss_tb_title{clear:both;margin:0px 0px 0px 0px;padding:0px;display:table;line-height:24px;height:24px;width:99%;background-color:#fafafa}
+.dsstable .dss_tb_title .title{height:18px;font-size:13px;font-weight:700;display:block;float:left;color:#333333;padding:1px 10px 9px 10px;float:left}
+.dsstable .dss_tb_title .right{float:right;padding-top:2px}
+.dsstable .dss_tb_title .right div{margin-right:8px;float:right;line-height:22px;height:22px;width:20px;cursor:pointer;background-repeat:no-repeat;background-image:url('images/icon.png')}
+.dsstable .dss_tb_title .right div:hover{color:transparent;background-image:url('images/icon_a.png')}
+.dsstable .dss_tb_title .right div.filter{background-position:-101px 0px}
+.dsstable .dss_tb_title .right div.export{background-position:-81px 0px}
+.dsstable .dss_tb_title .right div.measure{background-position:0px 0px}
+.dsstable .dss_tb_title .right div.second{background-position:-182px 0px}
+.dsstable .dss_tb_title .right div.none{background-position:left -800px}
+
+
+li.move{float: left;border: 1px solid #ddd;margin-left: 10px;padding: 3px 5px 3px 5px;width: 97px;margin-top: 10px;position: relative;overflow: hidden;display: inline-block;white-space: nowrap;cursor: move;webkit-user-select:none;-moz-user-select:none; -ms-user-select:none; user-select:none;list-style:none;}

@@ -1,0 +1,883 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>地图demo页面</title>
+    <link href="../../../themes/lightblue/p.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/page/page.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/jqgrid/ui.jqgrid.css" rel="stylesheet" />
+
+    <script src="../../core/jquery-1.9.1.min.js"></script>
+    <script src="../../core/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="../../common/tools.js"></script>
+    <script src="../../common/pagetools.js"></script>
+    <script src="Scripts/SampleChart.js"></script>
+    <script>
+        var param = {
+            isChina: true//用于全国地图点击下钻到省，点省再回到全国
+        };
+
+        $(function () {
+            getChart();//图例为分段类型的地图
+            getChartRange();//图例为范围类型的地图
+            getChina();//全国地区
+            getRegion();//扩展的地区，贵州省
+            getCity();//扩展的区县，贵阳市
+            getMapFlowWorld();//流出型地图（世界）
+            getMapFlowOut();//流出型地图（中国）
+            getMapFlowIn();//流入型地图（中国）
+            getMapFlowOneOut();//流出型地图（中国 单地区流出，图例表示颜色区间）
+            getMapFlowOneIn();//流入型地图（中国 流入单地区，图例表示颜色区间）
+            getMapScatter();//打点地图（中国）
+            getMapScatterProvince();//打点地图（省）
+            getMapScatterBgImg();//打点地图（含背景图、标注）
+            getMapSign();//标记地图（无需指定经纬度，按省或地市的名称即可进行标记）
+            //getMapTrace();//轨迹地图
+        });
+
+        function getChart() {
+            var data = '{"colnames":["地区","得分"],"rows":[{"col0":"那曲地区","col1":"15"},{"col0":"阿里地区","col1":"30"},{"col0":"日喀则地区","col1":"45"},{"col0":"林芝地区","col1":"60"},{"col0":"昌都地区","col1":"75"},{"col0":"山南地区1","col1":"90"},{"col0":"拉萨市","col1":"100"}]}';
+            data = eval("(" + data + ")");
+            bindChart("MapChart", {
+                DataSource: data,
+                YDataColIndex: "1",
+                IsShowPercentValue: true,
+                LegendPosition: "LEFTBOTTOM",
+                MapType: ['西藏'],
+                MapRangeOrLegend: "legend",
+                Map: {
+                    areaColor: "#BBBBBB"
+                },
+                MapLegend: [
+                    { name: '<=20%', min: null, max: 20, color: '#FF7F50' },
+                    { name: '20%-40%', min: 20, max: 40, color: '#87CEFA' },
+                    { name: '40%-60%', min: 40, max: 60, color: '#DA70D6' },
+                    { name: '60%-80%', min: 60, max: 80, color: '#32CD32' },
+                    { name: '>80%', min: 80, max: null, color: '#6495ED' }
+                ]
+            });
+        }
+
+        function getChartRange() {
+            var data = '{"colnames":["地区","得分"],"rows":[{"col0":"那曲地区","col1":"15"},{"col0":"阿里地区","col1":"30"},{"col0":"日喀则地区","col1":"45"},{"col0":"林芝地区","col1":"60"},{"col0":"昌都地区","col1":"75"},{"col0":"山南地区","col1":"90"},{"col0":"拉萨市","col1":"100"}]}';
+            data = eval("(" + data + ")");
+            bindChart("MapChartRange", {
+                DataSource: data,
+                YDataColIndex: "1",
+                YMinValue: 0,
+                YMaxValue: 100,
+                MapType: ['西藏'],
+                MapRangeOrLegend: "range",
+                LegendPosition: "RIGHTTOP",
+                Theme: "lightblue",
+                Map: {
+                    rangeColor: ['#026FDD', '#DEFEFF'],
+                    roam: true,
+                    areaColor: "#ff0000"
+                }
+            });
+        }
+
+        function getChina() {
+            var data = '{"colnames":["地区","得分"],"rows":[{col0: "北京",col1:"99"},{col0: "天津",col1: "90"},{col0: "上海",col1: "96"},{col0: "重庆",col1: "89"},{col0: "河北",col1: "78"},{col0: "河南",col1: "79"},{col0: "云南",col1: "56"},{col0: "辽宁",col1:" 78"},{col0: "黑龙江",col1:"45"},{col0: "湖南",col1: "76"},{col0: "安徽",col1: "65"},{col0: "山东",col1: "100"},{col0: "新疆",col1: "56"},{col0: "江苏",col1: "57"},{col0: "浙江",col1: "87"},{col0: "江西",col1: "67"},{col0: "湖北",col1:" 65"},{col0: "广西",col1:" 55"},{col0: "甘肃",col1: "45"},{col0: "山西",col1: "54"},{col0: "内蒙古",col1:"45"},{col0: "陕西",col1: "46"},{col0: "吉林",col1: "53"},{col0: "福建",col1: "58"},{col0: "贵州",col1: "56"},{col0: "广东",col1: "85"},{col0: "青海",col1: "56"},{col0: "西藏",col1: "45"},{col0: "四川",col1: "100"},{col0: "宁夏",col1: "34"},{col0: "海南",col1: "54"},{col0: "台湾",col1: "87"},{col0: "香港",col1: "86"},{col0: "澳门",col1: "66"}]}';
+
+            data = eval("(" + data + ")");
+
+            bindChart("MapChina", {
+                Title: "一级标题",
+                SubTitle: "二级标题",
+                DataSource: data,
+                YDataColIndex: "1",
+                YMinValue: 0,
+                YMaxValue: 100,
+                Map: {
+                    rangeColor: ['#026FDD', '#DEFEFF']
+                },
+                YDecimals: '0',//小数位数
+                YUnit: "分",//单位
+                MapType: ['china'],
+                MapRangeOrLegend: "range",
+                Theme: "lightblue"
+            });
+        }
+
+        function getRegion() {
+            var data = '{"colnames":["地区","得分"],"rows":[{"col0":"遵义市","col1":"55"},{"col0":"铜仁地区1","col1":"40"},{"col0":"毕节地区","col1":"55"},{"col0":"贵阳市","col1":"100"},{"col0":"黔东南","col1":"45"},{"col0":"六盘水市","col1":"50"},{"col0":"安顺地区","col1":"75"},{"col0":"贵安新区","col1":"85"},{"col0":"黔南","col1":"60"},{"col0":"黔西南","col1":"55"}]}';
+
+            data = eval("(" + data + ")");
+
+            bindChart("MapRegion", {
+                DataSource: data,
+                YDataColIndex: "1",
+                YMinValue: 0,
+                YMaxValue: 100,
+                Map: {
+                    rangeColor: ['#026FDD', '#DEFEFF']
+                },
+                YDecimals: '0',//小数位数
+                MapType: ['贵州'],
+                IsMapExtend: true,//是否是地图扩展，比如区县级别的就是扩展的
+                MapRangeOrLegend: "range",
+                Theme: "lightblue"
+            });
+        }
+
+        function getCity() {
+            //“长春地区”下面的区县
+            var data = '{"colnames":["地区","得分"],"rows":[{"col0":"农安县","col1":"65"},{"col0":"德惠市","col1":"30"},{"col0":"榆树市","col1":"45"},{"col0":"宽城区","col1":"60"},{"col0":"九台市","col1":"35"},{"col0":"绿园区","col1":"90"},{"col0":"二道区","col1":"100"},{"col0":"南关区","col1":"75"},{"col0":"朝阳区","col1":"90"},{"col0":"双阳区","col1":"20"}]}';
+
+            data = eval("(" + data + ")");
+
+            bindChart("MapCity", {
+                DataSource: data,
+                YDataColIndex: "1",
+                YMinValue: 0,
+                YMaxValue: 100,
+                YDecimals: '0',//小数位数
+                MapType: ['长春地区'],
+                IsMapExtend: true,//是否是地图扩展，比如区县级别的就是扩展的
+                MapRangeOrLegend: "range",
+                Theme: "lightblue"
+            });
+        }
+
+        function getMapFlowWorld() {
+            var data = '{"colnames":["流出地区","流入地区","人数"],"rows":[{"col0":"中国","col1":"加拿大","col2":"935"},{"col0":"中国","col1":"美国","col2":"95"},{"col0":"中国","col1":"韩国","col2":"500"},{"col0":"中国","col1":"英国","col2":"600"},{"col0":"中国","col1":"澳大利亚","col2":"150"},{"col0":"中国","col1":"埃及","col2":"250"},{"col0":"中国","col1":"南非","col2":"800"},{"col0":"中国","col1":"俄罗斯","col2":"127"},{"col0":"中国","col1":"巴西","col2":"239"}]}';
+
+            data = eval("(" + data + ")");
+
+            bindChart("MapFlowWorld", {
+                DataSource: data,
+                XDataColIndex: "0,1",
+                YDataColIndex: "2",
+                YDecimals: '0',//小数位数
+                IsShowValue: false,
+                MapType: ['world'],
+                LegendPosition: "LEFTTOP",
+                ChartType: "MapFlowOut",
+                BgColor: "#1b1b1b",
+                Map: {
+                    roam: true,
+                    rangeColor: ['#ff3333', 'orange', 'yellow', 'lime', 'aqua'],
+                    borderColor: "rgba(100,149,237,1)",
+                    areaColor: "#1b1b1b"
+                },
+                Theme: "cmcc_dark"
+            });
+        }
+
+        function getMapFlowOut() {
+            var data = '{"colnames":["流出地区","流入地区","人数"],"rows":[{"col0":"北京市","col1":"广州市","col2":"935"},{"col0":"北京市","col1":"上海市","col2":"95"},{"col0":"北京市","col1":"拉萨市","col2":"500"},{"col0":"北京市","col1":"包头市","col2":"350"},{"col0":"北京市","col1":"长春市","col2":"150"},{"col0":"北京市","col1":"大连市","col2":"250"},{"col0":"北京市","col1":"南昌市","col2":"350"},{"col0":"北京市","col1":"南宁市","col2":"200"},{"col0":"北京市","col1":"重庆市","col2":"800"},{"col0":"上海市","col1":"北京市","col2":"127"},{"col0":"上海市","col1":"广州市","col2":"239"}]}';
+
+            data = eval("(" + data + ")");
+
+            bindChart("MapFlowOut", {
+                DataSource: data,
+                XDataColIndex: "0,1",
+                YDataColIndex: "2",
+                YDecimals: '0',//小数位数
+                IsShowValue: true,
+                MapType: ['china'],
+                LegendPosition: "LEFTTOP",
+                ChartType: "MapFlowOut",
+                BgColor: "#1b1b1b",
+                Map: {
+                    roam: true,
+                    rangeColor: ['#ff3333', 'orange', 'yellow', 'lime', 'aqua'],
+                    borderColor: "rgba(100,149,237,1)",
+                    areaColor: "#1b1b1b"
+                },
+                Theme: "cmcc_dark"
+            });
+        }
+
+        function getMapFlowIn() {
+            var data = '{"colnames":["流出地区","流入地区","人数"],"rows":[{"col0":"广州市","col1":"北京市","col2":"935"},{"col0":"上海市","col1":"北京市","col2":"95"},{"col0":"拉萨市","col1":"北京市","col2":"500"},{"col0":"包头市","col1":"北京市","col2":"350"},{"col0":"长春市","col1":"北京市","col2":"150"},{"col0":"大连市","col1":"北京市","col2":"250"},{"col0":"南昌市","col1":"北京市","col2":"350"},{"col0":"南宁市","col1":"北京市","col2":"200"},{"col0":"重庆市","col1":"北京市","col2":"800"},{"col0":"上海市","col1":"北京市","col2":"127"},{"col0":"上海市","col1":"广州市","col2":"239"}]}';
+            data = eval("(" + data + ")");
+
+            bindChart("MapFlowIn", {
+                DataSource: data,
+                XDataColIndex: "0,1",
+                YDataColIndex: "2",
+                YDecimals: '0',//小数位数
+                IsShowValue: true,
+                MapType: ['china'],
+                LegendPosition: "LEFTTOP",
+                ChartType: "MapFlowIn",
+                BgColor: "#1b1b1b",
+                Theme: "cmcc_dark",
+                Map: {
+                    rangeColor: ['#ff3333', 'orange', 'yellow', 'lime', 'aqua']
+                },
+                Original: {//调用echarts的原生属性，个别场景用到，非通用，不设置则按默认，不会报错
+                    series: {
+                        markPoint: {
+                            symbolSize: 6,//指定圆圈为固定大小
+                            large: false
+                        }
+                    }
+                }
+            });
+        }
+
+        function getMapFlowOneOut() {
+            var data = '{"colnames":["流出地区","流入地区","优良率"],"rows":[{"col0":"北京市","col1":"广州市","col2":"90"},{"col0":"北京市","col1":"上海市","col2":"95"},{"col0":"北京市","col1":"拉萨市","col2":"50"},{"col0":"北京市","col1":"包头市","col2":"60"},{"col0":"北京市","col1":"长春市","col2":"70"},{"col0":"北京市","col1":"大连市","col2":"85"},{"col0":"北京市","col1":"南昌市","col2":"75"},{"col0":"北京市","col1":"南宁市","col2":"80"},{"col0":"北京市","col1":"重庆市","col2":"75"}]}';
+
+            data = eval("(" + data + ")");
+
+            bindChart("MapFlowOneOut", {
+                DataSource: data,
+                XDataColIndex: "0,1",
+                YDataColIndex: "2",
+                YDecimals: '0',//小数位数
+                IsShowValue: true,
+                MapType: ['china'],
+                LegendPosition: "LEFTBOTTOM",
+                ChartType: "MapFlowOneOut",
+                Theme: "cmcc_dark",
+                BgColor: "#1b1b1b",
+                MapRangeOrLegend: "legend",
+                MapLegend: [
+                    { name: '<=80%', min: null, max: 80, color: '#FF7F50' },
+                    { name: '80%-90%', min: 80, max: 90, color: '#DA70D6' },
+                    { name: '90%-100%', min: 90, max: null, color: '#32CD32' }
+                ]
+            });
+        }
+
+        function getMapFlowOneIn() {
+            var data = '{"colnames":["流出地区","流入地区","优良率"],"rows":[{"col0":"广州市","col1":"北京市","col2":"85"},{"col0":"拉萨市","col1":"北京市","col2":"50"},{"col0":"包头市","col1":"北京市","col2":"60"},{"col0":"长春市","col1":"北京市","col2":"45"},{"col0":"大连市","col1":"北京市","col2":"80"},{"col0":"南昌市","col1":"北京市","col2":"75"},{"col0":"南宁市","col1":"北京市","col2":"50"},{"col0":"重庆市","col1":"北京市","col2":"65"},{"col0":"上海市","col1":"北京市","col2":"95"}]}';
+            data = eval("(" + data + ")");
+
+            bindChart("MapFlowOneIn", {
+                DataSource: data,
+                XDataColIndex: "0,1",
+                YDataColIndex: "2",
+                YDecimals: '0',//小数位数
+                IsShowValue: true,
+                MapType: ['china'],
+                LegendPosition: "LEFTBOTTOM",
+                ChartType: "MapFlowOneIn",
+                Theme: "cmcc_dark",
+                BgColor: "#1b1b1b",
+                MapRangeOrLegend: "legend",
+                MapLegend: [
+                    { name: '<=80%', min: null, max: 80, color: '#FF7F50' },
+                    { name: '80%-90%', min: 80, max: 90, color: '#DA70D6' },
+                    { name: '90%-100%', min: 90, max: null, color: '#32CD32' }
+                ]
+            });
+        }
+
+        function getMapScatter() {
+            //样例数据
+            //var data = '{"colnames":["小区类型","小区名称","经度","纬度","用户数"],"rows":[{"col0":"2G","col1":"2G小区1","col2":"121.4648","col3":"31.2891","col4":"1200"},{"col0":"3G","col1":"3G小区1","col2":"117.4219","col3":"39.4189","col4":"2500"},{"col0":"4G","col1":"4G小区1","col2":"116.4551","col3":"40.2539","col4":"1800"}]}';
+            //data = eval("(" + data + ")");
+
+            //模拟的大规模数据，应用时参照上面的“样例数据”即可
+            var data = { "colnames": ["小区类型", "小区名称", "经度", "纬度", "用户数"], "rows": [] };
+
+            var placeList = [
+    { name: '海门', geoCoord: [121.15, 31.89] },
+    { name: '鄂尔多斯', geoCoord: [109.781327, 39.608266] },
+    { name: '招远', geoCoord: [120.38, 37.35] },
+    { name: '舟山', geoCoord: [122.207216, 29.985295] },
+    { name: '齐齐哈尔', geoCoord: [123.97, 47.33] },
+    { name: '盐城', geoCoord: [120.13, 33.38] },
+    { name: '赤峰', geoCoord: [118.87, 42.28] },
+    { name: '青岛', geoCoord: [120.33, 36.07] },
+    { name: '乳山', geoCoord: [121.52, 36.89] },
+    { name: '金昌', geoCoord: [102.188043, 38.520089] },
+    { name: '泉州', geoCoord: [118.58, 24.93] },
+    { name: '莱西', geoCoord: [120.53, 36.86] },
+    { name: '日照', geoCoord: [119.46, 35.42] },
+    { name: '胶南', geoCoord: [119.97, 35.88] },
+    { name: '南通', geoCoord: [121.05, 32.08] },
+    { name: '拉萨', geoCoord: [91.11, 29.97] },
+    { name: '云浮', geoCoord: [112.02, 22.93] },
+    { name: '梅州', geoCoord: [116.1, 24.55] },
+    { name: '文登', geoCoord: [122.05, 37.2] },
+    { name: '上海', geoCoord: [121.48, 31.22] },
+    { name: '攀枝花', geoCoord: [101.718637, 26.582347] },
+    { name: '威海', geoCoord: [122.1, 37.5] },
+    { name: '承德', geoCoord: [117.93, 40.97] },
+    { name: '厦门', geoCoord: [118.1, 24.46] },
+    { name: '汕尾', geoCoord: [115.375279, 22.786211] },
+    { name: '潮州', geoCoord: [116.63, 23.68] },
+    { name: '丹东', geoCoord: [124.37, 40.13] },
+    { name: '太仓', geoCoord: [121.1, 31.45] },
+    { name: '曲靖', geoCoord: [103.79, 25.51] },
+    { name: '烟台', geoCoord: [121.39, 37.52] },
+    { name: '福州', geoCoord: [119.3, 26.08] },
+    { name: '瓦房店', geoCoord: [121.979603, 39.627114] },
+    { name: '即墨', geoCoord: [120.45, 36.38] },
+    { name: '抚顺', geoCoord: [123.97, 41.97] },
+    { name: '玉溪', geoCoord: [102.52, 24.35] },
+    { name: '张家口', geoCoord: [114.87, 40.82] },
+    { name: '阳泉', geoCoord: [113.57, 37.85] },
+    { name: '莱州', geoCoord: [119.942327, 37.177017] },
+    { name: '湖州', geoCoord: [120.1, 30.86] },
+    { name: '汕头', geoCoord: [116.69, 23.39] },
+    { name: '昆山', geoCoord: [120.95, 31.39] },
+    { name: '宁波', geoCoord: [121.56, 29.86] },
+    { name: '湛江', geoCoord: [110.359377, 21.270708] },
+    { name: '揭阳', geoCoord: [116.35, 23.55] },
+    { name: '荣成', geoCoord: [122.41, 37.16] },
+    { name: '连云港', geoCoord: [119.16, 34.59] },
+    { name: '葫芦岛', geoCoord: [120.836932, 40.711052] },
+    { name: '常熟', geoCoord: [120.74, 31.64] },
+    { name: '东莞', geoCoord: [113.75, 23.04] },
+    { name: '河源', geoCoord: [114.68, 23.73] },
+    { name: '淮安', geoCoord: [119.15, 33.5] },
+    { name: '泰州', geoCoord: [119.9, 32.49] },
+    { name: '南宁', geoCoord: [108.33, 22.84] },
+    { name: '营口', geoCoord: [122.18, 40.65] },
+    { name: '惠州', geoCoord: [114.4, 23.09] },
+    { name: '江阴', geoCoord: [120.26, 31.91] },
+    { name: '蓬莱', geoCoord: [120.75, 37.8] },
+    { name: '韶关', geoCoord: [113.62, 24.84] },
+    { name: '嘉峪关', geoCoord: [98.289152, 39.77313] },
+    { name: '广州', geoCoord: [113.23, 23.16] },
+    { name: '延安', geoCoord: [109.47, 36.6] },
+    { name: '太原', geoCoord: [112.53, 37.87] },
+    { name: '清远', geoCoord: [113.01, 23.7] },
+    { name: '中山', geoCoord: [113.38, 22.52] },
+    { name: '昆明', geoCoord: [102.73, 25.04] },
+    { name: '寿光', geoCoord: [118.73, 36.86] },
+    { name: '盘锦', geoCoord: [122.070714, 41.119997] },
+    { name: '长治', geoCoord: [113.08, 36.18] },
+    { name: '深圳', geoCoord: [114.07, 22.62] },
+    { name: '珠海', geoCoord: [113.52, 22.3] },
+    { name: '宿迁', geoCoord: [118.3, 33.96] },
+    { name: '咸阳', geoCoord: [108.72, 34.36] },
+    { name: '铜川', geoCoord: [109.11, 35.09] },
+    { name: '平度', geoCoord: [119.97, 36.77] },
+    { name: '佛山', geoCoord: [113.11, 23.05] },
+    { name: '海口', geoCoord: [110.35, 20.02] },
+    { name: '江门', geoCoord: [113.06, 22.61] },
+    { name: '章丘', geoCoord: [117.53, 36.72] },
+    { name: '肇庆', geoCoord: [112.44, 23.05] },
+    { name: '大连', geoCoord: [121.62, 38.92] },
+    { name: '临汾', geoCoord: [111.5, 36.08] },
+    { name: '吴江', geoCoord: [120.63, 31.16] },
+    { name: '石嘴山', geoCoord: [106.39, 39.04] },
+    { name: '沈阳', geoCoord: [123.38, 41.8] },
+    { name: '苏州', geoCoord: [120.62, 31.32] },
+    { name: '茂名', geoCoord: [110.88, 21.68] },
+    { name: '嘉兴', geoCoord: [120.76, 30.77] },
+    { name: '长春', geoCoord: [125.35, 43.88] },
+    { name: '胶州', geoCoord: [120.03336, 36.264622] },
+    { name: '银川', geoCoord: [106.27, 38.47] },
+    { name: '张家港', geoCoord: [120.555821, 31.875428] },
+    { name: '三门峡', geoCoord: [111.19, 34.76] },
+    { name: '锦州', geoCoord: [121.15, 41.13] },
+    { name: '南昌', geoCoord: [115.89, 28.68] },
+    { name: '柳州', geoCoord: [109.4, 24.33] },
+    { name: '三亚', geoCoord: [109.511909, 18.252847] },
+    { name: '自贡', geoCoord: [104.778442, 29.33903] },
+    { name: '吉林', geoCoord: [126.57, 43.87] },
+    { name: '阳江', geoCoord: [111.95, 21.85] },
+    { name: '泸州', geoCoord: [105.39, 28.91] },
+    { name: '西宁', geoCoord: [101.74, 36.56] },
+    { name: '宜宾', geoCoord: [104.56, 29.77] },
+    { name: '呼和浩特', geoCoord: [111.65, 40.82] },
+    { name: '成都', geoCoord: [104.06, 30.67] },
+    { name: '大同', geoCoord: [113.3, 40.12] },
+    { name: '镇江', geoCoord: [119.44, 32.2] },
+    { name: '桂林', geoCoord: [110.28, 25.29] },
+    { name: '张家界', geoCoord: [110.479191, 29.117096] },
+    { name: '宜兴', geoCoord: [119.82, 31.36] },
+    { name: '北海', geoCoord: [109.12, 21.49] },
+    { name: '西安', geoCoord: [108.95, 34.27] },
+    { name: '金坛', geoCoord: [119.56, 31.74] },
+    { name: '东营', geoCoord: [118.49, 37.46] },
+    { name: '牡丹江', geoCoord: [129.58, 44.6] },
+    { name: '遵义', geoCoord: [106.9, 27.7] },
+    { name: '绍兴', geoCoord: [120.58, 30.01] },
+    { name: '扬州', geoCoord: [119.42, 32.39] },
+    { name: '常州', geoCoord: [119.95, 31.79] },
+    { name: '潍坊', geoCoord: [119.1, 36.62] },
+    { name: '重庆', geoCoord: [106.54, 29.59] },
+    { name: '台州', geoCoord: [121.420757, 28.656386] },
+    { name: '南京', geoCoord: [118.78, 32.04] },
+    { name: '滨州', geoCoord: [118.03, 37.36] },
+    { name: '贵阳', geoCoord: [106.71, 26.57] },
+    { name: '无锡', geoCoord: [120.29, 31.59] },
+    { name: '本溪', geoCoord: [123.73, 41.3] },
+    { name: '克拉玛依', geoCoord: [84.77, 45.59] },
+    { name: '渭南', geoCoord: [109.5, 34.52] },
+    { name: '马鞍山', geoCoord: [118.48, 31.56] },
+    { name: '宝鸡', geoCoord: [107.15, 34.38] },
+    { name: '焦作', geoCoord: [113.21, 35.24] },
+    { name: '句容', geoCoord: [119.16, 31.95] },
+    { name: '北京', geoCoord: [116.46, 39.92] },
+    { name: '徐州', geoCoord: [117.2, 34.26] },
+    { name: '衡水', geoCoord: [115.72, 37.72] },
+    { name: '包头', geoCoord: [110, 40.58] },
+    { name: '绵阳', geoCoord: [104.73, 31.48] },
+    { name: '乌鲁木齐', geoCoord: [87.68, 43.77] },
+    { name: '枣庄', geoCoord: [117.57, 34.86] },
+    { name: '杭州', geoCoord: [120.19, 30.26] },
+    { name: '淄博', geoCoord: [118.05, 36.78] },
+    { name: '鞍山', geoCoord: [122.85, 41.12] },
+    { name: '溧阳', geoCoord: [119.48, 31.43] },
+    { name: '库尔勒', geoCoord: [86.06, 41.68] },
+    { name: '安阳', geoCoord: [114.35, 36.1] },
+    { name: '开封', geoCoord: [114.35, 34.79] },
+    { name: '济南', geoCoord: [117, 36.65] },
+    { name: '德阳', geoCoord: [104.37, 31.13] },
+    { name: '温州', geoCoord: [120.65, 28.01] },
+    { name: '九江', geoCoord: [115.97, 29.71] },
+    { name: '邯郸', geoCoord: [114.47, 36.6] },
+    { name: '临安', geoCoord: [119.72, 30.23] },
+    { name: '兰州', geoCoord: [103.73, 36.03] },
+    { name: '沧州', geoCoord: [116.83, 38.33] },
+    { name: '临沂', geoCoord: [118.35, 35.05] },
+    { name: '南充', geoCoord: [106.110698, 30.837793] },
+    { name: '天津', geoCoord: [117.2, 39.13] },
+    { name: '富阳', geoCoord: [119.95, 30.07] },
+    { name: '泰安', geoCoord: [117.13, 36.18] },
+    { name: '诸暨', geoCoord: [120.23, 29.71] },
+    { name: '郑州', geoCoord: [113.65, 34.76] },
+    { name: '哈尔滨', geoCoord: [126.63, 45.75] },
+    { name: '聊城', geoCoord: [115.97, 36.45] },
+    { name: '芜湖', geoCoord: [118.38, 31.33] },
+    { name: '唐山', geoCoord: [118.02, 39.63] },
+    { name: '平顶山', geoCoord: [113.29, 33.75] },
+    { name: '邢台', geoCoord: [114.48, 37.05] },
+    { name: '德州', geoCoord: [116.29, 37.45] },
+    { name: '济宁', geoCoord: [116.59, 35.38] },
+    { name: '荆州', geoCoord: [112.239741, 30.335165] },
+    { name: '宜昌', geoCoord: [111.3, 30.7] },
+    { name: '义乌', geoCoord: [120.06, 29.32] },
+    { name: '丽水', geoCoord: [119.92, 28.45] },
+    { name: '洛阳', geoCoord: [112.44, 34.7] },
+    { name: '秦皇岛', geoCoord: [119.57, 39.95] },
+    { name: '株洲', geoCoord: [113.16, 27.83] },
+    { name: '石家庄', geoCoord: [114.48, 38.03] },
+    { name: '莱芜', geoCoord: [117.67, 36.19] },
+    { name: '常德', geoCoord: [111.69, 29.05] },
+    { name: '保定', geoCoord: [115.48, 38.85] },
+    { name: '湘潭', geoCoord: [112.91, 27.87] },
+    { name: '金华', geoCoord: [119.64, 29.12] },
+    { name: '岳阳', geoCoord: [113.09, 29.37] },
+    { name: '长沙', geoCoord: [113, 28.21] },
+    { name: '衢州', geoCoord: [118.88, 28.97] },
+    { name: '廊坊', geoCoord: [116.7, 39.53] },
+    { name: '菏泽', geoCoord: [115.480656, 35.23375] },
+    { name: '合肥', geoCoord: [117.27, 31.86] },
+    { name: '武汉', geoCoord: [114.31, 30.52] },
+    { name: '大庆', geoCoord: [125.03, 46.58] }
+            ];
+
+            var len = 1000;
+            var geoCoord;
+            while (len--) {
+                geoCoord = placeList[len % placeList.length].geoCoord;
+                data.rows.push({
+                    "col0": "2G小区",
+                    "col1": placeList[len % placeList.length].name + len,
+                    "col2": geoCoord[0] + Math.random() * 5 - 2.5,
+                    "col3": geoCoord[1] + Math.random() * 3 - 1.5,
+                    "col4": 10
+                });
+            }
+
+            len = 500;
+            while (len--) {
+                geoCoord = placeList[len % placeList.length].geoCoord;
+                data.rows.push({
+                    "col0": "3G小区",
+                    "col1": placeList[len % placeList.length].name + len,
+                    "col2": geoCoord[0] + Math.random() * 5 - 2.5,
+                    "col3": geoCoord[1] + Math.random() * 3 - 1.5,
+                    "col4": 50
+                });
+            }
+
+            len = placeList.length;
+            while (len--) {
+                geoCoord = placeList[len].geoCoord;
+                data.rows.push({
+                    "col0": "4G小区",
+                    "col1": placeList[len].name,
+                    "col2": geoCoord[0],
+                    "col3": geoCoord[1],
+                    "col4": 90
+                });
+            }
+
+            bindChart("MapScatter", {
+                DataSource: data,
+                ColorArr: ['rgba(255, 255, 255, 0.8)', 'rgba(14, 241, 242, 0.8)', 'rgba(37, 140, 249, 0.8)'],
+                XDataColIndex: "0,1,2,3",
+                YDataColIndex: "4",
+                YDecimals: '0',//小数位数
+                MapType: ['china'],
+                LegendPosition: "LEFTTOP",
+                ChartType: "MapScatter",
+                BgColor: "#1b1b1b",
+                Theme: "cmcc_dark",
+                Original: {//调用echarts的原生属性，个别场景用到，非通用，不设置则按默认，不会报错
+                    series: {
+                        markPoint: {
+                            symbolSize: 1.5
+                        }
+                    }
+                }
+            });
+        }
+
+        function getMapScatterProvince() {
+            var data = { "colnames": ["小区类型", "小区名称", "经度", "纬度", "用户数"], "rows": [] };
+
+            //下面为随机产生经纬度，真实数据按上面的data赋值即可
+            var placeList = [
+                { name: '长春', geoCoord: [125.35, 43.88] },
+                { name: '吉林', geoCoord: [126.57, 43.87] },
+                { name: '四平', geoCoord: [124.35, 44.17] },
+                { name: '辽源', geoCoord: [126.13, 42.88] },
+                { name: '通化', geoCoord: [125.93, 42.53] },
+                { name: '白山', geoCoord: [126.42, 42.93] },
+                { name: '松原', geoCoord: [124.02, 44.13] },
+                { name: '白城', geoCoord: [122.83, 45.02] },
+                { name: '延边', geoCoord: [128.5, 42.88] }
+            ];
+
+            var len = 600;
+            var geoCoord;
+            while (len--) {
+                geoCoord = placeList[len % placeList.length].geoCoord;
+                data.rows.push({
+                    "col0": "2G小区",
+                    "col1": placeList[len % placeList.length].name + len,
+                    "col2": geoCoord[0] + Math.random() * 3 - 0.8,
+                    "col3": geoCoord[1] + Math.random() * 2 - 1,
+                    "col4": 10
+                });
+            }
+
+            len = 500;
+            while (len--) {
+                geoCoord = placeList[len % placeList.length].geoCoord;
+                data.rows.push({
+                    "col0": "3G小区",
+                    "col1": placeList[len % placeList.length].name + len,
+                    "col2": geoCoord[0] + Math.random() * 3 - 0.8,
+                    "col3": geoCoord[1] + Math.random() * 2 - 1,
+                    "col4": 50
+                });
+            }
+
+            len = placeList.length;
+            while (len--) {
+                geoCoord = placeList[len].geoCoord;
+                data.rows.push({
+                    "col0": "4G小区",
+                    "col1": placeList[len].name,
+                    "col2": geoCoord[0],
+                    "col3": geoCoord[1],
+                    "col4": 90
+                });
+            }
+
+            bindChart("MapScatterProvince", {
+                DataSource: data,
+                ColorArr: ['rgba(255, 255, 255, 0.8)', 'rgba(14, 241, 242, 0.8)', 'rgba(37, 140, 249, 0.8)'],
+                XDataColIndex: "0,1,2,3",
+                YDataColIndex: "4",
+                YDecimals: '0',//小数位数
+                IsShowValue: true,
+                MapType: ['吉林'],
+                LegendPosition: "LEFTTOP",
+                ChartType: "MapScatter",
+                BgColor: "#1b1b1b",
+                Theme: "cmcc_dark"
+            });
+        }
+
+        function getMapScatterBgImg() {
+            var data = { "colnames": ["小区类型", "小区名称", "经度", "纬度", "用户数"], "rows": [] };
+
+            //下面为随机产生经纬度，真实数据按上面的data赋值即可
+            var placeList = [
+                { name: '长春', geoCoord: [125.35, 43.88] },
+                { name: '吉林', geoCoord: [126.57, 43.87] },
+                { name: '四平', geoCoord: [124.35, 44.17] },
+                { name: '辽源', geoCoord: [126.13, 42.88] },
+                { name: '通化', geoCoord: [125.93, 42.53] },
+                { name: '白山', geoCoord: [126.42, 42.93] },
+                { name: '松原', geoCoord: [124.02, 44.13] },
+                { name: '白城', geoCoord: [122.83, 45.02] },
+                { name: '延边', geoCoord: [128.5, 42.88] }
+            ];
+
+            var len = 6;
+            var geoCoord;
+            while (len--) {
+                geoCoord = placeList[len % placeList.length].geoCoord;
+                data.rows.push({
+                    "col0": "2G小区",
+                    "col1": placeList[len % placeList.length].name + len,
+                    "col2": geoCoord[0] + Math.random() * 3 - 0.8,
+                    "col3": geoCoord[1] + Math.random() * 2 - 1,
+                    "col4": 10
+                });
+            }
+
+            len = 5;
+            while (len--) {
+                geoCoord = placeList[len % placeList.length].geoCoord;
+                data.rows.push({
+                    "col0": "3G小区",
+                    "col1": placeList[len % placeList.length].name + len,
+                    "col2": geoCoord[0] + Math.random() * 3 - 0.8,
+                    "col3": geoCoord[1] + Math.random() * 2 - 1,
+                    "col4": 50
+                });
+            }
+
+            len = placeList.length;
+            while (len--) {
+                geoCoord = placeList[len].geoCoord;
+                data.rows.push({
+                    "col0": "4G小区",
+                    "col1": placeList[len].name,
+                    "col2": geoCoord[0],
+                    "col3": geoCoord[1],
+                    "col4": 90
+                });
+            }
+
+            bindChart("MapScatterBgImg", {
+                DataSource: data,
+                ColorArr: ['rgba(255, 255, 255, 0.8)', 'rgba(14, 241, 242, 0.8)', 'rgba(37, 140, 249, 0.8)'],
+                XDataColIndex: "0,1,2,3",
+                YDataColIndex: "4",
+                YDecimals: '0',//小数位数
+                IsShowValue: true,
+                MapType: ['吉林'],
+                LegendPosition: "LEFTTOP",
+                ChartType: "MapScatter",
+                Theme: "cmcc_dark",
+                Original: {//调用echarts的原生属性，个别场景用到，非通用，不设置则按默认，不会报错
+                    series: {
+                        markPoint: {
+                            symbol: "pin",
+                            symbolSize: 10,
+                            large: false,
+                            effect: {
+                                show: false,
+                                type: "bounce"
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function getMapSign(region) {
+            if (param.isChina) {
+                region = 'china';
+                param.isChina = false;
+            }
+            else {
+                param.isChina = true;
+            }
+
+            var data = {
+                "colnames": ["地区名称", "人口"],
+                "rows": [
+                    { "col0": "河北", "col1": 55 },
+                    { "col0": "上海", "col1": 90 },
+                    { "col0": "广东", "col1": 71 },
+                    { "col0": "新疆", "col1": 15 },
+                    { "col0": "西藏", "col1": 35 }
+                ]
+            };
+
+            var opt = {
+                IsMapExtend: region == "北京" ? true : false,
+                DataSource: data,
+                MapRangeOrLegend: "legend",
+                XDataColIndex: "0",
+                YDataColIndex: "1",
+                YDecimals: '0',//小数位数
+                IsShowValue: true,
+                MapType: [region],
+                LegendPosition: "RIGHTBOTTOM",
+                ChartType: "MapSign",
+                Theme: "cmcc_dark",
+                BgColor: "transparent",
+                Map: {
+                    roam: true,
+                    rangeColor: ['#ff3333', 'orange', 'yellow', 'lime', 'aqua'],
+                    borderColor: "rgba(100,149,237,1)"
+                },
+                MapLegend: [
+                    { name: '<=20%', min: null, max: 20, color: '#FF7F50' },
+                    { name: '20%-40%', min: 20, max: 40, color: '#87CEFA' },
+                    { name: '40%-60%', min: 40, max: 60, color: '#DA70D6' },
+                    { name: '60%-80%', min: 60, max: 80, color: '#32CD32' },
+                    { name: '>80%', min: 80, max: null, color: '#6495ED' }
+                ],
+                Event: {
+                    MapSelected: mapSignClick//用ClickEvent时，拖动时也会触发地图，所以改用这个事件
+                },
+                Original: {//调用echarts的原生属性，个别场景用到，非通用，不设置则按默认，不会报错
+                    series: {
+                        markPoint: {
+                            symbol: "pin",
+                            symbolSize: 10,
+                            large: false,
+                            effect: {
+                                show: false,
+                                type: "bounce"
+                            }
+                        }
+                    }
+                }
+            };
+
+            if (region == "海南" || region == "海南省") {
+                $.extend(true, opt, {
+                    Map: {
+                        roam: true,
+                        zoom: 8,
+                        center: [109.452606, 19.224584]
+                    }
+                });
+            }
+
+            bindChart("MapSign", opt);
+        }
+
+        function getMapTrace() {
+            var data = {
+                "colnames": ["线路", "地区", "经度", "纬度", "用户数"],
+                "rows": [
+                    { "col0": "京沪线", "col1": "北京", "col2": 116.4551, "col3": 40.2539, "col4": 122 },
+                    { "col0": "京沪线", "col1": "郑州", "col2": 113.4668, "col3": 34.6234, "col4": 122 }
+                ]
+            };
+
+            bindChart("MapTrace", {
+                DataSource: data,
+                ColorArr: ['rgba(255, 255, 255, 0.8)', 'rgba(14, 241, 242, 0.8)', 'rgba(37, 140, 249, 0.8)'],
+                XDataColIndex: "0,1,2,3",
+                YDataColIndex: "4",
+                YDecimals: '0',//小数位数
+                IsShowValue: true,
+                MapType: ['china'],
+                LegendPosition: "LEFTTOP",
+                ChartType: "MapTrace",
+                BgColor: "#1b1b1b",
+                Theme: "cmcc_dark",
+                Original: {//调用echarts的原生属性，个别场景用到，非通用，不设置则按默认，不会报错
+                    series: {
+                        markPoint: {
+                            symbol: "circle",
+                            symbolSize: 10
+                        }
+                    }
+                }
+            });
+        }
+
+        function bindChart(div, option) {
+            var opts = $.extend(true, {
+                YFormatType: "1000",
+                BgColor: '#e2eefc',
+                BorderColor: '#7D7DFF',
+                Event: {
+                    MapSelected: mapSelected//用ClickEvent时，拖动时也会触发地图，所以改用这个事件
+                },
+                //ClickEvent: div == "MapSign" ? null : [{ click: mapClick }],
+                ChartType: "map",
+                callback: {
+                    complete: function (myChart) {
+                        //window.onresize = myChart.resize;
+                    }
+                }
+            }, option);
+
+            $("#" + div).SampleChart(opts);
+        }
+
+        function mapSignClick(xValue) {
+            alert(xValue);
+            getMapSign(xValue);
+        }
+
+        function mapSelected(name) {
+            alert(name);//样例：“那曲地区”
+        }
+
+        function mapClick(xValue, yValue, value) {
+            alert(xValue + "：" + value);//样例：“那曲地区：15”
+        }
+    </script>
+</head>
+<body>
+    <div class="captionWithoutIcon">
+        打点地图（中国）：
+    </div>
+    <div id="MapScatter" style="height: 550px;"></div>
+    <div class="captionWithoutIcon">
+        打点地图（省）：
+    </div>
+    <div id="MapScatterProvince" style="height: 550px;"></div>
+    <div class="captionWithoutIcon">
+        打点地图（含背景图、标注）：
+    </div>
+    <div id="MapScatterBgImg" style="height: 550px; background-image: url('images/sky.jpg');"></div>
+    <div class="captionWithoutIcon">
+        标记地图（无需指定经纬度，按省或地市的名称即可进行标记）：
+    </div>
+    <div id="MapSign" style="height: 550px; background-image: url('images/sky.jpg');"></div>
+    <div class="captionWithoutIcon">
+        轨迹地图：
+    </div>
+    <div id="MapTrace" style="height: 550px;"></div>
+    <div class="captionWithoutIcon">
+        流出型地图（世界）：
+    </div>
+    <div id="MapFlowWorld" style="height: 550px;"></div>
+    <div class="captionWithoutIcon">
+        流出型地图（中国）：
+    </div>
+    <div id="MapFlowOut" style="height: 550px;"></div>
+    <div class="captionWithoutIcon">
+        流入型地图（中国）：
+    </div>
+    <div id="MapFlowIn" style="height: 550px;"></div>
+    <div class="captionWithoutIcon">
+        流出型地图（中国 单地区流出，图例表示颜色区间）：
+    </div>
+    <div id="MapFlowOneOut" style="height: 550px;"></div>
+    <div class="captionWithoutIcon">
+        流入型地图（中国 流入单地区，图例表示颜色区间）：
+    </div>
+    <div id="MapFlowOneIn" style="height: 550px;"></div>
+    <div class="captionWithoutIcon">
+        图例为分段类型的地图：
+    </div>
+    <div id="MapChart" style="height: 450px;"></div>
+    <div class="captionWithoutIcon">
+        图例为范围类型的地图：
+    </div>
+    <div id="MapChartRange" style="height: 450px;"></div>
+    <div class="captionWithoutIcon">
+        扩展的地区地图（贵州省 增加“贵安新区”）：
+    </div>
+    <div id="MapRegion" style="height: 450px;"></div>
+    <div class="captionWithoutIcon">
+        扩展的区县地图（长春地区）：
+    </div>
+    <div id="MapCity" style="height: 450px;"></div>
+    <div class="captionWithoutIcon">
+        全国地图：
+    </div>
+    <div id="MapChina" style="height: 450px;"></div>
+</body>
+</html>

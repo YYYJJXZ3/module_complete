@@ -1,0 +1,163 @@
+<?xml version="1.0"?>
+<ConfigList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Lists>
+    <ListInfo ListKey="Ne">
+      <Items>
+        <ItemInfo name="浙江省" value="省份" />
+        <ItemInfo name="杭州市" value="地区" />
+        <ItemInfo name="宁波市" value="地区" />
+      </Items>
+    </ListInfo>
+    <ListInfo ListKey="Color">
+      <Items>
+        <ItemInfo name="蓝色" value="Default" />
+        <ItemInfo name="红色" value="Red" />
+        <ItemInfo name="绿色" value="Green" />
+        <ItemInfo name="粉色" value="MediumSlateBlue" />
+        <ItemInfo name="灰色" value="Gray" />
+        <ItemInfo name="透明" value="" />
+        <ItemInfo name="黄色" value="Yellow" />
+      </Items>
+    </ListInfo>
+    <ListInfo ListKey="Image">
+      <Items>
+        <ItemInfo name="Default" value="Default" />
+      </Items>
+    </ListInfo>
+    <ListInfo ListKey="ExpressionType">
+      <Items>
+        <ItemInfo name="指标表达式" value="1" />
+        <ItemInfo name="事件表达式" value="3" />
+        <ItemInfo name="维度表达式" value="4" />
+        <ItemInfo name="维度转换" value="5" />
+      </Items>
+    </ListInfo>
+
+    <ListInfo ListKey="StateValue">
+      <Items>
+        <ItemInfo name="始终" value="0" />
+        <!--<ItemInfo name="父节点为否" value="-1" />-->
+        <ItemInfo name="父节点状态1" value="1" />
+        <!--<ItemInfo name="父节点状态2" value="2" />
+        <ItemInfo name="父节点状态3" value="3" />
+        <ItemInfo name="父节点状态4" value="4" />
+        <ItemInfo name="父节点状态5" value="5" />
+        <ItemInfo name="父节点状态6" value="6" />
+        <ItemInfo name="父节点状态7" value="7" />-->
+      </Items>
+    </ListInfo>
+    <ListInfo ListKey="NodeShape">
+      <Items>
+        <ItemInfo name="开始" value="FlowChart_Terminator" />
+        <ItemInfo name="执行" value="RoundedSquare" />
+        <ItemInfo name="判断" value="FlowChart_Decision" />
+        <ItemInfo name="结论" value="RoundedRectangle" />
+        <ItemInfo name="结束" value="Ellipse" />
+        <ItemInfo name="标注" value="FlowChart_Process" />
+        <!--<ItemInfo name="椭圆" value="Ellipse" />
+        <ItemInfo name="圆角长方形" value="RoundedSquare" />
+        <ItemInfo name="长圆形" value="FlowChart_Terminator" />
+        <ItemInfo name="菱形" value="FlowChart_Decision" />
+        <ItemInfo name="多边形" value="Octagon" />
+        <ItemInfo name="直角长方型" value="FlowChart_Process" />
+        <ItemInfo name="平行四边型" value="FlowChart_Data" />
+        <ItemInfo name="平行椭圆" value="FlowChart_Terminator" />-->
+
+        <!--<ItemInfo   name="0"  value="Rectangle"/>
+        <ItemInfo   name="1"  value="Star"/>
+        <ItemInfo   name="2"  value="Hexagon"/>
+        <ItemInfo   name="3"  value="Octagon"/>
+        <ItemInfo   name="4"  value="Pentagon"/>
+        <ItemInfo   name="5"  value="Heptagon"/>
+        <ItemInfo   name="6"  value="Triangle"/>
+        <ItemInfo   name="7"  value="Ellipse"/>
+        <ItemInfo   name="8"  value="Plus"/>
+        <ItemInfo   name="9"  value="RoundedRectangle"/>
+        <ItemInfo   name="10" value="RoundedSquare"/>
+        <ItemInfo   name="11" value="RightTriangle"/>
+        <ItemInfo   name="12" value="ThreeDBox"/>
+        <ItemInfo   name="13" value="FlowChart_Process"/>
+        <ItemInfo   name="14" value="FlowChart_Start"/>
+        <ItemInfo   name="15" value="FlowChart_Decision"/>
+        <ItemInfo   name="16" value="FlowChart_Predefined"/>
+        <ItemInfo   name="17" value="FlowChart_StoredData"/>
+        <ItemInfo   name="18" value="FlowChart_Document"/>
+        <ItemInfo   name="19" value="FlowChart_Data"/>
+        <ItemInfo   name="20" value="FlowChart_InternalStorage"/>
+        <ItemInfo   name="21" value="FlowChart_PaperTape"/>
+        <ItemInfo   name="22" value="FlowChart_SequentialData"/>
+        <ItemInfo   name="23" value="FlowChart_DirectData"/>
+        <ItemInfo   name="24" value="FlowChart_ManualInput"/>
+        <ItemInfo   name="25" value="FlowChart_Card"/>
+        <ItemInfo   name="26" value="FlowChart_Delay"/>
+        <ItemInfo   name="27" value="FlowChart_Terminator"/>
+        <ItemInfo   name="28" value="FlowChart_Display"/>
+        <ItemInfo   name="29" value="FlowChart_LoopLimit"/>
+        <ItemInfo   name="30" value="FlowChart_Preparation"/>
+        <ItemInfo   name="31" value="FlowChart_ManualOperation"/>
+        <ItemInfo   name="32" value="FlowChart_OffPageReference"/>
+        <ItemInfo   name="33" value="FlowChart_Star"/>
+        <ItemInfo   name="34" value="Default"/>
+        <ItemInfo   name="35" value="CustomPath"/>-->
+      </Items>
+    </ListInfo>
+
+    <ListInfo ListKey="System">
+      <Items>
+        <!--关联分析固定模板编号-->
+        <ItemInfo name="RelevanceAnalysisId" value="0" />
+        <!--已走流程箭头颜色-->
+        <ItemInfo name="LineColor" value="Green" />
+        <!--默认日期维-->
+        <ItemInfo name="DateDim" value="日期维" />
+        <!--默认地理维-->
+        <ItemInfo name="NeDim" value="地理维" />
+        <!--默认节点颜色-->
+        <ItemInfo name="DefaultColor" value="Default" />
+        <!--默认异常颜色-->
+        <ItemInfo name="ErrorColor" value="Red" />
+      </Items>
+    </ListInfo>
+    <ListInfo ListKey="Config">
+      <Items>
+        <!--关联分析固定模板编号-->
+        <ItemInfo name="地理维" value="0" />
+        <!--已走流程箭头颜色-->
+        <ItemInfo name="LineColor" value="Green" />
+        <!--默认日期维-->
+        <ItemInfo name="DateDim" value="日期维" />
+        <!--默认地理维-->
+        <ItemInfo name="NeDim" value="地理维" />
+        <!--默认节点颜色-->
+        <ItemInfo name="DefaultColor" value="Default" />
+        <!--默认异常颜色-->
+        <ItemInfo name="ErrorColor" value="Red" />
+      </Items>
+    </ListInfo>
+    <!--节点配置以下粒度则传递数据源方式-->
+    <ListInfo ListKey="LevelConfig">
+      <Items>
+        <ItemInfo name="地区" value="地区" />
+      </Items>
+    </ListInfo>
+    <!--结论信息是否插入result表中-->
+    <ListInfo ListKey="IsResult">
+      <Items>
+        <ItemInfo name="968552768" value="968552768" />
+      </Items>
+    </ListInfo>
+    <!--维度转换关系表，value 代表父节点粒度显示字段，Property1 代表当前节点显示字段-->
+    <ListInfo ListKey="DimConvert">
+      <Items>
+        <ItemInfo name="AHDWDB.CM_D_DIST_CELLUC" value="cell_desc" Property1="uc_desc"/>
+      </Items>
+    </ListInfo>
+
+    <!--显示流程中的某一个分支， name 为listid，value 为要显示某一分支的结论节点-->
+    <ListInfo ListKey="Branch">
+      <Items>
+        <ItemInfo name="-611903304" value="分流差WLAN热点质量分析"/>
+      </Items>
+    </ListInfo>
+  </Lists>
+</ConfigList>

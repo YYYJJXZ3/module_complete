@@ -1,0 +1,46 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Image ArcGIS MapServer</title>
+    <link rel="stylesheet" href="https://openlayers.org/en/v4.1.0/css/ol.css" type="text/css">
+    <!-- The line below is only needed for old environments like Internet Explorer and Android 4.x -->
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
+    <script src="https://openlayers.org/en/v4.1.0/build/ol.js"></script>
+</head>
+<body>
+    <div id="map" class="map"></div>
+    <script>
+        var url = 'http://42.99.16.96:53088/BaseMap/rest/services/China_Community_BaseMap/MapServer';
+
+        var layers = [
+            new ol.layer.Tile({
+                source: new ol.source.XYZ({
+                    url: 'http://www.google.cn/maps/vt/pb=!1m4!1m3!1i{z}!2i{x}!3i{y}!2m3!1e0!2sm!3i345013117!3m8!2szh-CN!3scn!5e1105!12m4!1e68!2m2!1sset!2sRoadmap!4e0'//谷歌交通图
+                })
+            })
+            //,
+            //new ol.layer.Tile({
+            //    source: new ol.source.XYZ({
+            //        url: 'http://mt3.google.cn/vt/lyrs=t@131,r@216000000&hl=zh-CN&gl=CN&src=app&x={x}&y={y}&z={z}&s=Gal'//谷歌地形地图
+            //    }),
+            //    projection: 'EPSG:3857'
+            //})
+            //,
+            //new ol.layer.Tile({
+            //    source: new ol.source.XYZ({
+            //        url: 'http://mt2.google.cn/vt/lyrs=y&hl=zh-CN&gl=CN&src=app&x={x}&y={y}&z={z}&s=G'//谷歌卫星地图 混合  
+            //    }),
+            //    projection: 'EPSG:3857'
+            //})
+        ];
+        var map = new ol.Map({
+            layers: layers,
+            target: 'map',
+            view: new ol.View({
+                center: [-10997148, 4569099],
+                zoom: 4
+            })
+        });
+    </script>
+</body>
+</html>

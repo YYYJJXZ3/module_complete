@@ -1,0 +1,314 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="Generator" content="dashboard" />
+    <title></title>
+    <link href="../../../Themes/lightblue/jqueryui/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/jqgrid/ui.jqgrid.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/page/page.css" rel="stylesheet" />
+    <link href="../../../themes/lightblue/ca/db/dashboard.css" rel="stylesheet" />
+
+    <script src="../../../Javascript/core/jquery-1.9.1.min.js" type="text/javascript"></script>
+    <script src="../../../javascript/core/jquery-ui-1.10.3.custom.min.js"></script>
+
+    <script src="../../../javascript/common/tools.js" type="text/javascript"></script>
+    <script src="../../../javascript/common/pagetools.js" type="text/javascript"></script>
+
+    <script src="../../../Javascript/JSControl/Condition/comselect.js" type="text/javascript"></script>
+
+    <script src="../../../javascript/JSControl/Condition/controlmanagernew.js"></script>
+
+    <script src="../../../javascript/JSControl/Common/toolbar.js"></script>
+    <script src="../../../javascript/JSControl/Condition/timepicker.js"></script>
+
+    <script src="../../../javascript/JSControl/SmartGrid/JqGrid/grid.locale-cn.js"></script>
+    <script src="../../../javascript/JSControl/SmartGrid/JqGrid/jquery.jqGrid.min.js"></script>
+    <script src="../../../javascript/JSControl/SmartGrid/JqGrid/SmartGrid.js"></script>
+
+    <script src="../../../javascript/JSControl/SampleChart/Scripts/SampleChart.js"></script>
+
+    <script src="../../Dashboard/Js/View.js"></script>
+    <script src="../../Common/js/CommonHelp.js"></script>
+
+    <link href="../../../javascript/JSControl/SampleGIS/OpenLayers/ol/ol.css" rel="stylesheet" />
+    <script src="../../../javascript/JSControl/SampleGIS/OpenLayers/ol/ol.js"></script>
+
+    <script type="text/javascript">
+        var param = {
+            dashboardId: "-1770176233",
+            geoLevel: "省",//当前的空间粒度，省||地区||小区
+            day: "",
+            province: "",
+            region: "",
+            cell: "",
+            isGisLoad: false,//GIS地图是否加载过
+            keyParams: ""//查询条件的拼接字符串，用于缓存GIS数据
+        };
+
+        $(function () {
+            $.dashboard.init({
+                dashboardId: param.dashboardId,
+                isLayout: false,
+                condition: [],
+                layoutSettings: [
+                    {
+                        divId: "report_0",
+                        autoBind: false,
+                        beforeBind: function (id, opts) {
+                            dssHelp.getDataByAnalyzer(opts.analyzer, function (data) {
+                                createMapData(data);
+
+                                $("#report_0").hide();
+                                $("#mapContainer").show();
+
+                                showMap();
+                            });
+
+                            return false;
+                        }
+                    },
+                    {
+                        divId: "report_1",
+                        autoBind: false,
+                        beforeBind: function (id, opts) {
+                            opts.XLabelStyle = "Rotate";
+
+                            return opts;
+                        }
+                    },
+                    {
+                        divId: "report_2",
+                        autoBind: false
+                    }
+                ],
+                callback: {
+                    beforeQuery: function () {
+                        //处理查询事件
+                        getParam();
+                        $.dashboard.update("report_0");
+                        $.dashboard.update("report_1");
+                        $.dashboard.update("report_2");
+                    },
+                    exportClick: null
+                }
+            });
+        });
+
+        //#region ===========GIS相关的方法===========
+
+        //首次加载GIS
+        function showMap() {
+            $("#map").empty();
+            loadCell($("#map").data("mapdata" + param.keyParams));
+        }
+
+        //渲染GIS地图的小区
+        function loadCell(data) {
+            var features = [];
+
+            $.each(data.CellPointList, function (i, cell) {
+                var rome2 = new ol.Feature({
+                    geometry: new ol.geom.Point(ol.proj.fromLonLat([cell.X, cell.Y])),
+                    dssOpt: cell//将小区对象保存到Feature中
+                });
+
+                rome2.setStyle(new ol.style.Style({
+                    image: new ol.style.Icon(/** @type {olx.style.IconOptions} */({
+                        color: getColor(data.ThresholdList, cell.Val),
+                        crossOrigin: 'anonymous',
+                        src: '../../../javascript/JSControl/SampleGIS/images/cell.png',
+                        anchor: [0.5, 1],
+                        offset: [1, 1],
+                        rotateWithView: true,
+                        rotation: cell.Angle + 0
+                    }))
+                }));
+
+                features.push(rome2);
+            });
+
+            var vectorSource = new ol.source.Vector({
+                features: features
+            });
+
+            var vectorLayer = new ol.layer.Vector({
+                source: vectorSource
+            });
+
+            var rasterLayer = new ol.layer.Tile({
+                source: new ol.source.TileArcGISRest({
+                    url: 'http://42.99.16.96:53088/BaseMap/rest/services/China_Community_BaseMap/MapServer'
+                })
+            });
+
+            var map = new ol.Map({
+                layers: [rasterLayer, vectorLayer],
+                target: document.getElementById('map'),
+                view: new ol.View({
+                    center: ol.proj.fromLonLat([102.896372, 32.60240]),
+                    zoom: 3
+                })
+            });
+
+            var displayFeatureInfo = function (pixel) {
+                var feature = map.forEachFeatureAtPixel(pixel, function (feature) {
+                    var cell = feature.O.dssOpt;
+                    data.PointClickFunctionName(cell.Name);
+                });
+            };
+
+            //map.on('pointermove', function (evt) {
+            //    if (evt.dragging) {
+            //        return;
+            //    }
+            //    var pixel = map.getEventPixel(evt.originalEvent);
+            //    displayFeatureInfo(pixel);
+            //});
+
+            map.on('click', function (evt) {
+                displayFeatureInfo(evt.pixel);
+            });
+        }
+
+        function getColor(thresholdList, value) {
+            var color = "#FFFFFF";
+
+            var t = thresholdList;
+            for (var i = 0; i < t.length; i++) {
+                if (value >= t[i].StartVal && value < t[i].EndVal) {
+                    color = t[i].Color;
+                }
+            }
+
+            return color;
+        }
+
+        //转换成GIS地图的数据
+        function createMapData(data) {
+            var mapData = { CellPointList: [], ThresholdList: [{ StartVal: 0, EndVal: 300, ThresholdValueType: 2, Color: "#00FFAA" }, { StartVal: 300, EndVal: 850, ThresholdValueType: 1, Color: "#7CB5EC" }, { StartVal: 850, EndVal: 1500, ThresholdValueType: 0, Color: "#fa7b7b" }], PointClickFunctionName: clickCell };
+
+            $.each(data.rows, function (i, r) {
+                var c = { X: 0, Y: 0, ID: 0, Name: "CellDesc", Val: 0, Angle: 0, CellType: 2, IsIndoor: false, NeInfoList: [{ Name: "小区名", Val: "CellDesc" }, { Name: "指标名", Val: 0 }] };
+
+                if (r.col2 && r.col3 && r.col1 && r.col4) {
+                    c.X = r.col2; c.Y = r.col3; c.ID = r.col0; c.Name = r.col1; c.Val = r.col5; c.Angle = (r.col4 || 0);
+                    c.NeInfoList[0].Val = r.col1; c.NeInfoList[1].Name = data.colnames[5]; c.NeInfoList[1].Val = r.col5;
+                    for (var j = 0; j < 1; j++) {
+                        mapData.CellPointList.push(c);
+                    }
+                }
+            });
+
+            $("#map").data("mapdata" + param.keyParams, mapData);
+
+            return mapData;
+        }
+
+        //点击GIS地图中的小区
+        function clickCell(cellName, cellId) {
+            var p = $.dashboard.getParams();
+
+            var hasCell = false;
+            for (var i = 0; i < p.length; i++) {
+                if (p[i].levelname == "小区") {
+                    hasCell = true;
+                    p[i].value = cellName;
+                    break;
+                }
+            }
+
+            if (!hasCell) {
+                p.push({
+                    levelname: "小区",
+                    value: cellName
+                });
+            }
+
+            $.dashboard.update("report_1", p);
+            $.dashboard.update("report_2", p);
+        }
+
+        //#endregion ===========GIS相关的方法===========
+
+        //获取页面的全局参数，避免重复获取
+        function getParam() {
+            var p = $.dashboard.getParams();
+            for (var i = 0; i < p.length; i++) {
+                switch (p[i].levelname) {
+                    case "日": param.day = p[i].value; break;
+                    case "省": param.province = p[i].value; break;
+                    case "地区": param.region = p[i].value; break;
+                    case "小区": param.cell = p[i].value; break;
+                    default: break;
+                }
+            }
+
+            param.keyParams = param.day + param.province + param.region + param.cell;
+        }
+    </script>
+</head>
+<body>
+    <div id="m"></div>
+    <div class="dss_db_view">
+        <div id="dashboard-query" class="dss_db_view_query">
+            <ul class="toolbar">
+                <li class='item'>
+                    <input type="text" id="txtTime" style='width: 105px;' /></li>
+                <li class='item'>
+                    <div id='queryControl'></div>
+                </li>
+                <li class='item'>
+                    <input type='button' id='btnQuery' value='查询' class='button' /></li>
+                <li class='item'>
+                    <input type='button' id='btnExport' value='导出' class='button' /></li>
+            </ul>
+        </div>
+        <div class="dss_db_view_layout" id="dashboard-layout">
+            <style>
+                #report_0 {
+                    width: 100%;
+                    height: inherit;
+                    height: 49%;
+                    border: 1px solid #cccccc;
+                }
+
+                #mapContainer {
+                    width: 59.4%;
+                    height: 430px;
+                    float: left;
+                    border: 1px solid #cccccc;
+                }
+
+                #report_1 {
+                    width: 39.7%;
+                    height: 430px;
+                    float: right;
+                    border: 1px solid #cccccc;
+                }
+
+                #report_2 {
+                    width: 100%;
+                    height: 30%;
+                    float: left;
+                    margin-top: 5px;
+                    border: 1px solid #cccccc;
+                }
+            </style>
+            <!--css-->
+            <div id="report_0" reportdivid="0" class="report" isreport="true"></div>
+
+            <div id="mapContainer" style="display: none;">
+                <div class="dss_db_chart_title">
+                    <div class="left">小区分布</div>
+                </div>
+                <div id="map" style="width: 100%; height: 400px;">
+                </div>
+            </div>
+
+            <div id="report_1" reportdivid="1" class="report" isreport="true"></div>
+            <div id="report_2" reportdivid="2" class="report" isreport="true"></div>
+        </div>
+    </div>
+</body>
+</html>

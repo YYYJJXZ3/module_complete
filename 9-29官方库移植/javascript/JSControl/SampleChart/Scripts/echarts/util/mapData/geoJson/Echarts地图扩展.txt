@@ -1,0 +1,26 @@
+中国各省市县级 JSON 文件   
+http://blog.csdn.net/lzhlzz/article/details/41347929
+
+http://echarts.baidu.com/doc/example/map6.html
+
+http://www.oschina.net/question/1988479_162473
+怎么把Echarts地图扩展到县级呢
+@Kener-林峰 你好，想跟你请教个问题：怎么把Echarts地图扩展到县级呢，我在网上找到江苏南通的nan_tong_geo.json文件然后在params里配
+        '南通': {
+             getGeoJson: function (callback) { 
+                 require(['./geoJson/nan_tong_geo'], function (md){
+                     callback(decode(md));
+                 });
+             }
+         } 
+
+然后在页面上配： 
+
+// 自定义扩展图表类型：mapType = nan_tong 南通地图
+require('echarts/util/mapData/params').params.continent = {
+     getGeoJson: function (callback) {
+         $.getJSON('geoJson/nan_tong_geo.json',callback);
+     }
+ } 
+
+maType处选"南通"，可是没出来，我想问我这样做对吗？ 

@@ -1,0 +1,723 @@
+﻿
+.location {
+    padding-bottom: 9px; /*border-bottom:solid 1px #eee;*/
+    height: 40px;
+    line-height: 40px;
+    font-size: 12px;
+    color: #686f7f;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    text-align: right;
+    margin-top: 15px;
+}
+
+    .location .title {
+        font-size: 20px;
+        font-weight: bold;
+        color: #0084cf;
+        font-family: "微软雅黑";
+        float: left;
+        margin-left: 10px;
+    }
+
+        .location .title span {
+            font-weight: normal;
+            padding-left: 10px;
+            color: #888;
+        }
+
+        .location .title b {
+            color: #0084cf;
+            font-family: "微软雅黑";
+        }
+/* =========================全局样式.开始========================= */
+/*a{ color:#686f7f; text-decoration:none; }
+a:link, a:visited{ color:#2A72C5; text-decoration:none; }
+a:active, a:hover{ color:#0065D9; text-decoration:underline; }*/
+/* =========================全局样式.结束========================= */
+
+.order-flow {
+    margin: 0 auto;
+    padding: 0;
+    font-size: 12px;
+    font-weight: normal;
+    padding-bottom: 4px;
+    float: right;
+}
+
+.order-flow-left, .order-flow-arrive, .order-flow-wait, .order-flow-right-arrive, .order-flow-right-wait {
+    margin: 0;
+    padding: 0;
+    background: url(../images/order_speed.gif) no-repeat scroll 0 0;
+    float: left;
+    font-family: Arial;
+    line-height: 16px;
+    text-align: center;
+    width: 140px;
+}
+
+.order-flow div span {
+    margin: 0;
+    padding: 0;
+    background: none repeat scroll 0 0 #fff;
+    display: block;
+}
+
+    .order-flow div span p {
+        margin: 0;
+        padding: 0;
+    }
+
+.order-flow .name {
+    margin: 0;
+    padding: 0 0 4px 0;
+}
+
+.order-flow-arrive {
+    background-position: 0 -40px;
+}
+
+.order-flow-wait {
+    background-position: 0 -20px;
+    color: #878787;
+}
+
+.order-flow-right-arrive {
+    background-position: 0 -80px;
+}
+
+.order-flow-right-wait {
+    background-position: 0 -60px;
+    color: #878787;
+}
+
+.order-flow-input {
+    display: block;
+    margin: 2px auto;
+    padding: 0;
+    width: 18px;
+    height: 18px;
+    text-indent: -999px;
+    cursor: inherit;
+    overflow: hidden;
+}
+
+/* =========================内页通用样式.开始======================= */
+textarea {
+    overflow: auto;
+}
+
+    textarea.input {
+        width: 600px;
+        height: 120px;
+    }
+
+.input {
+    padding: 5px 4px;
+    min-height: 32px;
+    line-height: 20px;
+    border: 1px solid #eee;
+    background: #fff;
+    vertical-align: middle;
+    color: #333;
+    font-size: 100%;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    *min-height: 20px;
+}
+
+    .input.normal {
+        width: 300px;
+    }
+
+    .input.txt {
+        width: 200px;
+    }
+
+    .input.small {
+        width: 50px;
+    }
+
+    .input:focus {
+        background: #FFFBDE; /*border-color:#7BBFF2; outline:2px solid #99D8F5;*/
+    }
+/* =========================内页通用样式.结束======================= */
+
+/* ==========================编辑页样式.开始======================== */
+/*Tab选项卡*/
+.content-tab-wrap {
+    height: 42px;
+}
+
+.content-tab {
+    z-index: 3;
+    top: 0;
+    left: 15px;
+    right: 15px;
+    bottom: auto;
+    height: 41px;
+    background: #fff;
+    border-bottom: 1px solid #eee;
+}
+
+.content-tab-ul-wrap {
+    position: relative;
+}
+
+    .content-tab-ul-wrap:after {
+        content: ".";
+        display: block;
+        height: 0;
+        clear: both;
+        visibility: hidden;
+    }
+
+.content-tab ul {
+    position: absolute;
+    left: 0;
+    top: 10px;
+}
+
+    .content-tab ul:after {
+        content: ".";
+        display: block;
+        height: 0;
+        clear: both;
+        visibility: hidden;
+    }
+
+    .content-tab ul li {
+        position: relative;
+        display: block;
+        float: left;
+        margin-right: -1px;
+    }
+
+        .content-tab ul li a {
+            display: block;
+            float: left;
+            padding: 0 25px;
+            border-top: 1px solid #eee;
+            border-right: 1px solid #eee;
+            border-left: 1px solid #eee;
+            height: 30px;
+            line-height: 31px;
+            font-size: 12px;
+            color: #333;
+            text-align: center;
+            background: #fff;
+            white-space: nowrap;
+            word-break: break-all;
+        }
+
+            .content-tab ul li a:hover {
+                color: #2A72C5;
+                text-decoration: none;
+            }
+
+            .content-tab ul li a.selected {
+                color: #2A72C5;
+                background: #fff;
+                height: 31px;
+            }
+
+.content-tab .tab-title {
+    display: none;
+}
+/*迷你样式*/
+.content-tab.mini .tab-title {
+    position: relative;
+    display: block;
+    float: left;
+    margin-top: 10px;
+    padding: 0 25px;
+    border-top: 1px solid #eee;
+    border-right: 1px solid #eee;
+    border-left: 1px solid #eee;
+    height: 31px;
+    line-height: 31px;
+    font-size: 12px;
+    color: #2A72C5;
+    text-align: center;
+    background: #fff;
+    cursor: pointer;
+}
+
+    .content-tab.mini .tab-title i {
+        position: absolute;
+        display: block;
+        top: 8px;
+        right: 8px;
+        width: 14px;
+        height: 14px;
+        background: url(skin_icons.png) no-repeat scroll 0 -196px;
+    }
+
+.content-tab.mini .content-tab-ul-wrap {
+    display: inline-block;
+    height: 42px;
+}
+
+    .content-tab.mini .content-tab-ul-wrap ul {
+        display: none;
+        background: #fff;
+    }
+
+    .content-tab.mini .content-tab-ul-wrap:hover ul {
+        display: block;
+        top: 41px;
+        border: 1px solid #eee;
+        z-index: 1;
+    }
+
+        .content-tab.mini .content-tab-ul-wrap:hover ul li {
+            display: block;
+            float: none;
+            margin: 0;
+        }
+
+            .content-tab.mini .content-tab-ul-wrap:hover ul li a {
+                float: none;
+                border: 0;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                overflow: hidden;
+            }
+
+/*Tab选项卡内容*/
+.div-content {
+    padding: 10px 0;
+    font-size: 12px;
+    color: #666;
+}
+
+    .div-content dl dt {
+        display: block;
+        float: left;
+        width: 130px;
+        text-align: right;
+        color: #333;
+    }
+
+    .div-content dl dd {
+        margin-left: 150px;
+    }
+
+.tab-content {
+    padding: 20px 15px;
+    font-size: 12px;
+    color: #666;
+    border: 1px solid #eee;
+    border-top: none;
+    box-sizing: border-box;
+    overflow: hidden;
+    min-height: 300px;
+}
+
+    .tab-content:after {
+        clear: both;
+        content: ".";
+        display: block;
+        height: 0;
+        visibility: hidden;
+    }
+
+    .tab-content dl, .div-content dl {
+        clear: both;
+        display: block;
+        padding: 5px 0;
+        line-height: 30px;
+    }
+
+        .tab-content dl:after, .div-content dl:after {
+            clear: both;
+            content: ".";
+            display: block;
+            height: 0;
+            visibility: hidden;
+        }
+
+        .tab-content dl:first-child {
+            border-top: none;
+        }
+
+        .tab-content dl dt {
+            display: block;
+            float: left;
+            width: 130px;
+            text-align: right;
+            color: #6d7e86;
+        }
+
+        .tab-content dl dd {
+            position: relative;
+            margin-left: 150px;
+            *position: static;
+        }
+    /*迷你样式*/
+    .tab-content.mini dl dt {
+        display: block;
+        float: none;
+        text-align: left;
+    }
+
+    .tab-content.mini dl dd {
+        margin-left: 0;
+    }
+
+        .tab-content.mini dl dd .input {
+            max-width: 100%;
+        }
+
+/*按钮样式*/
+.td-input {
+    display: inline-block;
+    padding: 0 3px;
+    border: 1px solid #d7d7d7;
+    width: 92%;
+    height: 20px;
+    line-height: 18px;
+    color: #666;
+    font-size: 12px;
+    background: #fff;
+    vertical-align: middle;
+}
+
+.btn {
+    background: #16a0d3;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    font-family: "Microsoft Yahei";
+    font-size: 12px;
+    height: 32px;
+    line-height: 32px;
+    margin: 0 1px 0 0;
+    padding: 0 20px;
+}
+
+    .btn:hover {
+        background: #117ea6;
+    }
+
+    .btn.green {
+        background: #52A152;
+    }
+
+        .btn.green:hover {
+            background: #328032;
+        }
+
+    .btn.yellow {
+        background: #FF9C30;
+    }
+
+        .btn.yellow:hover {
+            background: #c87316;
+        }
+
+    .btn.violet {
+        background: #993333;
+    }
+
+        .btn.violet:hover {
+            background: #990033;
+        }
+
+.icon-btn {
+    display: inline-block;
+    margin: 0;
+    padding: 4px 10px 4px 8px;
+    line-height: 20px;
+    border: solid 1px #e1e1e1;
+    color: #333;
+    font-size: 12px;
+    text-decoration: none;
+    cursor: pointer;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+    .icon-btn:hover {
+        color: #2A72C5;
+    }
+
+    .icon-btn span {
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    .icon-btn i {
+        display: inline-block;
+        margin-right: 3px;
+        width: 14px;
+        height: 14px;
+        text-indent: -9999em;
+        background: url(skin_icons.png) no-repeat;
+        vertical-align: middle;
+        *text-indent: 0;
+    }
+
+    .icon-btn.add i {
+        background-position: 0 -28px;
+    }
+
+.img-btn {
+    display: inline-block;
+    margin: 0px 2px;
+    width: 14px;
+    height: 14px;
+    background: url(skin_icons.png) no-repeat;
+    vertical-align: middle;
+    white-space: nowrap;
+    word-break: break-all;
+    cursor: pointer;
+    overflow: hidden;
+    text-indent: -9999px;
+    *text-indent: 0;
+    *font-size: 0;
+}
+
+    .img-btn.edit {
+        background-position: -140px -84px;
+    }
+
+    .img-btn.del {
+        background-position: -84px -28px;
+    }
+/*多项单选*/
+.multi-radio {
+    display: inline-block;
+    vertical-align: middle;
+    *display: inline;
+}
+
+    .multi-radio:after {
+        clear: both;
+        content: ".";
+        display: block;
+        height: 0;
+        visibility: hidden;
+    }
+
+    .multi-radio .boxwrap {
+        display: inline-block;
+        vertical-align: middle;
+        *display: inline;
+    }
+
+    .multi-radio a {
+        display: inline-block;
+        margin-right: -1px;
+        float: left;
+        padding: 5px 15px;
+        height: 20px;
+        line-height: 20px;
+        border: 1px solid #eee;
+        vertical-align: middle;
+        color: #333;
+        font-size: 100%;
+        cursor: pointer;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+        .multi-radio a:hover {
+            background: #C9E1EF;
+            text-decoration: none;
+        }
+
+        .multi-radio a:active {
+            text-decoration: none;
+        }
+
+        .multi-radio a.selected {
+            background: #16a0d3;
+            border-color: #1096c7;
+            color: #fff;
+        }
+/*单项选择*/
+.single-checkbox {
+    display: inline-block;
+    vertical-align: middle;
+    cursor: pointer;
+    *display: inline;
+}
+
+    .single-checkbox a, .single-checkbox a:visited {
+        display: inline-block;
+        border: 1px solid #d4d4d4;
+        background: #d4d4d4;
+        width: 80px;
+        vertical-align: middle;
+        text-decoration: none;
+    }
+
+        .single-checkbox a i {
+            display: block;
+            width: 50%;
+            height: 28px;
+            line-height: 28px;
+            font-style: normal;
+            background: #fff;
+            color: #333;
+            text-align: center;
+        }
+
+            .single-checkbox a i.on {
+                float: right;
+                display: none;
+            }
+
+            .single-checkbox a i.off {
+                float: left;
+                display: block;
+            }
+
+        .single-checkbox a.selected {
+            border: 1px solid #16a0d3;
+            background: #16a0d3;
+        }
+
+            .single-checkbox a.selected i.on {
+                display: block;
+            }
+
+            .single-checkbox a.selected i.off {
+                display: none;
+            }
+/*多项选择*/
+.multi-checkbox {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+    .multi-checkbox:after {
+        clear: both;
+        content: ".";
+        display: block;
+        height: 0;
+        visibility: hidden;
+    }
+
+    .multi-checkbox .boxwrap {
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    .multi-checkbox a {
+        display: inline-block;
+        float: left;
+        margin-right: -1px;
+        padding: 5px 15px;
+        height: 20px;
+        line-height: 20px;
+        border: 1px solid #eee;
+        vertical-align: middle;
+        color: #333;
+        font-size: 100%;
+        cursor: pointer;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+        .multi-checkbox a:hover {
+            background: #C9E1EF;
+            text-decoration: none;
+        }
+
+        .multi-checkbox a:active {
+            text-decoration: none;
+        }
+
+        .multi-checkbox a.selected {
+            background: #16a0d3;
+            border-color: #1096c7;
+            color: #fff;
+        }
+
+        .multi-checkbox a:last-child { /*border-right:1px solid #d4d4d4;*/
+        }
+/*多项选择PORP*/
+.multi-porp {
+}
+
+    .multi-porp ul li {
+        float: left;
+        position: relative;
+        margin: 0 8px 8px 0;
+        padding: 1px;
+        line-height: 20px;
+        vertical-align: middle;
+    }
+
+        .multi-porp ul li a {
+            display: block;
+            padding: 4px 10px;
+            color: #666;
+            min-width: 10px;
+            width: auto !important;
+            text-align: center;
+            text-decoration: none;
+            border: 1px solid #eee;
+            cursor: pointer;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        .multi-porp ul li i {
+            display: none;
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            width: 12px;
+            height: 12px;
+            text-indent: -99em;
+            background: url(skin_icons.png) -169px -85px no-repeat;
+            overflow: hidden;
+        }
+
+        .multi-porp ul li.sys {
+            background: #FFFFD0;
+        }
+
+        .multi-porp ul li.selected a {
+            margin: -1px;
+            color: #333;
+            border: 2px solid #1e99c7;
+        }
+
+        .multi-porp ul li.selected i {
+            display: block;
+            background-position: -170px -114px;
+        }
+
+.page-footer {
+    padding: 10px 0;
+    height: 32px;
+    font-size: 12px;
+}
+
+    .page-footer .btn-wrap {
+        position: fixed;
+        margin: 0;
+        padding: 10px 0;
+        top: auto;
+        left: 15px;
+        right: 15px;
+        bottom: 0;
+        background: #fff;
+        z-index: 3;
+    }
+
+        .page-footer .btn-wrap:after {
+            clear: both;
+            content: ".";
+            display: block;
+            height: 0;
+            visibility: hidden;
+        }
+/* ==========================编辑页样式.结束======================== */

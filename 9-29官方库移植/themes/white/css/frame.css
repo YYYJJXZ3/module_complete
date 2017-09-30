@@ -1,0 +1,475 @@
+﻿
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    font-size: 14px;
+    font-family: "微软雅黑";
+    color: #666;
+    border: 0;
+    min-height: 600px;
+    overflow-y: hidden;
+}
+
+@media screen and (max-width: 480px) {
+
+    #header {
+        display: none;
+    }
+
+    #banner {
+        display: none;
+    }
+
+    #leftPane {
+        width: 0px;
+    }
+
+    #splitter {
+        width: 0px;
+        height: 0;
+        float: left;
+    }
+
+    #logoPane {
+        height: 44px;
+        position: relative;
+        top: 15px;
+        left: 10px;
+        float: left;
+        background-image: url('../images/frame/logo.png');
+        background-position-x: -190px;
+        background-repeat: no-repeat;
+        width: 201px;
+    }
+
+    #menuPane {
+        height: 30px;
+        position: absolute;
+        top: 41px;
+        left: 200px;
+        width: 680px;
+        overflow: hidden;
+    }
+}
+
+
+@media screen and (min-width: 481px) and (max-width: 800px) {
+    #header {
+        width: 100%;
+        height: 80px;
+        position: relative;
+    }
+
+    #banner {
+        display: block;
+    }
+
+    #leftPane {
+        width: 200px;
+        height: 100%;
+        position: relative;
+        overflow: hidden;
+        float: left;
+    }
+
+    #splitter {
+        width: 3px;
+        height: 100%;
+        float: left;
+        background-color: #dcdcdc;
+    }
+
+    #logoPane {
+        width: 210px;
+        height: 44px;
+        position: relative;
+        top: 15px;
+        left: 10px;
+        float: left;
+        background-image: url('../images/frame/logo.png');
+        background-position-x: -190px;
+        background-repeat: no-repeat;
+        width: 201px;
+    }
+
+    #menuPane {
+        height: 30px;
+        position: absolute;
+        top: 41px;
+        left: 200px;
+        width: 680px;
+        overflow: hidden;
+    }
+}
+
+
+@media screen and (min-width: 801px) and (max-width: 1400px) {
+    #header {
+        width: 100%;
+        height: 80px;
+        position: relative;
+    }
+
+    #banner {
+        display: block;
+    }
+
+    #leftPane {
+        width: 200px;
+        height: 100%;
+        position: relative;
+        overflow: hidden;
+        float: left;
+    }
+
+    #splitter {
+        width: 3px;
+        height: 100%;
+        float: left;
+        background-color: #dcdcdc;
+    }
+
+    #logoPane {
+        width: 361px;
+        height: 44px;
+        position: relative;
+        top: 15px;
+        left: 10px;
+        float: left;
+        background-image: url('../images/frame/logo.png');
+    }
+
+    #menuPane {
+        height: 30px;
+        position: absolute;
+        top: 41px;
+        left: 400px;
+        width: 680px;
+        overflow: hidden;
+    }
+}
+
+
+@media screen and (min-width: 1401px) {
+    #header {
+        width: 100%;
+        height: 80px;
+        position: relative;
+    }
+
+    #banner {
+        display: block;
+    }
+
+    #leftPane {
+        width: 200px;
+        height: 100%;
+        position: relative;
+        overflow: hidden;
+        float: left;
+    }
+
+    #splitter {
+        width: 3px;
+        height: 100%;
+        float: left;
+        background-color: #dcdcdc;
+    }
+
+    #logoPane {
+        width: 361px;
+        height: 44px;
+        position: relative;
+        top: 15px;
+        left: 10px;
+        float: left;
+        background-image: url('../images/frame/logo.png');
+    }
+
+    #menuPane {
+        height: 30px;
+        position: absolute;
+        top: 41px;
+        left: 400px;
+        width: 680px;
+        overflow: hidden;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+input {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+    /*
+    针对Firefox下的除去阴影效果
+    */
+    input::-moz-focus-inner,
+    button::-moz-focus-inner {
+        border: 0;
+        margin-top: 0;
+    }
+/*结束*/
+div {
+    margin: 0;
+    padding: 0;
+}
+
+ul, li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    float: left;
+}
+
+
+#banner ul {
+    position: absolute;
+    top: 2px;
+    right: 10px;
+}
+
+#banner li {
+    padding: 0 0 0 10px;
+}
+
+    #banner li:hover {
+        cursor: pointer;
+        color: #06c;
+        text-decoration: underline;
+    }
+
+
+#menuPane .previous, #menuPane .next {
+    width: 10px;
+    height: 20px;
+    float: left;
+    cursor: pointer;
+    margin: 4px 3px 0 3px;
+}
+
+#menuPane ul {
+    height: 100%;
+}
+
+#menuPane li {
+    display: block;
+    font-size: 15px;
+    text-align: center;
+    margin: 0 2px 0 0;
+    min-width: 80px;
+    max-width: 120px;
+    padding: 5px 2px;
+    background-color: #eee;
+}
+
+    #menuPane li:hover {
+        cursor: pointer;
+        color: #fff;
+        background-color: #91c322;
+    }
+
+#menuPane .activeMenu {
+    cursor: pointer;
+    color: #fff;
+    background-color: #2FB3FF;
+}
+
+#searchPane {
+    width: 410px;
+    height: 27px;
+    position: absolute;
+    padding: 0;
+    top: 8px;
+    right: 10px;
+    color: #fff;
+}
+
+    #searchPane ul {
+        height: 27px;
+        line-height: 100%;
+        display: block;
+        margin: 0;
+        float: left;
+        background-color: #fff;
+    }
+
+    #searchPane li {
+        display: block;
+        margin: 0 2px 0 0;
+        padding: 6px;
+        color: #666;
+        background-color: #e3e3e3;
+        float: left;
+    }
+
+        #searchPane li:hover {
+            cursor: pointer;
+            color: #fff;
+            background-color: #91c322;
+        }
+
+    #searchPane .activeSearchCategory {
+        color: #fff;
+        background-color: #0084cf;
+    }
+
+    #searchPane .inputPanel {
+        height: 25px;
+        overflow: hidden;
+        border: 1px solid #0084cf;
+    }
+
+    #searchPane input[type="text"] {
+        clear: both;
+        margin: 0;
+        padding: 0 0 0 5px;
+        *padding-top: 6px; /**IE 7*/
+        width: 250px;
+        height: 25px;
+        line-height: 100%;
+    }
+
+    #searchPane input[type="button"] {
+        clear: both;
+        margin: 0;
+        padding: 0;
+        border: none;
+        width: 69px;
+        height: 25px;
+        color: #fff;
+        background-color: #0085d0;
+    }
+
+#messagePane {
+    height: 30px;
+    position: absolute;
+    top: 41px;
+    right: 10px;
+}
+
+    #messagePane div {
+        float: left;
+        margin: 0 0 0 10px;
+        padding: 5px 0 6px 5px;
+    }
+
+        #messagePane div:hover {
+            cursor: pointer;
+            color: #06c;
+            text-decoration: underline;
+        }
+
+    #messagePane #myFocus {
+        padding-left: 25px;
+        background: url('../images/frame/myFocus.png') 0 6px no-repeat;
+    }
+
+        #messagePane #myFocus:hover {
+            background: url('../images/frame/myFocus_hover.png') 0 6px no-repeat;
+        }
+
+#container {
+    width: 100%;
+    height: 46px;
+    position: relative;
+    float: left;
+}
+
+
+
+#leftPane #title {
+    height: 30px;
+    color: #fff;
+    overflow: hidden;
+    background-color: #91c322;
+}
+
+    #leftPane #title span {
+        display: block;
+        margin: 5px 0 0 20px;
+        padding: 0 0 0 13px;
+        background: url('../images/frame/menuTitle.png') 0 8px no-repeat;
+    }
+
+#leftPane #menuItems {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+}
+
+    #leftPane #menuItems ul {
+        width: 100%;
+    }
+
+    #leftPane #menuItems li {
+        width: 100%;
+        height: 25px;
+        color: #8f989f;
+        margin: 1px 0 1px 0;
+        padding: 4px 0 0 20px;
+        float: none;
+        background: url('../images/frame/menuItem.png') 10px 10px no-repeat;
+        background-color: #e3e3e3;
+    }
+
+        #leftPane #menuItems li:hover {
+            cursor: pointer;
+            color: #91c322;
+            background: url('../images/frame/menuItem_hover.png') 10px 10px no-repeat;
+            background-color: #e3e3e3;
+        }
+
+#leftPane #menuItemToggle {
+    text-align: center;
+    color: #fff;
+    background-color: #0085d0;
+}
+
+    #leftPane #menuItemToggle .expanded {
+        width: 30px;
+        margin-left: 65px;
+        padding-left: 15px;
+        background: url('../images/frame/leftPanel_toggler.png') no-repeat 0 -40px;
+    }
+
+    #leftPane #menuItemToggle .collapsed {
+        width: 30px;
+        margin-left: 65px;
+        padding-left: 15px;
+        background: url('../images/frame/leftPanel_toggler.png') no-repeat 0 5px;
+    }
+
+#leftPane #menuZTreeContainer {
+    height: 100%;
+    margin: 0 0 0 5px;
+    overflow: auto;
+}
+
+
+
+#splitter:hover {
+    cursor: col-resize;
+}
+
+#mainPane {
+    height: 100%;
+    float: left;
+    overflow: hidden;
+}

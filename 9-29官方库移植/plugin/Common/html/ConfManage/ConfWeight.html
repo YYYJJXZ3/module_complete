@@ -1,0 +1,413 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+
+    <!--样式-->
+    <link href="../../../../Themes/lightblue/jqueryui/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" />
+    <link href="../../../../themes/lightblue/jqgrid/ui.jqgrid.css" rel="stylesheet" />
+    <link href="../../../../themes/lightblue/page/page.css" rel="stylesheet" />
+
+    <!--整体指标概览插件的样式-->
+    <link href="../../../Common/css/common.css" rel="stylesheet" />
+
+    <!--jquery核心库-->
+    <script src="../../../../javascript/core/jquery-1.9.1.min.js"></script>
+    <script src="../../../../javascript/core/jquery-ui-1.10.3.custom.min.js"></script>
+
+    <!--工具库-->
+    <script src="../../../../javascript/common/tools.js" type="text/javascript"></script>
+    <script src="../../../../javascript/common/pagetools.js" type="text/javascript"></script>
+
+    <!--下拉框-->
+    <script src="../../../../Javascript/JSControl/Condition/comselect.js" type="text/javascript"></script>
+
+    <!--条件插件-->
+    <script src="../../../../javascript/JSControl/Condition/controlmanagernew.js"></script>
+
+    <!--表格右上角的按钮-->
+    <script src="../../../../javascript/JSControl/Common/toolbar.js"></script>
+
+    <!--时间插件-->
+    <script src="../../../../javascript/JSControl/Condition/timepicker.js"></script>
+
+    <!--整体指标概览插件-->
+    <script src="../../../Common/js/common.js"></script>
+
+    <!--表格-->
+    <script src="../../../../javascript/JSControl/SmartGrid/JqGrid/grid.locale-cn.js"></script>
+    <script src="../../../../javascript/JSControl/SmartGrid/JqGrid/jquery.jqGrid.min.js"></script>
+    <script src="../../../../javascript/JSControl/SmartGrid/JqGrid/SmartGrid.js"></script>
+
+    <!--图形-->
+    <script src="../../../../javascript/JSControl/SampleChart/Scripts/SampleChart.js"></script>
+
+    <!--本专题的公共js方法-->
+    <script src="../../../Common/js/CommonHelp.js"></script>
+
+    <script type="text/javascript">
+        //公共条件对象
+        var param = {
+            flag: "demo",//专题标识，在url的中用flag传入
+            table1Html: "",
+            table2Html: "",
+            grid2Id: "",
+            grid2Name: ""
+        };
+
+        //入口
+        $(function () {
+            method.init();
+        });
+
+        //方法对象
+        var method = {
+            init: function () {
+                dss.pageheader("m");//显示页面导航、查询页面帮助、查询页面sql按钮
+                method.getRequest();
+
+                method.getTypeWeight();
+            },
+            getRequest: function () {
+                var tmpFlag = decodeURI(dss.request("flag"));
+                if (!dss.isNullOrEmpty(tmpFlag)) {
+                    param.flag = tmpFlag;
+                }
+            },
+            // 分类权重配置
+            getTypeWeight: function () {
+                var act = {
+                    "Flag": param.flag,
+                    "Type": "getTypeWeight"
+                };
+                $.ajax({
+                    url: '../../ashx/ConfScore.ashx',
+                    data: {
+                        strCon: dss.jsonToString(act)
+                    },
+                    cache: false,
+                    beforeSend: function () {
+                        dss.load(true);
+                    },
+                    complete: function () {
+                        dss.load(false);
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        method.bindGrid("TypeWeightGrid", {
+                            captionName: "分类权重",
+                            islocaldata: true,
+                            localdata: data, //为几行几列的一个表格,
+                            callback: {
+                                gridComplete: function (grid) {//呈现的表格是一个table元素，grid参数为此table对象
+                                    param.table1Html = "";
+                                    $.each(grid.find("tr"), function (i, val) {
+                                        if (i > 0) {//第0行为表格的标题行
+                                            var tds = $(this).find("td");
+                                            $.each(data.colnames, function (c, colName) {
+                                                if (colName.indexOf("操作") > -1) {
+                                                    tds.eq(c).html("<a style='cursor:pointer;color:blue;' onclick='method.getSubWeight(" + tds.eq(4).text() + ", \"" + tds.eq(0).text() + "\")'>" + tds.eq(c).text() + "</a>");
+                                                }
+                                            });
+
+                                            var measure = tds.eq(0).text();
+                                            var val = tds.eq(1).text();
+                                            param.table1Html += "<div class='left_div_style'>" + measure
+                                                + "</div>";
+                                            param.table1Html += "<div class='right_div_style'><input type='text'"
+                                                + " class='input_text_style' value='" + val + "'/>"
+                                                + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;%</div>";
+
+                                            if (i == 1) {
+                                                method.getSubWeight(tds.eq(4).text(), tds.eq(0).text());
+                                            }
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                    }
+                });
+            },
+            // 子项指标权重
+            getSubWeight: function (typeId, indicatorName) {
+                var act = {
+                    "Flag": param.flag,
+                    "Type": "getSubWeight",
+                    "TypeId": typeId
+                };
+                $.ajax({
+                    url: '../../ashx/ConfScore.ashx',
+                    data: {
+                        strCon: dss.jsonToString(act)
+                    },
+                    cache: false,
+                    beforeSend: function () {
+                        dss.load(true);
+                    },
+                    complete: function () {
+                        dss.load(false);
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        method.bindGrid("SubWeightGrid", {
+                            captionName: "“" + indicatorName + "”下的指标权重",
+                            islocaldata: true,
+                            localdata: data,
+                            callback: {
+                                gridComplete: function (grid) {
+                                    param.table2Html = "";
+                                    $.each(grid.find("tr"), function (i, val) {
+                                        if (i > 0) {//第0行为表格的标题行
+                                            var tds = $(this).find("td");
+                                            var measure = tds.eq(0).text();
+                                            var val = tds.eq(1).text();
+                                            param.table2Html += "<div class='left_div_style'>" + measure
+                                                + "</div>";
+                                            param.table2Html += "<div class='right_div_style'><input type='text'"
+                                                + " class='input_text_style' value='" + val + "'/>"
+                                                + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;%</div>";
+                                            param.grid2Id = typeId;
+                                            param.grid2Name = indicatorName;
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                    }
+                });
+            },
+            bindGrid: function (div, option) {
+                var opts = $.extend(true, {
+                    analyzer: null,
+                    titleName: "",
+                    formatFlowValue: '1',
+                    col: {
+                        property: [
+                            { colindex: 0, align: "center" },
+                            { colindex: 1, align: "center" },
+                            { colindex: 2, align: "center" },
+                            { colindex: 3, align: "center" },
+                            { colindex: 4, hidden: true }
+                        ]
+                    }
+                }, option);
+
+                $("#" + div).smartgrid(opts);//绑定表格
+            },
+            showDialog1: function () {
+                var $divAdd = $("<div id='dialog1'></div>");
+                $divAdd.html(param.table1Html);
+                dss.dialog({
+                    content: $divAdd,
+                    width: 400,
+                    //height: 700,
+                    title: '分类权重配置',
+                    buttons: {
+                        "确定": function () {
+                            method.updateTypeWeight($divAdd);
+                        },
+                        "取消": function () { }
+                    }
+                });
+            },
+            getJson: function (divAdd) {
+                var IndicatorInfo = {
+                    create: function (name, value) {
+                        var instance = {
+                            Name: name,
+                            Value: value
+                        };
+                        return instance;
+                    }
+                };
+                var DataEntryList = [];
+                var rights = divAdd.find("div[class=right_div_style]");
+                var valueTotal = 0;
+                $.each(divAdd.find("div[class=left_div_style]"), function (i, val) {
+                    var value = rights.eq(i).find("input").eq(0).val() / 100;
+                    valueTotal += value;
+                    var ind = IndicatorInfo.create($(this).text(), value);
+                    DataEntryList.push(ind);
+                });
+
+                var dataJson = "{ \"DataEntryList\": " + dss.jsonToString(DataEntryList) + " }";
+
+                return [valueTotal == 1, dataJson];
+            },
+            updateTypeWeight: function (divAdd) {
+                var act = {
+                    "Flag": param.flag,
+                    "Type": "updateTypeWeight",
+                };
+
+                var tmpObj = method.getJson(divAdd);
+                var flag = tmpObj[0];
+
+                if (flag == true) {
+                    var dataJson = tmpObj[1];
+                    $.ajax({
+                        url: '../../ashx/ConfScore.ashx',
+                        data: {
+                            strCon: dss.jsonToString(act),
+                            data: dataJson
+                        },
+                        cache: false,
+                        beforeSend: function () {
+                            dss.load(true);
+                        },
+                        complete: function () {
+                            dss.load(false);
+                        },
+                        success: function (data) {
+                            method.getTypeWeight();
+                        }
+                    });
+                }
+                else {
+                    dss.alert("权重相加必须等于100");
+                }
+            },
+            showDialog2: function () {
+                var $divAdd = $("<div id='dialog2'></div>");
+                $divAdd.html(param.table2Html);
+                dss.dialog({
+                    content: $divAdd,
+                    width: 400,
+                    title: '指标权重配置',
+                    buttons: {
+                        "确定": function () {
+                            method.updateSubWeight($divAdd);
+                        },
+                        "取消": function () { }
+                    }
+                });
+            },
+            updateSubWeight: function (divAdd) {
+                var act = {
+                    "Flag": param.flag,
+                    "Type": "updateSubWeight",
+                };
+
+                var tmpObj = method.getJson(divAdd);
+                var flag = tmpObj[0];
+
+                if (flag == true) {
+                    var dataJson = tmpObj[1];
+                    $.ajax({
+                        url: '../../ashx/ConfScore.ashx',
+                        data: {
+                            strCon: dss.jsonToString(act),
+                            data: dataJson
+                        },
+                        cache: false,
+                        beforeSend: function () {
+                            dss.load(true);
+                        },
+                        complete: function () {
+                            dss.load(false);
+                        },
+                        success: function (data) {
+                            method.getSubWeight(param.grid2Id, param.grid2Name);
+                        }
+                    });
+                }
+                else {
+                    alert("权重相加必须等于1");
+                }
+            },
+            synchronize: function () {
+                dss.dialog({
+                    content: "<div style='font-weight: 700; font-size:15px;'>确定要同步计算指标吗?<div>",
+                    width: 200,
+                    title: '指标同步',
+                    buttons: {
+                        "确定": function () {
+                            method.syncMeasureFun();
+                        },
+                        "取消": function () { }
+                    }
+                });
+            },
+            syncMeasureFun: function () {
+                var act = {
+                    "Flag": param.flag,
+                    "Type": "syncMeasureFun",
+                };
+                $.ajax({
+                    url: '../../ashx/ConfScore.ashx',
+                    data: {
+                        strCon: dss.jsonToString(act)
+                    },
+                    cache: false,
+                    beforeSend: function () {
+                        dss.load(true);
+                    },
+                    complete: function () {
+                        dss.load(false);
+                    },
+                    success: function (data) {
+                        if (data == "")
+                            alert("同步完成！");
+                        else
+                            alert("同步出错：" + data);
+                    }
+                });
+            },
+        };
+    </script>
+    <style>
+        .input_text_style {
+            width: 100px;
+            text-align: center;
+        }
+
+        .left_div_style {
+            width: 40%;
+            height: 22px;
+            float: left;
+            text-align: right;
+            line-height: 22px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            margin-right: 5%;
+            /*background-color: #FDEED6;*/
+        }
+
+        .right_div_style {
+            width: 55%;
+            float: right;
+            text-align: left;
+            margin-bottom: 15px;
+            /*background-color: #ff0000;*/
+        }
+    </style>
+</head>
+<body>
+    <div style="width: 99%; margin: auto; margin-bottom: 8px;">
+        <div id="m"></div>
+        <div class="toolbar">
+            <ul>
+                <!--<li class="item">
+                    <input style="width: 100px;" id="txtTime" type="text" /></li>
+                <li class="item">
+                    <div id="divFilter"></div>
+                </li>-->
+                <li class="item" style="float: right;">
+                    <input class="button" id="btnConfigTotal" onclick="method.showDialog1();" value="权重配置" type="button" /></li>
+                <li class="item" style="float: right;">
+                    <input class="button" id="btnSynchronize" onclick="method.synchronize();" value="同步" type="button" /></li>
+            </ul>
+        </div>
+        <div id="TypeWeightGrid" style="width: 100%;"></div>
+        <div class="toolbar">
+            <ul>
+                <li class="item" style="float: right;">
+                    <input class="button" id="btnConfigTotal2" onclick="method.showDialog2();" value="权重配置" type="button" /></li>
+            </ul>
+        </div>
+        <div id="SubWeightGrid" style="width: 100%;"></div>
+    </div>
+</body>
+</html>

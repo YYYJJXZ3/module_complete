@@ -1,0 +1,334 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link href="../../themes/lightblue/page/page.css" rel="stylesheet" />
+    <link href="../../themes/lightblue/jqueryui/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" />
+    <link href="../../themes/lightblue/jqgrid/ui.jqgrid.css" rel="stylesheet" />
+    <script src="../../javascript/core/jquery-1.9.1.min.js"></script>
+    <script src="../../javascript/core/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="../../javascript/common/tools.js"></script>
+    <script src="../../javascript/common/pagetools.js"></script>
+    <script src="../../javascript/JSControl/Condition/controlmanagernew.js"></script>
+    <script src="../../javascript/JSControl/SmartGrid/JqGrid/grid.locale-cn.js"></script>
+    <script src="../../javascript/JSControl/SmartGrid/JqGrid/jquery.jqGrid.min.js"></script>
+    <script src="../../javascript/JSControl/SmartGrid/JqGrid/SmartGrid.js"></script>
+    <script src="../../javascript/JSControl/Condition/timepicker.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            dss.pageheader("m");
+            method.initTime();
+            method.init();
+        });
+        var method = {
+            init: function () {
+                method.queryData();
+
+                $("#btnQuery").click(function () {
+                    method.queryData();
+                });
+                $("#btnManualDel").click(function () {
+                    method.manualDel();
+                });
+                $("#btnAutoDel").click(function () {
+                    method.autoDel();
+                });
+                $("#btnSave").click(function () {
+                    var opt = {
+                        AlarmLevel: "1",
+                        DelType: "3",
+                        Hour: "1",
+                        Day: "0"
+                    };
+                    method.saveAutoDel(opt);
+                });
+            },
+            initTime: function () {
+                var d = new Date();
+                var option = {
+                    showTypeMonth: false,
+                    showTypeWeek: false,
+                    showTypeDay: true,
+                    showTypeHour: false,
+                    showTypeMinute: false,
+                    isMultipleHour: false,
+                    defaultDateStr: "2017年01月01日:2017年01月15日",
+                    defaultTimeType: "Day",
+                    range: true,
+                    isTile: true,
+                    isMultipleHour: true,
+                    datePickerOptions: {
+                        maxDate: "+0M +0D",
+                        minDate: "",
+                        firstDay: 1
+                    }
+                };
+                $("#txtTime").timepicker(option);
+            },
+            queryData: function () {
+                var conn = "SQL_ConnStr";
+                var opts = {
+                    captionName: "告警列表",
+                    formatFlowValue: "3",
+                    ajax: {
+                        sqlstr: $("#txtTime").timepicker("getDateStr"),
+                        connstr: conn,
+                        path: dss.rootPath + "plugin/Alarm/Handler/AlarmMonitor.ashx"
+                    },
+                    paging: {
+                        rowNum: 15,
+                        rowList: [15, 20, 40]
+                    },
+                    sort: {
+                        colindex: 3,
+                        order: "desc"
+                    },
+                    mulCheck: {
+                        ismulCheck: true
+                    },
+                    toolbar: {
+                        extend: [],
+                        notShow: ["isexport"],
+                        defaultShow: true
+                    },
+                    col: {
+                        poperty: [
+                            { colindex: 0, width: 150 },
+                            {
+                                colindex: 2,
+                                align: 'center',
+                                width: 140,
+                                rowDataBind: function (data) {
+                                    var date = Date.parse(data);
+                                    return date.format("yyyy-MM-dd hh:mm");
+                                }
+                            },
+                            {
+                                colindex: 6, sort: false, align: 'center', width: 80
+                            },
+                            { colindex: 7, align: 'center', width: 100, sort: false }
+                        ]
+                    }
+                };
+
+                // 初始化表格
+                $("#list").smartgrid(opts);
+            },
+            manualDel: function () {
+                var pkCol = "";
+                $("td>:checkbox").each(function () {
+                    if ($(this).prop("checked")) {
+                        pkCol += $.trim($(this).parent().parent().find("td:eq(1)").text()) + "|";
+                    }
+                });
+                if (pkCol.length > 0) {
+                    pkCol = pkCol.substr(0, pkCol.length - 1);
+                    dss.ajax({
+                        url: "Handler/AlarmMonitor.ashx?qtype=ManualDel",
+                        type: "post",
+                        dataType: "json",
+                        data: {
+                            pkcol: pkCol
+                        },
+                        success: function (o) {
+                            if (o.data.code == 0) {
+                                method.queryData();
+                            }
+                            else {
+                                dss.alert(o.msg);
+                            }
+                        }
+                    });
+                }
+                else {
+                    dss.alert("请先选中行。");
+                }
+            },
+            autoDel: function () {
+                dss.dialog({
+                    content: $("#divAutoDel"),
+                    title: "自动清除规则",
+                    width: 600,
+                    height: 250,
+                    open: function () {
+                        $("#divAutoDel").show();
+                    }
+                });
+            },
+            saveAutoDel: function (opt) {
+                dss.ajax({
+                    url: "Handler/AlarmMonitor.ashx?qtype=SetAutoDel",
+                    type: "post",
+                    dataType: "json",
+                    data: {
+                        strCon: dss.jsonToString(opt)
+                    },
+                    success: function (r) {
+                        if (r.status == 0) {
+                            method.queryData();
+                        }
+                        else {
+                            dss.alert("保存失败，请重试！");
+                        }
+                    }
+                });
+            }
+        };
+    </script>
+    <style>
+        #divAutoDel {
+            padding-top: 20px;
+        }
+
+        .r_content dl {
+            height: 30px;
+            line-height: 30px;
+            vertical-align: middle;
+            margin-bottom: 10px;
+        }
+
+            .r_content dl dt {
+                margin-left: 30px;
+                width: 100px;
+                float: left;
+                text-align: left;
+                line-height: 30px;
+                vertical-align: middle;
+                font-size: 15px;
+            }
+
+            .r_content dl dd {
+                margin-left: 115px;
+                line-height: 30px;
+                vertical-align: middle;
+                text-align: left;
+            }
+
+                .r_content dl dd input {
+                    height: 24px;
+                }
+
+                .r_content dl dd textarea {
+                    border: solid 1px #d4d4d4;
+                    height: 190px;
+                    width: 500px;
+                }
+
+                .r_content dl dd ul li {
+                    width: 85px;
+                    border: 1px solid #ddd;
+                    cursor: pointer;
+                    margin-right: 10px;
+                    float: left;
+                    margin-bottom: 10px;
+                    text-align: center;
+                }
+
+                    .r_content dl dd ul li.selected {
+                        border: 1px solid #27BEF2;
+                        background-color: #27BEF2;
+                        color: #fff;
+                    }
+
+        #selItem {
+            width: 100px;
+            height: 26px;
+            font-size: 13px;
+        }
+
+        #selDay {
+            margin-left: 20px;
+            width: 50px;
+            height: 26px;
+            font-size: 13px;
+        }
+
+        #selHour {
+            margin-left: 20px;
+            width: 50px;
+            height: 26px;
+            font-size: 13px;
+        }
+
+        #btnSave {
+            margin-left: 60px;
+        }
+
+        #btnCancel {
+            margin-left: 60px;
+        }
+    </style>
+</head>
+<body>
+    <div id="m"></div>
+    <div class="toolbar">
+        <div class="item">
+            <input type="text" id="txtTime" style="width: 100px;" />
+        </div>
+        <div class="item">
+            <input type="button" id="btnQuery" class="button" value="查询" />
+        </div>
+        <div class="item">
+            <input type="button" id="btnAdd" class="button" value="添加" />
+        </div>
+        <div class="item">
+            <input type="button" id="btnManualDel" class="button" value="手动清除" />
+        </div>
+        <div class="item">
+            <input type="button" id="btnAutoDel" class="button" value="自动清除" />
+        </div>
+    </div>
+    <div style="width: 99%; margin: 0px auto;">
+        <div id="list"></div>
+    </div>
+    <div id="divAutoDel" class="r_content" style="display: none;">
+        <dl>
+            <dt>告警级别：</dt>
+            <dd>
+                <ul>
+                    <li class="selected" role="1" rolename="一级告警">一级告警</li>
+                    <li role="2" rolename="二级告警">二级告警</li>
+                    <li role="3" rolename="三级告警">三级告警</li>
+                    <li role="4" rolename="四级告警">四级告警</li>
+                </ul>
+            </dd>
+        </dl>
+        <dl>
+            <dt>清除时间：</dt>
+            <dd>
+                <select id="selItem">
+                    <option>不清除</option>
+                    <option>绝对时间</option>
+                    <option>相对时间</option>
+                </select>
+                <select id="selDay">
+                    <option>0</option>
+                    <option>1</option>
+                    <option>2</option>
+                </select>
+                天
+                <select id="selHour">
+                    <option>0</option>
+                    <option>1</option>
+                    <option>2</option>
+                </select>
+                时
+            </dd>
+        </dl>
+        <dl>
+            <dd>
+                <input type="button" id="btnSave" class="button" value="保存" />
+                <input type="button" id="btnCancel" class="button" value="取消" />
+            </dd>
+        </dl>
+        <dl style="text-align: left;">
+            <dt style="width: 40px;">注：</dt>
+            <dd style="margin-left: 50px;">
+                <p>清除的绝对时间是指,对此级别告警每天的某个固定时间点进行清除,比如8时; </p>
+                <p style="margin-left: 20px;">清除的相对时间是指:对此级别告警从产生保留固定时间段后清除,比如1天6个小时; </p>
+            </dd>
+        </dl>
+    </div>
+</body>
+</html>
