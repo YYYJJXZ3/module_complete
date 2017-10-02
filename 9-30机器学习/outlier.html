@@ -280,7 +280,7 @@
         bindChart("main", {
             DataSource: data,
             ChartType: "Line",
-            Title: "平均激活激活用户数",
+            Title: "日八分位异常点呈现",
 //            IsScroll: true,
 //            ScrollNum: 6,
             XDataColIndex: '0',
@@ -288,7 +288,7 @@
                 { colindex: 1, type: 'max', name: '最大值'}, { colindex: 1, type: 'min', name: '最小值'}
                 ],
             YDataColIndex: '1',
-            LegendPosition: "RIGHTTOP"
+            LegendPosition: "BOTTOM"
         });
     }
 
