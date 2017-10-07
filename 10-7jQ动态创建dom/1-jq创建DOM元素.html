@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/jquery-1.9.1.min.js"></script>
+</head>
+<body>
+<div class="targetContainer"></div>
+
+<script>
+//    var container = $(".targetContainer");
+
+    $("<img>").attr({
+        src:'img/up.png'
+    }).css({
+        top:"150px",
+        left:"150px",
+        transform:"scale(.5) rotateZ(90deg)",
+        position:"absolute"
+    }).addClass("myImg").appendTo(".targetContainer");
+
+
+//$(A).append(content|fn) 在匹配的元素A内部结尾追加内容
+//$(A).appendTo(B) 将A的内容追加到B内部结尾
+//$(A).prepend(content) 在匹配的元素A内部的开头插入content内容
+//$(A).prependTo(B) 将匹配到的A元素追加到B的开头
+//
+//$(A).after(content) 在匹配的元素A之后插入内容content
+//$(A).before(content) 在匹配的元素A之前插入内容content
+//$(A).insertAfter(B) 将A的内容追加到B之后
+//$(A).insertBefore(B) 将A的内容追加到B之前
+</script>
+</body>
+</html>

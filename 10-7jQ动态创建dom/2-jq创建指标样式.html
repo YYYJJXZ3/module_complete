@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/jquery-1.9.1.min.js"></script>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+
+        .indexBox{
+            width: 200px;
+            height: 60px;
+            border: 1px solid #c1c1c1;
+            font-size: 14px;
+        }
+
+
+        .downZone li{
+            float: left;
+            list-style: none;
+            margin-left: 9px;
+        }
+
+        .upZone{
+            background-color: #0f83fe;
+            color: white;
+            padding:8px ;
+            margin-bottom: 2px;
+        }
+
+        .downZone img{
+            margin-left: 4px;
+        }
+    </style>
+</head>
+<body>
+<div class="indexBox">
+    <div class="upZone">  </div>
+
+    <div class="downZone"> </div>
+</div>
+
+<script>
+
+    var random = parseInt(Math.random()*100);
+
+
+
+    var $containerUp = $(".upZone");
+    var containerUpHtml = "";
+    $containerUp.empty();
+
+    containerUpHtml +='<span class="textData">' +"TCP建立时延"+'</span>'
+    +":"+'<span class="numData">' +random+"%" + '</span>';
+
+    $containerUp.html(containerUpHtml);
+
+
+
+    var $containerDown = $(".downZone");
+    var containerDownHtml = "";
+    $containerDown.empty();
+
+    containerDownHtml +=
+    '<ul>'+
+    '<li>'+"同比:"+'<span class="tongbi">'+"1.02"+'</span>'+"%"+'<img src="img/down.png">'+'</li>'
+        +'<li>'+"环比:"+'<span class="huanbi">'+"0.02"+'</span>'+"%"+'<img src="img/up.png">'+'</li>'
+        +'</ul>';
+    $containerDown.html(containerDownHtml);
+
+</script>
+</body>
+</html>
