@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    var arr1 = [1,2,3,4,5];
+    var arr2 = [2,4,54,6];
+
+//    判定数组是否每一项都含有even
+    function judegeEven(array){
+        return array.every(function (val) {
+            return val % 2 ==0;
+        })
+    };
+
+    console.log(
+        judegeEven(arr1),
+        judegeEven(arr2)
+    )
+
+//    判定数组是否含有奇数,有一个符合就返回true
+//    function judegOdd(array){
+//        return  array.some(function (val) {
+//            return val %2 !== 0;
+//        })
+//    }
+//    简化版ES6
+    function judegOdd(array){
+        return array.some(val=>val%2!=0);
+    }
+
+    console.log(
+        judegOdd(arr1),
+        judegOdd(arr2)
+    )
+
+//    判断是否是升序
+    function isUp(array){
+        return array.every(function(val,i,arr){
+//            有坑
+//            最后一位，和undifiend，即与NAN比较，恒为false
+//            return val <= arr[i+1];
+
+            return i<arr.length-1?val<=arr[i+1]:true;
+        })
+    }
+    console.log(
+        isUp(arr1),
+        isUp(arr2)
+    )
+
+
+</script>
+</body>
+</html>
